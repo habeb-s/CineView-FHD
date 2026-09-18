@@ -107,6 +107,39 @@ fi
 
 adapt "Adapting CineView to this Enigma2 image..."
 "$PY" "$PLUGSTAGE/compat.py" "$SKINSTAGE" /usr/lib/enigma2/python "$TMP/compat.json" >/dev/null 2>&1 || fail "compatibility adaptation failed"
+
+# Real PosterX safe fallback: when the renderer is unavailable after feed attempts,
+# remove PosterX widgets from every staged XML before installation.
+if ! havepy /usr/lib/enigma2/python/Components/Renderer/PosterX; then
+  adapt "PosterX unavailable -> removing poster widgets from the staged skin (safe no-poster mode)"
+  "$PY" - "$SKINSTAGE" <<'PYPOSTER'
+import os, sys, xml.etree.ElementTree as ET
+root=sys.argv[1]
+files=0
+widgets=0
+for base, dirs, names in os.walk(root):
+    for name in names:
+        if not name.endswith('.xml'):
+            continue
+        path=os.path.join(base,name)
+        try:
+            tree=ET.parse(path)
+        except Exception:
+            continue
+        changed=False
+        for parent in tree.iter():
+            for child in list(parent):
+                if child.attrib.get('render') == 'PosterX':
+                    parent.remove(child)
+                    widgets += 1
+                    changed=True
+        if changed:
+            tree.write(path, encoding='utf-8', xml_declaration=True)
+            files += 1
+print("PosterX fallback removed %d widget(s) from %d file(s)" % (widgets, files))
+PYPOSTER
+  [ $? = 0 ] || fail "PosterX safe fallback failed"
+fi
 PATCHED=$("$PY" - "$TMP/compat.json" <<'PY'
 import json,sys
 try:
