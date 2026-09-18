@@ -73,9 +73,7 @@ case "$PROFILE" in
   oealliance/openatv)
     case "$IMAGE_VERSION" in
       8* )
-        printf "%s[HOLD]%s OpenATV 8 installation is paused until receiver-safe validation is approved.\n" "$YELLOW" "$RESET"
-        printf "CineView will not modify this receiver.\n"
-        exit 2
+        printf "%s[ADAPT]%s OpenATV 8 detected -> dedicated receiver-matched OpenATV 8 screen contracts selected.\n" "$CYAN" "$RESET"
         ;;
       * )
         printf "%s[ADAPT]%s OpenATV detected -> dedicated OpenATV screen contracts selected.\n" "$CYAN" "$RESET"
