@@ -1,43 +1,26 @@
-name: Inspect CineView payload
+name: Validate OpenViX CineView repair
 on:
   push:
     paths:
       - '.github/workflows/inspect-cineview.yml'
 jobs:
-  inspect:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Extract targeted CineView diagnostics
+      - name: Validate shell syntax
+        run: sh -n cineview-smart-install.sh
+      - name: Simulate OpenViX dry run
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p /tmp/cv
-          cat installer/parts/*.b64 > /tmp/cv/payload.b64
-          base64 -d /tmp/cv/payload.b64 > /tmp/cv/payload.tar.gz
-          tar -xzf /tmp/cv/payload.tar.gz -C /tmp/cv
-          ROOT=/tmp/cv/usr/share/enigma2/CineView_FHD
-          PLUG=/tmp/cv/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl
-          echo '=== ROOT SKIN INCLUDE REFERENCES ==='
-          grep -nE 'include|layout-|PluginBrowser' "$ROOT/skin.xml" || true
-          echo '=== PLUGINBROWSER DEFINITIONS SUMMARY ==='
-          python3 - <<'PY'
-          import pathlib,re
-          root=pathlib.Path('/tmp/cv/usr/share/enigma2/CineView_FHD')
-          for p in root.rglob('*.xml'):
-              s=p.read_text(errors='ignore')
-              n=len(re.findall(r'<screen\b[^>]*\bname="PluginBrowser"',s))
-              if n:
-                  print(f'{p.name}: PluginBrowser definitions={n}')
-                  for i,m in enumerate(re.finditer(r'<screen\b[^>]*\bname="PluginBrowser"[^>]*>',s),1):
-                      end=s.find('</screen>',m.start())
-                      block=s[m.start(): end+9 if end>=0 else m.start()+4000]
-                      print(f'--- {p.name} #{i} ---')
-                      print(block[:5000])
-          PY
-          echo '=== CONTROL FILES ==='
-          find "$PLUG" -maxdepth 1 -type f -printf '%f\n' | sort
-          echo '=== ACTIVATE REFS ==='
-          grep -nE 'skin\.xml|layout|theme|include|OpenViX|openvix|oealliance' "$PLUG/activate.sh" 2>/dev/null || true
-          echo '=== COMPAT REFS ==='
-          grep -nE 'skin\.xml|layout|PluginBrowser|openvix|oealliance|screen' "$PLUG/compat.py" 2>/dev/null || true
+          sudo sh -c 'cat > /etc/image-version <<EOF
+Creator=OpenViX
+Version=6.9
+Build=002
+distro=openvix
+EOF'
+          sudo /bin/sh ./cineview-smart-install.sh --dry-run | tee /tmp/cineview-dry.log
+          grep -F "OpenViX detected -> applying stable native PluginBrowser list binding" /tmp/cineview-dry.log
+          grep -F "OpenViX PluginBrowser switched to native classic list mode" /tmp/cineview-dry.log
+          grep -F "Dry-run passed" /tmp/cineview-dry.log
