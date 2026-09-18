@@ -1,0 +1,38 @@
+name: Build CineView smart installer
+on:
+  push:
+    paths:
+      - 'installer/parts/**'
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Rebuild and validate installer
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT=/tmp/cineview-smart-install.sh
+          cat installer/parts/0000-header.sh > "$OUT"
+          for f in installer/parts/*.b64; do cat "$f" >> "$OUT"; done
+          LINE=$(awk '/^__CINEVIEW_PAYLOAD_BELOW__$/{print NR+1; exit}' "$OUT")
+          test -n "$LINE"
+          tail -n +"$LINE" "$OUT" | base64 -d > /tmp/cineview-payload.tar.gz
+          tar -tzf /tmp/cineview-payload.tar.gz >/dev/null
+          mv "$OUT" cineview-smart-install.sh
+          chmod 755 cineview-smart-install.sh
+      - name: Commit rebuilt installer
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- cineview-smart-install.sh; then
+            echo "Installer already current"
+            exit 0
+          fi
+          git config user.name "CineView Builder"
+          git config user.email "actions@users.noreply.github.com"
+          git add cineview-smart-install.sh
+          git commit -m "build: regenerate smart installer"
+          git push
