@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# OpenATV 8 live contract audited on Vu+ Duo 4K SE, build 20260917.
 from __future__ import print_function
 
 import io
