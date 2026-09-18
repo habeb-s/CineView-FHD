@@ -342,6 +342,16 @@ SETTINGS=/etc/enigma2/settings
 [ -f "$SETTINGS" ] || touch "$SETTINGS"
 set_key(){ key="$1"; val="$2"; if grep -q "^${key}=" "$SETTINGS" 2>/dev/null; then sed -i "s|^${key}=.*|${key}=${val}|" "$SETTINGS"; else echo "${key}=${val}" >> "$SETTINGS"; fi; }
 get_key(){ grep "^$1=" "$SETTINGS" 2>/dev/null | tail -1 | cut -d= -f2-; }
+if [ "$RESTART" = 1 ]; then
+  installing "Stopping Enigma2 before persistent CineView activation..."
+  if command -v systemctl >/dev/null 2>&1 && systemctl list-unit-files 2>/dev/null | grep -q '^enigma2.service'; then
+    systemctl stop enigma2.service || true
+  elif command -v init >/dev/null 2>&1; then
+    init 4 || true
+  fi
+  sleep 3
+fi
+
 [ -n "$(get_key config.plugins.cineview.theme)" ] || set_key config.plugins.cineview.theme black
 [ -n "$(get_key config.plugins.cineview.poster_infobar)" ] || set_key config.plugins.cineview.poster_infobar True
 [ -n "$(get_key config.plugins.cineview.poster_second)" ] || set_key config.plugins.cineview.poster_second True
@@ -351,7 +361,9 @@ get_key(){ grep "^$1=" "$SETTINGS" 2>/dev/null | tail -1 | cut -d= -f2-; }
 [ -n "$(get_key config.plugins.cineview.servermode)" ] || set_key config.plugins.cineview.servermode profile
 [ -n "$(get_key config.plugins.cineview.secondtimeout)" ] || set_key config.plugins.cineview.secondtimeout 20
 set_key config.skin.primary_skin CineView_FHD/skin.xml
-/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/activate.sh >/dev/null 2>&1 || true
+grep -q "^config.skin.primary_skin=CineView_FHD/skin.xml$" "$SETTINGS" || fail "persistent skin activation verification failed"
+/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/activate.sh >/dev/null 2>&1 || fail "CineView activation preparation failed"
+sync
 
 REPORT=/etc/enigma2/cineview-smart-report.txt
 {
@@ -371,15 +383,15 @@ say "Diagnostic report: $REPORT"
 ok "Second InfoBar transparent overlay locked for all 6 themes"
 
 if [ "$RESTART" = 1 ]; then
-  installing "Restarting Enigma2 GUI..."
+  installing "Starting Enigma2 GUI with CineView..."
   if command -v systemctl >/dev/null 2>&1 && systemctl list-unit-files 2>/dev/null | grep -q '^enigma2.service'; then
-    systemctl restart enigma2.service || true
+    systemctl start enigma2.service || true
   elif command -v init >/dev/null 2>&1; then
-    init 4; sleep 3; init 3
-  elif command -v killall >/dev/null 2>&1; then
-    killall -9 enigma2 2>/dev/null || true
+    init 3 || true
+  elif [ -x /etc/init.d/enigma2 ]; then
+    /etc/init.d/enigma2 start || true
   else
-    warn "Automatic GUI restart is not supported on this image; restart Enigma2 manually"
+    enigma2 >/dev/null 2>&1 &
   fi
 else
   warn "Enigma2 restart skipped by --no-restart."
