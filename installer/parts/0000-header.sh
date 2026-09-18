@@ -225,7 +225,7 @@ PKGROOT="$TMP/pkg"
 mkdir -p "$PKGROOT/CONTROL" || fail "cannot create package metadata"
 cat > "$PKGROOT/CONTROL/control" <<'EOF'
 Package: enigma2-plugin-skins-cineview-fhd
-Version: 2.0
+Version: 2.0.1
 Architecture: all
 Maintainer: habeb-s
 Description: CineView FHD 2.0 Smart Enigma2 Skin
@@ -257,7 +257,12 @@ say "Temporary package: $PKGFILE"
 
 installing "Installing CineView FHD 2.0..."
 if [ "$PM" = opkg ]; then
-  opkg install "$PKGFILE" || fail "opkg installation failed"
+  if opkg install "$PKGFILE"; then
+    :
+  else
+    warn "Normal opkg install was refused (same version or cached state) -> retrying with --force-reinstall"
+    opkg install --force-reinstall "$PKGFILE" || fail "opkg installation failed"
+  fi
 elif [ "$PM" = apt ]; then
   if command -v dpkg >/dev/null 2>&1; then dpkg -i "$PKGFILE" || fail "dpkg installation failed"; else fail "dpkg not found on apt image"; fi
 else
