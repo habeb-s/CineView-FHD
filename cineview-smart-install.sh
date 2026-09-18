@@ -120,13 +120,13 @@ else
   ok "No skin compatibility patch was required"
 fi
 
-# OpenViX compatibility: force the stable classic PluginBrowser binding.
-# Current OpenViX supports both classic <widget name="list"> and templated source/list
-# modes. The classic path avoids grid/template regressions and duplicate PluginBrowser
-# definitions while preserving the native PluginList component.
+# OpenBH/OpenViX compatibility: force a stable FullHD native PluginBrowser binding.
+# OpenBH/OpenViX expose PluginBrowser's native component as <widget name="list">.
+# A source="list" renderer may show an empty page; also remove duplicate definitions.
+# Keep a single native component and full-width 1920x1080 layout.
 case "$LOW" in
-  *openvix*)
-    adapt "OpenViX detected -> applying stable native PluginBrowser list binding"
+  *openvix*|*openbh*)
+    adapt "OpenBH/OpenViX detected -> applying FullHD native PluginBrowser list binding"
     "$PY" - "$SKINSTAGE" <<'PY'
 from __future__ import print_function
 import os, re, sys
@@ -138,8 +138,8 @@ pattern = re.compile(
 )
 replacement = '''
 	<screen name="PluginBrowser" position="fill" flags="wfNoBorder">
-		<panel name="PigTemplate"/>
-		<widget name="list" position="780,100" size="1110,912" scrollbarMode="showOnDemand"/>
+		<panel name="PigLessTemplate"/>
+		<widget name="list" position="30,100" size="1860,912" scrollbarMode="showOnDemand"/>
 	</screen>
 '''
 
@@ -170,7 +170,7 @@ if changed == 0:
 PY
     PB_PATCHED=$?
     [ "$PB_PATCHED" = 0 ] || fail "OpenViX PluginBrowser compatibility patch failed"
-    ok "OpenViX PluginBrowser switched to native classic list mode"
+    ok "OpenBH/OpenViX PluginBrowser switched to FullHD native list mode"
     ;;
 esac
 
