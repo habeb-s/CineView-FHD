@@ -16,7 +16,7 @@ CACHE_ROOT = "/tmp/CINEVIEW/poster"
 API_SINGLE = "https://api.tvmaze.com/singlesearch/shows"
 API_SEARCH = "https://api.tvmaze.com/search/shows"
 API_ITUNES = "https://itunes.apple.com/search"
-UA = "CineView-FHD/2.0.1 (Enigma2 native poster renderer)"
+UA = "CineView-FHD/2.0.2 (Enigma2 native poster renderer)"
 LOG_PATH = "/tmp/CINEVIEW/poster.log"
 
 _epg = eEPGCache.getInstance()
