@@ -16,6 +16,7 @@ CACHE_ROOT = "/tmp/CINEVIEW/poster"
 API_SINGLE = "https://api.tvmaze.com/singlesearch/shows"
 API_SEARCH = "https://api.tvmaze.com/search/shows"
 API_ITUNES = "https://itunes.apple.com/search"
+API_IMDB = "https://v3.sg.media-imdb.com/suggestion/x/%s.json"
 UA = "CineView-FHD/2.0.2 (Enigma2 native poster renderer)"
 LOG_PATH = "/tmp/CINEVIEW/poster.log"
 
@@ -111,6 +112,33 @@ def _http_get(url, params=None, timeout=7.0, want_json=False):
         return None
 
 
+def _quote(value):
+    try:
+        from urllib.parse import quote
+    except ImportError:
+        from urllib import quote
+    try:
+        return quote(value.encode("utf-8") if not isinstance(value, str) else value)
+    except Exception:
+        try:
+            return quote(value)
+        except Exception:
+            return value
+
+
+def _imdb_artwork(q):
+    # IMDb suggestion understands localized movie/series titles and needs no API key.
+    data = _http_get(API_IMDB % _quote(q), timeout=6.0, want_json=True) or {}
+    for row in (data.get("d") or [])[:8]:
+        if not str(row.get("id") or "").startswith("tt"):
+            continue
+        image = row.get("i") or {}
+        url = image.get("imageUrl")
+        if url:
+            return url
+    return None
+
+
 def _itunes_artwork(q):
     # Apple Search covers movies as well as TV and needs no API key.
     # Try common storefronts because EPG titles are frequently localized.
@@ -153,7 +181,15 @@ def _image_url(title):
                 _log("provider=tvmaze-search title=%s query=%s" % (title, q))
                 return url
 
-    # TVMaze is TV-only. Use Apple Search as a no-key movie/TV fallback.
+    # Localized EPG movie names often do not exist in TVMaze. IMDb's
+    # suggestion endpoint maps localized titles to the canonical title and poster.
+    for q in queries:
+        url = _imdb_artwork(q)
+        if url:
+            _log("provider=imdb title=%s query=%s" % (title, q))
+            return url
+
+    # Final no-key fallback for movie/TV storefront artwork.
     for q in queries:
         url = _itunes_artwork(q)
         if url:
