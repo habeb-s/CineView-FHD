@@ -1,4 +1,5 @@
 name: Validate OpenATV 8 installer
+# Validates the generated candidate on explicit source/test pushes.
 on:
   push:
     paths:
