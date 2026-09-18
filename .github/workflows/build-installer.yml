@@ -27,6 +27,28 @@ jobs:
           python3 -m py_compile /tmp/cvstage/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openbh_compat.py
           rm -rf /tmp/cvstage/usr/lib/enigma2/python/Components/Renderer/__pycache__
           rm -rf /tmp/cvstage/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/__pycache__
+
+          # CineView owns its poster renderer on every image. Do not depend on
+          # image-specific PosterX packages or overwrite files owned by them.
+          python3 - <<'PY'
+          from pathlib import Path
+          skin=Path('/tmp/cvstage/usr/share/enigma2/CineView_FHD')
+          count=0
+          for p in skin.glob('skin*.xml'):
+              s=p.read_text(errors='ignore')
+              ns=s.replace('render="PosterX"','render="CineViewPosterX"').replace("render='PosterX'","render='CineViewPosterX'")
+              if ns != s:
+                  p.write_text(ns)
+                  count += 1
+          plug=Path('/tmp/cvstage/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl')
+          for name in ('activate.sh','plugin.py'):
+              p=plug/name
+              s=p.read_text(errors='ignore')
+              s=s.replace('/Components/Renderer/PosterX','/Components/Renderer/CineViewPosterX')
+              p.write_text(s)
+          print('CineViewPosterX layouts patched:',count)
+          PY
+
           python3 - <<'PY'
           from pathlib import Path
           import re
@@ -49,7 +71,15 @@ jobs:
           tail -n +"$LINE" "$OUT" | base64 -d > /tmp/cineview-payload-check.tar.gz
           tar -tzf /tmp/cineview-payload-check.tar.gz >/dev/null
           tar -xOf /tmp/cineview-payload-check.tar.gz ./usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.py | grep -q 'class CineViewPosterX'
-          tar -xOf /tmp/cineview-payload-check.tar.gz ./usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openbh_compat.py | grep -q 'InfoBarGridEPG'
+          tar -xOf /tmp/cineview-payload-check.tar.gz ./usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openbh_compat.py | grep -q 'DeliteGreenPanel'
+          tar -xOf /tmp/cineview-payload-check.tar.gz ./usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/activate.sh | grep -q 'Renderer/CineViewPosterX'
+          tar -xOf /tmp/cineview-payload-check.tar.gz ./usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/plugin.py | grep -q 'Renderer/CineViewPosterX'
+          rm -rf /tmp/cvcheck && mkdir -p /tmp/cvcheck
+          tar -xzf /tmp/cineview-payload-check.tar.gz -C /tmp/cvcheck
+          if grep -R -q 'render="PosterX"' /tmp/cvcheck/usr/share/enigma2/CineView_FHD/skin*.xml; then
+            echo "Legacy PosterX renderer reference remains" >&2
+            exit 1
+          fi
           mv "$OUT" cineview-smart-install.sh
           chmod 755 cineview-smart-install.sh
       - name: Commit rebuilt installer
