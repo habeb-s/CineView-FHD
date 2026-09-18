@@ -82,31 +82,29 @@ MultiContentEntryText(pos=(12, 82), size=(306, 68), font=0, flags=RT_HALIGN_CENT
 \t\t<widget source="key_menu" render="Label" position="1390,805" size="170,45" font="Regular;23" halign="center" valign="center" foregroundColor="grey" transparent="1"/>
 \t\t<widget source="key_help" render="Label" position="1580,805" size="170,45" font="Regular;23" halign="center" valign="center" foregroundColor="grey" transparent="1"/>"""
 
-EVENT_VIEW = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="steThemePrimary" zPosition="0"/>
-\t\t<widget name="channel" position="45,28" size="1180,45" font="Regular;30" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1" zPosition="4"/>
-\t\t<widget source="Title" render="Label" position="45,82" size="1180,60" font="Regular;38" foregroundColor="foreground" backgroundColor="steThemePrimary" transparent="1" zPosition="4"/>
-\t\t<widget name="datetime" position="45,150" size="420,38" font="Regular;24" foregroundColor="grey" backgroundColor="steThemePrimary" transparent="1"/>
-\t\t<widget name="duration" position="480,150" size="180,38" font="Regular;24" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1"/>
-\t\t<widget name="FullDescription" position="45,205" size="1190,530" font="Regular;26" foregroundColor="foreground" backgroundColor="steThemePrimary" transparent="1" zPosition="4"/>
-\t\t<widget source="Event" render="CineViewPosterX" position="1385,55" size="340,510" zPosition="8"/>
-\t\t<widget source="Event" render="Label" position="1280,590" size="445,145" font="Regular;23" foregroundColor="grey" backgroundColor="steThemePrimary" transparent="1" valign="top"><convert type="EventName">ShortDescription</convert></widget>
-\t\t<eLabel position="35,770" size="1750,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
-\t\t<widget name="red" pixmap="buttons/red.png" position="75,802" size="34,34" alphatest="blend"/>
-\t\t<widget source="key_red" render="Label" position="120,797" size="300,44" font="Regular;25" transparent="1" valign="center"/>
-\t\t<widget name="green" pixmap="buttons/green.png" position="490,802" size="34,34" alphatest="blend"/>
-\t\t<widget source="key_green" render="Label" position="535,797" size="300,44" font="Regular;25" transparent="1" valign="center"/>
-\t\t<widget name="yellow" pixmap="buttons/yellow.png" position="905,802" size="34,34" alphatest="blend"/>
-\t\t<widget source="key_yellow" render="Label" position="950,797" size="300,44" font="Regular;25" transparent="1" valign="center"/>
-\t\t<widget name="blue" pixmap="buttons/blue.png" position="1320,802" size="34,34" alphatest="blend"/>
-\t\t<widget source="key_blue" render="Label" position="1365,797" size="300,44" font="Regular;25" transparent="1" valign="center"/>"""
+EVENT_VIEW = """\t\t<eLabel position="0,0" size="1840,930" backgroundColor="steThemePrimary" zPosition="0"/>
+\t\t<widget name="channel" position="50,28" size="1280,48" font="Regular;31" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1" zPosition="4"/>
+\t\t<widget source="Title" render="Label" position="50,82" size="1280,62" font="Regular;40" foregroundColor="foreground" backgroundColor="steThemePrimary" transparent="1" zPosition="4"/>
+\t\t<widget name="datetime" position="50,152" size="500,40" font="Regular;25" foregroundColor="grey" backgroundColor="steThemePrimary" transparent="1"/>
+\t\t<widget name="duration" position="565,152" size="210,40" font="Regular;25" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1"/>
+\t\t<widget name="epg_description" position="50,210" size="1280,590" font="Regular;28" foregroundColor="foreground" backgroundColor="steThemePrimary" transparent="1" zPosition="4"/>
+\t\t<widget source="Event" render="CineViewPosterX" position="1430,50" size="340,510" zPosition="8"/>
+\t\t<widget source="Event" render="Label" position="1390,585" size="420,185" font="Regular;25" foregroundColor="grey" backgroundColor="steThemePrimary" transparent="1" valign="top"><convert type="EventName">ShortDescription</convert></widget>
+\t\t<eLabel position="45,835" size="1750,3" backgroundColor="steThemePanelAlt" zPosition="2"/>
+\t\t<widget source="key_red" render="Label" position="65,855" size="300,48" font="Regular;26" transparent="1" valign="center"/>
+\t\t<widget source="key_green" render="Label" position="405,855" size="300,48" font="Regular;26" transparent="1" valign="center"/>
+\t\t<widget source="key_yellow" render="Label" position="745,855" size="300,48" font="Regular;26" transparent="1" valign="center"/>
+\t\t<widget source="key_blue" render="Label" position="1085,855" size="300,48" font="Regular;26" transparent="1" valign="center"/>
+\t\t<widget source="key_menu" render="Label" position="1430,855" size="160,48" font="Regular;24" foregroundColor="grey" transparent="1"/>
+\t\t<widget source="key_info" render="Label" position="1610,855" size="160,48" font="Regular;24" foregroundColor="grey" transparent="1"/>"""
 
-EVENT_SIMPLE = """\t\t<eLabel position="0,0" size="1820,760" backgroundColor="steThemePrimary" zPosition="0"/>
-\t\t<widget name="channel" position="45,28" size="1180,45" font="Regular;30" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1"/>
-\t\t<widget source="Title" render="Label" position="45,82" size="1180,60" font="Regular;38" foregroundColor="foreground" backgroundColor="steThemePrimary" transparent="1"/>
-\t\t<widget name="datetime" position="45,150" size="420,38" font="Regular;24" foregroundColor="grey" transparent="1"/>
-\t\t<widget name="duration" position="480,150" size="180,38" font="Regular;24" foregroundColor="secondFG" transparent="1"/>
-\t\t<widget name="FullDescription" position="45,205" size="1190,500" font="Regular;26" foregroundColor="foreground" backgroundColor="steThemePrimary" transparent="1"/>
-\t\t<widget source="Event" render="CineViewPosterX" position="1385,55" size="340,510" zPosition="8"/>"""
+EVENT_SIMPLE = """\t\t<eLabel position="0,0" size="1840,830" backgroundColor="steThemePrimary" zPosition="0"/>
+\t\t<widget name="channel" position="50,28" size="1280,48" font="Regular;31" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1"/>
+\t\t<widget source="Title" render="Label" position="50,82" size="1280,62" font="Regular;40" foregroundColor="foreground" backgroundColor="steThemePrimary" transparent="1"/>
+\t\t<widget name="datetime" position="50,152" size="500,40" font="Regular;25" foregroundColor="grey" transparent="1"/>
+\t\t<widget name="duration" position="565,152" size="210,40" font="Regular;25" foregroundColor="secondFG" transparent="1"/>
+\t\t<widget name="epg_description" position="50,210" size="1280,540" font="Regular;28" foregroundColor="foreground" backgroundColor="steThemePrimary" transparent="1"/>
+\t\t<widget source="Event" render="CineViewPosterX" position="1430,50" size="340,510" zPosition="8"/>"""
 
 INFOBAR_EVENT_VIEW = """\t\t<eLabel position="0,0" size="1920,360" backgroundColor="steThemePrimary" zPosition="0"/>
 \t\t<widget source="Title" render="Label" position="45,28" size="1320,48" font="Regular;34" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1"/>
@@ -116,17 +114,18 @@ INFOBAR_EVENT_VIEW = """\t\t<eLabel position="0,0" size="1920,360" backgroundCol
 \t\t<widget source="Event" render="CineViewPosterX" position="1630,82" size="210,260" zPosition="8"/>"""
 
 SECOND_INFO = """\t\t<eLabel position="0,0" size="1920,520" backgroundColor="steSecondInfoBG" zPosition="0"/>
-\t\t<widget name="channel" position="45,25" size="1380,52" font="Regular;34" foregroundColor="secondFG" backgroundColor="steSecondInfoBG" transparent="1" zPosition="5"/>
-\t\t<widget name="epg_description" position="45,88" size="1380,286" font="Regular;25" foregroundColor="foreground" backgroundColor="steSecondInfoBG" transparent="1" zPosition="5"/>
-\t\t<widget source="session.Event_Now" render="CineViewPosterX" position="1535,28" size="300,390" zPosition="8"/>
-\t\t<widget source="session.CurrentService" render="Label" position="45,382" size="1380,38" font="Regular;21" foregroundColor="grey" backgroundColor="steSecondInfoBG" transparent="1" zPosition="5"><convert type="PliExtraInfo">All</convert></widget>
-\t\t<eLabel position="35,430" size="1850,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
-\t\t<widget source="session.CurrentService" render="Picon" position="45,447" size="180,55" transparent="1" alphatest="blend"><convert type="ServiceName">Reference</convert></widget>
-\t\t<widget source="session.CurrentService" render="Label" position="245,455" size="610,38" font="Regular;24" foregroundColor="grey" transparent="1"><convert type="ServiceName">Name</convert></widget>
-\t\t<widget source="key_red" render="Label" position="885,452" size="220,40" font="Regular;23" halign="center" transparent="1"/>
-\t\t<widget source="key_green" render="Label" position="1115,452" size="220,40" font="Regular;23" halign="center" transparent="1"/>
-\t\t<widget source="key_yellow" render="Label" position="1345,452" size="220,40" font="Regular;23" halign="center" transparent="1"/>
-\t\t<widget source="key_blue" render="Label" position="1575,452" size="220,40" font="Regular;23" halign="center" transparent="1"/>"""
+\t\t<widget name="channel" position="50,24" size="1390,58" font="Regular;38" foregroundColor="secondFG" backgroundColor="steSecondInfoBG" transparent="1" zPosition="5"/>
+\t\t<widget name="epg_description" position="50,95" size="1390,285" font="Regular;29" foregroundColor="foreground" backgroundColor="steSecondInfoBG" transparent="1" zPosition="5"/>
+\t\t<widget source="session.Event_Now" render="CineViewPosterX" position="1540,28" size="300,390" zPosition="8"/>
+\t\t<widget source="session.CurrentService" render="Label" position="50,388" size="900,34" font="Regular;24" foregroundColor="grey" backgroundColor="steSecondInfoBG" transparent="1" zPosition="5"><convert type="PliExtraInfo">TransponderInfo</convert></widget>
+\t\t<widget source="session.CurrentService" render="Label" position="970,388" size="390,34" font="Regular;24" foregroundColor="secondFG" backgroundColor="steSecondInfoBG" transparent="1" zPosition="5"><convert type="PliExtraInfo">CryptoNameCaid</convert></widget>
+\t\t<eLabel position="40,432" size="1840,3" backgroundColor="steThemePanelAlt" zPosition="2"/>
+\t\t<widget source="session.CurrentService" render="Picon" position="50,447" size="190,58" transparent="1" alphatest="blend"><convert type="ServiceName">Reference</convert></widget>
+\t\t<widget source="session.CurrentService" render="Label" position="260,453" size="600,42" font="Regular;27" foregroundColor="foreground" transparent="1"><convert type="ServiceName">Name</convert></widget>
+\t\t<widget source="key_red" render="Label" position="900,452" size="210,42" font="Regular;24" halign="center" transparent="1"/>
+\t\t<widget source="key_green" render="Label" position="1130,452" size="210,42" font="Regular;24" halign="center" transparent="1"/>
+\t\t<widget source="key_yellow" render="Label" position="1360,452" size="210,42" font="Regular;24" halign="center" transparent="1"/>
+\t\t<widget source="key_blue" render="Label" position="1590,452" size="210,42" font="Regular;24" halign="center" transparent="1"/>"""
 
 SINGLE_EPG = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="steThemePrimary" zPosition="0"/>
 \t\t<widget source="Service" render="Picon" position="45,28" size="180,60" transparent="1" alphatest="blend"><convert type="ServiceName">Reference</convert></widget>
@@ -279,7 +278,32 @@ VERTICAL_EPG = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="st
 \t\t<widget source="key_yellow" render="Label" position="925,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
 \t\t<widget source="key_blue" render="Label" position="1360,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>"""
 
+INFOBAR_FHD = """\t\t<eLabel position="0,0" size="1920,320" backgroundColor="steThemePrimary" zPosition="0"/>
+\t\t<widget source="session.CurrentService" render="Picon" position="40,34" size="220,120" transparent="1" alphatest="blend" zPosition="5"><convert type="ServiceName">Reference</convert></widget>
+\t\t<widget source="session.CurrentService" render="Label" position="290,30" size="640,48" font="Regular;36" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1" zPosition="5"><convert type="ServiceName">Name</convert></widget>
+\t\t<widget source="session.CurrentService" render="Label" position="290,80" size="640,34" font="Regular;24" foregroundColor="grey" backgroundColor="steThemePrimary" transparent="1" zPosition="5"><convert type="ExtendedServiceInfo">Provider</convert></widget>
+\t\t<widget source="session.CurrentService" render="Label" position="945,34" size="160,44" font="Regular;30" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1" halign="center" zPosition="5"><convert type="ExtendedServiceInfo">ServiceNumber</convert></widget>
+\t\t<widget source="session.CurrentService" render="FixedLabel" text="HD" position="1120,34" size="92,44" font="Regular;28" foregroundColor="secondFG" backgroundColor="steThemePanelAlt" halign="center" valign="center" zPosition="6"><convert type="ServiceInfo">IsHD</convert><convert type="ConditionalShowHide"/></widget>
+\t\t<widget source="session.CurrentService" render="Label" position="1230,34" size="260,44" font="Regular;27" foregroundColor="foreground" backgroundColor="steThemePrimary" transparent="1" halign="center" zPosition="5"><convert type="PliExtraInfo">ResolutionString</convert></widget>
+\t\t<widget source="global.CurrentTime" render="Label" position="1580,26" size="280,54" font="Regular;39" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1" halign="right"><convert type="ClockToText">Default</convert></widget>
+\t\t<widget source="session.Event_Now" render="Label" position="290,125" size="90,42" font="Regular;28" foregroundColor="grey" transparent="1"><convert type="EventTime">StartTime</convert><convert type="ClockToText">Default</convert></widget>
+\t\t<widget source="session.Event_Now" render="Label" position="390,125" size="1040,42" font="Regular;31" foregroundColor="foreground" transparent="1"><convert type="EventName">Name</convert></widget>
+\t\t<widget source="session.Event_Now" render="Label" position="1450,125" size="210,42" font="Regular;27" foregroundColor="secondFG" transparent="1" halign="right"><convert type="EventTime">Remaining</convert><convert type="RemainingToText"/></widget>
+\t\t<widget source="session.Event_Next" render="Label" position="290,172" size="90,40" font="Regular;26" foregroundColor="grey" transparent="1"><convert type="EventTime">StartTime</convert><convert type="ClockToText">Default</convert></widget>
+\t\t<widget source="session.Event_Next" render="Label" position="390,172" size="1040,40" font="Regular;28" foregroundColor="grey" transparent="1"><convert type="EventName">Name</convert></widget>
+\t\t<widget source="session.Event_Now" render="Progress" position="290,215" size="1370,10" backgroundColor="steThemePanelAlt" zPosition="5"><convert type="EventTime">Progress</convert></widget>
+\t\t<widget source="session.CurrentService" render="Label" position="290,238" size="900,35" font="Regular;25" foregroundColor="foreground" transparent="1" noWrap="1"><convert type="PliExtraInfo">TransponderInfo</convert></widget>
+\t\t<widget source="session.CurrentService" render="Label" position="1210,238" size="410,35" font="Regular;25" foregroundColor="secondFG" transparent="1" halign="center"><convert type="PliExtraInfo">CryptoNameCaid</convert></widget>
+\t\t<widget source="session.FrontendStatus" render="Label" position="40,190" size="210,38" font="Regular;27" foregroundColor="foreground" transparent="1"><convert type="FrontendInfo">SNRdB</convert></widget>
+\t\t<widget source="session.FrontendStatus" render="Progress" position="40,235" size="210,14" backgroundColor="steThemePanelAlt"><convert type="FrontendInfo">SNR</convert></widget>
+\t\t<widget source="session.FrontendStatus" render="Label" position="40,258" size="210,32" font="Regular;23" foregroundColor="grey" transparent="1"><convert type="FrontendInfo">SNR</convert></widget>
+\t\t<widget source="session.CurrentService" render="Label" position="1640,238" size="230,35" font="Regular;24" foregroundColor="grey" transparent="1" halign="right"><convert type="ExtendedServiceInfo">SatName</convert></widget>
+\t\t<eLabel position="30,298" size="1860,3" backgroundColor="steThemePanelAlt" zPosition="2"/>"""
+
+
 SCREENS = (
+    ("InfoBar", INFOBAR_FHD, "0,760", "1920,320", ""),
+    ("InfoBarLite", INFOBAR_FHD, "0,760", "1920,320", ""),
     ("PluginBrowserList", PLUGIN_LIST, "center,center", "1820,880", "Plugin Browser"),
     ("PluginBrowserGrid", PLUGIN_GRID, "center,center", "1820,880", "Plugin Browser"),
     ("PluginBrowser", PLUGIN_LIST, "center,center", "1820,880", "Plugin Browser"),
