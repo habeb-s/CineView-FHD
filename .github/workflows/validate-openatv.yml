@@ -15,8 +15,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 30
-      - name: Validate published OpenATV 8 payload and FHD contracts
+          fetch-depth: 40
+      - name: Validate published OpenATV 8 rollback payload
         shell: bash
         run: |
           set -euo pipefail
@@ -26,6 +26,7 @@ jobs:
           test -n "$RAW_SHA"
           git cat-file -e "$RAW_SHA:cineview-smart-install.sh"
           git show "$RAW_SHA:cineview-smart-install.sh" > /tmp/cineview-smart-install.sh
+
           LINE="$(awk '/^__CINEVIEW_PAYLOAD_BELOW__$/{print NR+1; exit}' /tmp/cineview-smart-install.sh)"
           test -n "$LINE"
           tail -n +"$LINE" /tmp/cineview-smart-install.sh | base64 -d > /tmp/cineview-payload.tar.gz
@@ -38,6 +39,8 @@ jobs:
           mkdir -p /tmp/cvskin
           cat > /tmp/cvskin/skin.xml <<'EOF'
           <skin>
+            <screen name="InfoBar" position="0,700" size="1920,380"><widget name="legacy_infobar" position="0,0" size="100,50"/></screen>
+            <screen name="ChannelSelection" position="center,center" size="1800,900"><widget name="legacy_channel_list" position="0,0" size="100,50"/></screen>
             <screen name="MessageBox" position="center,center" size="600,500">
               <widget source="session.CurrentService" render="Label" position="0,0" size="100,40">
                 <convert type="ServiceInfo">IsSDAndWidescreen</convert>
@@ -48,7 +51,7 @@ jobs:
           </skin>
           EOF
 
-          python3 /tmp/published-openatv.py /tmp/cvskin > /tmp/openatv-adapter.log
+          python3 /tmp/published-openatv.py /tmp/cvskin >/tmp/openatv-adapter.log
           grep -Fx '1' /tmp/openatv-adapter.log
 
           python3 - <<'PY'
@@ -64,57 +67,28 @@ jobs:
               assert len(m)==1,(name,len(m))
               return m[0]
 
-          required = [
-              'InfoBar','InfoBarLite',
+          # These core native CineView screens must be preserved and not replaced
+          # by the later experimental full-screen OpenATV redesign.
+          assert 'legacy_infobar' in one('InfoBar')
+          assert 'legacy_channel_list' in one('ChannelSelection')
+
+          for name in (
               'PluginBrowser','PluginBrowserList','PluginBrowserGrid',
               'QuickMenu','EventView','EventViewSimple','InfoBarEventView',
               'SecondInfoBar','SecondInfoBarECM',
               'EPGSelection','EPGSelectionMulti','QuickEPG',
               'GraphicalEPG','GraphicalEPGPIG','GraphicalInfoBarEPG',
-              'EPGvertical','EPGverticalPIG',
-              'Satfinder','ChoiceBox','InformationService','ServiceInformation',
-              'ChannelSelection','MessageBox','MessageBoxModal'
-          ]
-          for name in required:
+              'EPGvertical','EPGverticalPIG','MessageBox','MessageBoxModal'
+          ):
               one(name)
 
           assert 'source="pluginList"' in one('PluginBrowserList')
           assert 'source="pluginGrid"' in one('PluginBrowserGrid')
-          assert 'listOrientation="grid"' in one('PluginBrowserGrid')
-
-          ib=one('InfoBar')
-          assert 'ServiceInfo">IsHD' in ib
-          assert 'PliExtraInfo">TransponderInfo' in ib
-          assert 'PliExtraInfo">CryptoNameCaid' in ib
-          assert 'ExtendedServiceInfo">SatName' in ib
-
-          for name in ('SecondInfoBar','SecondInfoBarECM'):
-              block=one(name)
-              assert 'name="epg_description"' in block
-              assert 'PliExtraInfo">TransponderInfo' in block
-              assert 'PliExtraInfo">CryptoNameCaid' in block
-
-          ev=one('EventView')
-          assert 'name="epg_description"' in ev
-          assert 'render="CineViewPosterX"' in ev
-
-          graph=one('GraphicalEPG')
-          assert 'ServiceFontGraphical="Regular;29"' in graph
-          assert 'EntryFontGraphical="Regular;27"' in graph
-          assert 'NumberOfRows="8"' in graph
-
-          assert 'source="Frontend"' in one('Satfinder')
-          assert 'name="config"' in one('Satfinder')
-          assert 'name="list"' in one('ChoiceBox')
-          assert 'name="information"' in one('InformationService')
-          assert 'source="key_yellow"' in one('InformationService')
-          assert 'source="key_yellow"' in one('ChannelSelection')
-
-          msg=one('MessageBox')
-          assert '<applet' not in msg
+          assert 'name="epg_description"' in one('EventView')
+          assert 'name="epg_description"' in one('SecondInfoBar')
+          assert '<applet' not in one('MessageBox')
           assert 'if self.timerRunning:' not in s
           assert 'ServiceInfo">IsSDAndWidescreen' not in s
-
           assert 'render="PosterX"' not in s
-          print('OPENATV8_PUBLISHED_FHD_CONTRACTS_OK')
+          print('OPENATV8_ROLLBACK_CONTRACTS_OK')
           PY
