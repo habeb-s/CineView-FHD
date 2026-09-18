@@ -73,12 +73,10 @@ case "$PROFILE" in
   oealliance/openatv)
     case "$IMAGE_VERSION" in
       8* )
-        printf "%s[HOLD]%s OpenATV 8 installation is temporarily paused pending live verification.\n" "$YELLOW" "$RESET"
-        printf "CineView will not modify this receiver.\n"
-        exit 2
+        printf "%s[ADAPT]%s OpenATV 8 detected -> dedicated live-verified OpenATV 8 screen contracts selected.\n" "$CYAN" "$RESET"
         ;;
       * )
-        printf "%s[ADAPT]%s OpenATV detected -> OE-Alliance/OpenATV rules selected.\n" "$CYAN" "$RESET"
+        printf "%s[ADAPT]%s OpenATV detected -> dedicated OpenATV screen contracts selected.\n" "$CYAN" "$RESET"
         ;;
     esac
     ;;
@@ -91,7 +89,7 @@ case "$PROFILE" in
 esac
 
 # Verified image-aware OE-Alliance smart installer.
-RAW="https://raw.githubusercontent.com/habeb-s/CineView-FHD/f5d1acbd94cc9375ff848af62ddd749d3cea2ff6"
+RAW="https://raw.githubusercontent.com/habeb-s/CineView-FHD/46bd768c02818e47e7cd2126a265a5644d100023"
 
 printf "%s[CineView]%s Downloading CineView FHD 2.0 Smart Installer...\n" "$CYAN" "$RESET"
 if command -v wget >/dev/null 2>&1; then
