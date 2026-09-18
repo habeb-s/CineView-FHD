@@ -4,6 +4,7 @@ on:
     paths:
       - 'installer/parts/**'
       - 'installer/PosterX.py'
+      - 'installer/openbh_compat.py'
 permissions:
   contents: write
 jobs:
@@ -21,8 +22,11 @@ jobs:
           tar -xzf /tmp/cineview-payload-original.tar.gz -C /tmp/cvstage
           mkdir -p /tmp/cvstage/usr/lib/enigma2/python/Components/Renderer
           cp -f installer/PosterX.py /tmp/cvstage/usr/lib/enigma2/python/Components/Renderer/PosterX.py
+          cp -f installer/openbh_compat.py /tmp/cvstage/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openbh_compat.py
           python3 -m py_compile /tmp/cvstage/usr/lib/enigma2/python/Components/Renderer/PosterX.py
+          python3 -m py_compile /tmp/cvstage/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openbh_compat.py
           rm -rf /tmp/cvstage/usr/lib/enigma2/python/Components/Renderer/__pycache__
+          rm -rf /tmp/cvstage/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/__pycache__
           python3 - <<'PY'
           from pathlib import Path
           import re
@@ -45,6 +49,7 @@ jobs:
           tail -n +"$LINE" "$OUT" | base64 -d > /tmp/cineview-payload-check.tar.gz
           tar -tzf /tmp/cineview-payload-check.tar.gz >/dev/null
           tar -xOf /tmp/cineview-payload-check.tar.gz ./usr/lib/enigma2/python/Components/Renderer/PosterX.py | grep -q 'CineView FHD 2.0 native PosterX renderer'
+          tar -xOf /tmp/cineview-payload-check.tar.gz ./usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openbh_compat.py | grep -q 'InfoBarGridEPG'
           mv "$OUT" cineview-smart-install.sh
           chmod 755 cineview-smart-install.sh
       - name: Commit rebuilt installer
