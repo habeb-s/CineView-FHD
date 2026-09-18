@@ -2,6 +2,7 @@ name: Validate OpenATV 8 installer
 on:
   push:
     paths:
+      - 'install.sh'
       - 'cineview-smart-install.sh'
       - 'installer/openatv_compat.py'
       - 'installer/parts/0000-header.sh'
@@ -74,11 +75,14 @@ jobs:
           chmod +x /tmp/opkg
           sudo cp /tmp/opkg /usr/local/bin/opkg
 
-          cp cineview-smart-install.sh /tmp/cineview-openatv-test.sh
-          chmod +x /tmp/cineview-openatv-test.sh
-          sudo env PATH="/usr/local/bin:/usr/bin:/bin" sh /tmp/cineview-openatv-test.sh --no-restart 2>&1 | tee /tmp/openatv-install.log
+          grep -F '46bd768c02818e47e7cd2126a265a5644d100023' install.sh
+          cp install.sh /tmp/cineview-openatv-public.sh
+          sed -i 's/--restart/--no-restart/g' /tmp/cineview-openatv-public.sh
+          chmod +x /tmp/cineview-openatv-public.sh
+          sudo env PATH="/usr/local/bin:/usr/bin:/bin" sh /tmp/cineview-openatv-public.sh 2>&1 | tee /tmp/openatv-install.log
 
           test -f /tmp/openatv-data-installed
+          grep -F 'OpenATV 8 detected -> dedicated live-verified OpenATV 8 screen contracts selected.' /tmp/openatv-install.log
           grep -F 'OpenATV detected' /tmp/openatv-install.log
           grep -F 'dedicated CineView FHD OpenATV screen contracts' /tmp/openatv-install.log
           grep -F 'OpenATV PluginBrowser list/grid, EventView, SecondInfoBar and EPG layouts adapted' /tmp/openatv-install.log
