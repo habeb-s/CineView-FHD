@@ -103,6 +103,14 @@ else
   exit 1
 fi
 [ -s "$TMP" ] || { printf "%s[FAIL]%s download failed\n" "$RED" "$RESET" >&2; exit 1; }
+
+# Bootstrap safety: allow reinstalling CineView when the receiver already has
+# the same package version. This keeps upgrades/repairs idempotent on opkg images.
+if [ "$PM" = opkg ]; then
+  sed -i 's/^Version: 2\.0$/Version: 2.0.1/' "$TMP" 2>/dev/null || true
+  sed -i 's|opkg install "$PKGFILE" || fail "opkg installation failed"|opkg install --force-reinstall "$PKGFILE" || fail "opkg installation failed"|' "$TMP" 2>/dev/null || true
+fi
+
 chmod 755 "$TMP"
 printf "%s[CineView]%s Installer downloaded. Starting profile-aware preflight...\n" "$CYAN" "$RESET"
 
