@@ -253,6 +253,12 @@ QUICK_MENU = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="steT
 \t\t<widget source="key_yellow" render="Label" position="815,805" size="360,45" backgroundColor="key_yellow" font="Regular;24" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>
 \t\t<widget source="key_help" render="Label" position="1480,805" size="280,45" backgroundColor="key_back" font="Regular;24" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>"""
 
+
+MESSAGE_BOX = """\t\t<eLabel position="0,0" size="960,520" backgroundColor="steThemePrimary" zPosition="0"/>
+\t\t<widget name="icon" pixmaps="icons/input_question.png,icons/input_info.png,icons/input_warning.png,icons/input_error.png,icons/input_message.png" position="35,35" size="64,64" alphatest="blend" conditional="icon" scale="1" transparent="1" zPosition="4"/>
+\t\t<widget name="text" position="125,35" size="790,300" font="Regular;28" foregroundColor="foreground" backgroundColor="steThemePrimary" transparent="1" zPosition="4"/>
+\t\t<widget name="list" position="35,355" size="890,125" conditional="list" enableWrapAround="1" font="Regular;28" itemHeight="50" scrollbarMode="showOnDemand" backgroundColor="steThemePrimary" transparent="1" zPosition="4"/>"""
+
 VERTICAL_EPG = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="steThemePrimary" zPosition="0"/>
 \t\t<widget source="Title" render="Label" position="45,25" size="1730,52" font="Regular;35" foregroundColor="secondFG" transparent="1"/>
 \t\t<widget name="bouquetlist" position="45,90" size="1730,700" backgroundColor="steThemePrimary" scrollbarMode="showNever" zPosition="20"/>
@@ -277,6 +283,8 @@ SCREENS = (
     ("PluginBrowserList", PLUGIN_LIST, "center,center", "1820,880", "Plugin Browser"),
     ("PluginBrowserGrid", PLUGIN_GRID, "center,center", "1820,880", "Plugin Browser"),
     ("PluginBrowser", PLUGIN_LIST, "center,center", "1820,880", "Plugin Browser"),
+    ("MessageBox", MESSAGE_BOX, "center,center", "960,520", "Message"),
+    ("MessageBoxModal", MESSAGE_BOX, "center,center", "960,520", "Message"),
     ("QuickMenu", QUICK_MENU, "center,center", "1820,880", "Quick Launch Menu"),
     ("EventView", EVENT_VIEW, "center,center", "1820,880", "Event View"),
     ("EventViewSimple", EVENT_SIMPLE, "center,center", "1820,760", "Event View"),
@@ -301,8 +309,30 @@ def patch_file(path):
 
     data = data.replace('render="PosterX"', 'render="CineViewPosterX"')
     data = data.replace("render='PosterX'", "render='CineViewPosterX'")
-    # OpenATV 8 MessageBox no longer exposes timerRunning; the legacy CineView applet
-    # crashed StartEnigma. Keep the old layout logic but make the capability check safe.
+    # OpenATV 8 removed several legacy ServiceInfo arguments. Leaving them in a
+    # widget raises during skin processing because ServiceInfo cannot resolve them.
+    unsupported_serviceinfo = (
+        "IsSDAndNotWidescreen",
+        "IsSDAndWidescreen",
+        "IsVideoAVC",
+        "IsVideoHEVC",
+        "IsVideoMPEG2",
+        "Provider",
+        "Reference",
+        "VideoSize",
+    )
+    for arg in unsupported_serviceinfo:
+        pat = re.compile(
+            r'<widget\\b(?:(?!</widget>).)*?<convert\\s+type=["\\\']ServiceInfo["\\\']>\\s*'
+            + re.escape(arg)
+            + r'\\s*</convert>(?:(?!</widget>).)*?</widget>',
+            re.S,
+        )
+        data = pat.sub("", data)
+
+    # OpenATV 8 MessageBox has no timerRunning attribute. MessageBox and
+    # MessageBoxModal are replaced below with the native OpenATV-style fixed
+    # widget contract, so no legacy CineView sizing applet is executed.
     data = data.replace("if self.timerRunning:", "if getattr(self, \"timerRunning\", False):")
 
     idx = data.rfind("</skin>")
