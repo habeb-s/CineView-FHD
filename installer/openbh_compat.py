@@ -225,12 +225,47 @@ BLUE_PANEL = """\t\t<eLabel position="0,0" size="1500,850" backgroundColor="steT
 \t\t<widget name="key_yellow" position="770,765" size="310,45" font="Regular;27" halign="center" valign="center" transparent="1" zPosition="4"/>
 \t\t<widget name="key_blue" position="1125,765" size="310,45" font="Regular;27" halign="center" valign="center" transparent="1" zPosition="4"/>"""
 
+
+FAST_PLUGIN_SETUP = """\t\t<eLabel position="0,0" size="1300,800" backgroundColor="steThemePrimary" zPosition="0"/>
+\t\t<eLabel text="OpenBH Fast Plugin Setup" position="40,25" size="1220,50" font="Regular;36" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1" zPosition="3"/>
+\t\t<eLabel position="30,88" size="1240,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
+\t\t<widget source="list" render="Listbox" position="40,110" size="1220,565" enableWrapAround="1" scrollbarMode="showOnDemand" foregroundColor="foreground" backgroundColor="steThemePrimary" transparent="1" zPosition="4">
+\t\t\t<convert type="TemplatedMultiContent">
+{"template": [
+MultiContentEntryText(pos = (120, 5), size = (1060, 36), font=0, text = 0),
+MultiContentEntryText(pos = (120, 41), size = (1060, 28), font=1, text = 1),
+MultiContentEntryPixmapAlphaTest(pos = (10, 15), size = (90, 50), png = 2, flags = BT_SCALE)
+],
+"fonts": [gFont("Regular", 30), gFont("Regular", 22)],
+"itemHeight": 80
+}
+\t\t\t</convert>
+\t\t</widget>
+\t\t<eLabel position="30,700" size="1240,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
+\t\t<eLabel position="455,720" size="390,55" backgroundColor="#00a00000" zPosition="2"/>
+\t\t<widget name="key_red" position="465,725" size="370,45" font="Regular;27" halign="center" valign="center" transparent="1" zPosition="4"/>"""
+
+GREEN_PANEL_SETUP = """\t\t<eLabel position="0,0" size="1200,560" backgroundColor="steThemePrimary" zPosition="0"/>
+\t\t<widget source="list" render="Listbox" position="35,35" size="1130,490" enableWrapAround="1" scrollbarMode="showOnDemand" foregroundColor="foreground" backgroundColor="steThemePrimary" transparent="1" zPosition="4">
+\t\t\t<convert type="TemplatedMultiContent">
+{"template": [
+MultiContentEntryText(pos = (95, 8), size = (990, 48), font=0, text = 0),
+MultiContentEntryPixmapAlphaTest(pos = (12, 10), size = (64, 48), png = 1, flags = BT_SCALE)
+],
+"fonts": [gFont("Regular", 29)],
+"itemHeight": 68
+}
+\t\t\t</convert>
+\t\t</widget>"""
+
 SCREENS = (
     ("ChoiceBox", CHOICEBOX, "center,center", "1100,800", "Select"),
     ("PluginBrowser", PLUGIN_BROWSER, "center,center", "1820,880", "Plugin Browser"),
     ("EventView", EVENT_VIEW, "center,center", "1820,880", "Event View"),
     ("DeliteGreenPanel", GREEN_PANEL, "center,center", "1500,850", "OpenBH Green Panel"),
     ("DeliteBluePanel", BLUE_PANEL, "center,center", "1500,850", "OpenBH Blue Panel"),
+    ("DeliteSetupFp", FAST_PLUGIN_SETUP, "center,center", "1300,800", "OpenBH Fast Plugin Setup"),
+    ("BhSetupGreen", GREEN_PANEL_SETUP, "center,center", "1200,560", "OpenBH Green Panel Setup"),
     ("EPGSelection", SINGLE_EPG, "center,center", "1820,880", "EPG Selection"),
     ("EPGSelectionMulti", MULTI_EPG, "center,center", "1820,880", "Multi EPG"),
     ("QuickEPG", QUICK_EPG, "0,660", "1920,420", "Quick EPG"),
