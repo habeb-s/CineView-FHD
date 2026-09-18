@@ -21,7 +21,7 @@ jobs:
           s=open(sys.argv[1],errors='ignore').read()
           for name in ['ChoiceBox','PluginBrowser','EPGSelection','EPGSelectionMulti','QuickEPG','GraphicalEPG','GraphicalEPGPIG','GraphicalInfoBarEPG']:
               print('\n###',name,'###')
-              ms=list(re.finditer(r'<screen\\b(?=[^>]*\\bname="'+re.escape(name)+r'")[^>]*>',s))
+              ms=list(re.finditer(r'<screen\b(?=[^>]*\bname="'+re.escape(name)+r'")[^>]*>',s))
               print('count=',len(ms))
               for m in ms:
                   e=s.find('</screen>',m.start())
