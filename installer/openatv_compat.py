@@ -31,56 +31,56 @@ def _screen(name, body, position="center,center", size="1820,880", title=""):
         name, position, size, t, body)
 
 
-PLUGIN_LIST = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="steThemePrimary" zPosition="0"/>
-\t\t<eLabel text="Plugins" position="45,24" size="1730,52" font="Regular;38" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1" zPosition="3"/>
-\t\t<eLabel position="35,88" size="1750,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
-\t\t<widget source="pluginList" render="Listbox" position="45,110" size="1730,590" conditional="pluginList" listOrientation="vertical" scrollbarMode="showOnDemand" foregroundColor="foreground" backgroundColor="steThemePrimary" foregroundColorSelected="selectedFG" backgroundColorSelected="selectedBG" transparent="1" zPosition="5">
+PLUGIN_LIST = """\t\t<eLabel position="0,0" size="1840,930" backgroundColor="steThemePrimary" zPosition="0"/>
+\t\t<eLabel text="Plugins" position="50,24" size="1740,58" font="Regular;44" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1" zPosition="3"/>
+\t\t<eLabel position="45,92" size="1750,3" backgroundColor="steThemePanelAlt" zPosition="2"/>
+\t\t<widget source="pluginList" render="Listbox" position="50,112" size="1740,660" conditional="pluginList" listOrientation="vertical" scrollbarMode="showOnDemand" foregroundColor="foreground" backgroundColor="steThemePrimary" foregroundColorSelected="selectedFG" backgroundColorSelected="selectedBG" transparent="1" zPosition="5">
 \t\t\t<convert type="TemplatedMultiContent">
 {"template": [
-MultiContentEntryPixmapAlphaBlend(pos=(12, 12), size=(120, 52), png=3, flags=BT_SCALE | BT_KEEP_ASPECT_RATIO | BT_HALIGN_CENTER | BT_VALIGN_CENTER),
-MultiContentEntryText(pos=(155, 5), size=(1515, 38), font=0, text=1),
-MultiContentEntryText(pos=(155, 43), size=(1515, 29), font=1, text=2)
+MultiContentEntryPixmapAlphaBlend(pos=(12, 12), size=(150, 72), png=3, flags=BT_SCALE | BT_KEEP_ASPECT_RATIO | BT_HALIGN_CENTER | BT_VALIGN_CENTER),
+MultiContentEntryText(pos=(185, 4), size=(1460, 47), font=0, text=1),
+MultiContentEntryText(pos=(185, 51), size=(1460, 34), font=1, text=2)
 ],
-"fonts": [gFont("Regular", 31), gFont("Regular", 22)],
-"itemHeight": 80
+"fonts": [gFont("Regular", 37), gFont("Regular", 25)],
+"itemHeight": 96
 }
 \t\t\t</convert>
 \t\t</widget>
-\t\t<widget name="quickselect" position="45,110" size="1730,590" font="Regular;120" foregroundColor="secondFG" halign="center" valign="center" transparent="1" zPosition="8"/>
-\t\t<widget name="description" position="55,715" size="1710,55" font="Regular;24" foregroundColor="grey" backgroundColor="steThemePrimary" transparent="1" zPosition="4"/>
-\t\t<eLabel position="35,785" size="1750,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
-\t\t<widget source="key_red" render="Label" position="55,805" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
-\t\t<widget source="key_green" render="Label" position="385,805" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
-\t\t<widget source="key_yellow" render="Label" position="715,805" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
-\t\t<widget source="key_blue" render="Label" position="1045,805" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
-\t\t<widget source="key_menu" render="Label" position="1390,805" size="170,45" font="Regular;23" halign="center" valign="center" foregroundColor="grey" transparent="1"/>
-\t\t<widget source="key_help" render="Label" position="1580,805" size="170,45" font="Regular;23" halign="center" valign="center" foregroundColor="grey" transparent="1"/>"""
+\t\t<widget name="quickselect" position="50,112" size="1740,660" font="Regular;150" foregroundColor="secondFG" halign="center" valign="center" transparent="1" zPosition="8"/>
+\t\t<widget name="description" position="60,785" size="1720,55" font="Regular;27" foregroundColor="grey" backgroundColor="steThemePrimary" transparent="1" zPosition="4"/>
+\t\t<eLabel position="45,855" size="1750,3" backgroundColor="steThemePanelAlt" zPosition="2"/>
+\t\t<widget source="key_red" render="Label" position="60,872" size="310,46" font="Regular;26" halign="center" valign="center" transparent="1"/>
+\t\t<widget source="key_green" render="Label" position="390,872" size="310,46" font="Regular;26" halign="center" valign="center" transparent="1"/>
+\t\t<widget source="key_yellow" render="Label" position="720,872" size="310,46" font="Regular;26" halign="center" valign="center" transparent="1"/>
+\t\t<widget source="key_blue" render="Label" position="1050,872" size="310,46" font="Regular;26" halign="center" valign="center" transparent="1"/>
+\t\t<widget source="key_menu" render="Label" position="1395,872" size="170,46" font="Regular;24" halign="center" valign="center" foregroundColor="grey" transparent="1"/>
+\t\t<widget source="key_help" render="Label" position="1585,872" size="170,46" font="Regular;24" halign="center" valign="center" foregroundColor="grey" transparent="1"/>"""
 
-PLUGIN_GRID = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="steThemePrimary" zPosition="0"/>
-\t\t<eLabel text="Plugins" position="45,24" size="1730,52" font="Regular;38" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1" zPosition="3"/>
-\t\t<eLabel position="35,88" size="1750,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
-\t\t<widget source="pluginGrid" render="Listbox" position="45,110" size="1730,590" conditional="pluginGrid" listOrientation="grid" scrollbarMode="showOnDemand" foregroundColor="foreground" backgroundColor="steThemePrimary" foregroundColorSelected="selectedFG" backgroundColorSelected="selectedBG" transparent="1" zPosition="5">
+PLUGIN_GRID = """\t\t<eLabel position="0,0" size="1840,930" backgroundColor="steThemePrimary" zPosition="0"/>
+\t\t<eLabel text="Plugins" position="50,24" size="1740,58" font="Regular;44" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1" zPosition="3"/>
+\t\t<eLabel position="45,92" size="1750,3" backgroundColor="steThemePanelAlt" zPosition="2"/>
+\t\t<widget source="pluginGrid" render="Listbox" position="50,112" size="1740,660" conditional="pluginGrid" listOrientation="grid" scrollbarMode="showOnDemand" foregroundColor="foreground" backgroundColor="steThemePrimary" foregroundColorSelected="selectedFG" backgroundColorSelected="selectedBG" transparent="1" zPosition="5">
 \t\t\t<convert type="TemplatedMultiContent">
 {"template": [
-MultiContentEntryText(pos=(4, 4), size=(326, 156), font=0, backcolor=0x0016161a),
-MultiContentEntryPixmapAlphaBlend(pos=(105, 18), size=(120, 52), png=3, flags=BT_SCALE | BT_KEEP_ASPECT_RATIO | BT_HALIGN_CENTER | BT_VALIGN_CENTER),
-MultiContentEntryText(pos=(12, 82), size=(306, 68), font=0, flags=RT_HALIGN_CENTER | RT_VALIGN_CENTER | RT_WRAP, text=1)
+MultiContentEntryText(pos=(4, 4), size=(405, 196), font=0, backcolor=0x0016161a),
+MultiContentEntryPixmapAlphaBlend(pos=(123, 18), size=(165, 82), png=3, flags=BT_SCALE | BT_KEEP_ASPECT_RATIO | BT_HALIGN_CENTER | BT_VALIGN_CENTER),
+MultiContentEntryText(pos=(12, 108), size=(385, 82), font=0, flags=RT_HALIGN_CENTER | RT_VALIGN_CENTER | RT_WRAP, text=1)
 ],
-"fonts": [gFont("Regular", 25)],
-"itemWidth": 334,
-"itemHeight": 164
+"fonts": [gFont("Regular", 30)],
+"itemWidth": 415,
+"itemHeight": 205
 }
 \t\t\t</convert>
 \t\t</widget>
-\t\t<widget name="quickselect" position="45,110" size="1730,590" font="Regular;120" foregroundColor="secondFG" halign="center" valign="center" transparent="1" zPosition="8"/>
-\t\t<widget name="description" position="55,715" size="1710,55" font="Regular;24" foregroundColor="grey" backgroundColor="steThemePrimary" transparent="1" zPosition="4"/>
-\t\t<eLabel position="35,785" size="1750,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
-\t\t<widget source="key_red" render="Label" position="55,805" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
-\t\t<widget source="key_green" render="Label" position="385,805" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
-\t\t<widget source="key_yellow" render="Label" position="715,805" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
-\t\t<widget source="key_blue" render="Label" position="1045,805" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
-\t\t<widget source="key_menu" render="Label" position="1390,805" size="170,45" font="Regular;23" halign="center" valign="center" foregroundColor="grey" transparent="1"/>
-\t\t<widget source="key_help" render="Label" position="1580,805" size="170,45" font="Regular;23" halign="center" valign="center" foregroundColor="grey" transparent="1"/>"""
+\t\t<widget name="quickselect" position="50,112" size="1740,660" font="Regular;150" foregroundColor="secondFG" halign="center" valign="center" transparent="1" zPosition="8"/>
+\t\t<widget name="description" position="60,785" size="1720,55" font="Regular;27" foregroundColor="grey" backgroundColor="steThemePrimary" transparent="1" zPosition="4"/>
+\t\t<eLabel position="45,855" size="1750,3" backgroundColor="steThemePanelAlt" zPosition="2"/>
+\t\t<widget source="key_red" render="Label" position="60,872" size="310,46" font="Regular;26" halign="center" valign="center" transparent="1"/>
+\t\t<widget source="key_green" render="Label" position="390,872" size="310,46" font="Regular;26" halign="center" valign="center" transparent="1"/>
+\t\t<widget source="key_yellow" render="Label" position="720,872" size="310,46" font="Regular;26" halign="center" valign="center" transparent="1"/>
+\t\t<widget source="key_blue" render="Label" position="1050,872" size="310,46" font="Regular;26" halign="center" valign="center" transparent="1"/>
+\t\t<widget source="key_menu" render="Label" position="1395,872" size="170,46" font="Regular;24" halign="center" valign="center" foregroundColor="grey" transparent="1"/>
+\t\t<widget source="key_help" render="Label" position="1585,872" size="170,46" font="Regular;24" halign="center" valign="center" foregroundColor="grey" transparent="1"/>"""
 
 EVENT_VIEW = """\t\t<eLabel position="0,0" size="1840,930" backgroundColor="steThemePrimary" zPosition="0"/>
 \t\t<widget name="channel" position="50,28" size="1280,48" font="Regular;31" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1" zPosition="4"/>
@@ -220,38 +220,30 @@ INFOBAR_GRID = """\t\t<eLabel position="0,0" size="1920,330" backgroundColor="st
 \t\t<widget source="key_yellow" render="Label" position="925,278" size="400,40" font="Regular;23" halign="center" transparent="1"/>
 \t\t<widget source="key_blue" render="Label" position="1360,278" size="400,40" font="Regular;23" halign="center" transparent="1"/>"""
 
-QUICK_MENU = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="steThemePrimary" zPosition="0"/>
-\t\t<widget source="mainlist" render="Listbox" position="45,90" size="610,650" backgroundColor="steThemePrimary" transparent="1" itemHeight="86" zPosition="5">
-\t\t\t<templates>
-\t\t\t\t<template name="Default" fonts="Regular;29,Regular;20" itemWidth="610" itemHeight="86">
-\t\t\t\t\t<mode name="default">
-\t\t\t\t\t\t<pixmap index="2" position="10,11" size="64,64" alpha="blend" scale="centerScaled"/>
-\t\t\t\t\t\t<text index="0" position="90,4" size="500,43" font="0" verticalAlignment="center"/>
-\t\t\t\t\t\t<text index="1" position="105,47" size="485,30" font="1" verticalAlignment="center"/>
-\t\t\t\t\t</mode>
-\t\t\t\t</template>
-\t\t\t</templates>
+QUICK_MENU = """\t\t<eLabel position="0,0" size="1840,930" backgroundColor="steThemePrimary" zPosition="0"/>
+\t\t<eLabel text="Quick Menu" position="50,24" size="1740,58" font="Regular;44" foregroundColor="secondFG" transparent="1"/>
+\t\t<widget source="mainlist" render="Listbox" position="50,105" size="625,680" backgroundColor="steThemePrimary" transparent="1" itemHeight="92" zPosition="5">
+\t\t\t<templates><template name="Default" fonts="Regular;31,Regular;22" itemWidth="625" itemHeight="92"><mode name="default">
+\t\t\t\t<pixmap index="2" position="10,10" size="70,70" alpha="blend" scale="centerScaled"/>
+\t\t\t\t<text index="0" position="95,3" size="515,46" font="0" verticalAlignment="center"/>
+\t\t\t\t<text index="1" position="110,49" size="500,34" font="1" verticalAlignment="center"/>
+\t\t\t</mode></template></templates>
 \t\t</widget>
-\t\t<eLabel position="680,88" size="2,655" backgroundColor="steThemePanelAlt" zPosition="2"/>
-\t\t<widget source="sublist" render="Listbox" position="710,90" size="610,650" backgroundColor="steThemePrimary" transparent="1" itemHeight="86" zPosition="5">
-\t\t\t<templates>
-\t\t\t\t<template name="Default" fonts="Regular;29,Regular;20" itemWidth="610" itemHeight="86">
-\t\t\t\t\t<mode name="default">
-\t\t\t\t\t\t<text index="0" position="10,4" size="590,43" font="0" verticalAlignment="center"/>
-\t\t\t\t\t\t<text index="1" position="25,47" size="575,30" font="1" verticalAlignment="center"/>
-\t\t\t\t\t</mode>
-\t\t\t\t</template>
-\t\t\t</templates>
+\t\t<eLabel position="695,103" size="3,682" backgroundColor="steThemePanelAlt" zPosition="2"/>
+\t\t<widget source="sublist" render="Listbox" position="725,105" size="625,680" backgroundColor="steThemePrimary" transparent="1" itemHeight="92" zPosition="5">
+\t\t\t<templates><template name="Default" fonts="Regular;31,Regular;22" itemWidth="625" itemHeight="92"><mode name="default">
+\t\t\t\t<text index="0" position="10,3" size="600,46" font="0" verticalAlignment="center"/>
+\t\t\t\t<text index="1" position="25,49" size="585,34" font="1" verticalAlignment="center"/>
+\t\t\t</mode></template></templates>
 \t\t</widget>
-\t\t<eLabel position="1360,92" size="400,225" backgroundColor="black" zPosition="3"/>
-\t\t<widget source="session.VideoPicture" render="Pig" position="1360,92" size="400,225" backgroundColor="black" zPosition="4"/>
-\t\t<widget name="description" position="1360,345" size="400,395" backgroundColor="steThemePrimary" transparent="1" font="Regular;24" foregroundColor="foreground" halign="center" valign="center" zPosition="4"/>
-\t\t<eLabel position="35,785" size="1750,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
-\t\t<widget source="key_red" render="Label" position="55,805" size="360,45" backgroundColor="key_red" font="Regular;24" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>
-\t\t<widget source="key_green" render="Label" position="435,805" size="360,45" backgroundColor="key_green" font="Regular;24" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>
-\t\t<widget source="key_yellow" render="Label" position="815,805" size="360,45" backgroundColor="key_yellow" font="Regular;24" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>
-\t\t<widget source="key_help" render="Label" position="1480,805" size="280,45" backgroundColor="key_back" font="Regular;24" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>"""
-
+\t\t<eLabel position="1390,110" size="390,220" backgroundColor="black" zPosition="3"/>
+\t\t<widget source="session.VideoPicture" render="Pig" position="1390,110" size="390,220" backgroundColor="black" zPosition="4"/>
+\t\t<widget name="description" position="1380,360" size="410,425" backgroundColor="steThemePrimary" transparent="1" font="Regular;26" foregroundColor="foreground" halign="center" valign="center" zPosition="4"/>
+\t\t<eLabel position="45,835" size="1750,3" backgroundColor="steThemePanelAlt" zPosition="2"/>
+\t\t<widget source="key_red" render="Label" position="60,855" size="360,48" backgroundColor="key_red" font="Regular;25" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>
+\t\t<widget source="key_green" render="Label" position="440,855" size="360,48" backgroundColor="key_green" font="Regular;25" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>
+\t\t<widget source="key_yellow" render="Label" position="820,855" size="360,48" backgroundColor="key_yellow" font="Regular;25" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>
+\t\t<widget source="key_help" render="Label" position="1500,855" size="280,48" backgroundColor="key_back" font="Regular;25" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>"""
 
 MESSAGE_BOX = """\t\t<eLabel position="0,0" size="960,520" backgroundColor="steThemePrimary" zPosition="0"/>
 \t\t<widget name="icon" pixmaps="icons/input_question.png,icons/input_info.png,icons/input_warning.png,icons/input_error.png,icons/input_message.png" position="35,35" size="64,64" alphatest="blend" conditional="icon" scale="1" transparent="1" zPosition="4"/>
@@ -304,12 +296,12 @@ INFOBAR_FHD = """\t\t<eLabel position="0,0" size="1920,320" backgroundColor="ste
 SCREENS = (
     ("InfoBar", INFOBAR_FHD, "0,760", "1920,320", ""),
     ("InfoBarLite", INFOBAR_FHD, "0,760", "1920,320", ""),
-    ("PluginBrowserList", PLUGIN_LIST, "center,center", "1820,880", "Plugin Browser"),
-    ("PluginBrowserGrid", PLUGIN_GRID, "center,center", "1820,880", "Plugin Browser"),
-    ("PluginBrowser", PLUGIN_LIST, "center,center", "1820,880", "Plugin Browser"),
+    ("PluginBrowserList", PLUGIN_LIST, "center,center", "1840,930", "Plugin Browser"),
+    ("PluginBrowserGrid", PLUGIN_GRID, "center,center", "1840,930", "Plugin Browser"),
+    ("PluginBrowser", PLUGIN_LIST, "center,center", "1840,930", "Plugin Browser"),
     ("MessageBox", MESSAGE_BOX, "center,center", "960,520", "Message"),
     ("MessageBoxModal", MESSAGE_BOX, "center,center", "960,520", "Message"),
-    ("QuickMenu", QUICK_MENU, "center,center", "1820,880", "Quick Launch Menu"),
+    ("QuickMenu", QUICK_MENU, "center,center", "1840,930", "Quick Launch Menu"),
     ("EventView", EVENT_VIEW, "center,center", "1820,880", "Event View"),
     ("EventViewSimple", EVENT_SIMPLE, "center,center", "1820,760", "Event View"),
     ("InfoBarEventView", INFOBAR_EVENT_VIEW, "0,0", "1920,360", "Event View"),
