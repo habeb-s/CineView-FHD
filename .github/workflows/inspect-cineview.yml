@@ -14,12 +14,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          sudo sh -c 'cat > /etc/image-version <<EOF
-Creator=OpenViX
-Version=6.9
-Build=002
-distro=openvix
-EOF'
+          printf '%s\n' 'Creator=OpenViX' 'Version=6.9' 'Build=002' 'distro=openvix' | sudo tee /etc/image-version >/dev/null
           sudo /bin/sh ./cineview-smart-install.sh --dry-run | tee /tmp/cineview-dry.log
           grep -F "OpenViX detected -> applying stable native PluginBrowser list binding" /tmp/cineview-dry.log
           grep -F "OpenViX PluginBrowser switched to native classic list mode" /tmp/cineview-dry.log
