@@ -1,37 +1,113 @@
-name: Probe no-key movie poster sources
+name: Validate final photographed OpenBH repair
 on:
   push:
     paths:
       - '.github/workflows/inspect-cineview.yml'
 jobs:
-  probe:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Probe IMDb suggestion with photographed EPG title
+
+      - name: Real package-data install and final skin validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo mkdir -p /etc/enigma2 /usr/local/bin
+          printf '%s\n' 'Creator=OpenBH' 'Version=6.0' 'Build=001' 'distro=openbh' | sudo tee /etc/image-version >/dev/null
+          sudo tee /etc/enigma2/settings >/dev/null <<'EOF'
+          config.plugins.cineview.theme=green
+          config.plugins.cineview.poster_infobar=True
+          config.plugins.cineview.poster_second=True
+          config.plugins.cineview.poster_channels=True
+          config.plugins.cineview.weatherprovider=oa
+          config.plugins.cineview.timeformat=24
+          EOF
+
+          cat > /tmp/opkg <<'EOF'
+          #!/bin/sh
+          pkg=""
+          for a in "$@"; do case "$a" in /tmp/cineview-fhd-*.ipk) pkg="$a";; esac; done
+          [ -n "$pkg" ] || exit 0
+          if echo " $* " | grep -q " --force-reinstall "; then
+            rm -rf /tmp/ipkx && mkdir -p /tmp/ipkx
+            cd /tmp/ipkx || exit 1
+            ar p "$pkg" data.tar.gz > data.tar.gz || exit 1
+            sudo tar -xzf data.tar.gz -C / || exit 1
+            touch /tmp/data-installed
+            exit 0
+          fi
+          exit 1
+          EOF
+          chmod +x /tmp/opkg
+          sudo cp /tmp/opkg /usr/local/bin/opkg
+
+          sudo env PATH="/usr/local/bin:/usr/bin:/bin" sh cineview-smart-install.sh --no-restart >/tmp/install.log 2>&1
+          test -f /tmp/data-installed
+          test -f /usr/share/enigma2/CineView_FHD/skin.xml
+          test -f /usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.py
+
+          python3 - <<'PY'
+          import re, xml.etree.ElementTree as ET
+          p='/usr/share/enigma2/CineView_FHD/skin.xml'
+          s=open(p,errors='ignore').read()
+          ET.parse(p)
+          def block(name):
+              ms=list(re.finditer(r'<screen\b(?=[^>]*\bname=["\']'+re.escape(name)+r'["\'])[^>]*>',s))
+              assert len(ms)==1,(name,len(ms))
+              e=s.find('</screen>',ms[0].start())
+              return s[ms[0].start():e+9]
+
+          ev=block('EventView')
+          gp=block('DeliteGreenPanel')
+          bp=block('DeliteBluePanel')
+
+          for x in ('name="channel"','name="epg_eventname"','name="datetime"','name="duration"','name="FullDescription"','name="key_green"','name="key_yellow"','name="key_blue"','render="CineViewPosterX"'):
+              assert x in ev,('EventView',x)
+          for x in ('source="list"','render="Listbox"','name="key_red"','name="key_green"','name="key_yellow"','name="key_blue"'):
+              assert x in gp,('GreenPanel',x)
+          for x in ('name="list"','name="lab1"','name="lab2"','name="activecam"','name="Ilab1"','name="Ilab2"','name="Ilab3"','name="Ilab4"','name="Ecmtext"'):
+              assert x in bp,('BluePanel',x)
+
+          assert 'render="PosterX"' not in s
+          assert s.count('render="CineViewPosterX"') >= 10
+          print('FINAL_EVENTVIEW_OK')
+          print('FINAL_GREEN_PANEL_OK')
+          print('FINAL_BLUE_PANEL_OK')
+          print('FINAL_CINEVIEWPOSTERX_REFS',s.count('render="CineViewPosterX"'))
+          PY
+
+          grep -q 'Renderer/CineViewPosterX' /usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/activate.sh
+          grep -q 'Renderer/CineViewPosterX' /usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/plugin.py
+          grep -q 'API_IMDB' /usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.py
+          grep -q '_imdb_artwork' /usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.py
+          echo 'FINAL_ACTIVATION_RENDERER_OK'
+
+      - name: Exact photographed movie poster lookup and download
         shell: bash
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import json, urllib.parse, urllib.request, unicodedata, re
-          titles=[
-              'Więzień labiryntu: Lek na śmierć',
-              'Więzień labiryntu: Lęk na śmierć',
-              'Więzień labiryntu'
-          ]
-          for title in titles:
-              q=urllib.parse.quote(title)
-              urls=[
-                  'https://v3.sg.media-imdb.com/suggestion/x/%s.json'%q,
-                  'https://v2.sg.media-imdb.com/suggestion/x/%s.json'%q,
-              ]
-              for u in urls:
-                  try:
-                      req=urllib.request.Request(u,headers={'User-Agent':'Mozilla/5.0 CineView-FHD'})
-                      data=json.loads(urllib.request.urlopen(req,timeout=12).read().decode('utf-8'))
-                      print('TITLE',title,'URL',u,'COUNT',len(data.get('d') or []))
-                      for row in (data.get('d') or [])[:5]:
-                          print('ROW',row.get('id'),row.get('l'),(row.get('i') or {}).get('imageUrl'))
-                  except Exception as e:
-                      print('ERR',u,repr(e))
+          import json, urllib.parse, urllib.request
+          title='Więzień labiryntu: Lęk na śmierć'
+          q=urllib.parse.quote(title)
+          u='https://v3.sg.media-imdb.com/suggestion/x/%s.json'%q
+          req=urllib.request.Request(u,headers={'User-Agent':'Mozilla/5.0 CineView-FHD'})
+          data=json.loads(urllib.request.urlopen(req,timeout=12).read().decode('utf-8'))
+          rows=[r for r in (data.get('d') or []) if str(r.get('id') or '').startswith('tt') and (r.get('i') or {}).get('imageUrl')]
+          if not rows:
+              raise SystemExit('IMDB_MOVIE_LOOKUP_FAILED')
+          row=rows[0]
+          print('LOOKUP_RESULT',row.get('id'),row.get('l'))
+          url=row['i']['imageUrl']
+          req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0 CineView-FHD'})
+          body=urllib.request.urlopen(req,timeout=15).read()
+          if len(body) < 1500:
+              raise SystemExit('POSTER_DOWNLOAD_TOO_SMALL')
+          open('/tmp/photographed-movie.jpg','wb').write(body)
+          print('EXACT_MOVIE_POSTER_DOWNLOAD_OK bytes=%d'%len(body))
           PY
+
+          file /tmp/photographed-movie.jpg
+          test -s /tmp/photographed-movie.jpg
+          echo 'FINAL_PHOTOGRAPHED_OPENBH_REPAIR_VALIDATED'
