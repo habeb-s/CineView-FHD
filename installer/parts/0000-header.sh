@@ -47,7 +47,7 @@ ok "Python: $PYVER"
 ok "Architecture: $ARCH"
 echo
 printf "%s--- Dependency Preflight ---%s\n" "$BOLD" "$RESET"
-if havepy /usr/lib/enigma2/python/Components/Renderer/PosterX; then ok "PosterX: installed"; else missing "PosterX: not installed -> will try to install from this image feed"; fi
+if havepy /usr/lib/enigma2/python/Components/Renderer/PosterX; then ok "PosterX: installed"; else missing "PosterX: not installed -> CineView built-in PosterX will be installed"; fi
 if havepy /usr/lib/enigma2/python/Components/Sources/OAWeather; then ok "OAWeather: installed"; elif havepy /usr/lib/enigma2/python/Components/Sources/MSNWeather; then ok "WeatherPlugin: installed"; else missing "Weather provider: not installed -> will try OAWeather / WeatherPlugin"; fi
 if command -v bitrate >/dev/null 2>&1; then ok "Bitrate: installed"; else missing "Bitrate: not installed -> will try to install"; fi
 if "$PY" -c 'import requests' >/dev/null 2>&1; then ok "Python requests: installed"; else missing "Python requests: not installed -> will try to install"; fi
@@ -171,6 +171,19 @@ PY
     PB_PATCHED=$?
     [ "$PB_PATCHED" = 0 ] || fail "OpenViX PluginBrowser compatibility patch failed"
     ok "OpenViX PluginBrowser switched to native classic list mode"
+    ;;
+esac
+
+case "$LOW" in
+  *openbh*|*openblackhole*)
+    adapt "OpenBH detected -> applying dedicated CineView FHD plugin/EPG compatibility"
+    "$PY" "$PLUGSTAGE/openbh_compat.py" "$SKINSTAGE" >/dev/null 2>&1 || fail "OpenBH screen compatibility patch failed"
+    ok "OpenBH PluginBrowser / Extensions / EPG layouts adapted"
+    if [ -f "$TMP/stage/usr/lib/enigma2/python/Components/Renderer/PosterX.py" ]; then
+      ok "CineView native PosterX is embedded for OpenBH"
+    else
+      fail "CineView native PosterX missing from payload"
+    fi
     ;;
 esac
 
