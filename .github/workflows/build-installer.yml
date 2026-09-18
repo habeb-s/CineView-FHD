@@ -4,6 +4,7 @@ on:
     paths:
       - 'installer/parts/**'
       - 'installer/CineViewPosterX.py'
+      - 'installer/compat.py'
       - 'installer/openbh_compat.py'
       - 'installer/openatv_compat.py'
 permissions:
@@ -23,9 +24,11 @@ jobs:
           tar -xzf /tmp/cineview-payload-original.tar.gz -C /tmp/cvstage
           mkdir -p /tmp/cvstage/usr/lib/enigma2/python/Components/Renderer
           cp -f installer/CineViewPosterX.py /tmp/cvstage/usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.py
+          cp -f installer/compat.py /tmp/cvstage/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/compat.py
           cp -f installer/openbh_compat.py /tmp/cvstage/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openbh_compat.py
           cp -f installer/openatv_compat.py /tmp/cvstage/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openatv_compat.py
           python3 -m py_compile /tmp/cvstage/usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.py
+          python3 -m py_compile /tmp/cvstage/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/compat.py
           python3 -m py_compile /tmp/cvstage/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openbh_compat.py
           python3 -m py_compile /tmp/cvstage/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openatv_compat.py
           rm -rf /tmp/cvstage/usr/lib/enigma2/python/Components/Renderer/__pycache__
@@ -74,11 +77,13 @@ jobs:
           tail -n +"$LINE" "$OUT" | base64 -d > /tmp/cineview-payload-check.tar.gz
           tar -tzf /tmp/cineview-payload-check.tar.gz >/dev/null
           tar -xOf /tmp/cineview-payload-check.tar.gz ./usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.py > /tmp/check-CineViewPosterX.py
+          tar -xOf /tmp/cineview-payload-check.tar.gz ./usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/compat.py > /tmp/check-compat.py
           tar -xOf /tmp/cineview-payload-check.tar.gz ./usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openbh_compat.py > /tmp/check-openbh_compat.py
           tar -xOf /tmp/cineview-payload-check.tar.gz ./usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openatv_compat.py > /tmp/check-openatv_compat.py
           tar -xOf /tmp/cineview-payload-check.tar.gz ./usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/activate.sh > /tmp/check-activate.sh
           tar -xOf /tmp/cineview-payload-check.tar.gz ./usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/plugin.py > /tmp/check-plugin.py
           grep -q 'class CineViewPosterX' /tmp/check-CineViewPosterX.py
+          grep -q "image_name != 'openatv'" /tmp/check-compat.py
           grep -q 'DeliteGreenPanel' /tmp/check-openbh_compat.py
           grep -q 'DeliteSetupFp' /tmp/check-openbh_compat.py
           grep -q 'BT_SCALE' /tmp/check-openbh_compat.py
