@@ -75,14 +75,12 @@ jobs:
           chmod +x /tmp/opkg
           sudo cp /tmp/opkg /usr/local/bin/opkg
 
-          grep -F '46bd768c02818e47e7cd2126a265a5644d100023' install.sh
-          cp install.sh /tmp/cineview-openatv-public.sh
-          sed -i 's/--restart/--no-restart/g' /tmp/cineview-openatv-public.sh
-          chmod +x /tmp/cineview-openatv-public.sh
-          sudo env PATH="/usr/local/bin:/usr/bin:/bin" sh /tmp/cineview-openatv-public.sh 2>&1 | tee /tmp/openatv-install.log
+          grep -F 'OpenATV 8 installation is paused until receiver-safe validation is approved.' install.sh
+          cp cineview-smart-install.sh /tmp/cineview-openatv-candidate.sh
+          chmod +x /tmp/cineview-openatv-candidate.sh
+          sudo env PATH="/usr/local/bin:/usr/bin:/bin" sh /tmp/cineview-openatv-candidate.sh --no-restart 2>&1 | tee /tmp/openatv-install.log
 
           test -f /tmp/openatv-data-installed
-          grep -F 'OpenATV 8 detected -> dedicated live-verified OpenATV 8 screen contracts selected.' /tmp/openatv-install.log
           grep -F 'OpenATV detected' /tmp/openatv-install.log
           grep -F 'dedicated CineView FHD OpenATV screen contracts' /tmp/openatv-install.log
           grep -F 'OpenATV PluginBrowser list/grid, EventView, SecondInfoBar and EPG layouts adapted' /tmp/openatv-install.log
@@ -113,18 +111,28 @@ jobs:
           pb=one('PluginBrowser')
           pbl=one('PluginBrowserList')
           pbg=one('PluginBrowserGrid')
-          assert 'source="pluginList"' in pb
+          assert 'source="pluginList"' in pb and 'source="pluginGrid"' in pb
+          assert 'conditional="pluginList"' in pb and 'conditional="pluginGrid"' in pb
           assert 'source="pluginList"' in pbl
           assert 'source="pluginGrid"' in pbg
           assert 'listOrientation="grid"' in pbg
           assert 'source="list"' not in pb
           assert 'source="list"' not in pbl
-          assert 'BT_SCALE' in pbl and 'BT_SCALE' in pbg
+          assert 'BT_SCALE' in pb and 'BT_SCALE' in pbl and 'BT_SCALE' in pbg
+          assert 'BT_KEEP_ASPECT_RATIO' not in pb+pbl+pbg
 
           ev=one('EventView')
           evs=one('EventViewSimple')
           iev=one('InfoBarEventView')
-          for block in (ev,evs,iev):
+          # EventView is shared by EventViewEPGSelect and EventViewMovieEvent.
+          # Only use components common to both to avoid a skin crash.
+          for x in ('name="epg_description"','name="datetime"','name="duration"','name="channel"',
+                    'source="key_red"','source="key_green"','source="key_yellow"','source="key_blue"'):
+              assert x in ev,('EventView',x)
+          assert 'name="FullDescription"' not in ev
+          assert 'source="Event"' not in ev
+          assert 'name="red"' not in ev and 'name="green"' not in ev
+          for block in (evs,iev):
               assert 'name="FullDescription"' in block
               assert 'render="CineViewPosterX"' in block
 
@@ -148,7 +156,7 @@ jobs:
           assert 'name="timeline_text"' in ibgraph
 
           assert 'render="PosterX"' not in s
-          assert s.count('render="CineViewPosterX"') >= 8
+          assert s.count('render="CineViewPosterX"') >= 7
           assert '<screen name="DeliteGreenPanel"' not in s
           print('OPENATV_ACTIVE_XML_OK')
           print('OPENATV_CINEVIEWPOSTERX_REFS',s.count('render="CineViewPosterX"'))
@@ -157,3 +165,47 @@ jobs:
           grep -F 'config.skin.primary_skin=CineView_FHD/skin.xml' /etc/enigma2/settings
           grep -F -- '--force-reinstall' /tmp/opkg-calls.log
           echo OPENATV_INSTALLER_END_TO_END_PASS
+
+      - name: Validate against pinned OpenATV 8 upstream screen contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          SHA=e041845ea5feb7f0636568ef408004992ef75ca2
+          BASE="https://raw.githubusercontent.com/openatv/enigma2/$SHA/lib/python/Screens"
+          curl -fsSL "$BASE/PluginBrowser.py" -o /tmp/atv-PluginBrowser.py
+          curl -fsSL "$BASE/EventView.py" -o /tmp/atv-EventView.py
+          curl -fsSL "$BASE/InfoBarGenerics.py" -o /tmp/atv-InfoBarGenerics.py
+          curl -fsSL "$BASE/EpgSelection.py" -o /tmp/atv-EpgSelection.py
+          python3 - <<'PY'
+          from pathlib import Path
+          pb=Path('/tmp/atv-PluginBrowser.py').read_text()
+          ev=Path('/tmp/atv-EventView.py').read_text()
+          ib=Path('/tmp/atv-InfoBarGenerics.py').read_text()
+          epg=Path('/tmp/atv-EpgSelection.py').read_text()
+
+          assert 'mandatoryWidgets=[self.layout]' in pb
+          assert 'self.skinName = ["PluginBrowserList" if config.usage.pluginListLayout.value == PLUGIN_LIST else "PluginBrowserGrid", "PluginBrowser"]' in pb
+          assert 'source="pluginList"' in pb and 'source="pluginGrid"' in pb
+          assert 'flags=BT_SCALE' in pb
+
+          assert 'class EventViewEPGSelect' in ev
+          assert 'self.skinName = ["EventView"]' in ev
+          assert 'class EventViewMovieEvent' in ev
+          movie=ev.split('class EventViewMovieEvent',1)[1].split('def showEventViewCallback',1)[0]
+          assert 'self.skinName = "EventView"' in movie
+          assert 'self["epg_description"]' in movie
+          assert 'self["FullDescription"]' not in movie
+          assert 'self["Event"]' not in movie
+
+          assert 'class SecondInfoBar' in ib
+          second=ib.split('class SecondInfoBar',1)[1].split('class InfoBarShowHide',1)[0]
+          for x in ('self["epg_description"]','self["FullDescription"]','self["channel"]',
+                    'self["key_red"]','self["key_green"]','self["key_yellow"]','self["key_blue"]'):
+              assert x in second,x
+
+          for x in ('self.skinName = "QuickEPG"','self.skinName = "GraphicalEPG"',
+                    'self.skinName = "GraphicalEPGPIG"','self.skinName = "GraphicalInfoBarEPG"',
+                    'self.skinName = "EPGSelectionMulti"'):
+              assert x in epg,x
+          print('OPENATV_UPSTREAM_CONTRACTS_OK')
+          PY
