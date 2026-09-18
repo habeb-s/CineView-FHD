@@ -48,4 +48,4 @@ jobs:
           grep -F -- '--force-reinstall' /tmp/opkg-calls.log
           grep -F '[DONE] CineView FHD 2.0 installation complete' /tmp/install.log
           grep -F '[DONE] Installer file removed.' /tmp/install.log
-          echo 'REAL REINSTALL PATH PASSED'
+          echo 'REAL OPENBH REINSTALL PATH PASSED'
