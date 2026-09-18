@@ -13,7 +13,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          grep -F '88b2fc513a2aef92b0dd8030d8bdf9bf7cf34f05' install.sh
+          PIN=$(sed -n 's|^RAW="https://raw.githubusercontent.com/habeb-s/CineView-FHD/\([0-9a-f]\{40\}\)"|\1|p' install.sh)
+          test -n "$PIN"
+          echo "BOOTSTRAP_PIN=$PIN"
 
           sudo mkdir -p /etc/enigma2 /usr/local/bin
           printf '%s\n' 'Creator=OpenBH' 'Version=6.0' 'Build=001' 'distro=openbh' | sudo tee /etc/image-version >/dev/null
@@ -74,6 +76,8 @@ jobs:
           ev=one('EventView')
           gp=one('DeliteGreenPanel')
           bp=one('DeliteBluePanel')
+          fp=one('DeliteSetupFp')
+          gs=one('BhSetupGreen')
 
           required_ev=('name="channel"','name="epg_eventname"','name="datetime"','name="duration"','name="FullDescription"','name="key_green"','name="key_yellow"','name="key_blue"','render="CineViewPosterX"')
           required_gp=('source="list"','render="Listbox"','name="key_red"','name="key_green"','name="key_yellow"','name="key_blue"')
@@ -81,12 +85,17 @@ jobs:
           for x in required_ev: assert x in ev,('EventView',x)
           for x in required_gp: assert x in gp,('GreenPanel',x)
           for x in required_bp: assert x in bp,('BluePanel',x)
+          for x in ('BT_SCALE','png = 2','itemHeight": 80'): assert x in fp,('FastPluginSetup',x)
+          for x in ('BT_SCALE','png = 1','itemHeight": 68'): assert x in gs,('GreenPanelSetup',x)
+          assert 'BT_SCALE' in gp
 
           assert 'render="PosterX"' not in s
           assert s.count('render="CineViewPosterX"') >= 10
           print('PUBLIC_FINAL_EVENTVIEW_OK')
           print('PUBLIC_FINAL_GREEN_PANEL_OK')
           print('PUBLIC_FINAL_BLUE_PANEL_OK')
+          print('PUBLIC_FAST_PLUGIN_ICONS_SCALE_OK')
+          print('PUBLIC_GREEN_SETUP_ICONS_SCALE_OK')
           print('PUBLIC_FINAL_CINEVIEWPOSTERX_REFS',s.count('render="CineViewPosterX"'))
           PY
           grep -q 'Renderer/CineViewPosterX' /usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/activate.sh
