@@ -127,54 +127,54 @@ SECOND_INFO = """\t\t<eLabel position="0,0" size="1920,520" backgroundColor="ste
 \t\t<widget source="key_yellow" render="Label" position="1360,452" size="210,42" font="Regular;24" halign="center" transparent="1"/>
 \t\t<widget source="key_blue" render="Label" position="1590,452" size="210,42" font="Regular;24" halign="center" transparent="1"/>"""
 
-SINGLE_EPG = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="steThemePrimary" zPosition="0"/>
-\t\t<widget source="Service" render="Picon" position="45,28" size="180,60" transparent="1" alphatest="blend"><convert type="ServiceName">Reference</convert></widget>
-\t\t<widget source="Title" render="Label" position="245,30" size="930,55" font="Regular;36" foregroundColor="secondFG" transparent="1"/>
-\t\t<widget name="number" position="45,110" size="1120,630" font="Regular;50" halign="center" valign="center" backgroundColor="steThemePrimary" transparent="1" zPosition="20"/>
-\t\t<widget name="list" position="45,110" size="1120,630" scrollbarMode="showOnDemand" enableWrapAround="1" backgroundColor="steThemePrimary" transparent="1" zPosition="10"/>
-\t\t<widget source="Event" render="CineViewPosterX" position="1495,105" size="270,405" zPosition="12"/>
-\t\t<widget source="Event" render="Label" position="1220,105" size="245,120" font="Regular;29" foregroundColor="foreground" transparent="1"><convert type="EventName">Name</convert></widget>
-\t\t<widget source="Event" render="Label" position="1220,245" size="545,475" font="Regular;23" foregroundColor="foreground" transparent="1" valign="top"><convert type="EventName">FullDescription</convert></widget>
-\t\t<eLabel position="35,775" size="1750,2" backgroundColor="steThemePanelAlt"/>
-\t\t<widget source="key_red" render="Label" position="55,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
-\t\t<widget source="key_green" render="Label" position="490,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
-\t\t<widget source="key_yellow" render="Label" position="925,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
-\t\t<widget source="key_blue" render="Label" position="1360,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>"""
+SINGLE_EPG = """\t\t<eLabel position="0,0" size="1840,930" backgroundColor="steThemePrimary" zPosition="0"/>
+\t\t<widget source="Service" render="Picon" position="50,28" size="210,70" transparent="1" alphatest="blend"><convert type="ServiceName">Reference</convert></widget>
+\t\t<widget source="Title" render="Label" position="285,30" size="1040,58" font="Regular;39" foregroundColor="secondFG" transparent="1"/>
+\t\t<widget name="number" position="50,120" size="1190,670" font="Regular;58" halign="center" valign="center" backgroundColor="steThemePrimary" transparent="1" zPosition="20"/>
+\t\t<widget name="list" position="50,120" size="1190,670" scrollbarMode="showOnDemand" enableWrapAround="1" backgroundColor="steThemePrimary" transparent="1" zPosition="10" EventFontSingle="Regular;30" MinimumItemHeight="62"/>
+\t\t<widget source="Event" render="CineViewPosterX" position="1480,110" size="285,430" zPosition="12"/>
+\t\t<widget source="Event" render="Label" position="1280,110" size="180,125" font="Regular;30" foregroundColor="secondFG" transparent="1"><convert type="EventName">Name</convert></widget>
+\t\t<widget source="Event" render="Label" position="1280,565" size="485,225" font="Regular;24" foregroundColor="foreground" transparent="1" valign="top"><convert type="EventName">FullDescription</convert></widget>
+\t\t<eLabel position="45,835" size="1750,3" backgroundColor="steThemePanelAlt"/>
+\t\t<widget source="key_red" render="Label" position="60,855" size="400,48" font="Regular;27" halign="center" transparent="1"/>
+\t\t<widget source="key_green" render="Label" position="500,855" size="400,48" font="Regular;27" halign="center" transparent="1"/>
+\t\t<widget source="key_yellow" render="Label" position="940,855" size="400,48" font="Regular;27" halign="center" transparent="1"/>
+\t\t<widget source="key_blue" render="Label" position="1380,855" size="400,48" font="Regular;27" halign="center" transparent="1"/>"""
 
-MULTI_EPG = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="steThemePrimary" zPosition="0"/>
-\t\t<widget source="Title" render="Label" position="45,28" size="1120,55" font="Regular;36" foregroundColor="secondFG" transparent="1"/>
-\t\t<widget name="now_button" position="45,95" size="350,45" transparent="1"/>
-\t\t<widget name="now_button_sel" position="45,95" size="350,45" transparent="1"/>
-\t\t<widget name="now_text" position="45,95" size="350,45" text="NOW" font="Regular;25" halign="center" valign="center" transparent="1"/>
-\t\t<widget name="next_button" position="405,95" size="350,45" transparent="1"/>
-\t\t<widget name="next_button_sel" position="405,95" size="350,45" transparent="1"/>
-\t\t<widget name="next_text" position="405,95" size="350,45" text="NEXT" font="Regular;25" halign="center" valign="center" transparent="1"/>
-\t\t<widget name="more_button" position="765,95" size="350,45" transparent="1"/>
-\t\t<widget name="more_button_sel" position="765,95" size="350,45" transparent="1"/>
-\t\t<widget name="more_text" position="765,95" size="350,45" text="MORE" font="Regular;25" halign="center" valign="center" transparent="1"/>
-\t\t<widget name="date" position="1210,35" size="550,45" font="Regular;27" halign="center" transparent="1"/>
-\t\t<widget name="bouquetlist" position="45,155" size="1120,585" scrollbarMode="showNever" backgroundColor="steThemePrimary" transparent="0" zPosition="20"/>
-\t\t<widget name="list" position="45,155" size="1120,585" scrollbarMode="showOnDemand" enableWrapAround="1" backgroundColor="steThemePrimary" transparent="1" zPosition="10"/>
-\t\t<widget source="Event" render="CineViewPosterX" position="1495,120" size="270,405" zPosition="12"/>
-\t\t<widget source="Event" render="Label" position="1210,120" size="250,120" font="Regular;29" foregroundColor="foreground" transparent="1"><convert type="EventName">Name</convert></widget>
-\t\t<widget source="Event" render="Label" position="1210,260" size="555,455" font="Regular;23" foregroundColor="foreground" transparent="1" valign="top"><convert type="EventName">FullDescription</convert></widget>
-\t\t<eLabel position="35,775" size="1750,2" backgroundColor="steThemePanelAlt"/>
-\t\t<widget source="key_red" render="Label" position="55,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
-\t\t<widget source="key_green" render="Label" position="490,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
-\t\t<widget source="key_yellow" render="Label" position="925,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
-\t\t<widget source="key_blue" render="Label" position="1360,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>"""
+MULTI_EPG = """\t\t<eLabel position="0,0" size="1840,930" backgroundColor="steThemePrimary" zPosition="0"/>
+\t\t<widget source="Title" render="Label" position="50,28" size="1190,58" font="Regular;39" foregroundColor="secondFG" transparent="1"/>
+\t\t<widget name="now_button" position="50,98" size="380,48" transparent="1"/>
+\t\t<widget name="now_button_sel" position="50,98" size="380,48" transparent="1"/>
+\t\t<widget name="now_text" position="50,98" size="380,48" text="NOW" font="Regular;27" halign="center" valign="center" transparent="1"/>
+\t\t<widget name="next_button" position="440,98" size="380,48" transparent="1"/>
+\t\t<widget name="next_button_sel" position="440,98" size="380,48" transparent="1"/>
+\t\t<widget name="next_text" position="440,98" size="380,48" text="NEXT" font="Regular;27" halign="center" valign="center" transparent="1"/>
+\t\t<widget name="more_button" position="830,98" size="380,48" transparent="1"/>
+\t\t<widget name="more_button_sel" position="830,98" size="380,48" transparent="1"/>
+\t\t<widget name="more_text" position="830,98" size="380,48" text="MORE" font="Regular;27" halign="center" valign="center" transparent="1"/>
+\t\t<widget name="date" position="1260,35" size="520,45" font="Regular;28" halign="right" transparent="1"/>
+\t\t<widget name="bouquetlist" position="50,165" size="1190,625" scrollbarMode="showNever" backgroundColor="steThemePrimary" transparent="0" zPosition="20"/>
+\t\t<widget name="list" position="50,165" size="1190,625" scrollbarMode="showOnDemand" enableWrapAround="1" backgroundColor="steThemePrimary" transparent="1" zPosition="10" EventFontMulti="Regular;29" MinimumItemHeight="62"/>
+\t\t<widget source="Event" render="CineViewPosterX" position="1480,125" size="285,430" zPosition="12"/>
+\t\t<widget source="Event" render="Label" position="1280,125" size="180,125" font="Regular;30" foregroundColor="secondFG" transparent="1"><convert type="EventName">Name</convert></widget>
+\t\t<widget source="Event" render="Label" position="1280,575" size="485,210" font="Regular;24" foregroundColor="foreground" transparent="1" valign="top"><convert type="EventName">FullDescription</convert></widget>
+\t\t<eLabel position="45,835" size="1750,3" backgroundColor="steThemePanelAlt"/>
+\t\t<widget source="key_red" render="Label" position="60,855" size="400,48" font="Regular;27" halign="center" transparent="1"/>
+\t\t<widget source="key_green" render="Label" position="500,855" size="400,48" font="Regular;27" halign="center" transparent="1"/>
+\t\t<widget source="key_yellow" render="Label" position="940,855" size="400,48" font="Regular;27" halign="center" transparent="1"/>
+\t\t<widget source="key_blue" render="Label" position="1380,855" size="400,48" font="Regular;27" halign="center" transparent="1"/>"""
 
-QUICK_EPG = """\t\t<eLabel position="0,0" size="1920,420" backgroundColor="steThemePrimary" zPosition="0"/>
-\t\t<widget source="Service" render="Picon" position="45,35" size="190,60" transparent="1" alphatest="blend"><convert type="ServiceName">Reference</convert></widget>
-\t\t<widget source="Service" render="Label" position="250,38" size="560,50" font="Regular;32" foregroundColor="secondFG" transparent="1"><convert type="ServiceName">Name</convert></widget>
-\t\t<widget name="list" position="45,115" size="830,230" scrollbarMode="showOnDemand" enableWrapAround="1" backgroundColor="steThemePrimary" transparent="1"/>
-\t\t<widget source="Event" render="Label" position="920,45" size="600,300" font="Regular;24" foregroundColor="foreground" transparent="1" valign="top"><convert type="EventName">FullDescription</convert></widget>
-\t\t<widget source="Event" render="CineViewPosterX" position="1580,25" size="215,320" zPosition="8"/>
-\t\t<eLabel position="35,365" size="1850,2" backgroundColor="steThemePanelAlt"/>
-\t\t<widget source="key_red" render="Label" position="55,375" size="400,38" font="Regular;23" halign="center" transparent="1"/>
-\t\t<widget source="key_green" render="Label" position="490,375" size="400,38" font="Regular;23" halign="center" transparent="1"/>
-\t\t<widget source="key_yellow" render="Label" position="925,375" size="400,38" font="Regular;23" halign="center" transparent="1"/>
-\t\t<widget source="key_blue" render="Label" position="1360,375" size="400,38" font="Regular;23" halign="center" transparent="1"/>"""
+QUICK_EPG = """\t\t<eLabel position="0,0" size="1920,460" backgroundColor="steThemePrimary" zPosition="0"/>
+\t\t<widget source="Service" render="Picon" position="45,35" size="210,75" transparent="1" alphatest="blend"><convert type="ServiceName">Reference</convert></widget>
+\t\t<widget source="Service" render="Label" position="280,40" size="620,52" font="Regular;36" foregroundColor="secondFG" transparent="1"><convert type="ServiceName">Name</convert></widget>
+\t\t<widget name="list" position="45,130" size="930,250" scrollbarMode="showOnDemand" enableWrapAround="1" backgroundColor="steThemePrimary" transparent="1" EventFontSingle="Regular;29" MinimumItemHeight="60"/>
+\t\t<widget source="Event" render="Label" position="1010,45" size="540,335" font="Regular;25" foregroundColor="foreground" transparent="1" valign="top"><convert type="EventName">FullDescription</convert></widget>
+\t\t<widget source="Event" render="CineViewPosterX" position="1610,25" size="235,350" zPosition="8"/>
+\t\t<eLabel position="35,397" size="1850,3" backgroundColor="steThemePanelAlt"/>
+\t\t<widget source="key_red" render="Label" position="55,410" size="400,42" font="Regular;24" halign="center" transparent="1"/>
+\t\t<widget source="key_green" render="Label" position="490,410" size="400,42" font="Regular;24" halign="center" transparent="1"/>
+\t\t<widget source="key_yellow" render="Label" position="925,410" size="400,42" font="Regular;24" halign="center" transparent="1"/>
+\t\t<widget source="key_blue" render="Label" position="1360,410" size="400,42" font="Regular;24" halign="center" transparent="1"/>"""
 
 GRID = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="steThemePrimary" zPosition="0"/>
 \t\t<widget source="Title" render="Label" position="45,24" size="1120,55" font="Regular;35" foregroundColor="secondFG" transparent="1"/>
@@ -307,9 +307,9 @@ SCREENS = (
     ("InfoBarEventView", INFOBAR_EVENT_VIEW, "0,0", "1920,360", "Event View"),
     ("SecondInfoBar", SECOND_INFO, "0,560", "1920,520", "Second InfoBar"),
     ("SecondInfoBarECM", SECOND_INFO, "0,560", "1920,520", "Second InfoBar"),
-    ("EPGSelection", SINGLE_EPG, "center,center", "1820,880", "EPG Selection"),
-    ("EPGSelectionMulti", MULTI_EPG, "center,center", "1820,880", "Multi EPG"),
-    ("QuickEPG", QUICK_EPG, "0,660", "1920,420", "Quick EPG"),
+    ("EPGSelection", SINGLE_EPG, "center,center", "1840,930", "EPG Selection"),
+    ("EPGSelectionMulti", MULTI_EPG, "center,center", "1840,930", "Multi EPG"),
+    ("QuickEPG", QUICK_EPG, "0,620", "1920,460", "Quick EPG"),
     ("GraphicalEPG", GRID, "center,center", "1820,880", "Graphical EPG"),
     ("GraphicalEPGPIG", GRID_PIG, "center,center", "1820,880", "Graphical EPG"),
     ("GraphicalInfoBarEPG", INFOBAR_GRID, "0,750", "1920,330", "InfoBar EPG"),
