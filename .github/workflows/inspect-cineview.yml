@@ -1,44 +1,84 @@
-name: Inspect installed CineView activation path
+name: Validate real installed OpenBH skin
 on:
   push:
     paths:
       - '.github/workflows/inspect-cineview.yml'
 jobs:
-  inspect:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Inspect embedded activation/runtime files
+      - name: Install package data like opkg and inspect final active skin
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf /tmp/cv && mkdir -p /tmp/cv
-          LINE=$(awk '/^__CINEVIEW_PAYLOAD_BELOW__$/{print NR+1; exit}' cineview-smart-install.sh)
-          tail -n +"$LINE" cineview-smart-install.sh | base64 -d > /tmp/cv/payload.tar.gz
-          tar -xzf /tmp/cv/payload.tar.gz -C /tmp/cv
+          sudo mkdir -p /etc/enigma2 /usr/local/bin
+          printf '%s\n' 'Creator=OpenBH' 'Version=6.0' 'Build=001' 'distro=openbh' | sudo tee /etc/image-version >/dev/null
+          sudo tee /etc/enigma2/settings >/dev/null <<'EOF'
+          config.plugins.cineview.theme=green
+          config.plugins.cineview.poster_infobar=True
+          config.plugins.cineview.poster_second=True
+          config.plugins.cineview.poster_channels=True
+          config.plugins.cineview.weatherprovider=oa
+          config.plugins.cineview.timeformat=24
+          EOF
 
-          echo '=== PAYLOAD TOP LEVEL SKIN FILES ==='
-          find /tmp/cv/usr/share/enigma2/CineView_FHD -maxdepth 1 -type f -printf '%f\n' | sort
+          cat > /tmp/opkg <<'EOF'
+          #!/bin/sh
+          echo "$*" >> /tmp/opkg-calls.log
+          pkg=""
+          for a in "$@"; do
+            case "$a" in /tmp/cineview-fhd-*.ipk) pkg="$a";; esac
+          done
+          [ -n "$pkg" ] || exit 0
+          if echo " $* " | grep -q " --force-reinstall "; then
+            mkdir -p /tmp/ipkx
+            cd /tmp/ipkx || exit 1
+            ar p "$pkg" data.tar.gz > data.tar.gz || exit 1
+            sudo tar -xzf data.tar.gz -C / || exit 1
+            touch /tmp/real-data-installed
+            exit 0
+          fi
+          echo "Refusing first install to force reinstall path" >&2
+          exit 1
+          EOF
+          chmod +x /tmp/opkg
+          sudo cp /tmp/opkg /usr/local/bin/opkg
 
-          echo '=== ACTIVATE.SH ==='
-          sed -n '1,320p' /tmp/cv/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/activate.sh || true
+          cp cineview-smart-install.sh /tmp/cv-install.sh
+          sudo env PATH="/usr/local/bin:/usr/bin:/bin" sh /tmp/cv-install.sh --no-restart 2>&1 | tee /tmp/install.log
 
-          echo '=== PLUGIN PY RUNTIME REFERENCES ==='
-          grep -R -n -E 'skin\.xml|skin\.layout|skin\.theme|copy|cp |shutil|theme|primary_skin|activate' /tmp/cv/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl | head -n 500 || true
+          test -f /tmp/real-data-installed
+          test -f /usr/share/enigma2/CineView_FHD/skin.xml
+          test -f /usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.py
 
-          echo '=== SKIN.XML TARGET SCREENS ==='
+          echo '=== FINAL ACTIVE SKIN CONTRACT ==='
           python3 - <<'PY'
-          import re
-          p='/tmp/cv/usr/share/enigma2/CineView_FHD/skin.xml'
+          import re, xml.etree.ElementTree as ET
+          p='/usr/share/enigma2/CineView_FHD/skin.xml'
           s=open(p,errors='ignore').read()
-          print('skin.xml bytes',len(s))
-          for name in ['InfoBar','SecondInfoBar','ChoiceBox','PluginBrowser','EPGSelection','EPGSelectionMulti','QuickEPG','GraphicalEPG','GraphicalEPGPIG','GraphicalInfoBarEPG','SingleEPG','GridEPG']:
-              ms=list(re.finditer(r'<screen\b(?=[^>]*\bname=["\']'+re.escape(name)+r'["\'])[^>]*>',s))
-              print(name,'count',len(ms))
-              for m in ms[:2]:
-                  e=s.find('</screen>',m.start())
-                  print(s[m.start():e+9][:5000])
+          ET.parse(p)
+          required=('ChoiceBox','PluginBrowser','EPGSelection','EPGSelectionMulti','QuickEPG','GraphicalEPG','GraphicalEPGPIG','GraphicalInfoBarEPG')
+          forbidden=('SingleEPG','InfobarSingleEPG','MultiEPG','GridEPG','GridEPGPIG','InfoBarGridEPG','ExtensionsList','EPGExtensionsList')
+          for n in required:
+              c=len(re.findall(r'<screen\b(?=[^>]*\bname=["\']'+re.escape(n)+r'["\'])',s))
+              print(n,c)
+              assert c==1,(n,c)
+          for n in forbidden:
+              c=len(re.findall(r'<screen\b(?=[^>]*\bname=["\']'+re.escape(n)+r'["\'])',s))
+              print(n,c)
+              assert c==0,(n,c)
+          assert 'render="CineViewPosterX"' in s
+          assert 'render="PosterX"' not in s
+          assert not re.search(r'(?:size|position)=["\'][^"\']*\d+\*\d+',s)
+          assert '#00171f17' in s or 'steThemePrimary' in s
+          print('FINAL_ACTIVE_SKIN_OK bytes=%d cineviewposter=%d' % (len(s),s.count('render="CineViewPosterX"')))
+          for n in ('PluginBrowser','EPGSelection','QuickEPG','GraphicalEPG'):
+              m=re.search(r'<screen\b(?=[^>]*\bname=["\']'+re.escape(n)+r'["\'])[^>]*>',s)
+              e=s.find('</screen>',m.start())
+              print('\n### FINAL '+n+' ###\n'+s[m.start():e+9][:5000])
           PY
 
-          echo '=== SETTINGS/CONFIG NAMES ==='
-          grep -R -n -E 'config\.plugins\.cineview|theme|layout' /tmp/cv/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl | head -n 500 || true
+          echo '=== INSTALLED ACTIVATE DECISION ==='
+          grep -n -E 'PosterX|CineViewPosterX|SRC=|cp -f' /usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/activate.sh
+          echo 'REAL_INSTALLED_OPENBH_SKIN_OK'
