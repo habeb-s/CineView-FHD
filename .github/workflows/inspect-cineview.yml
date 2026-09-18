@@ -1,49 +1,29 @@
-name: Validate OpenBH real reinstall
+name: Inspect CineView original OpenBH screens
 on:
   push:
     paths:
       - '.github/workflows/inspect-cineview.yml'
 jobs:
-  validate:
+  inspect:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Simulate installed CineView 2.0 and run public bootstrap
+      - name: Extract original payload screens
         shell: bash
         run: |
           set -euo pipefail
-          sudo mkdir -p /etc/enigma2 /usr/local/bin
-          printf '%s\n' 'Creator=OpenBH' 'Version=6.0' 'Build=001' 'distro=openbh' | sudo tee /etc/image-version >/dev/null
-
-          cat > /tmp/opkg <<'EOF'
-          #!/bin/sh
-          echo "$*" >> /tmp/opkg-calls.log
-          case "$*" in
-            *"/tmp/cineview-fhd-2.0-smart-"*".ipk"*)
-              if echo " $* " | grep -q " --force-reinstall "; then
-                echo "FORCE_REINSTALL_ACCEPTED"
-                touch /tmp/force-reinstall-used
-                exit 0
-              fi
-              echo "Refusing same-version install (simulated installed 2.0)" >&2
-              exit 1
-              ;;
-            *)
-              exit 0
-              ;;
-          esac
-          EOF
-          chmod +x /tmp/opkg
-          sudo cp /tmp/opkg /usr/local/bin/opkg
-
-          cp install.sh /tmp/install-under-test.sh
-          sed -i 's/--restart/--no-restart/g' /tmp/install-under-test.sh
-
-          sudo env PATH="/usr/local/bin:/usr/bin:/bin" sh /tmp/install-under-test.sh 2>&1 | tee /tmp/install.log
-
-          test -f /tmp/force-reinstall-used
-          grep -F -- '--force-reinstall' /tmp/opkg-calls.log
-          grep -F 'CineView FHD 2.0 installed successfully' /tmp/install.log
-          grep -F '[DONE] CineView FHD 2.0 installation complete' /tmp/install.log
-          grep -F '[DONE] Installer file removed.' /tmp/install.log
-          echo 'REAL OPENBH SAME-VERSION REINSTALL PASSED'
+          rm -rf /tmp/cv && mkdir -p /tmp/cv
+          cat installer/parts/*.b64 | base64 -d > /tmp/payload.tar.gz
+          tar -xzf /tmp/payload.tar.gz -C /tmp/cv
+          P=/tmp/cv/usr/share/enigma2/CineView_FHD/skin.layout-000-oa.xml
+          python3 - "$P" <<'PY'
+          import re,sys
+          s=open(sys.argv[1],errors='ignore').read()
+          for name in ['ChoiceBox','PluginBrowser','EPGSelection','EPGSelectionMulti','QuickEPG','GraphicalEPG','GraphicalEPGPIG','GraphicalInfoBarEPG']:
+              print('\n###',name,'###')
+              ms=list(re.finditer(r'<screen\\b(?=[^>]*\\bname="'+re.escape(name)+r'")[^>]*>',s))
+              print('count=',len(ms))
+              for m in ms:
+                  e=s.find('</screen>',m.start())
+                  print(s[m.start():e+9])
+          PY
