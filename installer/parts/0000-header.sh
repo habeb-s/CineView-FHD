@@ -120,6 +120,60 @@ else
   ok "No skin compatibility patch was required"
 fi
 
+# OpenViX compatibility: force the stable classic PluginBrowser binding.
+# Current OpenViX supports both classic <widget name="list"> and templated source/list
+# modes. The classic path avoids grid/template regressions and duplicate PluginBrowser
+# definitions while preserving the native PluginList component.
+case "$LOW" in
+  *openvix*)
+    adapt "OpenViX detected -> applying stable native PluginBrowser list binding"
+    "$PY" - "$SKINSTAGE" <<'PY'
+from __future__ import print_function
+import os, re, sys
+
+root = sys.argv[1]
+pattern = re.compile(
+    r'\n?[ \t]*<screen\b(?=[^>]*\bname="PluginBrowser")[^>]*>.*?</screen>[ \t]*\n?',
+    re.S
+)
+replacement = '''
+	<screen name="PluginBrowser" position="fill" flags="wfNoBorder">
+		<panel name="PigTemplate"/>
+		<widget name="list" position="780,100" size="1110,912" scrollbarMode="showOnDemand"/>
+	</screen>
+'''
+
+changed = 0
+for name in os.listdir(root):
+    if not (name.startswith("skin") and name.endswith(".xml")):
+        continue
+    path = os.path.join(root, name)
+    try:
+        data = open(path, "r").read()
+    except Exception:
+        continue
+    matches = pattern.findall(data)
+    if not matches:
+        continue
+    data = pattern.sub("\n", data)
+    idx = data.rfind("</skin>")
+    if idx < 0:
+        continue
+    data = data[:idx] + "\n" + replacement + "\n" + data[idx:]
+    with open(path, "w") as fh:
+        fh.write(data)
+    changed += 1
+
+print(changed)
+if changed == 0:
+    sys.exit(3)
+PY
+    PB_PATCHED=$?
+    [ "$PB_PATCHED" = 0 ] || fail "OpenViX PluginBrowser compatibility patch failed"
+    ok "OpenViX PluginBrowser switched to native classic list mode"
+    ;;
+esac
+
 "$PY" - "$SKINSTAGE" <<'PY'
 from __future__ import print_function
 import os,sys
