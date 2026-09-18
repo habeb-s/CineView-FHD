@@ -1,41 +1,20 @@
-name: Diagnose OpenBH CineView
+name: Inspect CineView compat
 on:
   push:
     paths:
       - '.github/workflows/inspect-cineview.yml'
 jobs:
-  diagnose:
+  inspect:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Extract OpenBH-sensitive parts
+      - name: Inspect compatibility logic
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p /tmp/cv
           cat installer/parts/*.b64 | base64 -d > /tmp/cv/payload.tar.gz
           tar -xzf /tmp/cv/payload.tar.gz -C /tmp/cv
-          ROOT=/tmp/cv/usr/share/enigma2/CineView_FHD
-          PLUG=/tmp/cv/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl
-          echo '=== POSTERX ==='
-          find /tmp/cv/usr/lib/enigma2/python -iname '*PosterX*' -o -iname '*poster*' | sort
-          grep -Rni -E 'PosterX|render="Poster|nexts=' "$ROOT"/*.xml | head -n 160 || true
-          echo '=== SMARTDEPS POSTER ==='
-          grep -n -C 5 -E 'PosterX|requests|pillow|PIL' "$PLUG/smartdeps.sh" || true
-          echo '=== EPG SCREEN NAMES ==='
-          grep -Roh -E '<screen[^>]+name="[^"]*(EPG|Epg|epg)[^"]*"' "$ROOT"/*.xml | sort -u
-          echo '=== EPG DEFINITIONS IN ACTIVE SOURCE CANDIDATE ==='
-          python3 - <<'PY'
-          import pathlib,re
-          root=pathlib.Path('/tmp/cv/usr/share/enigma2/CineView_FHD')
-          p=root/'skin.layout-000-oa.xml'
-          if not p.exists(): p=root/'skin.layout-000-none.xml'
-          s=p.read_text(errors='ignore')
-          for name in ['EPGSelection','QuickEPG','GraphicalEPG','GraphicalEPGPIG','GraphicalInfoBarEPG','EPGSelectionMulti']:
-              for m in re.finditer(r'<screen\b(?=[^>]*\bname="'+re.escape(name)+r'")[^>]*>',s):
-                  e=s.find('</screen>',m.start())
-                  print('\n--- '+name+' ---')
-                  print(s[m.start():e+9][:12000])
-          PY
-          echo '=== PLUGIN / EXTENSION SCREENS ==='
-          grep -n -E '<screen[^>]+name="(PluginBrowser|ExtensionsList|EPGExtensionsList|ChoiceBox|QuickEPG)"' "$ROOT/skin.layout-000-oa.xml" "$ROOT/skin.layout-000-none.xml" 2>/dev/null || true
+          P=/tmp/cv/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/compat.py
+          echo '=== COMPAT FULL ==='
+          sed -n '1,260p' "$P"
