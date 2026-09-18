@@ -16,14 +16,14 @@ skin = path.read_text(errors="ignore")
 
 
 def get_screen(text, name):
-    m = re.search(r'(?s)<screen\\b(?=[^>]*\\bname=["\\']' + re.escape(name) + r'["\\'])[^>]*>.*?</screen>', text)
+    m = re.search(r'(?s)<screen\\b(?=[^>]*\\bname="' + re.escape(name) + r'")[^>]*>.*?</screen>', text)
     if not m:
         raise SystemExit("MISSING_SCREEN:" + name)
     return m.group(0)
 
 
 def replace_screen(text, name, new_block):
-    pat = re.compile(r'(?s)<screen\\b(?=[^>]*\\bname=["\\']' + re.escape(name) + r'["\\'])[^>]*>.*?</screen>')
+    pat = re.compile(r'(?s)<screen\\b(?=[^>]*\\bname="' + re.escape(name) + r'")[^>]*>.*?</screen>')
     out, count = pat.subn(new_block, text, count=1)
     if count != 1:
         raise SystemExit("REPLACE_FAIL:" + name)
