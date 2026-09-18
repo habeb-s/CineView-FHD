@@ -28,7 +28,6 @@ TMP=$(mktemp -d /tmp/cineview-smart.XXXXXX 2>/dev/null || echo /tmp/cineview-sma
 mkdir -p "$TMP" || fail "cannot create temporary directory"
 trap 'rm -rf "$TMP"' EXIT INT TERM
 
-# Receiver/image fingerprint.
 IMG=$(cat /etc/image-version /etc/issue /etc/os-release /etc/hostname 2>/dev/null | tr '\n' ' ')
 LOW=$(echo "$IMG" | tr 'A-Z' 'a-z')
 case "$LOW" in
@@ -63,12 +62,10 @@ if [ "$FAMILY" = generic ]; then adapt "Unknown/Generic image -> capability-base
 if [ "$NEED_ADAPT" = 0 ]; then ok "Image components are directly compatible"; else adapt "CineView will modify the staged skin automatically before installation"; fi
 echo
 
-# Space check: payload is small, but keep a conservative safety margin.
 FREE=$(df -Pk /usr 2>/dev/null | awk 'NR==2{print $4}')
 [ -z "$FREE" ] && FREE=999999
 [ "$FREE" -ge 15360 ] 2>/dev/null || fail "less than 15 MB free on /usr"
 
-# Decode embedded payload.
 LINE=$(awk '/^__CINEVIEW_PAYLOAD_BELOW__$/{print NR+1; exit}' "$SELF")
 [ -n "$LINE" ] || fail "embedded payload marker missing"
 sed -n "${LINE},\$p" "$SELF" > "$TMP/payload.b64"
@@ -88,17 +85,16 @@ PLUGSTAGE="$TMP/stage/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl"
 SKINSTAGE="$TMP/stage/usr/share/enigma2/CineView_FHD"
 [ -f "$SKINSTAGE/skin.xml" ] || fail "skin payload incomplete"
 
-# First install required/optional components from the receiver image's own feed only.
 if [ "$DRY" = 0 ] && [ -x "$PLUGSTAGE/smartdeps.sh" ]; then
   installing "Checking and installing missing components from the current image feed..."
   CINEVIEW_LOG="$TMP/dependencies.log" sh "$PLUGSTAGE/smartdeps.sh" --install >/dev/null 2>&1 || true
   grep 'installing ' "$TMP/dependencies.log" 2>/dev/null | sed 's/^.*installing /  -> installed: /' || true
-  grep -E '=(OK|INSTALLED)
+  grep -E '=(OK|INSTALLED)$' "$TMP/dependencies.log" 2>/dev/null | tail -n 12 | sed 's/^/  /' || true
+  grep -E '=(SAFE-FALLBACK|UNAVAILABLE)$' "$TMP/dependencies.log" 2>/dev/null | tail -n 12 | sed 's/^/  /' || true
 else
   : > "$TMP/dependencies.log"
 fi
 
-# Patch the staged skin BEFORE copying it to the receiver.
 adapt "Adapting CineView to this Enigma2 image..."
 "$PY" "$PLUGSTAGE/compat.py" "$SKINSTAGE" /usr/lib/enigma2/python "$TMP/compat.json" >/dev/null 2>&1 || fail "compatibility adaptation failed"
 PATCHED=$("$PY" - "$TMP/compat.json" <<'PY'
@@ -124,7 +120,6 @@ else
   ok "No skin compatibility patch was required"
 fi
 
-# Validate every XML file before installation.
 "$PY" - "$SKINSTAGE" <<'PY'
 from __future__ import print_function
 import os,sys
@@ -147,21 +142,18 @@ PY
 [ $? = 0 ] || fail "XML validation failed"
 
 if [ "$DRY" = 1 ]; then
-  say "dry-run passed: payload, dependency logic and compatibility adaptation are valid"
+  ok "Dry-run passed: dependency logic and compatibility adaptation are valid"
   cat "$TMP/compat.json" 2>/dev/null || true
   exit 0
 fi
 
-# Persistent safety backup without touching HDD/USB media.
 STAMP=$(date +%Y%m%d-%H%M%S 2>/dev/null || echo now)
 BACK=/etc/enigma2/cineview-backup-$STAMP.tar.gz
 if [ -d /usr/share/enigma2/CineView_FHD ] || [ -d /usr/lib/enigma2/python/Plugins/Extensions/CineViewControl ]; then
   tar -czf "$BACK" /usr/share/enigma2/CineView_FHD /usr/lib/enigma2/python/Plugins/Extensions/CineViewControl /etc/enigma2/settings 2>/dev/null || true
-  say "backup=$BACK"
+  say "Backup: $BACK"
 fi
 
-# Build a temporary native package AFTER compatibility adaptation.
-# The package is deliberately created in /tmp, installed, then removed.
 PKGROOT="$TMP/pkg"
 mkdir -p "$PKGROOT/CONTROL" || fail "cannot create package metadata"
 cat > "$PKGROOT/CONTROL/control" <<'EOF'
@@ -175,11 +167,7 @@ printf '2.0\n' > "$TMP/debian-binary"
 tar -C "$PKGROOT/CONTROL" -czf "$TMP/control.tar.gz" . || fail "control package creation failed"
 tar -C "$TMP/stage" -czf "$TMP/data.tar.gz" . || fail "data package creation failed"
 
-if [ "$PM" = apt ]; then
-  PKGFILE="/tmp/cineview-fhd-2.0-smart-$$.deb"
-else
-  PKGFILE="/tmp/cineview-fhd-2.0-smart-$$.ipk"
-fi
+if [ "$PM" = apt ]; then PKGFILE="/tmp/cineview-fhd-2.0-smart-$$.deb"; else PKGFILE="/tmp/cineview-fhd-2.0-smart-$$.ipk"; fi
 
 "$PY" - "$PKGFILE" "$TMP/debian-binary" "$TMP/control.tar.gz" "$TMP/data.tar.gz" <<'PY'
 from __future__ import print_function
@@ -193,25 +181,18 @@ with open(out, "wb") as f:
     for p in members:
         name = os.path.basename(p) + "/"
         data = open(p, "rb").read()
-        header = ("%-16s%-12d%-6d%-6d%-8o%-10d`\n" %
-                  (name, int(time.time()), 0, 0, 0o100644, len(data)))
-        f.write(b(header))
-        f.write(data)
-        if len(data) & 1:
-            f.write(b("\n"))
+        header = ("%-16s%-12d%-6d%-6d%-8o%-10d`\n" % (name, int(time.time()), 0, 0, 0o100644, len(data)))
+        f.write(b(header)); f.write(data)
+        if len(data) & 1: f.write(b("\n"))
 PY
 [ -s "$PKGFILE" ] || fail "temporary package creation failed"
-say "temporary package=$PKGFILE"
+say "Temporary package: $PKGFILE"
 
 installing "Installing CineView FHD 2.0..."
 if [ "$PM" = opkg ]; then
   opkg install "$PKGFILE" || fail "opkg installation failed"
 elif [ "$PM" = apt ]; then
-  if command -v dpkg >/dev/null 2>&1; then
-    dpkg -i "$PKGFILE" || fail "dpkg installation failed"
-  else
-    fail "dpkg not found on apt image"
-  fi
+  if command -v dpkg >/dev/null 2>&1; then dpkg -i "$PKGFILE" || fail "dpkg installation failed"; else fail "dpkg not found on apt image"; fi
 else
   cp -a "$TMP/stage/usr/." /usr/ 2>/dev/null || cp -Rpf "$TMP/stage/usr/." /usr/ || fail "file installation failed"
 fi
@@ -249,13 +230,8 @@ ok "CineView FHD 2.0 installed successfully"
 say "Diagnostic report: $REPORT"
 ok "Second InfoBar transparent overlay locked for all 6 themes"
 
-if [ -n "${PKGFILE:-}" ] && [ -f "$PKGFILE" ]; then
-  rm -f "$PKGFILE"
-  say "removed temporary install package"
-fi
-
 if [ "$RESTART" = 1 ]; then
-  say "restarting Enigma2 GUI"
+  installing "Restarting Enigma2 GUI..."
   if command -v systemctl >/dev/null 2>&1 && systemctl list-unit-files 2>/dev/null | grep -q '^enigma2.service'; then
     systemctl restart enigma2.service || true
   elif command -v init >/dev/null 2>&1; then
@@ -263,326 +239,16 @@ if [ "$RESTART" = 1 ]; then
   elif command -v killall >/dev/null 2>&1; then
     killall -9 enigma2 2>/dev/null || true
   else
-    say "automatic GUI restart is not supported on this image; restart Enigma2 manually"
+    warn "Automatic GUI restart is not supported on this image; restart Enigma2 manually"
   fi
 else
-  say "Enigma2 restart skipped by --no-restart."
+  warn "Enigma2 restart skipped by --no-restart."
 fi
+
 if [ -n "${PKGFILE:-}" ] && [ -f "$PKGFILE" ]; then
   rm -f "$PKGFILE"
   ok "Temporary IPK/DEB installation package removed"
 fi
 done_msg "CineView FHD 2.0 installation complete"
-exit 0
-__CINEVIEW_PAYLOAD_BELOW__
- "$TMP/dependencies.log" 2>/dev/null | tail -n 12 | sed 's/^/  /' || true
-  grep -E '=(SAFE-FALLBACK|UNAVAILABLE)
-else
-  : > "$TMP/dependencies.log"
-fi
-
-# Patch the staged skin BEFORE copying it to the receiver.
-say "adapting CineView to installed Enigma2 components"
-"$PY" "$PLUGSTAGE/compat.py" "$SKINSTAGE" /usr/lib/enigma2/python "$TMP/compat.json" >/dev/null 2>&1 || fail "compatibility adaptation failed"
-
-# Validate every XML file before installation.
-"$PY" - "$SKINSTAGE" <<'PY'
-from __future__ import print_function
-import os,sys
-try:
-    import xml.etree.ElementTree as ET
-except Exception:
-    sys.exit(2)
-root=sys.argv[1]; bad=[]; n=0
-for base,dirs,files in os.walk(root):
-    for name in files:
-        if name.endswith('.xml'):
-            n+=1
-            p=os.path.join(base,name)
-            try: ET.parse(p)
-            except Exception as e: bad.append('%s: %s' % (p,e))
-if bad:
-    print('\n'.join(bad)); sys.exit(1)
-print('validated %d XML files' % n)
-PY
-[ $? = 0 ] || fail "XML validation failed"
-
-if [ "$DRY" = 1 ]; then
-  say "dry-run passed: payload, dependency logic and compatibility adaptation are valid"
-  cat "$TMP/compat.json" 2>/dev/null || true
-  exit 0
-fi
-
-# Persistent safety backup without touching HDD/USB media.
-STAMP=$(date +%Y%m%d-%H%M%S 2>/dev/null || echo now)
-BACK=/etc/enigma2/cineview-backup-$STAMP.tar.gz
-if [ -d /usr/share/enigma2/CineView_FHD ] || [ -d /usr/lib/enigma2/python/Plugins/Extensions/CineViewControl ]; then
-  tar -czf "$BACK" /usr/share/enigma2/CineView_FHD /usr/lib/enigma2/python/Plugins/Extensions/CineViewControl /etc/enigma2/settings 2>/dev/null || true
-  say "backup=$BACK"
-fi
-
-# Build a temporary native package AFTER compatibility adaptation.
-# The package is deliberately created in /tmp, installed, then removed.
-PKGROOT="$TMP/pkg"
-mkdir -p "$PKGROOT/CONTROL" || fail "cannot create package metadata"
-cat > "$PKGROOT/CONTROL/control" <<'EOF'
-Package: enigma2-plugin-skins-cineview-fhd
-Version: 2.0
-Architecture: all
-Maintainer: habeb-s
-Description: CineView FHD 2.0 Smart Enigma2 Skin
-EOF
-printf '2.0\n' > "$TMP/debian-binary"
-tar -C "$PKGROOT/CONTROL" -czf "$TMP/control.tar.gz" . || fail "control package creation failed"
-tar -C "$TMP/stage" -czf "$TMP/data.tar.gz" . || fail "data package creation failed"
-
-if [ "$PM" = apt ]; then
-  PKGFILE="/tmp/cineview-fhd-2.0-smart-$$.deb"
-else
-  PKGFILE="/tmp/cineview-fhd-2.0-smart-$$.ipk"
-fi
-
-"$PY" - "$PKGFILE" "$TMP/debian-binary" "$TMP/control.tar.gz" "$TMP/data.tar.gz" <<'PY'
-from __future__ import print_function
-import os, sys, time
-out = sys.argv[1]
-members = sys.argv[2:]
-def b(x):
-    return x if isinstance(x, bytes) else x.encode("ascii")
-with open(out, "wb") as f:
-    f.write(b("!<arch>\n"))
-    for p in members:
-        name = os.path.basename(p) + "/"
-        data = open(p, "rb").read()
-        header = ("%-16s%-12d%-6d%-6d%-8o%-10d`\n" %
-                  (name, int(time.time()), 0, 0, 0o100644, len(data)))
-        f.write(b(header))
-        f.write(data)
-        if len(data) & 1:
-            f.write(b("\n"))
-PY
-[ -s "$PKGFILE" ] || fail "temporary package creation failed"
-say "temporary package=$PKGFILE"
-
-say "installing CineView FHD 2.0"
-if [ "$PM" = opkg ]; then
-  opkg install "$PKGFILE" || fail "opkg installation failed"
-elif [ "$PM" = apt ]; then
-  if command -v dpkg >/dev/null 2>&1; then
-    dpkg -i "$PKGFILE" || fail "dpkg installation failed"
-  else
-    fail "dpkg not found on apt image"
-  fi
-else
-  cp -a "$TMP/stage/usr/." /usr/ 2>/dev/null || cp -Rpf "$TMP/stage/usr/." /usr/ || fail "file installation failed"
-fi
-chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/*.sh 2>/dev/null || true
-
-SETTINGS=/etc/enigma2/settings
-[ -f "$SETTINGS" ] || touch "$SETTINGS"
-set_key(){ key="$1"; val="$2"; if grep -q "^${key}=" "$SETTINGS" 2>/dev/null; then sed -i "s|^${key}=.*|${key}=${val}|" "$SETTINGS"; else echo "${key}=${val}" >> "$SETTINGS"; fi; }
-get_key(){ grep "^$1=" "$SETTINGS" 2>/dev/null | tail -1 | cut -d= -f2-; }
-[ -n "$(get_key config.plugins.cineview.theme)" ] || set_key config.plugins.cineview.theme black
-[ -n "$(get_key config.plugins.cineview.poster_infobar)" ] || set_key config.plugins.cineview.poster_infobar True
-[ -n "$(get_key config.plugins.cineview.poster_second)" ] || set_key config.plugins.cineview.poster_second True
-[ -n "$(get_key config.plugins.cineview.poster_channels)" ] || set_key config.plugins.cineview.poster_channels True
-[ -n "$(get_key config.plugins.cineview.weatherprovider)" ] || set_key config.plugins.cineview.weatherprovider oa
-[ -n "$(get_key config.plugins.cineview.timeformat)" ] || set_key config.plugins.cineview.timeformat 24
-[ -n "$(get_key config.plugins.cineview.servermode)" ] || set_key config.plugins.cineview.servermode profile
-[ -n "$(get_key config.plugins.cineview.secondtimeout)" ] || set_key config.plugins.cineview.secondtimeout 20
-set_key config.skin.primary_skin CineView_FHD/skin.xml
-/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/activate.sh >/dev/null 2>&1 || true
-
-REPORT=/etc/enigma2/cineview-smart-report.txt
-{
-  echo "CineView FHD 2.0 Smart Installer"
-  echo "family=$FAMILY"
-  echo "package_manager=$PM"
-  echo "python=$PYVER"
-  echo "arch=$ARCH"
-  echo "installed=$(date 2>/dev/null || true)"
-  echo "--- compatibility ---"
-  cat "$TMP/compat.json" 2>/dev/null || true
-  echo "--- dependencies ---"
-  cat "$TMP/dependencies.log" 2>/dev/null || true
-} > "$REPORT"
-say "installed successfully; report=$REPORT"
-say "Second InfoBar uses CineView fixed transparent overlay on every theme."
-
-if [ -n "${PKGFILE:-}" ] && [ -f "$PKGFILE" ]; then
-  rm -f "$PKGFILE"
-  say "removed temporary install package"
-fi
-
-if [ "$RESTART" = 1 ]; then
-  say "restarting Enigma2 GUI"
-  if command -v systemctl >/dev/null 2>&1 && systemctl list-unit-files 2>/dev/null | grep -q '^enigma2.service'; then
-    systemctl restart enigma2.service || true
-  elif command -v init >/dev/null 2>&1; then
-    init 4; sleep 3; init 3
-  elif command -v killall >/dev/null 2>&1; then
-    killall -9 enigma2 2>/dev/null || true
-  else
-    say "automatic GUI restart is not supported on this image; restart Enigma2 manually"
-  fi
-else
-  say "Enigma2 restart skipped by --no-restart."
-fi
-say "CineView FHD 2.0 installation complete"
-exit 0
-__CINEVIEW_PAYLOAD_BELOW__
- "$TMP/dependencies.log" 2>/dev/null | tail -n 12 | sed 's/^/  /' || true
-else
-  : > "$TMP/dependencies.log"
-fi
-
-# Patch the staged skin BEFORE copying it to the receiver.
-say "adapting CineView to installed Enigma2 components"
-"$PY" "$PLUGSTAGE/compat.py" "$SKINSTAGE" /usr/lib/enigma2/python "$TMP/compat.json" >/dev/null 2>&1 || fail "compatibility adaptation failed"
-
-# Validate every XML file before installation.
-"$PY" - "$SKINSTAGE" <<'PY'
-from __future__ import print_function
-import os,sys
-try:
-    import xml.etree.ElementTree as ET
-except Exception:
-    sys.exit(2)
-root=sys.argv[1]; bad=[]; n=0
-for base,dirs,files in os.walk(root):
-    for name in files:
-        if name.endswith('.xml'):
-            n+=1
-            p=os.path.join(base,name)
-            try: ET.parse(p)
-            except Exception as e: bad.append('%s: %s' % (p,e))
-if bad:
-    print('\n'.join(bad)); sys.exit(1)
-print('validated %d XML files' % n)
-PY
-[ $? = 0 ] || fail "XML validation failed"
-
-if [ "$DRY" = 1 ]; then
-  say "dry-run passed: payload, dependency logic and compatibility adaptation are valid"
-  cat "$TMP/compat.json" 2>/dev/null || true
-  exit 0
-fi
-
-# Persistent safety backup without touching HDD/USB media.
-STAMP=$(date +%Y%m%d-%H%M%S 2>/dev/null || echo now)
-BACK=/etc/enigma2/cineview-backup-$STAMP.tar.gz
-if [ -d /usr/share/enigma2/CineView_FHD ] || [ -d /usr/lib/enigma2/python/Plugins/Extensions/CineViewControl ]; then
-  tar -czf "$BACK" /usr/share/enigma2/CineView_FHD /usr/lib/enigma2/python/Plugins/Extensions/CineViewControl /etc/enigma2/settings 2>/dev/null || true
-  say "backup=$BACK"
-fi
-
-# Build a temporary native package AFTER compatibility adaptation.
-# The package is deliberately created in /tmp, installed, then removed.
-PKGROOT="$TMP/pkg"
-mkdir -p "$PKGROOT/CONTROL" || fail "cannot create package metadata"
-cat > "$PKGROOT/CONTROL/control" <<'EOF'
-Package: enigma2-plugin-skins-cineview-fhd
-Version: 2.0
-Architecture: all
-Maintainer: habeb-s
-Description: CineView FHD 2.0 Smart Enigma2 Skin
-EOF
-printf '2.0\n' > "$TMP/debian-binary"
-tar -C "$PKGROOT/CONTROL" -czf "$TMP/control.tar.gz" . || fail "control package creation failed"
-tar -C "$TMP/stage" -czf "$TMP/data.tar.gz" . || fail "data package creation failed"
-
-if [ "$PM" = apt ]; then
-  PKGFILE="/tmp/cineview-fhd-2.0-smart-$$.deb"
-else
-  PKGFILE="/tmp/cineview-fhd-2.0-smart-$$.ipk"
-fi
-
-"$PY" - "$PKGFILE" "$TMP/debian-binary" "$TMP/control.tar.gz" "$TMP/data.tar.gz" <<'PY'
-from __future__ import print_function
-import os, sys, time
-out = sys.argv[1]
-members = sys.argv[2:]
-def b(x):
-    return x if isinstance(x, bytes) else x.encode("ascii")
-with open(out, "wb") as f:
-    f.write(b("!<arch>\n"))
-    for p in members:
-        name = os.path.basename(p) + "/"
-        data = open(p, "rb").read()
-        header = ("%-16s%-12d%-6d%-6d%-8o%-10d`\n" %
-                  (name, int(time.time()), 0, 0, 0o100644, len(data)))
-        f.write(b(header))
-        f.write(data)
-        if len(data) & 1:
-            f.write(b("\n"))
-PY
-[ -s "$PKGFILE" ] || fail "temporary package creation failed"
-say "temporary package=$PKGFILE"
-
-say "installing CineView FHD 2.0"
-if [ "$PM" = opkg ]; then
-  opkg install "$PKGFILE" || fail "opkg installation failed"
-elif [ "$PM" = apt ]; then
-  if command -v dpkg >/dev/null 2>&1; then
-    dpkg -i "$PKGFILE" || fail "dpkg installation failed"
-  else
-    fail "dpkg not found on apt image"
-  fi
-else
-  cp -a "$TMP/stage/usr/." /usr/ 2>/dev/null || cp -Rpf "$TMP/stage/usr/." /usr/ || fail "file installation failed"
-fi
-chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/*.sh 2>/dev/null || true
-
-SETTINGS=/etc/enigma2/settings
-[ -f "$SETTINGS" ] || touch "$SETTINGS"
-set_key(){ key="$1"; val="$2"; if grep -q "^${key}=" "$SETTINGS" 2>/dev/null; then sed -i "s|^${key}=.*|${key}=${val}|" "$SETTINGS"; else echo "${key}=${val}" >> "$SETTINGS"; fi; }
-get_key(){ grep "^$1=" "$SETTINGS" 2>/dev/null | tail -1 | cut -d= -f2-; }
-[ -n "$(get_key config.plugins.cineview.theme)" ] || set_key config.plugins.cineview.theme black
-[ -n "$(get_key config.plugins.cineview.poster_infobar)" ] || set_key config.plugins.cineview.poster_infobar True
-[ -n "$(get_key config.plugins.cineview.poster_second)" ] || set_key config.plugins.cineview.poster_second True
-[ -n "$(get_key config.plugins.cineview.poster_channels)" ] || set_key config.plugins.cineview.poster_channels True
-[ -n "$(get_key config.plugins.cineview.weatherprovider)" ] || set_key config.plugins.cineview.weatherprovider oa
-[ -n "$(get_key config.plugins.cineview.timeformat)" ] || set_key config.plugins.cineview.timeformat 24
-[ -n "$(get_key config.plugins.cineview.servermode)" ] || set_key config.plugins.cineview.servermode profile
-[ -n "$(get_key config.plugins.cineview.secondtimeout)" ] || set_key config.plugins.cineview.secondtimeout 20
-set_key config.skin.primary_skin CineView_FHD/skin.xml
-/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/activate.sh >/dev/null 2>&1 || true
-
-REPORT=/etc/enigma2/cineview-smart-report.txt
-{
-  echo "CineView FHD 2.0 Smart Installer"
-  echo "family=$FAMILY"
-  echo "package_manager=$PM"
-  echo "python=$PYVER"
-  echo "arch=$ARCH"
-  echo "installed=$(date 2>/dev/null || true)"
-  echo "--- compatibility ---"
-  cat "$TMP/compat.json" 2>/dev/null || true
-  echo "--- dependencies ---"
-  cat "$TMP/dependencies.log" 2>/dev/null || true
-} > "$REPORT"
-say "installed successfully; report=$REPORT"
-say "Second InfoBar uses CineView fixed transparent overlay on every theme."
-
-if [ -n "${PKGFILE:-}" ] && [ -f "$PKGFILE" ]; then
-  rm -f "$PKGFILE"
-  say "removed temporary install package"
-fi
-
-if [ "$RESTART" = 1 ]; then
-  say "restarting Enigma2 GUI"
-  if command -v systemctl >/dev/null 2>&1 && systemctl list-unit-files 2>/dev/null | grep -q '^enigma2.service'; then
-    systemctl restart enigma2.service || true
-  elif command -v init >/dev/null 2>&1; then
-    init 4; sleep 3; init 3
-  elif command -v killall >/dev/null 2>&1; then
-    killall -9 enigma2 2>/dev/null || true
-  else
-    say "automatic GUI restart is not supported on this image; restart Enigma2 manually"
-  fi
-else
-  say "Enigma2 restart skipped by --no-restart."
-fi
-say "CineView FHD 2.0 installation complete"
 exit 0
 __CINEVIEW_PAYLOAD_BELOW__
