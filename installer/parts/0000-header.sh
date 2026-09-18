@@ -120,6 +120,19 @@ else
   ok "No skin compatibility patch was required"
 fi
 
+# OpenATV compatibility: use OpenATV's native 7.6/8.x screen contracts.
+# OpenATV 8 PluginBrowser uses pluginList/pluginGrid mandatory sources and must not
+# be skinned with the OpenViX/OpenBH list bindings.
+case "$LOW" in
+  *openatv*)
+    ATV_VERSION=$(printf '%s\n' "$IMG" | sed -n 's/.*version=\([^ ]*\).*/\1/p' | head -n1)
+    [ -n "$ATV_VERSION" ] || ATV_VERSION=detected
+    adapt "OpenATV detected ($ATV_VERSION) -> applying dedicated CineView FHD OpenATV screen contracts"
+    "$PY" "$PLUGSTAGE/openatv_compat.py" "$SKINSTAGE" >/dev/null 2>&1 || fail "OpenATV screen compatibility patch failed"
+    ok "OpenATV PluginBrowser list/grid, EventView, SecondInfoBar and EPG layouts adapted"
+    ;;
+esac
+
 # OpenViX compatibility: force the stable classic PluginBrowser binding.
 # Current OpenViX supports both classic <widget name="list"> and templated source/list
 # modes. The classic path avoids grid/template regressions and duplicate PluginBrowser
