@@ -1,3 +1,4 @@
+# OpenATV 8 safe-candidate maintained compatibility source
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 
