@@ -77,29 +77,58 @@ def _notify(title):
             pass
 
 
+def _http_get(url, params=None, timeout=7.0, want_json=False):
+    """Small requests/urllib bridge for OpenBH and other minimal images."""
+    try:
+        import requests
+        r = requests.get(
+            url,
+            params=params,
+            headers={"User-Agent": UA, "Accept": "application/json" if want_json else "image/jpeg,*/*;q=0.8"},
+            timeout=timeout,
+        )
+        if not r.ok:
+            return None
+        return r.json() if want_json else r.content
+    except Exception:
+        pass
+
+    try:
+        try:
+            from urllib.parse import urlencode
+            from urllib.request import Request, urlopen
+        except ImportError:
+            from urllib import urlencode
+            from urllib2 import Request, urlopen
+        if params:
+            url = url + ("&" if "?" in url else "?") + urlencode(params)
+        req = Request(url, headers={"User-Agent": UA, "Accept": "application/json" if want_json else "image/jpeg,*/*;q=0.8"})
+        res = urlopen(req, timeout=timeout)
+        body = res.read()
+        if want_json:
+            import json
+            if not isinstance(body, str):
+                body = body.decode("utf-8", "ignore")
+            return json.loads(body)
+        return body
+    except Exception:
+        return None
+
+
 def _download(title):
     path = _poster_path(title)
     tmp = path + ".part"
     try:
-        import requests
-        r = requests.get(
-            API_SEARCH,
-            params={"q": _clean_title(title)},
-            headers={"User-Agent": UA, "Accept": "application/json"},
-            timeout=(2.5, 5.0),
-        )
-        if r.ok:
-            data = r.json() or {}
-            image = data.get("image") or {}
-            url = image.get("original") or image.get("medium")
-            if url:
-                img = requests.get(url, headers={"User-Agent": UA}, timeout=(2.5, 7.0))
-                ctype = (img.headers.get("content-type") or "").lower()
-                if img.ok and len(img.content) > 1500 and ("image" in ctype or url.lower().endswith((".jpg", ".jpeg"))):
-                    _mkdir(CACHE_ROOT)
-                    with open(tmp, "wb") as f:
-                        f.write(img.content)
-                    os.rename(tmp, path)
+        data = _http_get(API_SEARCH, params={"q": _clean_title(title)}, timeout=6.0, want_json=True) or {}
+        image = data.get("image") or {}
+        url = image.get("original") or image.get("medium")
+        if url:
+            body = _http_get(url, timeout=9.0, want_json=False)
+            if body and len(body) > 1500:
+                _mkdir(CACHE_ROOT)
+                with open(tmp, "wb") as f:
+                    f.write(body)
+                os.rename(tmp, path)
     except Exception:
         try:
             if os.path.exists(tmp):
