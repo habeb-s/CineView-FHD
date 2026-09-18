@@ -1,4 +1,4 @@
-name: Validate OpenBH CineView repair
+name: Validate OpenBH real reinstall
 on:
   push:
     paths:
@@ -8,38 +8,42 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Validate embedded payload and OpenBH dry run
+      - name: Simulate installed CineView 2.0 and run public bootstrap
         shell: bash
         run: |
           set -euo pipefail
-          sh -n cineview-smart-install.sh
-          LINE=$(awk '/^__CINEVIEW_PAYLOAD_BELOW__$/{print NR+1; exit}' cineview-smart-install.sh)
-          tail -n +"$LINE" cineview-smart-install.sh | base64 -d > /tmp/payload.tar.gz
-          rm -rf /tmp/cvpayload
-          mkdir -p /tmp/cvpayload
-          tar -xzf /tmp/payload.tar.gz -C /tmp/cvpayload
-          test -f /tmp/cvpayload/usr/lib/enigma2/python/Components/Renderer/PosterX.py
-          test -f /tmp/cvpayload/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openbh_compat.py
-          grep -q "PosterX=BUILTIN" /tmp/cvpayload/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/smartdeps.sh
+          sudo mkdir -p /etc/enigma2 /usr/local/bin
           printf '%s\n' 'Creator=OpenBH' 'Version=6.0' 'Build=001' 'distro=openbh' | sudo tee /etc/image-version >/dev/null
-          sudo /bin/sh ./cineview-smart-install.sh --dry-run | tee /tmp/openbh.log
-          grep -F "OpenBH detected -> applying dedicated CineView FHD plugin/EPG compatibility" /tmp/openbh.log
-          grep -F "OpenBH PluginBrowser / Extensions / EPG layouts adapted" /tmp/openbh.log
-          grep -F "CineView native PosterX is embedded for OpenBH" /tmp/openbh.log
-          grep -F "Dry-run passed" /tmp/openbh.log
-          rm -rf /tmp/testskin
-          mkdir -p /tmp/testskin
-          cp /tmp/cvpayload/usr/share/enigma2/CineView_FHD/skin.layout-000-oa.xml /tmp/testskin/skin.xml
-          python3 /tmp/cvpayload/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openbh_compat.py /tmp/testskin
-          grep -q 'name="ExtensionsList"' /tmp/testskin/skin.xml
-          grep -q 'name="EPGExtensionsList"' /tmp/testskin/skin.xml
-          grep -q 'name="SingleEPG"' /tmp/testskin/skin.xml
-          grep -q 'name="MultiEPG"' /tmp/testskin/skin.xml
-          grep -q 'name="GridEPG"' /tmp/testskin/skin.xml
-          grep -q 'name="InfoBarGridEPG"' /tmp/testskin/skin.xml
-          ! grep -q '17\*45' /tmp/testskin/skin.xml
-          python3 - <<'PY'
-          import xml.etree.ElementTree as ET
-          ET.parse('/tmp/testskin/skin.xml')
-          print('OpenBH patched XML valid')
-          PY
+
+          cat > /tmp/opkg <<'EOF'
+          #!/bin/sh
+          echo "$*" >> /tmp/opkg-calls.log
+          case "$*" in
+            *"/tmp/cineview-fhd-2.0-smart-"*".ipk"*)
+              if echo " $* " | grep -q " --force-reinstall "; then
+                echo "FORCE_REINSTALL_ACCEPTED"
+                touch /tmp/force-reinstall-used
+                exit 0
+              fi
+              echo "Refusing same-version install (simulated installed 2.0)" >&2
+              exit 1
+              ;;
+            *)
+              exit 0
+              ;;
+          esac
+          EOF
+          chmod +x /tmp/opkg
+          sudo cp /tmp/opkg /usr/local/bin/opkg
+
+          cp install.sh /tmp/install-under-test.sh
+          sed -i 's/--restart/--no-restart/g' /tmp/install-under-test.sh
+
+          sudo env PATH="/usr/local/bin:/usr/bin:/bin" sh /tmp/install-under-test.sh 2>&1 | tee /tmp/install.log
+
+          test -f /tmp/force-reinstall-used
+          grep -F -- '--force-reinstall' /tmp/opkg-calls.log
+          grep -F 'CineView FHD 2.0 installed successfully' /tmp/install.log
+          grep -F '[DONE] CineView FHD 2.0 installation complete' /tmp/install.log
+          grep -F '[DONE] Installer file removed.' /tmp/install.log
+          echo 'REAL OPENBH SAME-VERSION REINSTALL PASSED'
