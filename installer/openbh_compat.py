@@ -8,6 +8,7 @@ import sys
 
 SCREEN_RE = r'\n?[ \t]*<screen\b(?=[^>]*\bname=["\']%s["\'])[^>]*>.*?</screen>[ \t]*\n?'
 
+# OpenBH quick-plugin icons are always scaled to their slot.
 # Current OpenBH 6.0 classes intentionally fall back to these legacy skin names.
 # Do NOT create the modern aliases below: if present they take precedence and can
 # bypass the proven OpenBH layouts.
