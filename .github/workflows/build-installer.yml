@@ -5,6 +5,7 @@ on:
       - 'installer/parts/**'
       - 'installer/CineViewPosterX.py'
       - 'installer/openbh_compat.py'
+      - 'installer/openatv_compat.py'
 permissions:
   contents: write
 jobs:
@@ -23,8 +24,10 @@ jobs:
           mkdir -p /tmp/cvstage/usr/lib/enigma2/python/Components/Renderer
           cp -f installer/CineViewPosterX.py /tmp/cvstage/usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.py
           cp -f installer/openbh_compat.py /tmp/cvstage/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openbh_compat.py
+          cp -f installer/openatv_compat.py /tmp/cvstage/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openatv_compat.py
           python3 -m py_compile /tmp/cvstage/usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.py
           python3 -m py_compile /tmp/cvstage/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openbh_compat.py
+          python3 -m py_compile /tmp/cvstage/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openatv_compat.py
           rm -rf /tmp/cvstage/usr/lib/enigma2/python/Components/Renderer/__pycache__
           rm -rf /tmp/cvstage/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/__pycache__
 
@@ -72,12 +75,19 @@ jobs:
           tar -tzf /tmp/cineview-payload-check.tar.gz >/dev/null
           tar -xOf /tmp/cineview-payload-check.tar.gz ./usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.py > /tmp/check-CineViewPosterX.py
           tar -xOf /tmp/cineview-payload-check.tar.gz ./usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openbh_compat.py > /tmp/check-openbh_compat.py
+          tar -xOf /tmp/cineview-payload-check.tar.gz ./usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openatv_compat.py > /tmp/check-openatv_compat.py
           tar -xOf /tmp/cineview-payload-check.tar.gz ./usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/activate.sh > /tmp/check-activate.sh
           tar -xOf /tmp/cineview-payload-check.tar.gz ./usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/plugin.py > /tmp/check-plugin.py
           grep -q 'class CineViewPosterX' /tmp/check-CineViewPosterX.py
           grep -q 'DeliteGreenPanel' /tmp/check-openbh_compat.py
           grep -q 'DeliteSetupFp' /tmp/check-openbh_compat.py
           grep -q 'BT_SCALE' /tmp/check-openbh_compat.py
+          grep -q 'PluginBrowserList' /tmp/check-openatv_compat.py
+          grep -q 'source="pluginList"' /tmp/check-openatv_compat.py
+          grep -q 'PluginBrowserGrid' /tmp/check-openatv_compat.py
+          grep -q 'source="pluginGrid"' /tmp/check-openatv_compat.py
+          grep -q 'SecondInfoBarECM' /tmp/check-openatv_compat.py
+          grep -q 'GraphicalInfoBarEPG' /tmp/check-openatv_compat.py
           grep -q 'Renderer/CineViewPosterX' /tmp/check-activate.sh
           grep -q 'Renderer/CineViewPosterX' /tmp/check-plugin.py
           rm -rf /tmp/cvcheck && mkdir -p /tmp/cvcheck
