@@ -1,29 +1,104 @@
-name: Inspect CineView original OpenBH screens
+name: Validate OpenBH native-contract build
 on:
   push:
     paths:
       - '.github/workflows/inspect-cineview.yml'
 jobs:
-  inspect:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Extract original payload screens
+      - name: Validate OpenBH payload and screen contracts
         shell: bash
         run: |
           set -euo pipefail
           rm -rf /tmp/cv && mkdir -p /tmp/cv
-          cat installer/parts/*.b64 | base64 -d > /tmp/payload.tar.gz
-          tar -xzf /tmp/payload.tar.gz -C /tmp/cv
-          P=/tmp/cv/usr/share/enigma2/CineView_FHD/skin.layout-000-oa.xml
-          python3 - "$P" <<'PY'
-          import re,sys
-          s=open(sys.argv[1],errors='ignore').read()
-          for name in ['ChoiceBox','PluginBrowser','EPGSelection','EPGSelectionMulti','QuickEPG','GraphicalEPG','GraphicalEPGPIG','GraphicalInfoBarEPG']:
-              print('\n###',name,'###')
-              ms=list(re.finditer(r'<screen\b(?=[^>]*\bname="'+re.escape(name)+r'")[^>]*>',s))
-              print('count=',len(ms))
-              for m in ms:
-                  e=s.find('</screen>',m.start())
-                  print(s[m.start():e+9])
+          LINE=$(awk '/^__CINEVIEW_PAYLOAD_BELOW__$/{print NR+1; exit}' cineview-smart-install.sh)
+          test -n "$LINE"
+          tail -n +"$LINE" cineview-smart-install.sh | base64 -d > /tmp/cv/payload.tar.gz
+          tar -xzf /tmp/cv/payload.tar.gz -C /tmp/cv
+          ROOT=/tmp/cv/usr/share/enigma2/CineView_FHD
+          PLUG=/tmp/cv/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl
+          REND=/tmp/cv/usr/lib/enigma2/python/Components/Renderer
+
+          test -f "$REND/CineViewPosterX.py"
+          python3 -m py_compile "$REND/CineViewPosterX.py"
+          test -f "$PLUG/openbh_compat.py"
+          python3 -m py_compile "$PLUG/openbh_compat.py"
+
+          rm -rf /tmp/openbhskin && mkdir -p /tmp/openbhskin
+          cp "$ROOT"/skin*.xml /tmp/openbhskin/
+          python3 "$PLUG/openbh_compat.py" /tmp/openbhskin
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import re, xml.etree.ElementTree as ET
+          root=Path('/tmp/openbhskin')
+          required=('ChoiceBox','PluginBrowser','EPGSelection','EPGSelectionMulti','QuickEPG','GraphicalEPG','GraphicalEPGPIG','GraphicalInfoBarEPG')
+          forbidden=('SingleEPG','InfobarSingleEPG','MultiEPG','GridEPG','GridEPGPIG','InfoBarGridEPG','ExtensionsList','EPGExtensionsList')
+          count=0
+          for p in root.glob('skin*.xml'):
+              s=p.read_text(errors='ignore')
+              ET.parse(str(p))
+              for name in required:
+                  n=len(re.findall(r'<screen\b(?=[^>]*\bname=["\']'+re.escape(name)+r'["\'])',s))
+                  if n != 1:
+                      raise SystemExit('%s: expected one %s, got %d' % (p.name,name,n))
+              for name in forbidden:
+                  if re.search(r'<screen\b(?=[^>]*\bname=["\']'+re.escape(name)+r'["\'])',s):
+                      raise SystemExit('%s: forbidden OpenBH priority alias remains: %s' % (p.name,name))
+              if 'render="PosterX"' in s or "render='PosterX'" in s:
+                  raise SystemExit('%s: image PosterX dependency remains' % p.name)
+              if 'render="CineViewPosterX"' not in s:
+                  raise SystemExit('%s: CineViewPosterX missing' % p.name)
+              if re.search(r'(?:size|position)=["\'][^"\']*\d+\*\d+',s):
+                  raise SystemExit('%s: arithmetic XML dimension remains' % p.name)
+              count += 1
+          print('OPENBH_SCREEN_CONTRACTS_OK files=%d' % count)
           PY
+
+          # Network endpoint used by CineViewPosterX must be reachable and return an image URL.
+          python3 - <<'PY'
+          import json, urllib.parse, urllib.request
+          u='https://api.tvmaze.com/singlesearch/shows?'+urllib.parse.urlencode({'q':'Breaking Bad'})
+          req=urllib.request.Request(u,headers={'User-Agent':'CineView-FHD-validation'})
+          d=json.loads(urllib.request.urlopen(req,timeout=10).read().decode())
+          image=(d.get('image') or {}).get('medium') or (d.get('image') or {}).get('original')
+          assert image and image.startswith('http'), image
+          print('POSTER_API_OK')
+          PY
+
+      - name: Validate full same-version opkg recovery
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo mkdir -p /etc/enigma2 /usr/local/bin
+          printf '%s\n' 'Creator=OpenBH' 'Version=6.0' 'Build=001' 'distro=openbh' | sudo tee /etc/image-version >/dev/null
+
+          cat > /tmp/opkg <<'EOF'
+          #!/bin/sh
+          echo "$*" >> /tmp/opkg-calls.log
+          case "$*" in
+            *"/tmp/cineview-fhd-"*".ipk"*)
+              if echo " $* " | grep -q " --force-reinstall "; then
+                touch /tmp/force-reinstall-used
+                exit 0
+              fi
+              echo "Refusing same-version install (simulated)" >&2
+              exit 1
+              ;;
+            *) exit 0 ;;
+          esac
+          EOF
+          chmod +x /tmp/opkg
+          sudo cp /tmp/opkg /usr/local/bin/opkg
+
+          cp cineview-smart-install.sh /tmp/cv-install.sh
+          sudo env PATH="/usr/local/bin:/usr/bin:/bin" sh /tmp/cv-install.sh --no-restart 2>&1 | tee /tmp/install.log
+
+          test -f /tmp/force-reinstall-used
+          grep -F -- '--force-reinstall' /tmp/opkg-calls.log
+          grep -F 'installed successfully' /tmp/install.log
+          grep -F 'installation complete' /tmp/install.log
+          grep -F 'Temporary IPK/DEB installation package removed' /tmp/install.log
+          echo 'OPENBH_FULL_REINSTALL_OK'
