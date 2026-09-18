@@ -116,16 +116,17 @@ INFOBAR_EVENT_VIEW = """\t\t<eLabel position="0,0" size="1920,360" backgroundCol
 \t\t<widget source="Event" render="CineViewPosterX" position="1630,82" size="210,260" zPosition="8"/>"""
 
 SECOND_INFO = """\t\t<eLabel position="0,0" size="1920,520" backgroundColor="steSecondInfoBG" zPosition="0"/>
-\t\t<widget name="channel" position="45,25" size="1370,55" font="Regular;34" foregroundColor="secondFG" backgroundColor="steSecondInfoBG" transparent="1" zPosition="4"/>
-\t\t<widget name="FullDescription" position="45,95" size="1370,300" font="Regular;25" foregroundColor="foreground" backgroundColor="steSecondInfoBG" transparent="1" zPosition="4"/>
+\t\t<widget name="channel" position="45,25" size="1380,52" font="Regular;34" foregroundColor="secondFG" backgroundColor="steSecondInfoBG" transparent="1" zPosition="5"/>
+\t\t<widget name="epg_description" position="45,88" size="1380,286" font="Regular;25" foregroundColor="foreground" backgroundColor="steSecondInfoBG" transparent="1" zPosition="5"/>
 \t\t<widget source="session.Event_Now" render="CineViewPosterX" position="1535,28" size="300,390" zPosition="8"/>
+\t\t<widget source="session.CurrentService" render="Label" position="45,382" size="1380,38" font="Regular;21" foregroundColor="grey" backgroundColor="steSecondInfoBG" transparent="1" zPosition="5"><convert type="PliExtraInfo">All</convert></widget>
 \t\t<eLabel position="35,430" size="1850,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
 \t\t<widget source="session.CurrentService" render="Picon" position="45,447" size="180,55" transparent="1" alphatest="blend"><convert type="ServiceName">Reference</convert></widget>
-\t\t<widget source="session.CurrentService" render="Label" position="245,455" size="650,38" font="Regular;24" foregroundColor="grey" transparent="1"><convert type="ServiceName">Name</convert></widget>
-\t\t<widget source="key_red" render="Label" position="920,452" size="210,40" font="Regular;23" halign="center" transparent="1"/>
-\t\t<widget source="key_green" render="Label" position="1140,452" size="210,40" font="Regular;23" halign="center" transparent="1"/>
-\t\t<widget source="key_yellow" render="Label" position="1360,452" size="210,40" font="Regular;23" halign="center" transparent="1"/>
-\t\t<widget source="key_blue" render="Label" position="1580,452" size="210,40" font="Regular;23" halign="center" transparent="1"/>"""
+\t\t<widget source="session.CurrentService" render="Label" position="245,455" size="610,38" font="Regular;24" foregroundColor="grey" transparent="1"><convert type="ServiceName">Name</convert></widget>
+\t\t<widget source="key_red" render="Label" position="885,452" size="220,40" font="Regular;23" halign="center" transparent="1"/>
+\t\t<widget source="key_green" render="Label" position="1115,452" size="220,40" font="Regular;23" halign="center" transparent="1"/>
+\t\t<widget source="key_yellow" render="Label" position="1345,452" size="220,40" font="Regular;23" halign="center" transparent="1"/>
+\t\t<widget source="key_blue" render="Label" position="1575,452" size="220,40" font="Regular;23" halign="center" transparent="1"/>"""
 
 SINGLE_EPG = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="steThemePrimary" zPosition="0"/>
 \t\t<widget source="Service" render="Picon" position="45,28" size="180,60" transparent="1" alphatest="blend"><convert type="ServiceName">Reference</convert></widget>
@@ -220,10 +221,63 @@ INFOBAR_GRID = """\t\t<eLabel position="0,0" size="1920,330" backgroundColor="st
 \t\t<widget source="key_yellow" render="Label" position="925,278" size="400,40" font="Regular;23" halign="center" transparent="1"/>
 \t\t<widget source="key_blue" render="Label" position="1360,278" size="400,40" font="Regular;23" halign="center" transparent="1"/>"""
 
+QUICK_MENU = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="steThemePrimary" zPosition="0"/>
+\t\t<widget source="mainlist" render="Listbox" position="45,90" size="610,650" backgroundColor="steThemePrimary" transparent="1" itemHeight="86" zPosition="5">
+\t\t\t<templates>
+\t\t\t\t<template name="Default" fonts="Regular;29,Regular;20" itemWidth="610" itemHeight="86">
+\t\t\t\t\t<mode name="default">
+\t\t\t\t\t\t<pixmap index="2" position="10,11" size="64,64" alpha="blend" scale="centerScaled"/>
+\t\t\t\t\t\t<text index="0" position="90,4" size="500,43" font="0" verticalAlignment="center"/>
+\t\t\t\t\t\t<text index="1" position="105,47" size="485,30" font="1" verticalAlignment="center"/>
+\t\t\t\t\t</mode>
+\t\t\t\t</template>
+\t\t\t</templates>
+\t\t</widget>
+\t\t<eLabel position="680,88" size="2,655" backgroundColor="steThemePanelAlt" zPosition="2"/>
+\t\t<widget source="sublist" render="Listbox" position="710,90" size="610,650" backgroundColor="steThemePrimary" transparent="1" itemHeight="86" zPosition="5">
+\t\t\t<templates>
+\t\t\t\t<template name="Default" fonts="Regular;29,Regular;20" itemWidth="610" itemHeight="86">
+\t\t\t\t\t<mode name="default">
+\t\t\t\t\t\t<text index="0" position="10,4" size="590,43" font="0" verticalAlignment="center"/>
+\t\t\t\t\t\t<text index="1" position="25,47" size="575,30" font="1" verticalAlignment="center"/>
+\t\t\t\t\t</mode>
+\t\t\t\t</template>
+\t\t\t</templates>
+\t\t</widget>
+\t\t<eLabel position="1360,92" size="400,225" backgroundColor="black" zPosition="3"/>
+\t\t<widget source="session.VideoPicture" render="Pig" position="1360,92" size="400,225" backgroundColor="black" zPosition="4"/>
+\t\t<widget name="description" position="1360,345" size="400,395" backgroundColor="steThemePrimary" transparent="1" font="Regular;24" foregroundColor="foreground" halign="center" valign="center" zPosition="4"/>
+\t\t<eLabel position="35,785" size="1750,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
+\t\t<widget source="key_red" render="Label" position="55,805" size="360,45" backgroundColor="key_red" font="Regular;24" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>
+\t\t<widget source="key_green" render="Label" position="435,805" size="360,45" backgroundColor="key_green" font="Regular;24" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>
+\t\t<widget source="key_yellow" render="Label" position="815,805" size="360,45" backgroundColor="key_yellow" font="Regular;24" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>
+\t\t<widget source="key_help" render="Label" position="1480,805" size="280,45" backgroundColor="key_back" font="Regular;24" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>"""
+
+VERTICAL_EPG = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="steThemePrimary" zPosition="0"/>
+\t\t<widget source="Title" render="Label" position="45,25" size="1730,52" font="Regular;35" foregroundColor="secondFG" transparent="1"/>
+\t\t<widget name="bouquetlist" position="45,90" size="1730,700" backgroundColor="steThemePrimary" scrollbarMode="showNever" zPosition="20"/>
+\t\t<widget name="list" position="45,90" size="1730,700" backgroundColor="steThemePrimary" scrollbarMode="showNever" zPosition="19"/>
+\t\t<widget name="currCh1" position="45,95" size="330,42" font="Regular;27" foregroundColor="secondFG" transparent="1"/>
+\t\t<widget name="currCh2" position="385,95" size="330,42" font="Regular;27" foregroundColor="secondFG" transparent="1"/>
+\t\t<widget name="currCh3" position="725,95" size="330,42" font="Regular;27" foregroundColor="secondFG" transparent="1"/>
+\t\t<widget name="currCh4" position="1065,95" size="330,42" font="Regular;27" foregroundColor="secondFG" transparent="1"/>
+\t\t<widget name="currCh5" position="1405,95" size="330,42" font="Regular;27" foregroundColor="secondFG" transparent="1"/>
+\t\t<widget name="list1" position="45,145" size="330,590" backgroundColor="steThemePrimary" scrollbarMode="showNever"/>
+\t\t<widget name="list2" position="385,145" size="330,590" backgroundColor="steThemePrimary" scrollbarMode="showNever"/>
+\t\t<widget name="list3" position="725,145" size="330,590" backgroundColor="steThemePrimary" scrollbarMode="showNever"/>
+\t\t<widget name="list4" position="1065,145" size="330,590" backgroundColor="steThemePrimary" scrollbarMode="showNever"/>
+\t\t<widget name="list5" position="1405,145" size="330,590" backgroundColor="steThemePrimary" scrollbarMode="showNever"/>
+\t\t<eLabel position="35,775" size="1750,2" backgroundColor="steThemePanelAlt"/>
+\t\t<widget source="key_red" render="Label" position="55,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
+\t\t<widget source="key_green" render="Label" position="490,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
+\t\t<widget source="key_yellow" render="Label" position="925,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
+\t\t<widget source="key_blue" render="Label" position="1360,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>"""
+
 SCREENS = (
     ("PluginBrowserList", PLUGIN_LIST, "center,center", "1820,880", "Plugin Browser"),
     ("PluginBrowserGrid", PLUGIN_GRID, "center,center", "1820,880", "Plugin Browser"),
     ("PluginBrowser", PLUGIN_LIST, "center,center", "1820,880", "Plugin Browser"),
+    ("QuickMenu", QUICK_MENU, "center,center", "1820,880", "Quick Launch Menu"),
     ("EventView", EVENT_VIEW, "center,center", "1820,880", "Event View"),
     ("EventViewSimple", EVENT_SIMPLE, "center,center", "1820,760", "Event View"),
     ("InfoBarEventView", INFOBAR_EVENT_VIEW, "0,0", "1920,360", "Event View"),
@@ -235,6 +289,8 @@ SCREENS = (
     ("GraphicalEPG", GRID, "center,center", "1820,880", "Graphical EPG"),
     ("GraphicalEPGPIG", GRID_PIG, "center,center", "1820,880", "Graphical EPG"),
     ("GraphicalInfoBarEPG", INFOBAR_GRID, "0,750", "1920,330", "InfoBar EPG"),
+    ("EPGvertical", VERTICAL_EPG, "center,center", "1820,880", "Vertical EPG"),
+    ("EPGverticalPIG", VERTICAL_EPG, "center,center", "1820,880", "Vertical EPG"),
 )
 
 
@@ -245,6 +301,9 @@ def patch_file(path):
 
     data = data.replace('render="PosterX"', 'render="CineViewPosterX"')
     data = data.replace("render='PosterX'", "render='CineViewPosterX'")
+    # OpenATV 8 MessageBox no longer exposes timerRunning; the legacy CineView applet
+    # crashed StartEnigma. Keep the old layout logic but make the capability check safe.
+    data = data.replace("if self.timerRunning:", "if getattr(self, \"timerRunning\", False):")
 
     idx = data.rfind("</skin>")
     if idx < 0:
