@@ -176,12 +176,14 @@ jobs:
           curl -fsSL "$BASE/EventView.py" -o /tmp/atv-EventView.py
           curl -fsSL "$BASE/InfoBarGenerics.py" -o /tmp/atv-InfoBarGenerics.py
           curl -fsSL "$BASE/EpgSelection.py" -o /tmp/atv-EpgSelection.py
+          curl -fsSL "$BASE/SessionGlobals.py" -o /tmp/atv-SessionGlobals.py
           python3 - <<'PY'
           from pathlib import Path
           pb=Path('/tmp/atv-PluginBrowser.py').read_text()
           ev=Path('/tmp/atv-EventView.py').read_text()
           ib=Path('/tmp/atv-InfoBarGenerics.py').read_text()
           epg=Path('/tmp/atv-EpgSelection.py').read_text()
+          sg=Path('/tmp/atv-SessionGlobals.py').read_text()
 
           assert 'mandatoryWidgets=[self.layout]' in pb
           assert 'self.skinName = ["PluginBrowserList" if config.usage.pluginListLayout.value == PLUGIN_LIST else "PluginBrowserGrid", "PluginBrowser"]' in pb
@@ -203,9 +205,31 @@ jobs:
                     'self["key_red"]','self["key_green"]','self["key_yellow"]','self["key_blue"]'):
               assert x in second,x
 
+          assert 'self["Event_Now"] = EventInfo(session.nav, EventInfo.NOW)' in sg
+
           for x in ('self.skinName = "QuickEPG"','self.skinName = "GraphicalEPG"',
                     'self.skinName = "GraphicalEPGPIG"','self.skinName = "GraphicalInfoBarEPG"',
                     'self.skinName = "EPGSelectionMulti"'):
               assert x in epg,x
           print('OPENATV_UPSTREAM_CONTRACTS_OK')
           PY
+
+      - name: Verify OpenATV keeps theme-owned SecondInfoBar color
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/cv-compat-unit /tmp/cv-components
+          mkdir -p /tmp/cv-compat-unit /tmp/cv-components/Components/Renderer /tmp/cv-components/Components/Converter
+          printf '%s\n' '<skin><colors><color name="steSecondInfoBG" value="#AA112233"/></colors></skin>' >/tmp/cv-compat-unit/skin.xml
+          printf '# present\n' >/tmp/cv-components/Components/Renderer/RunningText.py
+          printf '# present\n' >/tmp/cv-components/Components/Converter/PliExtraInfo.py
+          printf '# present\n' >/tmp/cv-components/Components/Converter/TransponderInfo.py
+          printf '# present\n' >/tmp/cv-components/Components/Converter/ServiceOrbitalPosition.py
+          printf '%s\n' 'version=8.0.0-beta' 'distro=openatv' | sudo tee /etc/image-version >/dev/null
+          python3 installer/compat.py /tmp/cv-compat-unit /tmp/cv-components /tmp/cv-compat-report.json
+          grep -F 'value="#AA112233"' /tmp/cv-compat-unit/skin.xml
+          if grep -Fq '#B8101214' /tmp/cv-compat-unit/skin.xml; then
+            echo "OpenATV SecondInfoBar color was incorrectly forced" >&2
+            exit 30
+          fi
+          echo OPENATV_SECONDINFO_THEME_COLOR_PRESERVED
