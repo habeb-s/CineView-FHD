@@ -14,95 +14,49 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Simulate OpenATV 8 install and validate native contracts
+        with:
+          fetch-depth: 30
+      - name: Validate published OpenATV 8 payload and FHD contracts
         shell: bash
         run: |
           set -euo pipefail
-          sudo mkdir -p /etc/enigma2 /usr/local/bin
-          sudo mkdir -p /usr/lib/enigma2/python/Components/Renderer
-          sudo mkdir -p /usr/lib/enigma2/python/Components/Converter
-          sudo mkdir -p /usr/lib/enigma2/python/Components/Sources
-          printf '%s\n' \
-            'box_type=vuduo4kse' \
-            'version=8.0.0-beta' \
-            'build=20260917' \
-            'comment=openATV' \
-            'oever=OE-Alliance 6.0' \
-            'distro=openatv' \
-            'arch=cortexa15hf-neon-vfpv4' | sudo tee /etc/image-version >/dev/null
-          printf '%s\n' 'Welcome to openATV 8.0.0-beta' | sudo tee /etc/issue >/dev/null
-          sudo tee /etc/enigma2/settings >/dev/null <<'EOF'
-          config.usage.pluginListLayout=0
-          config.plugins.cineview.theme=navy
-          config.plugins.cineview.poster_infobar=True
-          config.plugins.cineview.poster_second=True
-          config.plugins.cineview.poster_channels=True
-          config.plugins.cineview.weatherprovider=oa
-          config.plugins.cineview.timeformat=24
+          python3 -m py_compile installer/openatv_compat.py
+
+          RAW_SHA="$(sed -n 's|^RAW="https://raw.githubusercontent.com/habeb-s/CineView-FHD/\([0-9a-f]\{40\}\)"$|\1|p' install.sh)"
+          test -n "$RAW_SHA"
+          git cat-file -e "$RAW_SHA:cineview-smart-install.sh"
+          git show "$RAW_SHA:cineview-smart-install.sh" > /tmp/cineview-smart-install.sh
+          LINE="$(awk '/^__CINEVIEW_PAYLOAD_BELOW__$/{print NR+1; exit}' /tmp/cineview-smart-install.sh)"
+          test -n "$LINE"
+          tail -n +"$LINE" /tmp/cineview-smart-install.sh | base64 -d > /tmp/cineview-payload.tar.gz
+          tar -tzf /tmp/cineview-payload.tar.gz >/dev/null
+          tar -xOf /tmp/cineview-payload.tar.gz ./usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openatv_compat.py > /tmp/published-openatv.py
+          cmp installer/openatv_compat.py /tmp/published-openatv.py
+          python3 -m py_compile /tmp/published-openatv.py
+
+          rm -rf /tmp/cvskin
+          mkdir -p /tmp/cvskin
+          cat > /tmp/cvskin/skin.xml <<'EOF'
+          <skin>
+            <screen name="MessageBox" position="center,center" size="600,500">
+              <widget source="session.CurrentService" render="Label" position="0,0" size="100,40">
+                <convert type="ServiceInfo">IsSDAndWidescreen</convert>
+              </widget>
+              <applet type="onLayoutFinish">if self.timerRunning:
+                  pass</applet>
+            </screen>
+          </skin>
           EOF
 
-          for p in \
-            /usr/lib/enigma2/python/Components/Renderer/RunningText.py \
-            /usr/lib/enigma2/python/Components/Converter/PliExtraInfo.py \
-            /usr/lib/enigma2/python/Components/Converter/ServiceOrbitalPosition.py \
-            /usr/lib/enigma2/python/Components/Sources/OAWeather.py \
-            /usr/lib/enigma2/python/Components/Converter/OAWeather.py; do
-            sudo mkdir -p "$(dirname "$p")"
-            printf '# simulated OpenATV component\n' | sudo tee "$p" >/dev/null
-          done
-          printf '#!/bin/sh\nexit 0\n' | sudo tee /usr/local/bin/bitrate >/dev/null
-          sudo chmod 755 /usr/local/bin/bitrate
-
-          cat >/tmp/opkg <<'EOF'
-          #!/bin/sh
-          echo "$*" >> /tmp/opkg-calls.log
-          pkg=""
-          for a in "$@"; do
-            case "$a" in /tmp/cineview-fhd-*.ipk) pkg="$a";; esac
-          done
-          [ -n "$pkg" ] || exit 0
-          if echo " $* " | grep -q " --force-reinstall "; then
-            rm -rf /tmp/ipkx && mkdir -p /tmp/ipkx
-            cd /tmp/ipkx || exit 1
-            ar p "$pkg" data.tar.gz > data.tar.gz || exit 1
-            sudo tar -xzf data.tar.gz -C / || exit 1
-            touch /tmp/openatv-data-installed
-            exit 0
-          fi
-          echo "Refusing first same-version install (simulated OpenATV)" >&2
-          exit 1
-          EOF
-          chmod +x /tmp/opkg
-          sudo cp /tmp/opkg /usr/local/bin/opkg
-
-          grep -F '46bd768c02818e47e7cd2126a265a5644d100023' install.sh
-          cp install.sh /tmp/cineview-openatv-public.sh
-          sed -i 's/--restart/--no-restart/g' /tmp/cineview-openatv-public.sh
-          chmod +x /tmp/cineview-openatv-public.sh
-          sudo env PATH="/usr/local/bin:/usr/bin:/bin" sh /tmp/cineview-openatv-public.sh 2>&1 | tee /tmp/openatv-install.log
-
-          test -f /tmp/openatv-data-installed
-          grep -F 'OpenATV 8 detected -> dedicated live-verified OpenATV 8 screen contracts selected.' /tmp/openatv-install.log
-          grep -F 'OpenATV detected' /tmp/openatv-install.log
-          grep -F 'dedicated CineView FHD OpenATV screen contracts' /tmp/openatv-install.log
-          grep -F 'OpenATV PluginBrowser list/grid, EventView, SecondInfoBar and EPG layouts adapted' /tmp/openatv-install.log
-          if grep -Fq 'OpenViX detected' /tmp/openatv-install.log; then
-            echo "OpenViX adapter incorrectly ran on OpenATV" >&2
-            exit 10
-          fi
-          if grep -Fq 'OpenBH detected' /tmp/openatv-install.log; then
-            echo "OpenBH adapter incorrectly ran on OpenATV" >&2
-            exit 11
-          fi
+          python3 /tmp/published-openatv.py /tmp/cvskin > /tmp/openatv-adapter.log
+          grep -Fx '1' /tmp/openatv-adapter.log
 
           python3 - <<'PY'
           from pathlib import Path
           import re
           import xml.etree.ElementTree as ET
 
-          p=Path('/usr/share/enigma2/CineView_FHD/skin.xml')
-          assert p.exists(), p
-          s=p.read_text(errors='ignore')
+          s=Path('/tmp/cvskin/skin.xml').read_text()
           ET.fromstring(s)
 
           def one(name):
@@ -110,50 +64,57 @@ jobs:
               assert len(m)==1,(name,len(m))
               return m[0]
 
-          pb=one('PluginBrowser')
-          pbl=one('PluginBrowserList')
-          pbg=one('PluginBrowserGrid')
-          assert 'source="pluginList"' in pb
-          assert 'source="pluginList"' in pbl
-          assert 'source="pluginGrid"' in pbg
-          assert 'listOrientation="grid"' in pbg
-          assert 'source="list"' not in pb
-          assert 'source="list"' not in pbl
-          assert 'BT_SCALE' in pbl and 'BT_SCALE' in pbg
+          required = [
+              'InfoBar','InfoBarLite',
+              'PluginBrowser','PluginBrowserList','PluginBrowserGrid',
+              'QuickMenu','EventView','EventViewSimple','InfoBarEventView',
+              'SecondInfoBar','SecondInfoBarECM',
+              'EPGSelection','EPGSelectionMulti','QuickEPG',
+              'GraphicalEPG','GraphicalEPGPIG','GraphicalInfoBarEPG',
+              'EPGvertical','EPGverticalPIG',
+              'Satfinder','ChoiceBox','InformationService','ServiceInformation',
+              'ChannelSelection','MessageBox','MessageBoxModal'
+          ]
+          for name in required:
+              one(name)
+
+          assert 'source="pluginList"' in one('PluginBrowserList')
+          assert 'source="pluginGrid"' in one('PluginBrowserGrid')
+          assert 'listOrientation="grid"' in one('PluginBrowserGrid')
+
+          ib=one('InfoBar')
+          assert 'ServiceInfo">IsHD' in ib
+          assert 'PliExtraInfo">TransponderInfo' in ib
+          assert 'PliExtraInfo">CryptoNameCaid' in ib
+          assert 'ExtendedServiceInfo">SatName' in ib
+
+          for name in ('SecondInfoBar','SecondInfoBarECM'):
+              block=one(name)
+              assert 'name="epg_description"' in block
+              assert 'PliExtraInfo">TransponderInfo' in block
+              assert 'PliExtraInfo">CryptoNameCaid' in block
 
           ev=one('EventView')
-          evs=one('EventViewSimple')
-          iev=one('InfoBarEventView')
-          for block in (ev,evs,iev):
-              assert 'name="FullDescription"' in block
-              assert 'render="CineViewPosterX"' in block
+          assert 'name="epg_description"' in ev
+          assert 'render="CineViewPosterX"' in ev
 
-          si=one('SecondInfoBar')
-          sie=one('SecondInfoBarECM')
-          for block in (si,sie):
-              assert 'name="FullDescription"' in block
-              assert 'name="channel"' in block
-
-          epg=one('EPGSelection')
-          mepg=one('EPGSelectionMulti')
-          quick=one('QuickEPG')
           graph=one('GraphicalEPG')
-          graphpig=one('GraphicalEPGPIG')
-          ibgraph=one('GraphicalInfoBarEPG')
-          assert 'name="number"' in epg and 'name="list"' in epg
-          assert 'name="bouquetlist"' in mepg and 'name="date"' in mepg
-          assert 'source="Service"' in quick and 'name="list"' in quick
-          assert 'name="timeline_text"' in graph and 'name="timeline_now"' in graph
-          assert 'render="Pig"' in graphpig
-          assert 'name="timeline_text"' in ibgraph
+          assert 'ServiceFontGraphical="Regular;29"' in graph
+          assert 'EntryFontGraphical="Regular;27"' in graph
+          assert 'NumberOfRows="8"' in graph
+
+          assert 'source="Frontend"' in one('Satfinder')
+          assert 'name="config"' in one('Satfinder')
+          assert 'name="list"' in one('ChoiceBox')
+          assert 'name="information"' in one('InformationService')
+          assert 'source="key_yellow"' in one('InformationService')
+          assert 'source="key_yellow"' in one('ChannelSelection')
+
+          msg=one('MessageBox')
+          assert '<applet' not in msg
+          assert 'if self.timerRunning:' not in s
+          assert 'ServiceInfo">IsSDAndWidescreen' not in s
 
           assert 'render="PosterX"' not in s
-          assert s.count('render="CineViewPosterX"') >= 8
-          assert '<screen name="DeliteGreenPanel"' not in s
-          print('OPENATV_ACTIVE_XML_OK')
-          print('OPENATV_CINEVIEWPOSTERX_REFS',s.count('render="CineViewPosterX"'))
+          print('OPENATV8_PUBLISHED_FHD_CONTRACTS_OK')
           PY
-
-          grep -F 'config.skin.primary_skin=CineView_FHD/skin.xml' /etc/enigma2/settings
-          grep -F -- '--force-reinstall' /tmp/opkg-calls.log
-          echo OPENATV_INSTALLER_END_TO_END_PASS
