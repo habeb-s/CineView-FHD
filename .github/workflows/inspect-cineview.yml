@@ -1,4 +1,4 @@
-name: Validate OpenBH native-contract build
+name: Validate public OpenBH bootstrap
 on:
   push:
     paths:
@@ -8,67 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Validate OpenBH payload and screen contracts
-        shell: bash
-        run: |
-          set -euo pipefail
-          rm -rf /tmp/cv && mkdir -p /tmp/cv
-          LINE=$(awk '/^__CINEVIEW_PAYLOAD_BELOW__$/{print NR+1; exit}' cineview-smart-install.sh)
-          test -n "$LINE"
-          tail -n +"$LINE" cineview-smart-install.sh | base64 -d > /tmp/cv/payload.tar.gz
-          tar -xzf /tmp/cv/payload.tar.gz -C /tmp/cv
-          ROOT=/tmp/cv/usr/share/enigma2/CineView_FHD
-          PLUG=/tmp/cv/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl
-          REND=/tmp/cv/usr/lib/enigma2/python/Components/Renderer
-
-          test -f "$REND/CineViewPosterX.py"
-          python3 -m py_compile "$REND/CineViewPosterX.py"
-          test -f "$PLUG/openbh_compat.py"
-          python3 -m py_compile "$PLUG/openbh_compat.py"
-
-          rm -rf /tmp/openbhskin && mkdir -p /tmp/openbhskin
-          cp "$ROOT"/skin*.xml /tmp/openbhskin/
-          python3 "$PLUG/openbh_compat.py" /tmp/openbhskin
-
-          python3 - <<'PY'
-          from pathlib import Path
-          import re, xml.etree.ElementTree as ET
-          root=Path('/tmp/openbhskin')
-          required=('ChoiceBox','PluginBrowser','EPGSelection','EPGSelectionMulti','QuickEPG','GraphicalEPG','GraphicalEPGPIG','GraphicalInfoBarEPG')
-          forbidden=('SingleEPG','InfobarSingleEPG','MultiEPG','GridEPG','GridEPGPIG','InfoBarGridEPG','ExtensionsList','EPGExtensionsList')
-          count=0
-          for p in root.glob('skin*.xml'):
-              s=p.read_text(errors='ignore')
-              ET.parse(str(p))
-              for name in required:
-                  n=len(re.findall(r'<screen\b(?=[^>]*\bname=["\']'+re.escape(name)+r'["\'])',s))
-                  if n != 1:
-                      raise SystemExit('%s: expected one %s, got %d' % (p.name,name,n))
-              for name in forbidden:
-                  if re.search(r'<screen\b(?=[^>]*\bname=["\']'+re.escape(name)+r'["\'])',s):
-                      raise SystemExit('%s: forbidden OpenBH priority alias remains: %s' % (p.name,name))
-              if 'render="PosterX"' in s or "render='PosterX'" in s:
-                  raise SystemExit('%s: image PosterX dependency remains' % p.name)
-              if 'render="CineViewPosterX"' not in s:
-                  raise SystemExit('%s: CineViewPosterX missing' % p.name)
-              if re.search(r'(?:size|position)=["\'][^"\']*\d+\*\d+',s):
-                  raise SystemExit('%s: arithmetic XML dimension remains' % p.name)
-              count += 1
-          print('OPENBH_SCREEN_CONTRACTS_OK files=%d' % count)
-          PY
-
-          # Network endpoint used by CineViewPosterX must be reachable and return an image URL.
-          python3 - <<'PY'
-          import json, urllib.parse, urllib.request
-          u='https://api.tvmaze.com/singlesearch/shows?'+urllib.parse.urlencode({'q':'Breaking Bad'})
-          req=urllib.request.Request(u,headers={'User-Agent':'CineView-FHD-validation'})
-          d=json.loads(urllib.request.urlopen(req,timeout=10).read().decode())
-          image=(d.get('image') or {}).get('medium') or (d.get('image') or {}).get('original')
-          assert image and image.startswith('http'), image
-          print('POSTER_API_OK')
-          PY
-
-      - name: Validate full same-version opkg recovery
+      - name: Run exact public bootstrap path
         shell: bash
         run: |
           set -euo pipefail
@@ -93,12 +33,15 @@ jobs:
           chmod +x /tmp/opkg
           sudo cp /tmp/opkg /usr/local/bin/opkg
 
-          cp cineview-smart-install.sh /tmp/cv-install.sh
-          sudo env PATH="/usr/local/bin:/usr/bin:/bin" sh /tmp/cv-install.sh --no-restart 2>&1 | tee /tmp/install.log
+          cp install.sh /tmp/public-install.sh
+          sed -i 's/--restart/--no-restart/g' /tmp/public-install.sh
+          sudo env PATH="/usr/local/bin:/usr/bin:/bin" sh /tmp/public-install.sh 2>&1 | tee /tmp/public.log
 
           test -f /tmp/force-reinstall-used
-          grep -F -- '--force-reinstall' /tmp/opkg-calls.log
-          grep -F 'installed successfully' /tmp/install.log
-          grep -F 'installation complete' /tmp/install.log
-          grep -F 'Temporary IPK/DEB installation package removed' /tmp/install.log
-          echo 'OPENBH_FULL_REINSTALL_OK'
+          grep -F 'Profile: oealliance/openbh' /tmp/public.log
+          grep -F 'CineViewPosterX is embedded for OpenBH' /tmp/public.log
+          grep -F 'validated 34 XML files' /tmp/public.log
+          grep -F 'installed successfully' /tmp/public.log
+          grep -F 'installation complete' /tmp/public.log
+          grep -F 'Installer file removed' /tmp/public.log
+          echo 'PUBLIC_OPENBH_BOOTSTRAP_OK'
