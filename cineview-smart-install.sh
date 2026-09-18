@@ -26,7 +26,12 @@ printf "%s%s========================================%s\n\n" "$BOLD" "$CYAN" "$RE
 [ "$(id -u 2>/dev/null)" = 0 ] || fail "run as root"
 TMP=$(mktemp -d /tmp/cineview-smart.XXXXXX 2>/dev/null || echo /tmp/cineview-smart.$$)
 mkdir -p "$TMP" || fail "cannot create temporary directory"
-trap 'rm -rf "$TMP"' EXIT INT TERM
+PKGFILE=""
+cleanup(){
+  [ -n "${PKGFILE:-}" ] && rm -f "$PKGFILE" 2>/dev/null || true
+  rm -rf "$TMP" 2>/dev/null || true
+}
+trap cleanup EXIT INT TERM
 
 IMG=$(cat /etc/image-version /etc/issue /etc/os-release /etc/hostname 2>/dev/null | tr '\n' ' ')
 LOW=$(echo "$IMG" | tr 'A-Z' 'a-z')
