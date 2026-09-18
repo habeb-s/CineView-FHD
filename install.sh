@@ -91,7 +91,7 @@ case "$PROFILE" in
 esac
 
 # Verified image-aware OE-Alliance smart installer.
-RAW="https://raw.githubusercontent.com/habeb-s/CineView-FHD/88b2fc513a2aef92b0dd8030d8bdf9bf7cf34f05"
+RAW="https://raw.githubusercontent.com/habeb-s/CineView-FHD/41be05219a5614740741f92b12956246eed81df7"
 
 printf "%s[CineView]%s Downloading CineView FHD 2.0 Smart Installer...\n" "$CYAN" "$RESET"
 if command -v wget >/dev/null 2>&1; then
