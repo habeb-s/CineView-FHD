@@ -15,7 +15,9 @@ import NavigationInstance
 CACHE_ROOT = "/tmp/CINEVIEW/poster"
 API_SINGLE = "https://api.tvmaze.com/singlesearch/shows"
 API_SEARCH = "https://api.tvmaze.com/search/shows"
+API_ITUNES = "https://itunes.apple.com/search"
 UA = "CineView-FHD/2.0.1 (Enigma2 native poster renderer)"
+LOG_PATH = "/tmp/CINEVIEW/poster.log"
 
 _epg = eEPGCache.getInstance()
 _lock = threading.Lock()
@@ -47,6 +49,29 @@ def _safe_name(title):
 def _poster_path(title):
     _mkdir(CACHE_ROOT)
     return os.path.join(CACHE_ROOT, _safe_name(title) + ".jpg")
+
+
+def _log(msg):
+    try:
+        _mkdir("/tmp/CINEVIEW")
+        with open(LOG_PATH, "a") as f:
+            f.write(msg.replace("\\n", " ")[:900] + "\\n")
+    except Exception:
+        pass
+
+
+def _queries(title):
+    q = _clean_title(title)
+    out = []
+    for value in (
+        q,
+        re.sub(r"\\s*[:|\\-]\\s*[^:|\\-]+$", "", q).strip(),
+        re.sub(r"\\([^)]*\\)|\\[[^]]*\\]", "", q).strip(),
+    ):
+        value = re.sub(r"\\s+", " ", value).strip(" -:|")
+        if value and value not in out:
+            out.append(value)
+    return out
 
 
 def _http_get(url, params=None, timeout=7.0, want_json=False):
@@ -86,22 +111,56 @@ def _http_get(url, params=None, timeout=7.0, want_json=False):
         return None
 
 
+def _itunes_artwork(q):
+    # Apple Search covers movies as well as TV and needs no API key.
+    # Try common storefronts because EPG titles are frequently localized.
+    for country in ("US", "GB", "PL", "DE", "FR", "IT", "ES"):
+        for media, entity in (("movie", "movie"), ("tvShow", "tvSeason")):
+            data = _http_get(
+                API_ITUNES,
+                params={"term": q, "media": media, "entity": entity, "limit": 5, "country": country},
+                timeout=6.0,
+                want_json=True,
+            ) or {}
+            for row in (data.get("results") or [])[:5]:
+                url = row.get("artworkUrl100") or row.get("artworkUrl60")
+                if url:
+                    # Apple's image CDN accepts larger requested dimensions.
+                    url = re.sub(r"/\\d+x\\d+bb\\.", "/600x900bb.", url)
+                    return url
+    return None
+
+
 def _image_url(title):
-    q = _clean_title(title)
-    if not q:
+    queries = _queries(title)
+    if not queries:
         return None
-    data = _http_get(API_SINGLE, params={"q": q}, timeout=6.0, want_json=True) or {}
-    image = data.get("image") or {}
-    url = image.get("original") or image.get("medium")
-    if url:
-        return url
-    rows = _http_get(API_SEARCH, params={"q": q}, timeout=6.0, want_json=True) or []
-    for row in rows[:5]:
-        show = (row or {}).get("show") or {}
-        image = show.get("image") or {}
+
+    # TVMaze is excellent for series/episodes.
+    for q in queries:
+        data = _http_get(API_SINGLE, params={"q": q}, timeout=6.0, want_json=True) or {}
+        image = data.get("image") or {}
         url = image.get("original") or image.get("medium")
         if url:
+            _log("provider=tvmaze title=%s query=%s" % (title, q))
             return url
+        rows = _http_get(API_SEARCH, params={"q": q}, timeout=6.0, want_json=True) or []
+        for row in rows[:5]:
+            show = (row or {}).get("show") or {}
+            image = show.get("image") or {}
+            url = image.get("original") or image.get("medium")
+            if url:
+                _log("provider=tvmaze-search title=%s query=%s" % (title, q))
+                return url
+
+    # TVMaze is TV-only. Use Apple Search as a no-key movie/TV fallback.
+    for q in queries:
+        url = _itunes_artwork(q)
+        if url:
+            _log("provider=itunes title=%s query=%s" % (title, q))
+            return url
+
+    _log("provider=none title=%s queries=%s" % (title, " | ".join(queries)))
     return None
 
 
