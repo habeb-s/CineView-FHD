@@ -183,7 +183,7 @@ GREEN_PANEL = """\t\t<eLabel position="0,0" size="1500,850" backgroundColor="ste
 {"template": [
 MultiContentEntryText(pos = (130, 5), size = (1180, 38), font=0, text = 0),
 MultiContentEntryText(pos = (130, 43), size = (1180, 30), font=1, text = 1),
-MultiContentEntryPixmapAlphaTest(pos = (10, 15), size = (100, 50), png = 2)
+MultiContentEntryPixmapAlphaTest(pos = (10, 20), size = (100, 40), png = 2, flags = BT_SCALE)
 ],
 "fonts": [gFont("Regular", 31), gFont("Regular", 23)],
 "itemHeight": 80
