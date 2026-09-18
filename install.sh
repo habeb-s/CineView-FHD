@@ -1,6 +1,6 @@
 #!/bin/sh
 set -eu
-RAW="https://raw.githubusercontent.com/habeb-s/CineView-FHD/8f515557bb91bb01681f2df4db31f348d589ba3c"
+RAW="https://raw.githubusercontent.com/habeb-s/CineView-FHD/aa04b55ff54033f616b1f0f4e7c05bc0d58348c2"
 TMP="/tmp/cineview-smart-installer.$$.sh"
 ESC="$(printf '\033')"
 GREEN="${ESC}[32m"; CYAN="${ESC}[36m"; RED="${ESC}[31m"; RESET="${ESC}[0m"
