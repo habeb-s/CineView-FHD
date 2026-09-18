@@ -1,0 +1,51 @@
+name: Validate real OpenBH reinstall path
+on:
+  push:
+    paths:
+      - '.github/workflows/validate-opkg-reinstall.yml'
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Simulate OpenBH with CineView 2.0 already installed
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          sudo mkdir -p /etc/enigma2 /usr/local/bin
+          printf '%s\n' 'Creator=OpenBH' 'Version=6.0' 'Build=001' 'distro=openbh' | sudo tee /etc/image-version >/dev/null
+          printf '%s\n' 'Package: enigma2-plugin-skins-cineview-fhd' 'Version: 2.0' | sudo tee /tmp/installed-cineview >/dev/null
+
+          cat > /tmp/opkg <<'EOF'
+          #!/bin/sh
+          echo "$*" >> /tmp/opkg-calls.log
+          case " $* " in
+            *" /tmp/cineview-fhd-2.0-smart-"*.ipk*" "*)
+              case " $* " in
+                *" --force-reinstall "*)
+                  touch /tmp/force-reinstall-used
+                  exit 0
+                  ;;
+                *)
+                  echo "Refusing same-version install (simulated OpenBH opkg)" >&2
+                  exit 1
+                  ;;
+              esac
+              ;;
+          esac
+          exit 0
+          EOF
+          chmod +x /tmp/opkg
+          sudo cp /tmp/opkg /usr/local/bin/opkg
+
+          cp install.sh /tmp/install-under-test.sh
+          sed -i 's/--restart/--no-restart/g' /tmp/install-under-test.sh
+
+          sudo env PATH="/usr/local/bin:/usr/bin:/bin" sh /tmp/install-under-test.sh | tee /tmp/install.log
+
+          test -f /tmp/force-reinstall-used
+          grep -F -- '--force-reinstall' /tmp/opkg-calls.log
+          grep -F '[DONE] CineView FHD 2.0 installation complete' /tmp/install.log
+          grep -F '[DONE] Installer file removed.' /tmp/install.log
+          echo 'REAL REINSTALL PATH PASSED'
