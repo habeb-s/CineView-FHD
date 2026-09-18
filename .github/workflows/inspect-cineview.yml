@@ -15,10 +15,12 @@ jobs:
           sh -n cineview-smart-install.sh
           LINE=$(awk '/^__CINEVIEW_PAYLOAD_BELOW__$/{print NR+1; exit}' cineview-smart-install.sh)
           tail -n +"$LINE" cineview-smart-install.sh | base64 -d > /tmp/payload.tar.gz
-          tar -xzf /tmp/payload.tar.gz -C /tmp
-          test -f /tmp/usr/lib/enigma2/python/Components/Renderer/PosterX.py
-          test -f /tmp/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openbh_compat.py
-          grep -q "PosterX=BUILTIN" /tmp/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/smartdeps.sh
+          rm -rf /tmp/cvpayload
+          mkdir -p /tmp/cvpayload
+          tar -xzf /tmp/payload.tar.gz -C /tmp/cvpayload
+          test -f /tmp/cvpayload/usr/lib/enigma2/python/Components/Renderer/PosterX.py
+          test -f /tmp/cvpayload/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openbh_compat.py
+          grep -q "PosterX=BUILTIN" /tmp/cvpayload/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/smartdeps.sh
           printf '%s\n' 'Creator=OpenBH' 'Version=6.0' 'Build=001' 'distro=openbh' | sudo tee /etc/image-version >/dev/null
           sudo /bin/sh ./cineview-smart-install.sh --dry-run | tee /tmp/openbh.log
           grep -F "OpenBH detected -> applying dedicated CineView FHD plugin/EPG compatibility" /tmp/openbh.log
@@ -27,8 +29,8 @@ jobs:
           grep -F "Dry-run passed" /tmp/openbh.log
           rm -rf /tmp/testskin
           mkdir -p /tmp/testskin
-          cp /tmp/usr/share/enigma2/CineView_FHD/skin.layout-000-oa.xml /tmp/testskin/skin.xml
-          python3 /tmp/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openbh_compat.py /tmp/testskin
+          cp /tmp/cvpayload/usr/share/enigma2/CineView_FHD/skin.layout-000-oa.xml /tmp/testskin/skin.xml
+          python3 /tmp/cvpayload/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openbh_compat.py /tmp/testskin
           grep -q 'name="ExtensionsList"' /tmp/testskin/skin.xml
           grep -q 'name="EPGExtensionsList"' /tmp/testskin/skin.xml
           grep -q 'name="SingleEPG"' /tmp/testskin/skin.xml
