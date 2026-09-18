@@ -1,20 +1,43 @@
-name: Inspect CineView compat
+name: Validate OpenBH CineView repair
 on:
   push:
     paths:
       - '.github/workflows/inspect-cineview.yml'
 jobs:
-  inspect:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Inspect compatibility logic
+      - name: Validate embedded payload and OpenBH dry run
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p /tmp/cv
-          cat installer/parts/*.b64 | base64 -d > /tmp/cv/payload.tar.gz
-          tar -xzf /tmp/cv/payload.tar.gz -C /tmp/cv
-          P=/tmp/cv/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/compat.py
-          echo '=== COMPAT FULL ==='
-          sed -n '1,260p' "$P"
+          sh -n cineview-smart-install.sh
+          LINE=$(awk '/^__CINEVIEW_PAYLOAD_BELOW__$/{print NR+1; exit}' cineview-smart-install.sh)
+          tail -n +"$LINE" cineview-smart-install.sh | base64 -d > /tmp/payload.tar.gz
+          tar -xzf /tmp/payload.tar.gz -C /tmp
+          test -f /tmp/usr/lib/enigma2/python/Components/Renderer/PosterX.py
+          test -f /tmp/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openbh_compat.py
+          grep -q "PosterX=BUILTIN" /tmp/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/smartdeps.sh
+          printf '%s\n' 'Creator=OpenBH' 'Version=6.0' 'Build=001' 'distro=openbh' | sudo tee /etc/image-version >/dev/null
+          sudo /bin/sh ./cineview-smart-install.sh --dry-run | tee /tmp/openbh.log
+          grep -F "OpenBH detected -> applying dedicated CineView FHD plugin/EPG compatibility" /tmp/openbh.log
+          grep -F "OpenBH PluginBrowser / Extensions / EPG layouts adapted" /tmp/openbh.log
+          grep -F "CineView native PosterX is embedded for OpenBH" /tmp/openbh.log
+          grep -F "Dry-run passed" /tmp/openbh.log
+          rm -rf /tmp/testskin
+          mkdir -p /tmp/testskin
+          cp /tmp/usr/share/enigma2/CineView_FHD/skin.layout-000-oa.xml /tmp/testskin/skin.xml
+          python3 /tmp/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openbh_compat.py /tmp/testskin
+          grep -q 'name="ExtensionsList"' /tmp/testskin/skin.xml
+          grep -q 'name="EPGExtensionsList"' /tmp/testskin/skin.xml
+          grep -q 'name="SingleEPG"' /tmp/testskin/skin.xml
+          grep -q 'name="MultiEPG"' /tmp/testskin/skin.xml
+          grep -q 'name="GridEPG"' /tmp/testskin/skin.xml
+          grep -q 'name="InfoBarGridEPG"' /tmp/testskin/skin.xml
+          ! grep -q '17\*45' /tmp/testskin/skin.xml
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          ET.parse('/tmp/testskin/skin.xml')
+          print('OpenBH patched XML valid')
+          PY
