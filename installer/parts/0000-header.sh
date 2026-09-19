@@ -292,6 +292,8 @@ Version: 2.1.1
 Architecture: all
 Maintainer: habeb-s
 Description: CineView FHD 2.1 for OpenATV 7.4-8.0 and OpenBH 6.x
+Conflicts: cineview-openbh6-reviewfix, cineview-quickicons-hotfix, enigma2-plugin-skins-cineview-fhd-openbh6
+Replaces: cineview-openbh6-reviewfix, cineview-quickicons-hotfix, enigma2-plugin-skins-cineview-fhd-openbh6
 EOF
 cat > "$PKGROOT/CONTROL/preinst" <<'EOF'
 #!/bin/sh
