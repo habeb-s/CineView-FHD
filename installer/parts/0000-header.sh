@@ -231,7 +231,30 @@ case "$LOW" in
   *openbh*|*openblackhole*)
     adapt "OpenBH detected -> applying dedicated CineView FHD plugin/EPG compatibility"
     "$PY" "$PLUGSTAGE/openbh_compat.py" "$SKINSTAGE" >/dev/null 2>&1 || fail "OpenBH screen compatibility patch failed"
+
+    # activate.sh rebuilds skin.xml whenever the user changes CineView options.
+    # The upstream payload historically ran the OpenATV post-processor there
+    # unconditionally, which could overwrite the OpenBH EPG/InfoBar layouts.
+    # On OpenBH, re-apply the dedicated OpenBH adapter to the newly selected
+    # skin.xml instead.
+    "$PY" - "$PLUGSTAGE/activate.sh" <<'PY' || fail "OpenBH activation hook patch failed"
+from __future__ import print_function
+import sys
+p=sys.argv[1]
+s=open(p, "r").read()
+old='"$PY" "$PLUGIN/openatv_v5.py" "$SKIN/skin.xml" >/dev/null 2>&1 || true'
+new='''IMGLOW=$(cat /etc/image-version /etc/issue /etc/os-release 2>/dev/null | tr 'A-Z' 'a-z' | tr '\\n' ' ')
+case "$IMGLOW" in
+  *openbh*|*openblackhole*) "$PY" "$PLUGIN/openbh_compat.py" "$SKIN/skin.xml" >/dev/null 2>&1 || true ;;
+  *) "$PY" "$PLUGIN/openatv_v5.py" "$SKIN/skin.xml" >/dev/null 2>&1 || true ;;
+esac'''
+if old not in s:
+    raise SystemExit(2)
+s=s.replace(old,new,1)
+open(p, "w").write(s)
+PY
     ok "OpenBH PluginBrowser / Extensions / EPG layouts adapted"
+    ok "OpenBH activation hook locked to OpenBH compatibility"
     if [ -f "$TMP/stage/usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.py" ]; then
       ok "CineViewPosterX is embedded for OpenBH"
     else
