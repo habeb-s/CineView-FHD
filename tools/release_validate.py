@@ -71,7 +71,9 @@ try:
 
     for required in ('openatv_compat.py','openbh_compat.py'):
         if not os.path.isfile(plug+'/'+required): fail('missing '+required)
-    if os.path.exists(plug+'/openatv_v5.py'): fail('legacy openatv_v5')
+    smart_text=open(SMART,errors='ignore').read()
+    if 'openbh_compat.py' not in smart_text or '*openbh*|*openblackhole*)' not in smart_text:
+        fail('OpenBH activation hook missing from smart installer')
 
     py=[p for p in glob.glob(base+'/usr/lib/enigma2/python/**/*.py',recursive=True)
         if 'CineView' in os.path.basename(p) or '/CineViewControl/' in p]
