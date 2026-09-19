@@ -38,11 +38,11 @@ def apply_twice(base, label, adapter_name):
     rc=subprocess.call([sys.executable,adapter,skin])
     if rc!=0: fail('%s adapter first rc=%s'%(label,rc))
     checkxml(skin,label+'-ADAPTER1')
-    a=digest(stage)
+    a=digest(skin)
     rc=subprocess.call([sys.executable,adapter,skin])
     if rc not in (0,3): fail('%s adapter second rc=%s'%(label,rc))
     checkxml(skin,label+'-ADAPTER2')
-    if a!=digest(stage): fail('%s adapter not idempotent'%label)
+    if a!=digest(skin): fail('%s skin adapter not idempotent'%label)
     return stage
 
 def one_screen(path,name):
