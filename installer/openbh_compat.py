@@ -115,32 +115,27 @@ def _stretch_second_infobar(data, name):
 
 
 def _extend_infobar_edges(data, name, second=False):
-    """Extend CineView InfoBar backgrounds to the real 1920x1080 edges.
-
-    Widget/content positions are intentionally preserved.  On SecondInfoBar the
-    two upper Now/Next panels are also extended outward, keeping the centre gap.
-    """
+    """Keep CineView InfoBars slightly inset from the physical screen edges."""
     pat = re.compile(SCREEN_RE % re.escape(name), re.S)
     m = pat.search(data)
     if not m:
         return data
     block = m.group(0)
 
-    # Bottom bar: remove the 24px side gutters and the 2px bottom gap.
-    block = block.replace('position="24,842" size="1872,236"', 'position="0,842" size="1920,238"')
-    block = block.replace('position="24,842" size="1872,2"', 'position="0,842" size="1920,2"')
-    block = block.replace('position="24,1076" size="1872,2"', 'position="0,1078" size="1920,2"')
-    block = block.replace('position="24,842" size="2,236"', 'position="0,842" size="2,238"')
-    block = block.replace('position="1894,842" size="2,236"', 'position="1918,842" size="2,238"')
+    # Bottom technical bar: restore the approved small side/bottom margin.
+    block = block.replace('position="0,842" size="1920,238"', 'position="24,842" size="1872,236"')
+    block = block.replace('position="0,842" size="1920,2"', 'position="24,842" size="1872,2"')
+    block = block.replace('position="0,1078" size="1920,2"', 'position="24,1076" size="1872,2"')
+    block = block.replace('position="0,842" size="2,238"', 'position="24,842" size="2,236"')
+    block = block.replace('position="1918,842" size="2,238"', 'position="1894,842" size="2,236"')
 
     if second:
-        # Preserve the approved Now/Next composition, only fill the unused
-        # outer gutters visible on OpenBH.
-        block = block.replace('position="70,145" size="790,440"', 'position="0,145" size="860,440"')
-        block = block.replace('position="925,145" size="925,440"', 'position="925,145" size="995,440"')
+        # Keep the approved Now/Next composition and only pull it slightly
+        # away from the outer edges, preserving the centre gap and content.
+        block = block.replace('position="0,145" size="860,440"', 'position="35,145" size="825,440"')
+        block = block.replace('position="925,145" size="995,440"', 'position="925,145" size="960,440"')
 
     return data[:m.start()] + block + data[m.end():]
-
 
 def _screen(name, body, position="center,center", size="1820,880", title=""):
     t = (' title="%s"' % title) if title else ""
@@ -492,7 +487,7 @@ SCREENS = (
     ("QuickEPG", QUICK_EPG, "0,660", "1920,420", "Quick EPG"),
     ("SecondInfoBar", SECOND_INFO_OPENBH, "0,0", "1920,1080", "Second InfoBar"),
     ("SecondInfoBarECM", SECOND_INFO_OPENBH, "0,0", "1920,1080", "Second InfoBar"),
-    ("GraphicalEPG", GRID_EPG, "center,center", "1900,1040", "Graphical EPG"),
+    ("GraphicalEPG", GRID_EPG, "center,center", "1880,1000", "Graphical EPG"),
     ("GraphicalEPGPIG", GRID_PIG, "center,center", "1820,880", "Graphical EPG"),
     ("GraphicalInfoBarEPG", INFOBAR_GRID, "0,745", "1920,325", "InfoBar EPG"),
 )
@@ -514,7 +509,7 @@ def patch_file(path):
 
     # Keep the primary InfoBar edge-to-edge. The dedicated OpenBH
     # SecondInfoBar/ECM screens are appended from the approved full-screen body.
-    data = _extend_infobar_edges(data, "InfoBar")
+    data = _extend_infobar_edges(data, "InfoBar")\n    data = _extend_infobar_edges(data, "SecondInfoBar", True)\n    data = _extend_infobar_edges(data, "SecondInfoBarECM", True)
 
     idx = data.rfind("</skin>")
     if idx < 0:
