@@ -2,10 +2,13 @@ name: Build CineView smart installer
 on:
   push:
     paths:
+      - '.github/workflows/build-installer.yml'
       - 'installer/parts/**'
       - 'installer/CineViewPosterX.py'
       - 'installer/openbh_compat.py'
       - 'installer/openatv_compat.py'
+      - 'tools/validate_openbh_atv_parity.py'
+      - 'tools/release_validate.py'
 permissions:
   contents: write
 jobs:
@@ -28,6 +31,18 @@ jobs:
           python3 -m py_compile /tmp/cvstage/usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.py
           python3 -m py_compile /tmp/cvstage/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openbh_compat.py
           python3 -m py_compile /tmp/cvstage/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openatv_compat.py
+
+          # Compare the same payload after OpenATV vs OpenBH adaptation.
+          # Strict release gate: OpenBH must preserve the approved OpenATV visual
+          # geometry/style, with only explicitly documented platform exceptions.
+          python3 tools/validate_openbh_atv_parity.py \
+            --skin-dir /tmp/cvstage/usr/share/enigma2/CineView_FHD \
+            --openatv-adapter installer/openatv_compat.py \
+            --openbh-adapter installer/openbh_compat.py \
+            --report /tmp/openbh-atv-parity.json \
+            --strict
+          cat /tmp/openbh-atv-parity.json
+
           rm -rf /tmp/cvstage/usr/lib/enigma2/python/Components/Renderer/__pycache__
           rm -rf /tmp/cvstage/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/__pycache__
 
@@ -99,6 +114,7 @@ jobs:
           fi
           mv "$OUT" cineview-smart-install.sh
           chmod 755 cineview-smart-install.sh
+          python3 tools/release_validate.py
       - name: Commit rebuilt installer
         shell: bash
         run: |
