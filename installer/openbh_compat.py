@@ -490,8 +490,8 @@ SCREENS = (
     ("EPGSelection", SINGLE_EPG, "center,center", "1820,880", "EPG Selection"),
     ("EPGSelectionMulti", MULTI_EPG, "center,center", "1820,880", "Multi EPG"),
     ("QuickEPG", QUICK_EPG, "0,660", "1920,420", "Quick EPG"),
-    ("SecondInfoBar", SECOND_INFO_OPENBH, "0,0", "1920,1080", "Second InfoBar"),\n    ("SecondInfoBarECM", SECOND_INFO_OPENBH, "0,0", "1920,1080", "Second InfoBar"),\n    ("SecondInfoBar", SECOND_INFOBAR, "0,560", "1920,520", "Second InfoBar"),
-    ("SecondInfoBarECM", SECOND_INFOBAR, "0,560", "1920,520", "Second InfoBar"),
+    ("SecondInfoBar", SECOND_INFO_OPENBH, "0,0", "1920,1080", "Second InfoBar"),
+    ("SecondInfoBarECM", SECOND_INFO_OPENBH, "0,0", "1920,1080", "Second InfoBar"),
     ("GraphicalEPG", GRID_EPG, "center,center", "1900,1040", "Graphical EPG"),
     ("GraphicalEPGPIG", GRID_PIG, "center,center", "1820,880", "Graphical EPG"),
     ("GraphicalInfoBarEPG", INFOBAR_GRID, "0,745", "1920,325", "InfoBar EPG"),
@@ -512,8 +512,8 @@ def patch_file(path):
     data = data.replace('render="PosterX"', 'render="CineViewPosterX"')
     data = data.replace("render='PosterX'", "render='CineViewPosterX'")
 
-    # Keep the primary InfoBar edge-to-edge. SecondInfoBar is replaced above
-    # with the approved OpenViX-style 1920x520 layout.
+    # Keep the primary InfoBar edge-to-edge. The dedicated OpenBH
+    # SecondInfoBar/ECM screens are appended from the approved full-screen body.
     data = _extend_infobar_edges(data, "InfoBar")
 
     idx = data.rfind("</skin>")
