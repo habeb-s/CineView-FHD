@@ -312,11 +312,22 @@ def patch_file(path):
 
     data = data.replace('render="PosterX"', 'render="CineViewPosterX"')
     data = data.replace("render='PosterX'", "render='CineViewPosterX'")
-    # OpenATV 8 removed several legacy ServiceInfo arguments. Leaving them in a
-    # widget raises during skin processing because ServiceInfo cannot resolve them.
+    # OpenATV 7.4-8.0 no longer exposes the old combined SD/aspect flags.
+    # Preserve the visual intent using the supported aspect-ratio flags.
+    data = re.sub(
+        r'(<convert\s+type=["\']ServiceInfo["\']>\s*)IsSDAndWidescreen(\s*</convert>)',
+        r'\1IsWidescreen\2',
+        data,
+    )
+    data = re.sub(
+        r'(<convert\s+type=["\']ServiceInfo["\']>\s*)IsSDAndNotWidescreen(\s*</convert>)',
+        r'\1IsNotWidescreen\2',
+        data,
+    )
+
+    # Other obsolete ServiceInfo arguments are removed with their containing
+    # widget, because an unresolved converter can abort skin loading.
     unsupported_serviceinfo = (
-        "IsSDAndNotWidescreen",
-        "IsSDAndWidescreen",
         "IsVideoAVC",
         "IsVideoHEVC",
         "IsVideoMPEG2",
@@ -326,9 +337,9 @@ def patch_file(path):
     )
     for arg in unsupported_serviceinfo:
         pat = re.compile(
-            r'<widget\\b(?:(?!</widget>).)*?<convert\\s+type=["\\\']ServiceInfo["\\\']>\\s*'
+            r'<widget\b(?:(?!</widget>).)*?<convert\s+type=["\']ServiceInfo["\']>\s*'
             + re.escape(arg)
-            + r'\\s*</convert>(?:(?!</widget>).)*?</widget>',
+            + r'\s*</convert>(?:(?!</widget>).)*?</widget>',
             re.S,
         )
         data = pat.sub("", data)
