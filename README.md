@@ -1,17 +1,22 @@
-# CineView FHD 2.0
+# CineView FHD 2.1
 
-Smart universal Enigma2 skin by **habeb-s**.
+Official Full HD skin for **OpenATV 7.4, 7.5, 7.6 and 8.0**.
 
-## One-line installation
+## Supported platform
+
+- OpenATV only
+- OpenATV 7.4 / 7.5 / 7.6 / 8.0
+- Python 3
+- Full HD 1920×1080
+
+Unsupported images and versions are rejected before the installer changes the receiver.
+
+## Installation
 
     wget -qO- https://raw.githubusercontent.com/habeb-s/CineView-FHD/main/install.sh | sh
 
-The installer detects the Enigma2 image and Python/package environment, shows installed and missing components with colored status messages, attempts to install missing optional dependencies from the receiver image's own feed, adapts CineView for missing renderers/converters before installation, validates XML, installs the adapted package, restarts Enigma2, then removes temporary IPK/DEB and installer files.
+The installer performs a compatibility preflight, safely adapts the staged skin to OpenATV, validates every XML file before installation, backs up an existing CineView installation, installs the package, then restarts Enigma2.
 
-Unknown images use capability-based safe compatibility fallbacks instead of forcing unavailable skin components.
+Optional weather features use a safe fallback when the provider is unavailable. CineView includes its own poster renderer and compatibility converters.
 
-**CineView FHD 2.0 — Designed by habeb-s**
-
-
-## Poster artwork
-CineView's built-in PosterX renderer is independent from other Enigma2 skins. TV show artwork is provided using TVmaze data; TVmaze attribution: https://www.tvmaze.com/.
+**CineView FHD 2.1 — Designed by habeb-s**

@@ -1,5 +1,5 @@
 #!/bin/sh
-# CineView FHD 2.0 Smart Universal Installer
+# CineView FHD 2.1 Official OpenATV Installer
 # Designed by habeb-s
 set -u
 SELF="$0"
@@ -20,7 +20,7 @@ done_msg(){ printf "%s[DONE]%s %s\n" "$GREEN" "$RESET" "$*"; }
 fail(){ printf "%s[FAIL]%s %s\n" "$RED" "$RESET" "$*" >&2; exit 1; }
 havepy(){ ls "$1".py* >/dev/null 2>&1; }
 printf "\n%s%s========================================%s\n" "$BOLD" "$CYAN" "$RESET"
-printf "%s%s   CineView FHD 2.0 Smart Installer%s\n" "$BOLD" "$GREEN" "$RESET"
+printf "%s%s   CineView FHD 2.1 Smart Installer%s\n" "$BOLD" "$GREEN" "$RESET"
 printf "%s      Designed by habeb-s%s\n" "$CYAN" "$RESET"
 printf "%s%s========================================%s\n\n" "$BOLD" "$CYAN" "$RESET"
 [ "$(id -u 2>/dev/null)" = 0 ] || fail "run as root"
@@ -36,8 +36,40 @@ case "$LOW" in
   *openatv*|*openvix*|*openbh*|*openblackhole*|*opendroid*|*openspa*|*pure2*|*puree2*|*egami*|*teamblue*|*openhdf*|*nonsolosat*|*opentr*|*cobralib*|*satlodge*|*foxbob*|*pkteam*|*hyperion*|*vti*) FAMILY=oealliance;;
   *) FAMILY=generic;;
 esac
+
+iv_get(){
+  key="$1"
+  [ -f /etc/image-version ] || return 0
+  awk -F '=' -v wanted="$key" '
+    {
+      k=$1
+      gsub(/^[ \t]+|[ \t]+$/, "", k)
+      if (tolower(k)==tolower(wanted)) {
+        v=substr($0,index($0,"=")+1)
+        gsub(/^[ \t]+|[ \t]+$/, "", v)
+        print v
+        exit
+      }
+    }' /etc/image-version 2>/dev/null
+}
+ATV_DISTRO="${CINEVIEW_DISTRO:-}"
+[ -n "$ATV_DISTRO" ] || ATV_DISTRO="$(iv_get distro)"
+ATV_DISTRO=$(printf '%s' "$ATV_DISTRO" | tr 'A-Z' 'a-z' | tr -d ' ')
+[ -n "$ATV_DISTRO" ] || case "$LOW" in *openatv*) ATV_DISTRO=openatv;; esac
+
+ATV_VERSION="${CINEVIEW_IMAGE_VERSION:-}"
+[ -n "$ATV_VERSION" ] || ATV_VERSION="$(iv_get Version)"
+[ -n "$ATV_VERSION" ] || ATV_VERSION="$(iv_get imageversion)"
+[ -n "$ATV_VERSION" ] || ATV_VERSION=$(printf '%s\n' "$IMG" | sed -n 's/.*version=\([^ ]*\).*/\1/p' | head -n1)
+
+[ "$ATV_DISTRO" = "openatv" ] || fail "CineView FHD 2.1 supports OpenATV only"
+case "$ATV_VERSION" in
+  7.4*|7.5*|7.6*|8.0*) ;;
+  *) fail "unsupported OpenATV version: $ATV_VERSION; supported: 7.4, 7.5, 7.6, 8.0" ;;
+esac
+
 if command -v opkg >/dev/null 2>&1; then PM=opkg; elif command -v apt-get >/dev/null 2>&1; then PM=apt; else PM=none; fi
-if command -v python3 >/dev/null 2>&1; then PY=python3; elif command -v python >/dev/null 2>&1; then PY=python; else fail "Python is required by Enigma2 but was not found"; fi
+if command -v python3 >/dev/null 2>&1; then PY=python3; else fail "Python 3 is required by CineView FHD 2.1"; fi
 PYVER=$($PY -V 2>&1 | head -n1)
 ARCH=$(uname -m 2>/dev/null || echo unknown)
 printf "%s--- Receiver / Image Detection ---%s\n" "$BOLD" "$RESET"
@@ -120,7 +152,7 @@ else
   ok "No skin compatibility patch was required"
 fi
 
-# OpenATV compatibility: use OpenATV's native 7.6/8.x screen contracts.
+# OpenATV compatibility: use the supported OpenATV 7.4-8.0 screen contracts.
 # OpenATV 8 PluginBrowser uses pluginList/pluginGrid mandatory sources and must not
 # be skinned with the OpenViX/OpenBH list bindings.
 case "$LOW" in
@@ -238,16 +270,16 @@ PKGROOT="$TMP/pkg"
 mkdir -p "$PKGROOT/CONTROL" || fail "cannot create package metadata"
 cat > "$PKGROOT/CONTROL/control" <<'EOF'
 Package: enigma2-plugin-skins-cineview-fhd
-Version: 2.0.1
+Version: 2.1.0
 Architecture: all
 Maintainer: habeb-s
-Description: CineView FHD 2.0 Smart Enigma2 Skin
+Description: CineView FHD 2.1 for OpenATV 7.4-8.0
 EOF
 printf '2.0\n' > "$TMP/debian-binary"
 tar -C "$PKGROOT/CONTROL" -czf "$TMP/control.tar.gz" . || fail "control package creation failed"
 tar -C "$TMP/stage" -czf "$TMP/data.tar.gz" . || fail "data package creation failed"
 
-if [ "$PM" = apt ]; then PKGFILE="/tmp/cineview-fhd-2.0-smart-$$.deb"; else PKGFILE="/tmp/cineview-fhd-2.0-smart-$$.ipk"; fi
+if [ "$PM" = apt ]; then PKGFILE="/tmp/cineview-fhd-2.1-openatv-$$.deb"; else PKGFILE="/tmp/cineview-fhd-2.1-openatv-$$.ipk"; fi
 
 "$PY" - "$PKGFILE" "$TMP/debian-binary" "$TMP/control.tar.gz" "$TMP/data.tar.gz" <<'PY'
 from __future__ import print_function
@@ -268,7 +300,7 @@ PY
 [ -s "$PKGFILE" ] || fail "temporary package creation failed"
 say "Temporary package: $PKGFILE"
 
-installing "Installing CineView FHD 2.0..."
+installing "Installing CineView FHD 2.1..."
 if [ "$PM" = opkg ]; then
   if opkg install "$PKGFILE"; then
     :
@@ -300,7 +332,7 @@ set_key config.skin.primary_skin CineView_FHD/skin.xml
 
 REPORT=/etc/enigma2/cineview-smart-report.txt
 {
-  echo "CineView FHD 2.0 Smart Installer"
+  echo "CineView FHD 2.1 Smart Installer"
   echo "family=$FAMILY"
   echo "package_manager=$PM"
   echo "python=$PYVER"
@@ -311,7 +343,7 @@ REPORT=/etc/enigma2/cineview-smart-report.txt
   echo "--- dependencies ---"
   cat "$TMP/dependencies.log" 2>/dev/null || true
 } > "$REPORT"
-ok "CineView FHD 2.0 installed successfully"
+ok "CineView FHD 2.1 installed successfully"
 say "Diagnostic report: $REPORT"
 ok "Second InfoBar transparent overlay locked for all 6 themes"
 
@@ -334,6 +366,6 @@ if [ -n "${PKGFILE:-}" ] && [ -f "$PKGFILE" ]; then
   rm -f "$PKGFILE"
   ok "Temporary IPK/DEB installation package removed"
 fi
-done_msg "CineView FHD 2.0 installation complete"
+done_msg "CineView FHD 2.1 installation complete"
 exit 0
 __CINEVIEW_PAYLOAD_BELOW__

@@ -46,7 +46,25 @@ case "$IMG" in
   *) IMAGE_NAME="$(iv_get Creator)"; [ -n "$IMAGE_NAME" ] || IMAGE_NAME="Unknown Enigma2 image"; FAMILY=generic; PROFILE="generic" ;;
 esac
 
-if command -v python3 >/dev/null 2>&1; then PYVER="$(python3 -V 2>&1)"; elif command -v python >/dev/null 2>&1; then PYVER="$(python -V 2>&1)"; else PYVER="not found"; fi
+# Official CineView FHD 2.1 OpenATV support gate.
+if [ "$DISTRO_ID" != "openatv" ]; then
+  printf "%s[FAIL]%s CineView FHD 2.1 supports OpenATV only. Detected: %s\n" "$RED" "$RESET" "$IMAGE_NAME" >&2
+  exit 2
+fi
+case "$IMAGE_VERSION" in
+  7.4*|7.5*|7.6*|8.0*) ;;
+  *)
+    printf "%s[FAIL]%s Unsupported OpenATV version: %s. Supported: 7.4, 7.5, 7.6, 8.0.\n" "$RED" "$RESET" "$IMAGE_VERSION" >&2
+    exit 2
+    ;;
+esac
+
+if command -v python3 >/dev/null 2>&1; then
+  PYVER="$(python3 -V 2>&1)"
+else
+  printf "%s[FAIL]%s Python 3 is required by CineView FHD 2.1.\n" "$RED" "$RESET" >&2
+  exit 2
+fi
 if command -v opkg >/dev/null 2>&1; then PM=opkg; elif command -v apt-get >/dev/null 2>&1; then PM=apt; else PM=none; fi
 ARCH="$(uname -m 2>/dev/null || echo unknown)"
 IMAGE_LINE="$IMAGE_NAME"
@@ -89,9 +107,9 @@ case "$PROFILE" in
 esac
 
 # Verified image-aware OE-Alliance smart installer.
-RAW="https://raw.githubusercontent.com/habeb-s/CineView-FHD/f2683820581508f857bd7f3a11ec9a8af9f97c9b"
+RAW="https://raw.githubusercontent.com/habeb-s/CineView-FHD/v2.1.0"
 
-printf "%s[CineView]%s Downloading CineView FHD 2.0 Smart Installer...\n" "$CYAN" "$RESET"
+printf "%s[CineView]%s Downloading CineView FHD 2.1 OpenATV Installer...\n" "$CYAN" "$RESET"
 if command -v wget >/dev/null 2>&1; then
   wget -q --no-check-certificate -O "$TMP" "$RAW/cineview-smart-install.sh"
 elif command -v curl >/dev/null 2>&1; then
@@ -102,12 +120,6 @@ else
 fi
 [ -s "$TMP" ] || { printf "%s[FAIL]%s download failed\n" "$RED" "$RESET" >&2; exit 1; }
 
-# Bootstrap safety: allow reinstalling CineView when the receiver already has
-# the same package version. This keeps upgrades/repairs idempotent on opkg images.
-if [ "$PM" = opkg ]; then
-  sed -i 's/^Version: 2\.0$/Version: 2.0.1/' "$TMP" 2>/dev/null || true
-  sed -i 's|opkg install "$PKGFILE" || fail "opkg installation failed"|opkg install --force-reinstall "$PKGFILE" || fail "opkg installation failed"|' "$TMP" 2>/dev/null || true
-fi
 
 chmod 755 "$TMP"
 printf "%s[CineView]%s Installer downloaded. Starting profile-aware preflight...\n" "$CYAN" "$RESET"

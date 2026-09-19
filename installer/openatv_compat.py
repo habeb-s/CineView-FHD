@@ -25,92 +25,64 @@ def _remove_screen(data, name):
     return re.sub(SCREEN_RE % re.escape(name), "\n", data, flags=re.S)
 
 
-def _get_screen(data, name):
-    m = re.search(SCREEN_RE % re.escape(name), data, flags=re.S)
-    return m.group(0).strip() if m else None
-
-
-def _replace_screen(data, name, block):
-    out, count = re.subn(
-        SCREEN_RE % re.escape(name),
-        "\n" + block.strip() + "\n",
-        data,
-        count=1,
-        flags=re.S,
-    )
-    return out, count
-
-
-def _inner_screen(block):
-    return block[block.find(">") + 1:block.rfind("</screen>")]
-
-
-def _set_param(data, name, value):
-    pat = re.compile(r'<parameter name="' + re.escape(name) + r'"[^>]*/>')
-    item = '<parameter name="%s" value="%s"/>' % (name, value)
-    if pat.search(data):
-        return pat.sub(item, data, count=1)
-    if "<parameters>" in data:
-        return data.replace("<parameters>", "<parameters>\n\t\t" + item, 1)
-    return data
-
-
 def _screen(name, body, position="center,center", size="1820,880", title=""):
     t = (' title="%s"' % title) if title else ""
     return '\n\t<screen name="%s" position="%s" size="%s" flags="wfNoBorder"%s>\n%s\n\t</screen>\n' % (
         name, position, size, t, body)
 
 
-PLUGIN_LIST = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="steThemePrimary" zPosition="0"/>
-\t\t<eLabel text="Plugins" position="45,24" size="1730,52" font="Regular;38" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1" zPosition="3"/>
-\t\t<eLabel position="35,88" size="1750,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
-\t\t<widget source="pluginList" render="Listbox" position="45,110" size="1730,590" conditional="pluginList" listOrientation="vertical" scrollbarMode="showOnDemand" foregroundColor="foreground" backgroundColor="steThemePrimary" foregroundColorSelected="selectedFG" backgroundColorSelected="selectedBG" transparent="1" zPosition="5">
-\t\t\t<convert type="TemplatedMultiContent">
+PLUGIN_LIST = """		<eLabel position="0,0" size="1920,1080" backgroundColor="steThemePrimary" zPosition="0"/>
+		<eLabel text="Plugins" position="45,24" size="1830,52" font="Regular;38" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1" zPosition="3"/>
+		<eLabel position="35,88" size="1850,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
+		<widget source="pluginList" render="Listbox" position="45,110" size="1830,800" conditional="pluginList" listOrientation="vertical" scrollbarMode="showOnDemand" foregroundColor="foreground" backgroundColor="steThemePrimary" foregroundColorSelected="selectedFG" backgroundColorSelected="selectedBG" transparent="1" zPosition="5">
+			<convert type="TemplatedMultiContent">
 {"template": [
-MultiContentEntryPixmapAlphaBlend(pos=(12, 12), size=(120, 52), png=3, flags=BT_SCALE | BT_KEEP_ASPECT_RATIO | BT_HALIGN_CENTER | BT_VALIGN_CENTER),
-MultiContentEntryText(pos=(155, 5), size=(1515, 38), font=0, text=1),
-MultiContentEntryText(pos=(155, 43), size=(1515, 29), font=1, text=2)
+MultiContentEntryPixmapAlphaBlend(pos=(12, 4), size=(185, 80), png=3, flags=BT_SCALE),
+MultiContentEntryText(pos=(220, 5), size=(1550, 38), font=0, text=1),
+MultiContentEntryText(pos=(220, 43), size=(1550, 29), font=1, text=2)
 ],
 "fonts": [gFont("Regular", 31), gFont("Regular", 22)],
-"itemHeight": 80
+"itemHeight": 88
 }
-\t\t\t</convert>
-\t\t</widget>
-\t\t<widget name="quickselect" position="45,110" size="1730,590" font="Regular;120" foregroundColor="secondFG" halign="center" valign="center" transparent="1" zPosition="8"/>
-\t\t<widget name="description" position="55,715" size="1710,55" font="Regular;24" foregroundColor="grey" backgroundColor="steThemePrimary" transparent="1" zPosition="4"/>
-\t\t<eLabel position="35,785" size="1750,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
-\t\t<widget source="key_red" render="Label" position="55,805" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
-\t\t<widget source="key_green" render="Label" position="385,805" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
-\t\t<widget source="key_yellow" render="Label" position="715,805" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
-\t\t<widget source="key_blue" render="Label" position="1045,805" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
-\t\t<widget source="key_menu" render="Label" position="1390,805" size="170,45" font="Regular;23" halign="center" valign="center" foregroundColor="grey" transparent="1"/>
-\t\t<widget source="key_help" render="Label" position="1580,805" size="170,45" font="Regular;23" halign="center" valign="center" foregroundColor="grey" transparent="1"/>"""
+			</convert>
+		</widget>
+		<widget name="quickselect" position="45,110" size="1830,800" font="Regular;120" foregroundColor="secondFG" halign="center" valign="center" transparent="1" zPosition="8"/>
+		<widget name="description" position="55,925" size="1810,55" font="Regular;24" foregroundColor="grey" backgroundColor="steThemePrimary" transparent="1" zPosition="4"/>
+		<eLabel position="35,995" size="1850,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
+		<widget source="key_red" render="Label" position="55,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
+		<widget source="key_green" render="Label" position="385,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
+		<widget source="key_yellow" render="Label" position="715,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
+		<widget source="key_blue" render="Label" position="1045,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
+		<widget source="key_menu" render="Label" position="1390,1010" size="170,45" font="Regular;23" halign="center" valign="center" foregroundColor="grey" transparent="1"/>
+		<widget source="key_help" render="Label" position="1580,1010" size="170,45" font="Regular;23" halign="center" valign="center" foregroundColor="grey" transparent="1"/>
+	"""
 
-PLUGIN_GRID = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="steThemePrimary" zPosition="0"/>
-\t\t<eLabel text="Plugins" position="45,24" size="1730,52" font="Regular;38" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1" zPosition="3"/>
-\t\t<eLabel position="35,88" size="1750,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
-\t\t<widget source="pluginGrid" render="Listbox" position="45,110" size="1730,590" conditional="pluginGrid" listOrientation="grid" scrollbarMode="showOnDemand" foregroundColor="foreground" backgroundColor="steThemePrimary" foregroundColorSelected="selectedFG" backgroundColorSelected="selectedBG" transparent="1" zPosition="5">
-\t\t\t<convert type="TemplatedMultiContent">
+PLUGIN_GRID = """		<eLabel position="0,0" size="1920,1080" backgroundColor="steThemePrimary" zPosition="0"/>
+		<eLabel text="Plugins" position="45,24" size="1830,52" font="Regular;38" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1" zPosition="3"/>
+		<eLabel position="35,88" size="1850,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
+		<widget source="pluginGrid" render="Listbox" position="45,110" size="1830,820" conditional="pluginGrid" listOrientation="grid" scrollbarMode="showOnDemand" foregroundColor="foreground" backgroundColor="steThemePrimary" foregroundColorSelected="selectedFG" backgroundColorSelected="selectedBG" transparent="1" zPosition="5">
+			<convert type="TemplatedMultiContent">
 {"template": [
 MultiContentEntryText(pos=(4, 4), size=(326, 156), font=0, backcolor=0x0016161a),
 MultiContentEntryPixmapAlphaBlend(pos=(105, 18), size=(120, 52), png=3, flags=BT_SCALE | BT_KEEP_ASPECT_RATIO | BT_HALIGN_CENTER | BT_VALIGN_CENTER),
-MultiContentEntryText(pos=(12, 82), size=(306, 68), font=0, flags=RT_HALIGN_CENTER | RT_VALIGN_CENTER | RT_WRAP, text=1)
+MultiContentEntryText(pos=(12, 84), size=(306, 66), font=0, flags=RT_HALIGN_CENTER | RT_VALIGN_CENTER | RT_WRAP, text=1)
 ],
 "fonts": [gFont("Regular", 25)],
 "itemWidth": 334,
 "itemHeight": 164
 }
-\t\t\t</convert>
-\t\t</widget>
-\t\t<widget name="quickselect" position="45,110" size="1730,590" font="Regular;120" foregroundColor="secondFG" halign="center" valign="center" transparent="1" zPosition="8"/>
-\t\t<widget name="description" position="55,715" size="1710,55" font="Regular;24" foregroundColor="grey" backgroundColor="steThemePrimary" transparent="1" zPosition="4"/>
-\t\t<eLabel position="35,785" size="1750,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
-\t\t<widget source="key_red" render="Label" position="55,805" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
-\t\t<widget source="key_green" render="Label" position="385,805" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
-\t\t<widget source="key_yellow" render="Label" position="715,805" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
-\t\t<widget source="key_blue" render="Label" position="1045,805" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
-\t\t<widget source="key_menu" render="Label" position="1390,805" size="170,45" font="Regular;23" halign="center" valign="center" foregroundColor="grey" transparent="1"/>
-\t\t<widget source="key_help" render="Label" position="1580,805" size="170,45" font="Regular;23" halign="center" valign="center" foregroundColor="grey" transparent="1"/>"""
+			</convert>
+		</widget>
+		<widget name="quickselect" position="45,110" size="1830,820" font="Regular;120" foregroundColor="secondFG" halign="center" valign="center" transparent="1" zPosition="8"/>
+		<widget name="description" position="55,925" size="1810,55" font="Regular;24" foregroundColor="grey" backgroundColor="steThemePrimary" transparent="1" zPosition="4"/>
+		<eLabel position="35,995" size="1850,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
+		<widget source="key_red" render="Label" position="55,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
+		<widget source="key_green" render="Label" position="385,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
+		<widget source="key_yellow" render="Label" position="715,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
+		<widget source="key_blue" render="Label" position="1045,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
+		<widget source="key_menu" render="Label" position="1390,1010" size="170,45" font="Regular;23" halign="center" valign="center" foregroundColor="grey" transparent="1"/>
+		<widget source="key_help" render="Label" position="1580,1010" size="170,45" font="Regular;23" halign="center" valign="center" foregroundColor="grey" transparent="1"/>
+	"""
 
 EVENT_VIEW = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="steThemePrimary" zPosition="0"/>
 \t\t<widget name="channel" position="45,28" size="1180,45" font="Regular;30" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1" zPosition="4"/>
@@ -251,37 +223,38 @@ INFOBAR_GRID = """\t\t<eLabel position="0,0" size="1920,330" backgroundColor="st
 \t\t<widget source="key_yellow" render="Label" position="925,278" size="400,40" font="Regular;23" halign="center" transparent="1"/>
 \t\t<widget source="key_blue" render="Label" position="1360,278" size="400,40" font="Regular;23" halign="center" transparent="1"/>"""
 
-QUICK_MENU = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="steThemePrimary" zPosition="0"/>
-\t\t<widget source="mainlist" render="Listbox" position="45,90" size="610,650" backgroundColor="steThemePrimary" transparent="1" itemHeight="86" zPosition="5">
-\t\t\t<templates>
-\t\t\t\t<template name="Default" fonts="Regular;29,Regular;20" itemWidth="610" itemHeight="86">
-\t\t\t\t\t<mode name="default">
-\t\t\t\t\t\t<pixmap index="2" position="10,11" size="64,64" alpha="blend" scale="centerScaled"/>
-\t\t\t\t\t\t<text index="0" position="90,4" size="500,43" font="0" verticalAlignment="center"/>
-\t\t\t\t\t\t<text index="1" position="105,47" size="485,30" font="1" verticalAlignment="center"/>
-\t\t\t\t\t</mode>
-\t\t\t\t</template>
-\t\t\t</templates>
-\t\t</widget>
-\t\t<eLabel position="680,88" size="2,655" backgroundColor="steThemePanelAlt" zPosition="2"/>
-\t\t<widget source="sublist" render="Listbox" position="710,90" size="610,650" backgroundColor="steThemePrimary" transparent="1" itemHeight="86" zPosition="5">
-\t\t\t<templates>
-\t\t\t\t<template name="Default" fonts="Regular;29,Regular;20" itemWidth="610" itemHeight="86">
-\t\t\t\t\t<mode name="default">
-\t\t\t\t\t\t<text index="0" position="10,4" size="590,43" font="0" verticalAlignment="center"/>
-\t\t\t\t\t\t<text index="1" position="25,47" size="575,30" font="1" verticalAlignment="center"/>
-\t\t\t\t\t</mode>
-\t\t\t\t</template>
-\t\t\t</templates>
-\t\t</widget>
-\t\t<eLabel position="1360,92" size="400,225" backgroundColor="black" zPosition="3"/>
-\t\t<widget source="session.VideoPicture" render="Pig" position="1360,92" size="400,225" backgroundColor="black" zPosition="4"/>
-\t\t<widget name="description" position="1360,345" size="400,395" backgroundColor="steThemePrimary" transparent="1" font="Regular;24" foregroundColor="foreground" halign="center" valign="center" zPosition="4"/>
-\t\t<eLabel position="35,785" size="1750,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
-\t\t<widget source="key_red" render="Label" position="55,805" size="360,45" backgroundColor="key_red" font="Regular;24" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>
-\t\t<widget source="key_green" render="Label" position="435,805" size="360,45" backgroundColor="key_green" font="Regular;24" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>
-\t\t<widget source="key_yellow" render="Label" position="815,805" size="360,45" backgroundColor="key_yellow" font="Regular;24" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>
-\t\t<widget source="key_help" render="Label" position="1480,805" size="280,45" backgroundColor="key_back" font="Regular;24" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>"""
+QUICK_MENU = """		<eLabel position="0,0" size="1920,1080" backgroundColor="steThemePrimary" zPosition="0"/>
+		<widget source="mainlist" render="Listbox" position="45,90" size="640,820" backgroundColor="steThemePrimary" transparent="1" itemHeight="86" zPosition="5">
+			<templates>
+				<template name="Default" fonts="Regular;29,Regular;20" itemWidth="640" itemHeight="86">
+					<mode name="default">
+						<pixmap index="2" position="10,11" size="64,64" alpha="blend" scale="centerScaled"/>
+						<text index="0" position="90,4" size="530,43" font="0" verticalAlignment="center"/>
+						<text index="1" position="105,47" size="515,30" font="1" verticalAlignment="center"/>
+					</mode>
+				</template>
+			</templates>
+		</widget>
+		<eLabel position="710,88" size="2,825" backgroundColor="steThemePanelAlt" zPosition="2"/>
+		<widget source="sublist" render="Listbox" position="735,90" size="640,820" backgroundColor="steThemePrimary" transparent="1" itemHeight="86" zPosition="5">
+			<templates>
+				<template name="Default" fonts="Regular;29,Regular;20" itemWidth="640" itemHeight="86">
+					<mode name="default">
+						<text index="0" position="10,4" size="620,43" font="0" verticalAlignment="center"/>
+						<text index="1" position="25,47" size="605,30" font="1" verticalAlignment="center"/>
+					</mode>
+				</template>
+			</templates>
+		</widget>
+		<eLabel position="1420,92" size="455,256" backgroundColor="black" zPosition="3"/>
+		<widget source="session.VideoPicture" render="Pig" position="1420,92" size="455,256" backgroundColor="black" zPosition="4"/>
+		<widget name="description" position="1420,375" size="455,535" backgroundColor="steThemePrimary" transparent="1" font="Regular;24" foregroundColor="foreground" halign="center" valign="center" zPosition="4"/>
+		<eLabel position="35,995" size="1850,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
+		<widget source="key_red" render="Label" position="55,1010" size="360,45" backgroundColor="key_red" font="Regular;24" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>
+		<widget source="key_green" render="Label" position="435,1010" size="360,45" backgroundColor="key_green" font="Regular;24" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>
+		<widget source="key_yellow" render="Label" position="815,1010" size="360,45" backgroundColor="key_yellow" font="Regular;24" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>
+		<widget source="key_help" render="Label" position="1575,1010" size="300,45" backgroundColor="key_back" font="Regular;24" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>
+	"""
 
 
 MESSAGE_BOX = """\t\t<eLabel position="0,0" size="960,520" backgroundColor="steThemePrimary" zPosition="0"/>
@@ -309,60 +282,23 @@ VERTICAL_EPG = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="st
 \t\t<widget source="key_yellow" render="Label" position="925,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
 \t\t<widget source="key_blue" render="Label" position="1360,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>"""
 
-
-GRID_V4 = """\t\t<eLabel position="0,0" size="1820,930" backgroundColor="steThemePrimary" zPosition="0"/>
-\t\t<widget source="Title" render="Label" position="45,24" size="1200,50" font="Regular;36" foregroundColor="secondFG" transparent="1"/>
-\t\t<widget source="global.CurrentTime" render="Label" position="1450,24" size="320,46" font="Regular;27" foregroundColor="grey" halign="right" transparent="1"><convert type="ClockToText">Format:%d.%m.%Y %H:%M</convert></widget>
-\t\t<widget name="timeline_text" position="45,92" size="1180,44" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1"/>
-\t\t<widget name="lab1" position="45,138" size="1180,625" font="Regular;28" halign="center" valign="center" backgroundColor="steThemePrimary" transparent="0" zPosition="2"/>
-\t\t<widget name="bouquetlist" position="45,138" size="1180,625" backgroundColor="steThemePrimary" scrollbarMode="showNever" transparent="0" zPosition="15"/>
-\t\t<widget name="list" position="45,138" size="1180,625" scrollbarMode="showNever" transparent="1" zPosition="10" ServiceFontGraphical="Regular;28" EntryFontGraphical="Regular;26" NumberOfRows="9" MinimumItemHeight="66" EntryFontWrap="no"/>
-\t\t<widget name="timeline_now" position="45,138" zPosition="21" size="5,625"/>
-\t\t<eLabel position="1260,82" size="520,682" backgroundColor="steThemePanel" zPosition="1"/>
-\t\t<widget source="Event" render="CineViewPosterX" position="1380,105" size="280,420" zPosition="12"/>
-\t\t<widget source="Event" render="RunningText" position="1290,545" size="460,48" font="Regular;30" foregroundColor="secondFG" transparent="1" halign="center" noWrap="1" options="movetype=running,direction=left,step=2,steptime=55,startdelay=1400,pause=900,repeat=0,always=0"><convert type="EventName">Name</convert></widget>
-\t\t<widget source="Event" render="Label" position="1290,605" size="460,135" font="Regular;23" foregroundColor="foreground" transparent="1" valign="top"><convert type="EventName">ExtendedDescription</convert></widget>
-\t\t<eLabel position="35,805" size="1750,2" backgroundColor="steThemePanelAlt"/>
-\t\t<widget source="key_red" render="Label" position="55,830" size="400,52" font="Regular;26" halign="center" transparent="1"/>
-\t\t<widget source="key_green" render="Label" position="490,830" size="400,52" font="Regular;26" halign="center" transparent="1"/>
-\t\t<widget source="key_yellow" render="Label" position="925,830" size="400,52" font="Regular;26" halign="center" transparent="1"/>
-\t\t<widget source="key_blue" render="Label" position="1360,830" size="400,52" font="Regular;26" halign="center" transparent="1"/>"""
-
-GRID_PIG_V4 = """\t\t<eLabel position="0,0" size="1820,930" backgroundColor="steThemePrimary" zPosition="0"/>
-\t\t<widget source="Title" render="Label" position="45,24" size="1200,50" font="Regular;36" foregroundColor="secondFG" transparent="1"/>
-\t\t<widget source="global.CurrentTime" render="Label" position="1450,24" size="320,46" font="Regular;27" foregroundColor="grey" halign="right" transparent="1"><convert type="ClockToText">Format:%d.%m.%Y %H:%M</convert></widget>
-\t\t<widget name="timeline_text" position="45,92" size="1180,44" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1"/>
-\t\t<widget name="lab1" position="45,138" size="1180,625" font="Regular;28" halign="center" valign="center" backgroundColor="steThemePrimary" transparent="0" zPosition="2"/>
-\t\t<widget name="bouquetlist" position="45,138" size="1180,625" backgroundColor="steThemePrimary" scrollbarMode="showNever" transparent="0" zPosition="15"/>
-\t\t<widget name="list" position="45,138" size="1180,625" scrollbarMode="showNever" transparent="1" zPosition="10" ServiceFontGraphical="Regular;28" EntryFontGraphical="Regular;26" NumberOfRows="9" MinimumItemHeight="66" EntryFontWrap="no"/>
-\t\t<widget name="timeline_now" position="45,138" zPosition="21" size="5,625"/>
-\t\t<eLabel position="1260,82" size="520,682" backgroundColor="steThemePanel" zPosition="1"/>
-\t\t<eLabel position="1280,105" size="480,270" backgroundColor="black" zPosition="3"/>
-\t\t<widget source="session.VideoPicture" render="Pig" position="1290,115" size="460,259" backgroundColor="black" zPosition="4"/>
-\t\t<widget source="Event" render="RunningText" position="1290,405" size="460,48" font="Regular;30" foregroundColor="secondFG" transparent="1" halign="center" noWrap="1" options="movetype=running,direction=left,step=2,steptime=55,startdelay=1400,pause=900,repeat=0,always=0"><convert type="EventName">Name</convert></widget>
-\t\t<widget source="Event" render="Label" position="1290,470" size="460,260" font="Regular;23" foregroundColor="foreground" transparent="1" valign="top"><convert type="EventName">ExtendedDescription</convert></widget>
-\t\t<eLabel position="35,805" size="1750,2" backgroundColor="steThemePanelAlt"/>
-\t\t<widget source="key_red" render="Label" position="55,830" size="400,52" font="Regular;26" halign="center" transparent="1"/>
-\t\t<widget source="key_green" render="Label" position="490,830" size="400,52" font="Regular;26" halign="center" transparent="1"/>
-\t\t<widget source="key_yellow" render="Label" position="925,830" size="400,52" font="Regular;26" halign="center" transparent="1"/>
-\t\t<widget source="key_blue" render="Label" position="1360,830" size="400,52" font="Regular;26" halign="center" transparent="1"/>"""
-
-
 SCREENS = (
-    ("PluginBrowserList", PLUGIN_LIST, "center,center", "1820,880", "Plugin Browser"),
-    ("PluginBrowserGrid", PLUGIN_GRID, "center,center", "1820,880", "Plugin Browser"),
-    ("PluginBrowser", PLUGIN_LIST, "center,center", "1820,880", "Plugin Browser"),
+    ("PluginBrowserList", PLUGIN_LIST, "0,0", "1920,1080", "Plugin Browser"),
+    ("PluginBrowserGrid", PLUGIN_GRID, "0,0", "1920,1080", "Plugin Browser"),
+    ("PluginBrowser", PLUGIN_LIST, "0,0", "1920,1080", "Plugin Browser"),
     ("MessageBox", MESSAGE_BOX, "center,center", "960,520", "Message"),
     ("MessageBoxModal", MESSAGE_BOX, "center,center", "960,520", "Message"),
-    ("QuickMenu", QUICK_MENU, "center,center", "1820,880", "Quick Launch Menu"),
+    ("QuickMenu", QUICK_MENU, "0,0", "1920,1080", "Quick Launch Menu"),
     ("EventView", EVENT_VIEW, "center,center", "1820,880", "Event View"),
     ("EventViewSimple", EVENT_SIMPLE, "center,center", "1820,760", "Event View"),
     ("InfoBarEventView", INFOBAR_EVENT_VIEW, "0,0", "1920,360", "Event View"),
+    ("SecondInfoBar", SECOND_INFO, "0,560", "1920,520", "Second InfoBar"),
+    ("SecondInfoBarECM", SECOND_INFO, "0,560", "1920,520", "Second InfoBar"),
     ("EPGSelection", SINGLE_EPG, "center,center", "1820,880", "EPG Selection"),
     ("EPGSelectionMulti", MULTI_EPG, "center,center", "1820,880", "Multi EPG"),
     ("QuickEPG", QUICK_EPG, "0,660", "1920,420", "Quick EPG"),
-    ("GraphicalEPG", GRID_V4, "center,center", "1820,930", "Graphical EPG"),
-    ("GraphicalEPGPIG", GRID_PIG_V4, "center,center", "1820,930", "Graphical EPG"),
+    ("GraphicalEPG", GRID, "center,center", "1820,880", "Graphical EPG"),
+    ("GraphicalEPGPIG", GRID_PIG, "center,center", "1820,880", "Graphical EPG"),
     ("GraphicalInfoBarEPG", INFOBAR_GRID, "0,750", "1920,330", "InfoBar EPG"),
     ("EPGvertical", VERTICAL_EPG, "center,center", "1820,880", "Vertical EPG"),
     ("EPGverticalPIG", VERTICAL_EPG, "center,center", "1820,880", "Vertical EPG"),
@@ -371,28 +307,6 @@ SCREENS = (
 
 def patch_file(path):
     data = _read(path)
-
-    # Preserve the original first OpenViX SecondInfo event panel and place the
-    # current primary InfoBar technical strip directly below it.
-    info_before = _get_screen(data, "InfoBar")
-    second_before = _get_screen(data, "SecondInfoBar")
-    if not info_before or not second_before:
-        return False
-    marker = "<!-- Same technical bar as primary InfoBar"
-    cut = second_before.find(marker)
-    if cut < 0:
-        return False
-    second_top = second_before[:cut]
-    second_top = second_top.replace('render="PosterX"', 'render="CineViewPosterX"')
-    second_top = second_top.replace("render='PosterX'", "render='CineViewPosterX'")
-    second_fixed = second_top + _inner_screen(info_before) + "\n</screen>"
-    second_ecm_fixed = re.sub(
-        r'name=["\']SecondInfoBar["\']',
-        'name="SecondInfoBarECM"',
-        second_fixed,
-        count=1,
-    )
-
     for name, body, pos, size, title in SCREENS:
         data = _remove_screen(data, name)
 
@@ -423,111 +337,6 @@ def patch_file(path):
     # MessageBoxModal are replaced below with the native OpenATV-style fixed
     # widget contract, so no legacy CineView sizing applet is executed.
     data = data.replace("if self.timerRunning:", "if getattr(self, \"timerRunning\", False):")
-
-    # Global OpenATV 8 list geometry: prevent text from being clipped from
-    # below in receiver menus, transponder choices and skin/setup screens.
-    data = re.sub(
-        r'<alias name="ChoiceList"[^>]*/>',
-        '<alias name="ChoiceList" font="Regular" size="31" height="64"/>',
-        data,
-        count=1,
-    )
-    data = re.sub(
-        r'<alias name="SelectionList"[^>]*/>',
-        '<alias name="SelectionList" font="Regular" size="30" height="62"/>',
-        data,
-        count=1,
-    )
-    data = _set_param(data, "ChoicelistVerticalAlignment", "*center")
-    data = _set_param(data, "ChoicelistNameSingle", "18,0,1180,64")
-    data = _set_param(data, "ChoicelistName", "82,0,1110,64")
-    data = _set_param(data, "ChoicelistIcon", "12,12,52,40")
-
-    if '<configList ' not in data:
-        pat = re.compile(r'(<windowstyle id="0" type="skinned">\s*<title[^>]*/>)')
-        data, _ = pat.subn(
-            r'\1\n\t\t<configList entryLeftOffset="18" headerLeftOffset="8" headerFont="Regular;28" entryFont="Regular;28" valueFont="Regular;27"/>',
-            data,
-            count=1,
-        )
-    else:
-        data = re.sub(
-            r'<configList[^>]*/>',
-            '<configList entryLeftOffset="18" headerLeftOffset="8" headerFont="Regular;28" entryFont="Regular;28" valueFont="Regular;27"/>',
-            data,
-            count=1,
-        )
-
-    choice = _get_screen(data, "ChoiceBox")
-    if choice:
-        choice = re.sub(
-            r'<widget name="list"[^>]*/>',
-            '<widget name="list" position="650,90" size="1240,930" itemHeight="64" font="Regular;31" scrollbarMode="showOnDemand"/>',
-            choice,
-            count=1,
-        )
-        data, _ = _replace_screen(data, "ChoiceBox", choice)
-
-    selector = _get_screen(data, "SkinSelector")
-    if selector:
-        selector = re.sub(
-            r'<widget name="preview"[^>]*/>',
-            '<widget name="preview" position="70,170" size="535,401" alphatest="on"/>',
-            selector,
-            count=1,
-        )
-        selector = re.sub(
-            r'<widget source="skins" render="Listbox"[^>]*>',
-            '<widget source="skins" render="Listbox" position="650,85" size="1240,930" scrollbarMode="showOnDemand">',
-            selector,
-            count=1,
-        )
-        selector = selector.replace('pos = (20,0), size = (675,64)', 'pos = (20,0), size = (760,72)')
-        selector = selector.replace('pos = (700,0), size = (400,64)', 'pos = (790,0), size = (420,72)')
-        selector = selector.replace('pos = (20,0), size = (675,50)', 'pos = (20,0), size = (760,72)')
-        selector = selector.replace('pos = (700,0), size = (400,50)', 'pos = (790,0), size = (420,72)')
-        selector = selector.replace('gFont("Regular",30)', 'gFont("Regular",34)')
-        selector = selector.replace('gFont("Regular",33)', 'gFont("Regular",34)')
-        selector = selector.replace('"itemHeight":64', '"itemHeight":72')
-        selector = selector.replace('"itemHeight":50', '"itemHeight":72')
-        data, _ = _replace_screen(data, "SkinSelector", selector)
-
-    for setup_name in ("Setup", "SetupSkin", "setup_Skin"):
-        block = _get_screen(data, setup_name)
-        if not block:
-            continue
-        block = re.sub(
-            r'<widget name="config"[^>]*/>',
-            '<widget name="config" position="45,120" size="1180,800" itemHeight="70" font="Regular;29" transparent="1" enableWrapAround="1" scrollbarMode="showOnDemand" zPosition="3"/>',
-            block,
-            count=1,
-        )
-        block = re.sub(
-            r'<widget name="description"[^>]*/>',
-            '<widget name="description" position="1270,145" size="570,500" font="Regular;26" foregroundColor="foreground" transparent="1" valign="top" zPosition="3"/>',
-            block,
-            count=1,
-        )
-        block = re.sub(
-            r'<widget name="footnote"[^>]*/>',
-            '<widget name="footnote" position="1270,675" size="570,190" font="Regular;23" foregroundColor="secondFG" transparent="1" valign="top" zPosition="3"/>',
-            block,
-            count=1,
-        )
-        data, _ = _replace_screen(data, setup_name, block)
-
-    data, second_count = _replace_screen(data, "SecondInfoBar", second_fixed)
-    if second_count != 1:
-        return False
-    if _get_screen(data, "SecondInfoBarECM"):
-        data, ecm_count = _replace_screen(data, "SecondInfoBarECM", second_ecm_fixed)
-        if ecm_count != 1:
-            return False
-    else:
-        idx = data.rfind("</skin>")
-        if idx < 0:
-            return False
-        data = data[:idx] + "\n" + second_ecm_fixed + "\n" + data[idx:]
 
     idx = data.rfind("</skin>")
     if idx < 0:
