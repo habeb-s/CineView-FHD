@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# OpenBH parity work: OpenATV visual geometry is the canonical reference.
 from __future__ import print_function
 
 import io
