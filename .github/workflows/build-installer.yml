@@ -2,6 +2,7 @@ name: Build CineView smart installer
 on:
   push:
     paths:
+      - '.github/workflows/build-installer.yml'
       - 'installer/parts/**'
       - 'installer/CineViewPosterX.py'
       - 'installer/openbh_compat.py'
@@ -31,13 +32,14 @@ jobs:
           python3 -m py_compile /tmp/cvstage/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openatv_compat.py
 
           # Compare the same payload after OpenATV vs OpenBH adaptation.
-          # This is report-only during the porting branch; strict mode is enabled
-          # once all shared screen geometries are aligned.
+          # Strict release gate: OpenBH must preserve the approved OpenATV visual
+          # geometry/style, with only explicitly documented platform exceptions.
           python3 tools/validate_openbh_atv_parity.py \
             --skin-dir /tmp/cvstage/usr/share/enigma2/CineView_FHD \
             --openatv-adapter installer/openatv_compat.py \
             --openbh-adapter installer/openbh_compat.py \
-            --report /tmp/openbh-atv-parity.json
+            --report /tmp/openbh-atv-parity.json \
+            --strict
           cat /tmp/openbh-atv-parity.json
 
           rm -rf /tmp/cvstage/usr/lib/enigma2/python/Components/Renderer/__pycache__
