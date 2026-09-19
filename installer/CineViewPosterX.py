@@ -19,6 +19,65 @@ API_ITUNES = "https://itunes.apple.com/search"
 API_IMDB = "https://v3.sg.media-imdb.com/suggestion/x/%s.json"
 UA = "CineView-FHD/2.0.2 (Enigma2 native poster renderer)"
 LOG_PATH = "/tmp/CINEVIEW/poster.log"
+MAX_POSTER_PIXELS = 4000000
+MAX_POSTER_EDGE = 2600
+
+def _jpeg_dimensions(data):
+    """Read JPEG SOF dimensions without decoding pixel data."""
+    try:
+        if not data or data[:2] != b"\xff\xd8":
+            return None
+        i = 2
+        n = len(data)
+        sof = {0xC0,0xC1,0xC2,0xC3,0xC5,0xC6,0xC7,0xC9,0xCA,0xCB,0xCD,0xCE,0xCF}
+        while i + 9 < n:
+            if data[i] != 0xFF:
+                i += 1
+                continue
+            while i < n and data[i] == 0xFF:
+                i += 1
+            if i >= n:
+                break
+            marker = data[i]
+            i += 1
+            if marker in (0xD8,0xD9):
+                continue
+            if i + 1 >= n:
+                break
+            seglen = (data[i] << 8) | data[i+1]
+            if seglen < 2 or i + seglen > n:
+                break
+            if marker in sof and seglen >= 7:
+                h = (data[i+3] << 8) | data[i+4]
+                w = (data[i+5] << 8) | data[i+6]
+                return (w,h)
+            i += seglen
+    except Exception:
+        pass
+    return None
+
+def _safe_dimensions(dims):
+    if not dims:
+        return False
+    w,h = dims
+    return w > 0 and h > 0 and max(w,h) <= MAX_POSTER_EDGE and (w*h) <= MAX_POSTER_PIXELS
+
+def _safe_jpeg_file(path):
+    try:
+        with open(path, "rb") as f:
+            head = f.read(262144)
+        dims = _jpeg_dimensions(head)
+        if not _safe_dimensions(dims):
+            _log("reject-cache path=%s dims=%s" % (path, dims))
+            try:
+                os.unlink(path)
+            except Exception:
+                pass
+            return False
+        return True
+    except Exception:
+        return False
+
 
 _epg = eEPGCache.getInstance()
 _lock = threading.Lock()
@@ -126,6 +185,14 @@ def _quote(value):
             return value
 
 
+def _imdb_bounded_url(url):
+    """Ask IMDb's own CDN for a receiver-safe poster instead of the original."""
+    if not url:
+        return None
+    scaled = re.sub(r'\._V1_[^/]*?\.jpg(?:\?.*)?$', '._V1_FMjpg_UY900_.jpg', url)
+    return scaled if scaled != url else url
+
+
 def _imdb_artwork(q):
     # IMDb suggestion understands localized movie/series titles and needs no API key.
     data = _http_get(API_IMDB % _quote(q), timeout=6.0, want_json=True) or {}
@@ -135,7 +202,7 @@ def _imdb_artwork(q):
         image = row.get("i") or {}
         url = image.get("imageUrl")
         if url:
-            return url
+            return _imdb_bounded_url(url)
     return None
 
 
@@ -168,7 +235,7 @@ def _image_url(title):
     for q in queries:
         data = _http_get(API_SINGLE, params={"q": q}, timeout=6.0, want_json=True) or {}
         image = data.get("image") or {}
-        url = image.get("original") or image.get("medium")
+        url = image.get("medium") or image.get("original")
         if url:
             _log("provider=tvmaze title=%s query=%s" % (title, q))
             return url
@@ -176,7 +243,7 @@ def _image_url(title):
         for row in rows[:5]:
             show = (row or {}).get("show") or {}
             image = show.get("image") or {}
-            url = image.get("original") or image.get("medium")
+            url = image.get("medium") or image.get("original")
             if url:
                 _log("provider=tvmaze-search title=%s query=%s" % (title, q))
                 return url
@@ -201,28 +268,48 @@ def _image_url(title):
 
 
 def _notify(title):
+    # Worker threads must never touch Enigma2 GUI/C++ objects.
+    # Each renderer instance already polls from its own eTimer on the GUI thread.
     with _lock:
-        objs = list(_callbacks.pop(title, []))
+        _callbacks.pop(title, None)
         _pending.discard(title)
-    for obj in objs:
-        try:
-            obj._wake()
-        except Exception:
-            pass
 
 
 def _download(title):
     path = _poster_path(title)
     tmp = path + ".part"
+
+    def fetch_safe(url):
+        if not url:
+            return None
+        body = _http_get(url, timeout=9.0, want_json=False)
+        if not body or len(body) <= 1500:
+            return None
+        dims = _jpeg_dimensions(body[:262144])
+        if _safe_dimensions(dims):
+            return body
+        _log("reject-download title=%s dims=%s url=%s" % (title, dims, url))
+        return None
+
     try:
         url = _image_url(title)
-        if url:
-            body = _http_get(url, timeout=9.0, want_json=False)
-            if body and len(body) > 1500:
-                _mkdir(CACHE_ROOT)
-                with open(tmp, "wb") as f:
-                    f.write(body)
-                os.rename(tmp, path)
+        body = fetch_safe(url)
+
+        # IMDb can return poster originals far larger than an STB ever needs.
+        # If the selected provider is oversized, use iTunes' bounded 600x900 art.
+        if body is None:
+            for q in _queries(title):
+                small = _itunes_artwork(q)
+                body = fetch_safe(small)
+                if body is not None:
+                    _log("provider=itunes-safe title=%s query=%s" % (title, q))
+                    break
+
+        if body is not None:
+            _mkdir(CACHE_ROOT)
+            with open(tmp, "wb") as f:
+                f.write(body)
+            os.rename(tmp, path)
     except Exception:
         try:
             if os.path.exists(tmp):
@@ -351,8 +438,9 @@ class CineViewPosterX(Renderer):
         self._title = title
         path = _poster_path(title)
         if os.path.exists(path) and os.path.getsize(path) > 1500:
-            self._show(path)
-            return
+            if _safe_jpeg_file(path):
+                self._show(path)
+                return
 
         self.instance.hide()
         _queue(title, self)
@@ -371,10 +459,13 @@ class CineViewPosterX(Renderer):
             return
         path = _poster_path(self._title)
         if os.path.exists(path) and os.path.getsize(path) > 1500:
-            self._show(path)
-            return
+            if _safe_jpeg_file(path):
+                self._show(path)
+                return
         self._polls += 1
-        if self._polls < 30:
+        with _lock:
+            pending = self._title in _pending
+        if pending and self._polls < 180:
             self._timer.start(500, True)
 
     def _show(self, path):

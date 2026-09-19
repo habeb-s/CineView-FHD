@@ -270,7 +270,7 @@ PKGROOT="$TMP/pkg"
 mkdir -p "$PKGROOT/CONTROL" || fail "cannot create package metadata"
 cat > "$PKGROOT/CONTROL/control" <<'EOF'
 Package: enigma2-plugin-skins-cineview-fhd
-Version: 2.1.0
+Version: 2.1.1
 Architecture: all
 Maintainer: habeb-s
 Description: CineView FHD 2.1 for OpenATV 7.4-8.0
