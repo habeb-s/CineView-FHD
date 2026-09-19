@@ -8,6 +8,7 @@ on:
       - 'installer/openbh_compat.py'
       - 'installer/openatv_compat.py'
       - 'tools/validate_openbh_atv_parity.py'
+      - 'tools/release_validate.py'
 permissions:
   contents: write
 jobs:
@@ -113,6 +114,7 @@ jobs:
           fi
           mv "$OUT" cineview-smart-install.sh
           chmod 755 cineview-smart-install.sh
+          python3 tools/release_validate.py
       - name: Commit rebuilt installer
         shell: bash
         run: |
