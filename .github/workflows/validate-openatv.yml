@@ -1,5 +1,6 @@
 name: Validate CineView OpenATV 7.4-8.0 release
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'install.sh'
@@ -31,6 +32,23 @@ jobs:
           sh -n installer/parts/0000-header.sh
           python3 -m py_compile installer/openatv_compat.py
           python3 -m py_compile installer/CineViewPosterX.py
+
+          # Validate the exact published self-extracting installer artifact.
+          test -s cineview-smart-install.sh
+          PUB_LINE=$(awk '/^__CINEVIEW_PAYLOAD_BELOW__$/{print NR+1; exit}' cineview-smart-install.sh)
+          test -n "$PUB_LINE"
+          head -n "$((PUB_LINE-1))" cineview-smart-install.sh > /tmp/published-header.sh
+          sh -n /tmp/published-header.sh
+          grep -q '7.4.*7.5.*7.6.*8.0' /tmp/published-header.sh
+          grep -q 'CONTROL/preinst' /tmp/published-header.sh
+          grep -q 'Version: 2.1.0' /tmp/published-header.sh
+          tail -n +"$PUB_LINE" cineview-smart-install.sh | base64 -d > /tmp/published-payload.tar.gz
+          tar -tzf /tmp/published-payload.tar.gz >/dev/null
+          tar -xOf /tmp/published-payload.tar.gz ./usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openatv_compat.py > /tmp/published-openatv.py
+          tar -xOf /tmp/published-payload.tar.gz ./usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.py > /tmp/published-poster.py
+          cmp installer/openatv_compat.py /tmp/published-openatv.py
+          cmp installer/CineViewPosterX.py /tmp/published-poster.py
+          python3 -m py_compile /tmp/published-openatv.py /tmp/published-poster.py
 
           grep -q '7.4.*7.5.*7.6.*8.0' install.sh
           grep -q '7.4.*7.5.*7.6.*8.0' installer/parts/0000-header.sh
