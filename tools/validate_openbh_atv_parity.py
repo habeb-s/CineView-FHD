@@ -92,7 +92,21 @@ def allowed_openbh_missing_slots(screen, slots):
     return [slot for slot in slots if tuple(slot) not in allowed]
 
 
+PLATFORM_VISUAL_OVERRIDES = {"GraphicalEPG"}
+
 OPENBH_ONLY_EXPECTATIONS = {
+    "GraphicalEPG": {
+        "screen": ("center,center", "1880,1000"),
+        "slots": [
+            ("eLabel", "0,0", "1880,1000", None),
+            ("widget", "45,35", "185,278", None),
+            ("widget", "45,392", "1790,475", None),
+            ("widget", "55,918", "400,48", "Regular;28"),
+            ("widget", "490,918", "400,48", "Regular;28"),
+            ("widget", "925,918", "400,48", "Regular;28"),
+            ("widget", "1360,918", "400,48", "Regular;28"),
+        ],
+    },
     "DeliteGreenPanel": {
         "screen": ("center,center", "1820,880"),
         "slots": [
@@ -188,6 +202,8 @@ def main():
                 }
                 f["duplicates"].append(item)
                 report["summary"]["duplicates"] += 1
+                continue
+            if screen in PLATFORM_VISUAL_OVERRIDES:
                 continue
             ag = (amap[screen][0].get("position"), amap[screen][0].get("size"))
             bg = (bmap[screen][0].get("position"), bmap[screen][0].get("size"))
