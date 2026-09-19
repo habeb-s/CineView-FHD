@@ -92,33 +92,61 @@ def allowed_openbh_missing_slots(screen, slots):
     return [slot for slot in slots if tuple(slot) not in allowed]
 
 
-PLATFORM_VISUAL_OVERRIDES = {"GridEPG", "GraphicalEPG", "GridEPGPIG", "InfoBarGridEPG"}
+PLATFORM_VISUAL_OVERRIDES = {"GridEPG", "GraphicalEPG", "GridEPGPIG", "GraphicalEPGPIG", "InfoBarGridEPG"}
 
 OPENBH_ONLY_EXPECTATIONS = {
     "GridEPG": {
-        "screen": ("center,center", "1880,1000"),
+        "screen": ("center,center", "1820,930"),
         "slots": [
-            ("eLabel", "0,0", "1880,1000", None),
-            ("widget", "45,35", "185,278", None),
-            ("widget", "260,38", "1570,48", "Regular;32"),
-            ("widget", "260,148", "1570,145", "Regular;24"),
-            ("widget", "45,392", "1790,475", None),
-            ("widget", "55,918", "400,48", "Regular;28"),
-            ("widget", "490,918", "400,48", "Regular;28"),
-            ("widget", "925,918", "400,48", "Regular;28"),
-            ("widget", "1360,918", "400,48", "Regular;28"),
+            ("eLabel", "0,0", "1820,930", None),
+            ("widget", "45,138", "1180,625", None),
+            ("widget", "1290,545", "460,48", "Regular;30"),
+            ("widget", "1290,605", "460,135", "Regular;23"),
+            ("widget", "55,830", "400,52", "Regular;26"),
+            ("widget", "490,830", "400,52", "Regular;26"),
+            ("widget", "925,830", "400,52", "Regular;26"),
+            ("widget", "1360,830", "400,52", "Regular;26"),
         ],
     },
     "GraphicalEPG": {
-        "screen": ("center,center", "1880,1000"),
+        "screen": ("center,center", "1820,930"),
         "slots": [
-            ("eLabel", "0,0", "1880,1000", None),
-            ("widget", "45,35", "185,278", None),
-            ("widget", "45,392", "1790,475", None),
-            ("widget", "55,918", "400,48", "Regular;28"),
-            ("widget", "490,918", "400,48", "Regular;28"),
-            ("widget", "925,918", "400,48", "Regular;28"),
-            ("widget", "1360,918", "400,48", "Regular;28"),
+            ("eLabel", "0,0", "1820,930", None),
+            ("widget", "45,138", "1180,625", None),
+            ("widget", "1290,545", "460,48", "Regular;30"),
+            ("widget", "1290,605", "460,135", "Regular;23"),
+            ("widget", "55,830", "400,52", "Regular;26"),
+            ("widget", "490,830", "400,52", "Regular;26"),
+            ("widget", "925,830", "400,52", "Regular;26"),
+            ("widget", "1360,830", "400,52", "Regular;26"),
+        ],
+    },
+    "GridEPGPIG": {
+        "screen": ("center,center", "1820,930"),
+        "slots": [
+            ("eLabel", "0,0", "1820,930", None),
+            ("widget", "45,138", "1180,625", None),
+            ("widget", "1290,115", "460,259", None),
+            ("widget", "1290,405", "460,48", "Regular;30"),
+            ("widget", "1290,470", "460,260", "Regular;23"),
+            ("widget", "55,830", "400,52", "Regular;26"),
+            ("widget", "490,830", "400,52", "Regular;26"),
+            ("widget", "925,830", "400,52", "Regular;26"),
+            ("widget", "1360,830", "400,52", "Regular;26"),
+        ],
+    },
+    "GraphicalEPGPIG": {
+        "screen": ("center,center", "1820,930"),
+        "slots": [
+            ("eLabel", "0,0", "1820,930", None),
+            ("widget", "45,138", "1180,625", None),
+            ("widget", "1290,115", "460,259", None),
+            ("widget", "1290,405", "460,48", "Regular;30"),
+            ("widget", "1290,470", "460,260", "Regular;23"),
+            ("widget", "55,830", "400,52", "Regular;26"),
+            ("widget", "490,830", "400,52", "Regular;26"),
+            ("widget", "925,830", "400,52", "Regular;26"),
+            ("widget", "1360,830", "400,52", "Regular;26"),
         ],
     },
     "DeliteGreenPanel": {

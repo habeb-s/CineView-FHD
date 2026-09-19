@@ -308,29 +308,23 @@ SECOND_INFO_OPENBH = """\n<!-- Enlarged event panels: raised to keep clear of th
     <widget source="session.OAWeather" render="Label" position="1815,1030" size="66,28" transparent="1" zPosition="24" foregroundColor="secondFG" font="Regular;18" halign="right"><convert type="OAWeather">temperature_current</convert></widget>
 """
 
-GRID_EPG = """\t\t<eLabel position="0,0" size="1880,1000" backgroundColor="steThemePrimary" zPosition="0"/>
-\t\t<eLabel position="25,20" size="1830,300" backgroundColor="steThemeOverlay" zPosition="1"/>
-\t\t<widget source="Event" render="CineViewPosterX" position="45,35" size="185,278" zPosition="18"/>
-\t\t<widget source="Event" render="RunningText" position="260,38" size="1570,48" font="Regular;32" foregroundColor="secondFG" backgroundColor="steThemeOverlay" transparent="1" noWrap="1" zPosition="12" options="movetype=running,direction=left,step=2,steptime=55,startdelay=1200,pause=900,repeat=0,always=0"><convert type="EventName">Name</convert></widget>
-\t\t<widget source="Event" render="Label" position="260,98" size="420,38" font="Regular;25" foregroundColor="grey" backgroundColor="steThemeOverlay" transparent="1" zPosition="12"><convert type="EventTime">StartTime</convert><convert type="ClockToText">Default</convert></widget>
-\t\t<widget source="Event" render="Label" position="690,98" size="420,38" font="Regular;25" foregroundColor="grey" backgroundColor="steThemeOverlay" transparent="1" zPosition="12"><convert type="EventTime">EndTime</convert><convert type="ClockToText">Format:- %H:%M</convert></widget>
-\t\t<widget source="Event" render="RunningText" position="260,148" size="1570,145" font="Regular;24" foregroundColor="foreground" backgroundColor="steThemeOverlay" transparent="1" zPosition="12" options="movetype=running,direction=top,step=1,steptime=70,startdelay=2000,pause=1400,repeat=0,always=0"><convert type="EventName">ExtendedDescription</convert></widget>
-\t\t<widget name="timeline_text" position="45,340" size="1790,42" itemHeight="42" font="Regular;26" foregroundColor="foreground" backgroundColor="steThemePrimary" transparent="1" zPosition="10"/>
-\t\t<widget name="timeline0" position="45,340" size="2,42" zPosition="11"/>
-\t\t<widget name="timeline1" position="45,340" size="2,42" zPosition="11"/>
-\t\t<widget name="timeline2" position="45,340" size="2,42" zPosition="11"/>
-\t\t<widget name="timeline3" position="45,340" size="2,42" zPosition="11"/>
-\t\t<widget name="timeline4" position="45,340" size="2,42" zPosition="11"/>
-\t\t<widget name="timeline5" position="45,340" size="2,42" zPosition="11"/>
-\t\t<widget name="lab1" position="45,392" size="1790,475" font="Regular;28" halign="center" valign="center" foregroundColor="foreground" transparent="1" zPosition="20"/>
-\t\t<widget name="list" position="45,392" size="1790,475" itemHeight="59" Wrap="1" EntryFontWrap="no" ServiceFont="Regular;27" foregroundColor="foreground" backgroundColor="steThemePrimary" ServiceForegroundColorNow="secondFG" ServiceBackgroundColor="steThemePrimary" ServiceBackgroundColorNow="steThemeOverlay" ServiceBackgroundColorSelected="selectedBG" EntryBackgroundColorNow="steThemeOverlay" EntryForegroundColorNowSelected="selectedFG" EntryBackgroundColorNowSelected="selectedBG" EntryBackgroundColor="steThemePrimary" EntryForegroundColorSelected="selectedFG" EntryBackgroundColorSelected="selectedBG" transparent="1" scrollbarMode="showNever" EventNamePadding="6" ServiceNamePadding="6" ServiceBorderVerWidth="2" EventBorderVerWidth="2" zPosition="10"/>
-\t\t<widget name="timeline_now" position="45,392" size="3,475" zPosition="21"/>
-\t\t<widget name="bouquetlist" position="45,392" size="1790,475" itemHeight="59" font="Regular;28" enableWrapAround="1" scrollbarMode="showOnDemand" foregroundColor="foreground" backgroundColor="steThemePrimary" foregroundColorSelected="selectedFG" backgroundColorSelected="selectedBG" transparent="0" zPosition="30"/>
-\t\t<eLabel position="35,892" size="1810,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
-\t\t<widget name="key_red" position="55,918" size="400,48" font="Regular;28" halign="center" valign="center" transparent="1"/>
-\t\t<widget name="key_green" position="490,918" size="400,48" font="Regular;28" halign="center" valign="center" transparent="1"/>
-\t\t<widget name="key_yellow" position="925,918" size="400,48" font="Regular;28" halign="center" valign="center" transparent="1"/>
-\t\t<widget name="key_blue" position="1360,918" size="400,48" font="Regular;28" halign="center" valign="center" transparent="1"/>"""
+GRID_EPG = """		<eLabel position="0,0" size="1820,930" backgroundColor="steThemePrimary" zPosition="0"/>
+		<widget source="Title" render="Label" position="45,24" size="1200,50" font="Regular;36" foregroundColor="secondFG" transparent="1"/>
+		<widget source="global.CurrentTime" render="Label" position="1450,24" size="320,46" font="Regular;27" foregroundColor="grey" halign="right" transparent="1"><convert type="ClockToText">Format:%d.%m.%Y %H:%M</convert></widget>
+		<widget name="timeline_text" position="45,92" size="1180,44" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1"/>
+		<widget name="lab1" position="45,138" size="1180,625" font="Regular;28" halign="center" valign="center" backgroundColor="steThemePrimary" transparent="0" zPosition="2"/>
+		<widget name="bouquetlist" position="45,138" size="1180,625" backgroundColor="steThemePrimary" scrollbarMode="showNever" transparent="0" zPosition="15"/>
+		<widget name="list" position="45,138" size="1180,625" scrollbarMode="showNever" transparent="1" zPosition="10" ServiceFontGraphical="Regular;28" EntryFontGraphical="Regular;26" NumberOfRows="9" MinimumItemHeight="66" EntryFontWrap="no"/>
+		<widget name="timeline_now" position="45,138" zPosition="21" size="5,625"/>
+		<eLabel position="1260,82" size="520,682" backgroundColor="steThemePanel" zPosition="1"/>
+		<widget source="Event" render="CineViewPosterX" position="1380,105" size="280,420" zPosition="12"/>
+		<widget source="Event" render="RunningText" position="1290,545" size="460,48" font="Regular;30" foregroundColor="secondFG" transparent="1" halign="center" noWrap="1" options="movetype=running,direction=left,step=2,steptime=55,startdelay=1400,pause=900,repeat=0,always=0"><convert type="EventName">Name</convert></widget>
+		<widget source="Event" render="Label" position="1290,605" size="460,135" font="Regular;23" foregroundColor="foreground" transparent="1" valign="top"><convert type="EventName">ExtendedDescription</convert></widget>
+		<eLabel position="35,805" size="1750,2" backgroundColor="steThemePanelAlt"/>
+		<widget source="key_red" render="Label" position="55,830" size="400,52" font="Regular;26" halign="center" transparent="1"/>
+		<widget source="key_green" render="Label" position="490,830" size="400,52" font="Regular;26" halign="center" transparent="1"/>
+		<widget source="key_yellow" render="Label" position="925,830" size="400,52" font="Regular;26" halign="center" transparent="1"/>
+		<widget source="key_blue" render="Label" position="1360,830" size="400,52" font="Regular;26" halign="center" transparent="1"/>"""
 
 GRID_COMMON = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="steThemePrimary" zPosition="0"/>
 \t\t<eLabel position="1195,0" size="2,785" backgroundColor="steThemePanelAlt" zPosition="2"/>
@@ -354,21 +348,24 @@ GRID_COMMON = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="ste
 \t\t<widget name="key_yellow" position="925,805" size="400,45" font="Regular;28" halign="center" transparent="1"/>
 \t\t<widget name="key_blue" position="1360,805" size="400,45" font="Regular;28" halign="center" transparent="1"/>"""
 
-GRID_PIG = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="steThemePrimary" zPosition="0"/>
-\t\t<widget source="Title" render="Label" position="45,24" size="1020,55" font="Regular;35" foregroundColor="secondFG" transparent="1"/>
-\t\t<eLabel position="1240,40" size="525,295" backgroundColor="black" zPosition="4"/>
-\t\t<widget source="session.VideoPicture" render="Pig" position="1255,55" size="495,265" backgroundColor="black" zPosition="5"/>
-\t\t<widget source="Event" render="Label" position="45,92" size="1120,210" font="Regular;24" foregroundColor="foreground" transparent="1" valign="top"><convert type="EventName">FullDescription</convert></widget>
-\t\t<widget name="lab1" position="45,335" size="1720,410" font="Regular;27" halign="center" valign="center" transparent="1" zPosition="20"/>
-\t\t<widget name="timeline_text" position="45,335" size="1720,42" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1"/>
-\t\t<widget name="bouquetlist" position="45,380" size="1720,365" backgroundColor="steThemePrimary" scrollbarMode="showNever" transparent="0" zPosition="15"/>
-\t\t<widget name="list" position="45,380" size="1720,365" backgroundColor="steThemePrimary" scrollbarMode="showNever" transparent="1" zPosition="10"/>
-\t\t<widget name="timeline_now" position="45,380" size="4,365" zPosition="21"/>
-\t\t<eLabel position="35,775" size="1750,2" backgroundColor="steThemePanelAlt"/>
-\t\t<widget source="key_red" render="Label" position="55,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
-\t\t<widget source="key_green" render="Label" position="490,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
-\t\t<widget source="key_yellow" render="Label" position="925,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
-\t\t<widget source="key_blue" render="Label" position="1360,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>"""
+GRID_PIG = """		<eLabel position="0,0" size="1820,930" backgroundColor="steThemePrimary" zPosition="0"/>
+		<widget source="Title" render="Label" position="45,24" size="1200,50" font="Regular;36" foregroundColor="secondFG" transparent="1"/>
+		<widget source="global.CurrentTime" render="Label" position="1450,24" size="320,46" font="Regular;27" foregroundColor="grey" halign="right" transparent="1"><convert type="ClockToText">Format:%d.%m.%Y %H:%M</convert></widget>
+		<widget name="timeline_text" position="45,92" size="1180,44" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1"/>
+		<widget name="lab1" position="45,138" size="1180,625" font="Regular;28" halign="center" valign="center" backgroundColor="steThemePrimary" transparent="0" zPosition="2"/>
+		<widget name="bouquetlist" position="45,138" size="1180,625" backgroundColor="steThemePrimary" scrollbarMode="showNever" transparent="0" zPosition="15"/>
+		<widget name="list" position="45,138" size="1180,625" scrollbarMode="showNever" transparent="1" zPosition="10" ServiceFontGraphical="Regular;28" EntryFontGraphical="Regular;26" NumberOfRows="9" MinimumItemHeight="66" EntryFontWrap="no"/>
+		<widget name="timeline_now" position="45,138" zPosition="21" size="5,625"/>
+		<eLabel position="1260,82" size="520,682" backgroundColor="steThemePanel" zPosition="1"/>
+		<eLabel position="1280,105" size="480,270" backgroundColor="black" zPosition="3"/>
+		<widget source="session.VideoPicture" render="Pig" position="1290,115" size="460,259" backgroundColor="black" zPosition="4"/>
+		<widget source="Event" render="RunningText" position="1290,405" size="460,48" font="Regular;30" foregroundColor="secondFG" transparent="1" halign="center" noWrap="1" options="movetype=running,direction=left,step=2,steptime=55,startdelay=1400,pause=900,repeat=0,always=0"><convert type="EventName">Name</convert></widget>
+		<widget source="Event" render="Label" position="1290,470" size="460,260" font="Regular;23" foregroundColor="foreground" transparent="1" valign="top"><convert type="EventName">ExtendedDescription</convert></widget>
+		<eLabel position="35,805" size="1750,2" backgroundColor="steThemePanelAlt"/>
+		<widget source="key_red" render="Label" position="55,830" size="400,52" font="Regular;26" halign="center" transparent="1"/>
+		<widget source="key_green" render="Label" position="490,830" size="400,52" font="Regular;26" halign="center" transparent="1"/>
+		<widget source="key_yellow" render="Label" position="925,830" size="400,52" font="Regular;26" halign="center" transparent="1"/>
+		<widget source="key_blue" render="Label" position="1360,830" size="400,52" font="Regular;26" halign="center" transparent="1"/>"""
 
 QUICK_EPG = """\t\t<eLabel position="0,0" size="1920,420" backgroundColor="steThemePrimary" zPosition="0"/>
 \t\t<widget source="Service" render="Picon" position="45,35" size="190,60" transparent="1" alphatest="blend"><convert type="ServiceName">Reference</convert></widget>
@@ -601,10 +598,10 @@ SCREENS = (
     ("InfoBarEventView", INFOBAR_EVENT_VIEW, "0,0", "1920,360", "Event View"),
     ("EPGSelectionMulti", MULTI_EPG, "center,center", "1820,880", "Multi EPG"),
     ("QuickEPG", QUICK_EPG, "0,660", "1920,420", "Quick EPG"),
-    ("GridEPG", GRID_EPG, "center,center", "1880,1000", "Graphical EPG"),
-    ("GraphicalEPG", GRID_EPG, "center,center", "1880,1000", "Graphical EPG"),
-    ("GridEPGPIG", GRID_PIG, "center,center", "1820,880", "Graphical EPG"),
-    ("GraphicalEPGPIG", GRID_PIG, "center,center", "1820,880", "Graphical EPG"),
+    ("GridEPG", GRID_EPG, "center,center", "1820,930", "Graphical EPG"),
+    ("GraphicalEPG", GRID_EPG, "center,center", "1820,930", "Graphical EPG"),
+    ("GridEPGPIG", GRID_PIG, "center,center", "1820,930", "Graphical EPG"),
+    ("GraphicalEPGPIG", GRID_PIG, "center,center", "1820,930", "Graphical EPG"),
     ("InfoBarGridEPG", INFOBAR_GRID, "0,750", "1920,330", "InfoBar EPG"),
     ("GraphicalInfoBarEPG", INFOBAR_GRID, "0,750", "1920,330", "InfoBar EPG"),
     ("EPGvertical", VERTICAL_EPG, "center,center", "1820,880", "Vertical EPG"),
