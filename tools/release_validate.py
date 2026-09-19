@@ -64,8 +64,10 @@ try:
     checkxml(skin,'EXTRACTED')
 
     ptxt=open(plug+'/plugin.py',errors='ignore').read()
-    if "VERSION='2.1.0'" not in ptxt and 'VERSION = "2.1.0"' not in ptxt:
+    vm=re.search(r'\bVERSION\s*=\s*["\x27](2\.1\.\d+)["\x27]',ptxt)
+    if not vm:
         fail('plugin version marker')
+    print('PLUGIN_VERSION='+vm.group(1))
 
     for required in ('openatv_compat.py','openbh_compat.py'):
         if not os.path.isfile(plug+'/'+required): fail('missing '+required)
