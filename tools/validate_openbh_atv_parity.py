@@ -92,9 +92,23 @@ def allowed_openbh_missing_slots(screen, slots):
     return [slot for slot in slots if tuple(slot) not in allowed]
 
 
-PLATFORM_VISUAL_OVERRIDES = {"GraphicalEPG"}
+PLATFORM_VISUAL_OVERRIDES = {"GridEPG", "GraphicalEPG", "GridEPGPIG", "InfoBarGridEPG"}
 
 OPENBH_ONLY_EXPECTATIONS = {
+    "GridEPG": {
+        "screen": ("center,center", "1880,1000"),
+        "slots": [
+            ("eLabel", "0,0", "1880,1000", None),
+            ("widget", "45,35", "185,278", None),
+            ("widget", "260,38", "1570,48", "Regular;32"),
+            ("widget", "260,148", "1570,145", "Regular;24"),
+            ("widget", "45,392", "1790,475", None),
+            ("widget", "55,918", "400,48", "Regular;28"),
+            ("widget", "490,918", "400,48", "Regular;28"),
+            ("widget", "925,918", "400,48", "Regular;28"),
+            ("widget", "1360,918", "400,48", "Regular;28"),
+        ],
+    },
     "GraphicalEPG": {
         "screen": ("center,center", "1880,1000"),
         "slots": [
