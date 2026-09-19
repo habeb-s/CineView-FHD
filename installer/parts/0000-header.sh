@@ -276,8 +276,18 @@ fi
 
 PKGROOT="$TMP/pkg"
 mkdir -p "$PKGROOT/CONTROL" || fail "cannot create package metadata"
-cat > "$PKGROOT/CONTROL/control" <<'EOF'
-Package: enigma2-plugin-skins-cineview-fhd
+case "$ATV_DISTRO" in
+  openbh)
+    PKGNAME="enigma2-plugin-skins-cineview-fhd-openbh"
+    PKGSUFFIX="openbh"
+    ;;
+  *)
+    PKGNAME="enigma2-plugin-skins-cineview-fhd"
+    PKGSUFFIX="openatv"
+    ;;
+esac
+cat > "$PKGROOT/CONTROL/control" <<EOF
+Package: $PKGNAME
 Version: 2.1.1
 Architecture: all
 Maintainer: habeb-s
@@ -309,7 +319,7 @@ printf '2.0\n' > "$TMP/debian-binary"
 tar -C "$PKGROOT/CONTROL" -czf "$TMP/control.tar.gz" . || fail "control package creation failed"
 tar -C "$TMP/stage" -czf "$TMP/data.tar.gz" . || fail "data package creation failed"
 
-if [ "$PM" = apt ]; then PKGFILE="/tmp/cineview-fhd-2.1-openatv-$$.deb"; else PKGFILE="/tmp/cineview-fhd-2.1-openatv-$$.ipk"; fi
+if [ "$PM" = apt ]; then PKGFILE="/tmp/cineview-fhd-2.1-$PKGSUFFIX-$.deb"; else PKGFILE="/tmp/cineview-fhd-2.1-$PKGSUFFIX-$.ipk"; fi
 
 "$PY" - "$PKGFILE" "$TMP/debian-binary" "$TMP/control.tar.gz" "$TMP/data.tar.gz" <<'PY'
 from __future__ import print_function
