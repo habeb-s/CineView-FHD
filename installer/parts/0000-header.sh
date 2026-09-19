@@ -62,10 +62,18 @@ ATV_VERSION="${CINEVIEW_IMAGE_VERSION:-}"
 [ -n "$ATV_VERSION" ] || ATV_VERSION="$(iv_get imageversion)"
 [ -n "$ATV_VERSION" ] || ATV_VERSION=$(printf '%s\n' "$IMG" | sed -n 's/.*version=\([^ ]*\).*/\1/p' | head -n1)
 
-[ "$ATV_DISTRO" = "openatv" ] || fail "CineView FHD 2.1 supports OpenATV only"
-case "$ATV_VERSION" in
-  7.4*|7.5*|7.6*|8.0*) ;;
-  *) fail "unsupported OpenATV version: $ATV_VERSION; supported: 7.4, 7.5, 7.6, 8.0" ;;
+case "$ATV_DISTRO" in
+  openatv)
+    case "$ATV_VERSION" in
+      7.4*|7.5*|7.6*|8.0*) ;;
+      *) fail "unsupported OpenATV version: $ATV_VERSION; supported: 7.4, 7.5, 7.6, 8.0" ;;
+    esac
+    ;;
+  openbh)
+    ;;
+  *)
+    fail "CineView FHD 2.1 supports OpenATV 7.4-8.0 and OpenBH 6.x"
+    ;;
 esac
 
 if command -v opkg >/dev/null 2>&1; then PM=opkg; elif command -v apt-get >/dev/null 2>&1; then PM=apt; else PM=none; fi
@@ -273,7 +281,7 @@ Package: enigma2-plugin-skins-cineview-fhd
 Version: 2.1.1
 Architecture: all
 Maintainer: habeb-s
-Description: CineView FHD 2.1 for OpenATV 7.4-8.0
+Description: CineView FHD 2.1 for OpenATV 7.4-8.0 and OpenBH 6.x
 EOF
 cat > "$PKGROOT/CONTROL/preinst" <<'EOF'
 #!/bin/sh
@@ -285,8 +293,9 @@ iv_get(){
 }
 img=$(cat /etc/image-version /etc/issue /etc/os-release 2>/dev/null | tr 'A-Z' 'a-z' | tr '\n' ' ')
 case "$img" in
+  *openbh*|*openblackhole*) exit 0 ;;
   *openatv*) ;;
-  *) echo "CineView FHD 2.1 requires OpenATV 7.4/7.5/7.6/8.0" >&2; exit 1 ;;
+  *) echo "CineView FHD 2.1 requires OpenATV 7.4-8.0 or OpenBH 6.x" >&2; exit 1 ;;
 esac
 ver=$(iv_get Version)
 [ -n "$ver" ] || ver=$(iv_get imageversion)
