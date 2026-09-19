@@ -39,7 +39,7 @@ def _normalise_math(data):
 
 
 def _stretch_second_infobar(data, name):
-    """Preserve the image-native SecondInfoBar contract, but make its panel edge-to-edge."""
+    """Preserve OpenBH's native SecondInfoBar widgets, but make the panel edge-to-edge."""
     pat = re.compile(SCREEN_RE % re.escape(name), re.S)
     m = pat.search(data)
     if not m:
@@ -57,7 +57,6 @@ def _stretch_second_infobar(data, name):
     else:
         old_w, old_h = 1920, 520
 
-    # Keep the vertical placement chosen by the image, but force the screen to span FHD width.
     newhead = headtxt
     if sm:
         newhead = re.sub(r'\bsize=["\'][^"\']+["\']', 'size="1920,%d"' % old_h, newhead, count=1)
@@ -67,7 +66,55 @@ def _stretch_second_infobar(data, name):
     pm = re.search(r'\bposition=["\']([^"\']+)["\']', newhead)
     if pm:
         pos = pm.group(1)
-        if re.match(r'^\d+,\d+    t = (' title="%s"' % title) if title else ""
+        if re.match(r'^\d+,\d+$', pos):
+            y = pos.split(',', 1)[1]
+            newhead = re.sub(r'\bposition=["\'][^"\']+["\']', 'position="0,%s"' % y, newhead, count=1)
+        elif pos == "center,center":
+            y = max(0, (1080 - old_h) // 2)
+            newhead = re.sub(r'\bposition=["\'][^"\']+["\']', 'position="0,%d"' % y, newhead, count=1)
+    else:
+        y = max(0, (1080 - old_h) // 2)
+        newhead = newhead[:-1] + ' position="0,%d">' % y
+
+    block = block[:head.start()] + newhead + block[head.end():]
+    delta = 1920 - old_w
+
+    def stretch_tag(mt):
+        tag = mt.group(0)
+        pm2 = re.search(r'position=["\'](\d+),(\d+)["\']', tag)
+        sm2 = re.search(r'size=["\'](\d+),(\d+)["\']', tag)
+        if not pm2 or not sm2:
+            return tag
+        x, y = int(pm2.group(1)), int(pm2.group(2))
+        w, h = int(sm2.group(1)), int(sm2.group(2))
+        nx, nw = x, w
+
+        if x <= 55 and w >= old_w - 110:
+            nx, nw = 0, 1920
+        elif delta:
+            if x >= int(old_w * 0.68) and w < int(old_w * 0.45):
+                nx = x + delta
+            elif x < int(old_w * 0.68) and (x + w) >= old_w - 30:
+                nw = w + delta
+
+        tag = re.sub(r'position=["\']\d+,\d+["\']', 'position="%d,%d"' % (nx, y), tag, count=1)
+        tag = re.sub(r'size=["\']\d+,\d+["\']', 'size="%d,%d"' % (nw, h), tag, count=1)
+        return tag
+
+    block = re.sub(r'<(?:eLabel|widget)\b[^>]*>', stretch_tag, block)
+
+    bgm = re.search(r'backgroundColor=["\']([^"\']+)["\']', block)
+    bg = bgm.group(1) if bgm else "steThemePrimary"
+    full_bg = '<eLabel position="0,0" size="1920,%d" backgroundColor="%s" zPosition="0"/>' % (old_h, bg)
+    first_close = block.find('>')
+    if first_close >= 0 and full_bg not in block:
+        block = block[:first_close + 1] + "\n\t\t" + full_bg + block[first_close + 1:]
+
+    return data[:m.start()] + block + data[m.end():]
+
+
+def _screen(name, body, position="center,center", size="1820,880", title=""):
+    t = (' title="%s"' % title) if title else ""
     return '\n\t<screen name="%s" position="%s" size="%s" flags="wfNoBorder"%s>\n%s\n\t</screen>\n' % (
         name, position, size, t, body)
 
