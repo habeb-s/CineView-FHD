@@ -152,14 +152,51 @@ CHOICEBOX = """\t\t<eLabel position="0,0" size="1100,800" backgroundColor="steTh
 PLUGIN_BROWSER = """		<eLabel position="0,0" size="1920,1080" backgroundColor="steThemePrimary" zPosition="0"/>
 		<eLabel text="Plugins" position="45,24" size="1830,52" font="Regular;38" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1" zPosition="3"/>
 		<eLabel position="35,88" size="1850,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
-		<widget name="list" position="45,110" size="1830,800" scrollbarMode="showOnDemand" foregroundColor="foreground" backgroundColor="steThemePrimary" foregroundColorSelected="selectedFG" backgroundColorSelected="selectedBG" transparent="1" zPosition="5"/>
+		<widget source="list" render="Listbox" position="45,110" size="1830,800" conditional="pluginList" listOrientation="vertical" scrollbarMode="showOnDemand" foregroundColor="foreground" backgroundColor="steThemePrimary" foregroundColorSelected="selectedFG" backgroundColorSelected="selectedBG" transparent="1" zPosition="5">
+			<convert type="TemplatedMultiContent">
+{"template": [
+MultiContentEntryPixmapAlphaBlend(pos=(12, 4), size=(185, 80), png=3, flags=BT_SCALE),
+MultiContentEntryText(pos=(220, 5), size=(1550, 38), font=0, text=1),
+MultiContentEntryText(pos=(220, 43), size=(1550, 29), font=1, text=2)
+],
+"fonts": [gFont("Regular", 31), gFont("Regular", 22)],
+"itemHeight": 88
+}
+			</convert>
+		</widget>
 		<eLabel position="35,995" size="1850,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
-		<widget name="key_red" position="55,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
-		<widget name="key_green" position="385,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
-		<widget name="key_yellow" position="715,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
-		<widget name="key_0" position="1045,1010" size="120,45" font="Regular;24" halign="center" valign="center" transparent="1"/>
-		<widget name="key_previous" position="1185,1010" size="250,45" font="Regular;23" halign="center" valign="center" transparent="1"/>
-		<widget name="key_next" position="1455,1010" size="250,45" font="Regular;23" halign="center" valign="center" transparent="1"/>"""
+		<widget source="key_red" render="Label" position="55,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
+		<widget source="key_green" render="Label" position="385,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
+		<widget source="key_yellow" render="Label" position="715,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
+		<widget source="key_0" render="Label" position="1045,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
+		<widget source="key_previous" render="Label" position="1390,1010" size="170,45" font="Regular;23" halign="center" valign="center" foregroundColor="grey" transparent="1"/>
+		<widget source="key_next" render="Label" position="1580,1010" size="170,45" font="Regular;23" halign="center" valign="center" foregroundColor="grey" transparent="1"/>
+	"""
+
+PLUGIN_BROWSER_GRID = """		<eLabel position="0,0" size="1920,1080" backgroundColor="steThemePrimary" zPosition="0"/>
+		<eLabel text="Plugins" position="45,24" size="1830,52" font="Regular;38" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1" zPosition="3"/>
+		<eLabel position="35,88" size="1850,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
+		<widget source="list" render="Listbox" position="45,110" size="1830,820" conditional="pluginGrid" listOrientation="grid" scrollbarMode="showOnDemand" foregroundColor="foreground" backgroundColor="steThemePrimary" foregroundColorSelected="selectedFG" backgroundColorSelected="selectedBG" transparent="1" zPosition="5">
+			<convert type="TemplatedMultiContent">
+{"template": [
+MultiContentEntryText(pos=(4, 4), size=(326, 156), font=0, backcolor=0x0016161a),
+MultiContentEntryPixmapAlphaBlend(pos=(105, 18), size=(120, 52), png=3, flags=BT_SCALE | BT_KEEP_ASPECT_RATIO | BT_HALIGN_CENTER | BT_VALIGN_CENTER),
+MultiContentEntryText(pos=(12, 84), size=(306, 66), font=0, flags=RT_HALIGN_CENTER | RT_VALIGN_CENTER | RT_WRAP, text=1)
+],
+"fonts": [gFont("Regular", 25)],
+"itemWidth": 334,
+"itemHeight": 164
+}
+			</convert>
+		</widget>
+		<eLabel position="35,995" size="1850,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
+		<widget source="key_red" render="Label" position="55,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
+		<widget source="key_green" render="Label" position="385,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
+		<widget source="key_yellow" render="Label" position="715,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
+		<widget source="key_0" render="Label" position="1045,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
+		<widget source="key_previous" render="Label" position="1390,1010" size="170,45" font="Regular;23" halign="center" valign="center" foregroundColor="grey" transparent="1"/>
+		<widget source="key_next" render="Label" position="1580,1010" size="170,45" font="Regular;23" halign="center" valign="center" foregroundColor="grey" transparent="1"/>
+	"""
 
 SINGLE_EPG = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="steThemePrimary" zPosition="0"/>
 \t\t<eLabel position="1195,0" size="2,785" backgroundColor="steThemePanelAlt" zPosition="2"/>
@@ -331,7 +368,7 @@ GRID_PIG = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="steThe
 \t\t<widget source="key_red" render="Label" position="55,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
 \t\t<widget source="key_green" render="Label" position="490,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
 \t\t<widget source="key_yellow" render="Label" position="925,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
-\t\t<widget source="key_blue" render="Label" position="1360,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>""" + GRID_COMMON
+\t\t<widget source="key_blue" render="Label" position="1360,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>"""
 
 QUICK_EPG = """\t\t<eLabel position="0,0" size="1920,420" backgroundColor="steThemePrimary" zPosition="0"/>
 \t\t<widget source="Service" render="Picon" position="45,35" size="190,60" transparent="1" alphatest="blend"><convert type="ServiceName">Reference</convert></widget>
@@ -553,7 +590,7 @@ VERTICAL_EPG = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="st
 
 SCREENS = (
     ("PluginBrowserList", PLUGIN_BROWSER, "0,0", "1920,1080", "Plugin Browser"),
-    ("PluginBrowserGrid", PLUGIN_BROWSER, "0,0", "1920,1080", "Plugin Browser"),
+    ("PluginBrowserGrid", PLUGIN_BROWSER_GRID, "0,0", "1920,1080", "Plugin Browser"),
     ("PluginBrowser", PLUGIN_BROWSER, "0,0", "1920,1080", "Plugin Browser"),
     ("MessageBox", MESSAGE_BOX, "center,center", "960,520", "Message"),
     ("MessageBoxModal", MESSAGE_BOX, "center,center", "960,520", "Message"),
