@@ -165,9 +165,9 @@ MultiContentEntryText(pos=(220, 43), size=(1550, 29), font=1, text=2)
 			</convert>
 		</widget>
 		<eLabel position="35,995" size="1850,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
-		<widget name="key_red" position="55,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
-		<widget name="key_green" position="385,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
-		<widget name="key_yellow" position="715,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
+		<widget source="key_red" render="Label" position="55,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
+		<widget source="key_green" render="Label" position="385,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
+		<widget source="key_yellow" render="Label" position="715,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
 		<widget source="key_0" render="Label" position="1045,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
 		<widget source="key_previous" render="Label" position="1390,1010" size="170,45" font="Regular;23" halign="center" valign="center" foregroundColor="grey" transparent="1"/>
 		<widget source="key_next" render="Label" position="1580,1010" size="170,45" font="Regular;23" halign="center" valign="center" foregroundColor="grey" transparent="1"/>
@@ -190,9 +190,9 @@ MultiContentEntryText(pos=(12, 84), size=(306, 66), font=0, flags=RT_HALIGN_CENT
 			</convert>
 		</widget>
 		<eLabel position="35,995" size="1850,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
-		<widget name="key_red" position="55,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
-		<widget name="key_green" position="385,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
-		<widget name="key_yellow" position="715,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
+		<widget source="key_red" render="Label" position="55,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
+		<widget source="key_green" render="Label" position="385,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
+		<widget source="key_yellow" render="Label" position="715,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
 		<widget source="key_0" render="Label" position="1045,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1"/>
 		<widget source="key_previous" render="Label" position="1390,1010" size="170,45" font="Regular;23" halign="center" valign="center" foregroundColor="grey" transparent="1"/>
 		<widget source="key_next" render="Label" position="1580,1010" size="170,45" font="Regular;23" halign="center" valign="center" foregroundColor="grey" transparent="1"/>
@@ -230,10 +230,10 @@ MULTI_EPG = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="steTh
 \t\t<widget source="Event" render="Label" position="1210,120" size="250,120" font="Regular;29" foregroundColor="foreground" transparent="1"><convert type="EventName">Name</convert></widget>
 \t\t<widget source="Event" render="Label" position="1210,260" size="555,455" font="Regular;23" foregroundColor="foreground" transparent="1" valign="top"><convert type="EventName">FullDescription</convert></widget>
 \t\t<eLabel position="35,775" size="1750,2" backgroundColor="steThemePanelAlt"/>
-\t\t<widget name="key_red" position="55,800" size="400,45" font="Regular;26" halign="center" transparent="1" zPosition="12"/>
-\t\t<widget name="key_green" position="490,800" size="400,45" font="Regular;26" halign="center" transparent="1" zPosition="12"/>
-\t\t<widget name="key_yellow" position="925,800" size="400,45" font="Regular;26" halign="center" transparent="1" zPosition="12"/>
-\t\t<widget name="key_blue" position="1360,800" size="400,45" font="Regular;26" halign="center" transparent="1" zPosition="12"/>"""
+\t\t<widget source="key_red" render="Label" position="55,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
+\t\t<widget source="key_green" render="Label" position="490,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
+\t\t<widget source="key_yellow" render="Label" position="925,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
+\t\t<widget source="key_blue" render="Label" position="1360,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>"""
 
 SECOND_INFO_OPENBH = """\n<!-- Enlarged event panels: raised to keep clear of the lower controls. -->
     <eLabel position="0,145" size="860,440" backgroundColor="steSecondInfoBG" zPosition="2"/>
@@ -318,7 +318,7 @@ GRID_EPG = """		<eLabel position="0,0" size="1820,930" backgroundColor="steTheme
 		<widget name="timeline_now" position="45,138" zPosition="21" size="5,625"/>
 		<eLabel position="1260,82" size="520,682" backgroundColor="steThemePanel" zPosition="1"/>
 		<widget source="Event" render="CineViewPosterX" position="1380,105" size="280,420" zPosition="12"/>
-		<widget source="Event" render="RunningText" position="1290,545" size="460,48" font="Regular;30" foregroundColor="secondFG" transparent="1" halign="center" noWrap="1" zPosition="12" options="movetype=running,direction=left,step=2,steptime=55,startdelay=1400,pause=900,repeat=0,always=0"><convert type="EventName">Name</convert></widget>
+		<widget source="Event" render="RunningText" position="1290,545" size="460,48" font="Regular;30" foregroundColor="secondFG" transparent="1" halign="center" noWrap="1" options="movetype=running,direction=left,step=2,steptime=55,startdelay=1400,pause=900,repeat=0,always=0" zPosition="12"><convert type="EventName">Name</convert></widget>
 		<widget source="Event" render="Label" position="1290,605" size="460,135" font="Regular;23" foregroundColor="foreground" transparent="1" valign="top" zPosition="12"><convert type="EventName">ExtendedDescription</convert></widget>
 		<eLabel position="35,805" size="1750,2" backgroundColor="steThemePanelAlt"/>
 		<widget name="key_red" position="55,830" size="400,52" font="Regular;26" halign="center" transparent="1" zPosition="12"/>
@@ -359,7 +359,7 @@ GRID_PIG = """		<eLabel position="0,0" size="1820,930" backgroundColor="steTheme
 		<eLabel position="1260,82" size="520,682" backgroundColor="steThemePanel" zPosition="1"/>
 		<eLabel position="1280,105" size="480,270" backgroundColor="black" zPosition="3"/>
 		<widget source="session.VideoPicture" render="Pig" position="1290,115" size="460,259" backgroundColor="black" zPosition="4"/>
-		<widget source="Event" render="RunningText" position="1290,405" size="460,48" font="Regular;30" foregroundColor="secondFG" transparent="1" halign="center" noWrap="1" zPosition="12" options="movetype=running,direction=left,step=2,steptime=55,startdelay=1400,pause=900,repeat=0,always=0"><convert type="EventName">Name</convert></widget>
+		<widget source="Event" render="RunningText" position="1290,405" size="460,48" font="Regular;30" foregroundColor="secondFG" transparent="1" halign="center" noWrap="1" options="movetype=running,direction=left,step=2,steptime=55,startdelay=1400,pause=900,repeat=0,always=0" zPosition="12"><convert type="EventName">Name</convert></widget>
 		<widget source="Event" render="Label" position="1290,470" size="460,260" font="Regular;23" foregroundColor="foreground" transparent="1" valign="top" zPosition="12"><convert type="EventName">ExtendedDescription</convert></widget>
 		<eLabel position="35,805" size="1750,2" backgroundColor="steThemePanelAlt"/>
 		<widget name="key_red" position="55,830" size="400,52" font="Regular;26" halign="center" transparent="1" zPosition="12"/>
@@ -374,10 +374,10 @@ QUICK_EPG = """\t\t<eLabel position="0,0" size="1920,420" backgroundColor="steTh
 \t\t<widget source="Event" render="Label" position="920,45" size="600,300" font="Regular;24" foregroundColor="foreground" transparent="1" valign="top"><convert type="EventName">FullDescription</convert></widget>
 \t\t<widget source="Event" render="CineViewPosterX" position="1580,25" size="215,320" zPosition="8"/>
 \t\t<eLabel position="35,365" size="1850,2" backgroundColor="steThemePanelAlt"/>
-\t\t<widget name="key_red" position="55,375" size="400,38" font="Regular;23" halign="center" transparent="1"/>
-\t\t<widget name="key_green" position="490,375" size="400,38" font="Regular;23" halign="center" transparent="1"/>
-\t\t<widget name="key_yellow" position="925,375" size="400,38" font="Regular;23" halign="center" transparent="1"/>
-\t\t<widget name="key_blue" position="1360,375" size="400,38" font="Regular;23" halign="center" transparent="1"/>"""
+\t\t<widget source="key_red" render="Label" position="55,375" size="400,38" font="Regular;23" halign="center" transparent="1"/>
+\t\t<widget source="key_green" render="Label" position="490,375" size="400,38" font="Regular;23" halign="center" transparent="1"/>
+\t\t<widget source="key_yellow" render="Label" position="925,375" size="400,38" font="Regular;23" halign="center" transparent="1"/>
+\t\t<widget source="key_blue" render="Label" position="1360,375" size="400,38" font="Regular;23" halign="center" transparent="1"/>"""
 
 INFOBAR_GRID = """\t\t<eLabel position="0,0" size="1920,330" backgroundColor="steThemePrimary" zPosition="0"/>
 \t\t<widget source="Title" render="Label" position="45,22" size="780,45" font="Regular;31" foregroundColor="secondFG" transparent="1"/>
@@ -386,10 +386,10 @@ INFOBAR_GRID = """\t\t<eLabel position="0,0" size="1920,330" backgroundColor="st
 \t\t<widget name="bouquetlist" position="45,112" size="1830,143" backgroundColor="steThemePrimary" scrollbarMode="showNever" transparent="0" zPosition="15"/>
 \t\t<widget name="list" position="45,112" size="1830,143" backgroundColor="steThemePrimary" scrollbarMode="showNever" transparent="1" zPosition="10"/>
 \t\t<widget name="timeline_now" position="45,112" size="4,143" zPosition="21"/>
-\t\t<widget name="key_red" position="55,278" size="400,40" font="Regular;23" halign="center" transparent="1"/>
-\t\t<widget name="key_green" position="490,278" size="400,40" font="Regular;23" halign="center" transparent="1"/>
-\t\t<widget name="key_yellow" position="925,278" size="400,40" font="Regular;23" halign="center" transparent="1"/>
-\t\t<widget name="key_blue" position="1360,278" size="400,40" font="Regular;23" halign="center" transparent="1"/>"""
+\t\t<widget source="key_red" render="Label" position="55,278" size="400,40" font="Regular;23" halign="center" transparent="1"/>
+\t\t<widget source="key_green" render="Label" position="490,278" size="400,40" font="Regular;23" halign="center" transparent="1"/>
+\t\t<widget source="key_yellow" render="Label" position="925,278" size="400,40" font="Regular;23" halign="center" transparent="1"/>
+\t\t<widget source="key_blue" render="Label" position="1360,278" size="400,40" font="Regular;23" halign="center" transparent="1"/>"""
 
 
 EVENT_VIEW = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="steThemePrimary" zPosition="0"/>
@@ -509,10 +509,10 @@ SECOND_INFOBAR = """\t\t<eLabel position="0,0" size="1920,520" backgroundColor="
 \t\t<eLabel position="35,430" size="1850,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
 \t\t<widget source="session.CurrentService" render="Picon" position="45,447" size="180,55" transparent="1" alphatest="blend"><convert type="ServiceName">Reference</convert></widget>
 \t\t<widget source="session.CurrentService" render="Label" position="245,455" size="610,38" font="Regular;24" foregroundColor="grey" transparent="1"><convert type="ServiceName">Name</convert></widget>
-\t\t<widget name="key_red" position="885,452" size="220,40" font="Regular;23" halign="center" transparent="1"/>
-\t\t<widget name="key_green" position="1115,452" size="220,40" font="Regular;23" halign="center" transparent="1"/>
-\t\t<widget name="key_yellow" position="1345,452" size="220,40" font="Regular;23" halign="center" transparent="1"/>
-\t\t<widget name="key_blue" position="1575,452" size="220,40" font="Regular;23" halign="center" transparent="1"/>"""
+\t\t<widget source="key_red" render="Label" position="885,452" size="220,40" font="Regular;23" halign="center" transparent="1"/>
+\t\t<widget source="key_green" render="Label" position="1115,452" size="220,40" font="Regular;23" halign="center" transparent="1"/>
+\t\t<widget source="key_yellow" render="Label" position="1345,452" size="220,40" font="Regular;23" halign="center" transparent="1"/>
+\t\t<widget source="key_blue" render="Label" position="1575,452" size="220,40" font="Regular;23" halign="center" transparent="1"/>"""
 
 MESSAGE_BOX = """\t\t<eLabel position="0,0" size="960,520" backgroundColor="steThemePrimary" zPosition="0"/>
 \t\t<widget name="icon" pixmaps="icons/input_question.png,icons/input_info.png,icons/input_warning.png,icons/input_error.png,icons/input_message.png" position="35,35" size="64,64" alphatest="blend" conditional="icon" scale="1" transparent="1" zPosition="4"/>
@@ -546,9 +546,9 @@ QUICK_MENU = """		<eLabel position="0,0" size="1920,1080" backgroundColor="steTh
 		<widget source="session.VideoPicture" render="Pig" position="1420,92" size="455,256" backgroundColor="black" zPosition="4"/>
 		<widget name="description" position="1420,375" size="455,535" backgroundColor="steThemePrimary" transparent="1" font="Regular;24" foregroundColor="foreground" halign="center" valign="center" zPosition="4"/>
 		<eLabel position="35,995" size="1850,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
-		<widget name="key_red" position="55,1010" size="360,45" backgroundColor="key_red" font="Regular;24" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>
-		<widget name="key_green" position="435,1010" size="360,45" backgroundColor="key_green" font="Regular;24" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>
-		<widget name="key_yellow" position="815,1010" size="360,45" backgroundColor="key_yellow" font="Regular;24" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>
+		<widget source="key_red" render="Label" position="55,1010" size="360,45" backgroundColor="key_red" font="Regular;24" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>
+		<widget source="key_green" render="Label" position="435,1010" size="360,45" backgroundColor="key_green" font="Regular;24" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>
+		<widget source="key_yellow" render="Label" position="815,1010" size="360,45" backgroundColor="key_yellow" font="Regular;24" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>
 		<widget source="key_help" render="Label" position="1575,1010" size="300,45" backgroundColor="key_back" font="Regular;24" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>
 	"""
 
@@ -582,10 +582,10 @@ VERTICAL_EPG = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="st
 \t\t<widget name="list4" position="1065,145" size="330,590" backgroundColor="steThemePrimary" scrollbarMode="showNever"/>
 \t\t<widget name="list5" position="1405,145" size="330,590" backgroundColor="steThemePrimary" scrollbarMode="showNever"/>
 \t\t<eLabel position="35,775" size="1750,2" backgroundColor="steThemePanelAlt"/>
-\t\t<widget name="key_red" position="55,800" size="400,45" font="Regular;26" halign="center" transparent="1" zPosition="12"/>
-\t\t<widget name="key_green" position="490,800" size="400,45" font="Regular;26" halign="center" transparent="1" zPosition="12"/>
-\t\t<widget name="key_yellow" position="925,800" size="400,45" font="Regular;26" halign="center" transparent="1" zPosition="12"/>
-\t\t<widget name="key_blue" position="1360,800" size="400,45" font="Regular;26" halign="center" transparent="1" zPosition="12"/>"""
+\t\t<widget source="key_red" render="Label" position="55,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
+\t\t<widget source="key_green" render="Label" position="490,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
+\t\t<widget source="key_yellow" render="Label" position="925,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
+\t\t<widget source="key_blue" render="Label" position="1360,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>"""
 
 SCREENS = (
     ("PluginBrowserList", PLUGIN_BROWSER, "0,0", "1920,1080", "Plugin Browser"),
