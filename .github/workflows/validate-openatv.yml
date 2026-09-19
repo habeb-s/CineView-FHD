@@ -112,7 +112,7 @@ jobs:
 
           assert 'source="pluginList"' in one('PluginBrowserList')
           assert 'source="pluginGrid"' in one('PluginBrowserGrid')
-          assert 'name="epg_description"' in one('EventView')
+          assert 'name="FullDescription"' in one('EventView')
           second=one('SecondInfoBar')
           assert 'session.Event_Next' in second
           assert 'render="CineViewPosterX"' in second
