@@ -1,11 +1,20 @@
-name: Validate OpenATV 8 installer
+name: Validate CineView OpenATV 7.4-8.0 release
 on:
   push:
     paths:
       - 'install.sh'
       - 'cineview-smart-install.sh'
       - 'installer/openatv_compat.py'
-      - 'installer/parts/0000-header.sh'
+      - 'installer/CineViewPosterX.py'
+      - 'installer/parts/**'
+      - '.github/workflows/validate-openatv.yml'
+  pull_request:
+    paths:
+      - 'install.sh'
+      - 'cineview-smart-install.sh'
+      - 'installer/openatv_compat.py'
+      - 'installer/CineViewPosterX.py'
+      - 'installer/parts/**'
       - '.github/workflows/validate-openatv.yml'
 permissions:
   contents: read
@@ -14,120 +23,66 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 40
-      - name: Validate published OpenATV 8 rollback payload
+      - name: Validate release payload and OpenATV contracts
         shell: bash
         run: |
           set -euo pipefail
+          sh -n install.sh
+          sh -n installer/parts/0000-header.sh
           python3 -m py_compile installer/openatv_compat.py
+          python3 -m py_compile installer/CineViewPosterX.py
 
-          RAW_SHA="$(sed -n 's|^RAW="https://raw.githubusercontent.com/habeb-s/CineView-FHD/\([0-9a-f]\{40\}\)"$|\1|p' install.sh)"
-          test -n "$RAW_SHA"
-          git cat-file -e "$RAW_SHA:cineview-smart-install.sh"
-          git show "$RAW_SHA:cineview-smart-install.sh" > /tmp/cineview-smart-install.sh
+          grep -q '7.4.*7.5.*7.6.*8.0' install.sh
+          grep -q '7.4.*7.5.*7.6.*8.0' installer/parts/0000-header.sh
+          grep -q 'CONTROL/preinst' installer/parts/0000-header.sh
+          grep -q 'Version: 2.1.0' installer/parts/0000-header.sh
 
-          LINE="$(awk '/^__CINEVIEW_PAYLOAD_BELOW__$/{print NR+1; exit}' /tmp/cineview-smart-install.sh)"
-          test -n "$LINE"
-          tail -n +"$LINE" /tmp/cineview-smart-install.sh | base64 -d > /tmp/cineview-payload.tar.gz
-          tar -tzf /tmp/cineview-payload.tar.gz >/dev/null
-          tar -xOf /tmp/cineview-payload.tar.gz ./usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openatv_compat.py > /tmp/published-openatv.py
-          cmp installer/openatv_compat.py /tmp/published-openatv.py
-          python3 -m py_compile /tmp/published-openatv.py
+          cat installer/parts/*.b64 | base64 -d > /tmp/cv-payload.tar.gz
+          tar -tzf /tmp/cv-payload.tar.gz >/dev/null
+          rm -rf /tmp/cvstage
+          mkdir -p /tmp/cvstage
+          tar -xzf /tmp/cv-payload.tar.gz -C /tmp/cvstage
 
-          rm -rf /tmp/cvskin
-          mkdir -p /tmp/cvskin
-          cat > /tmp/cvskin/skin.xml <<'EOF'
-          <skin>
-            <aliases>
-              <alias name="ChoiceList" font="Regular" size="24" height="40"/>
-              <alias name="SelectionList" font="Regular" size="24" height="40"/>
-            </aliases>
-            <parameters>
-              <parameter name="ChoicelistVerticalAlignment" value="center"/>
-              <parameter name="ChoicelistNameSingle" value="0,0,900,40"/>
-              <parameter name="ChoicelistName" value="40,0,860,40"/>
-              <parameter name="ChoicelistIcon" value="0,0,40,40"/>
-            </parameters>
-            <windowstyle id="0" type="skinned"><title offset="20,10" font="Regular;30"/></windowstyle>
-            <screen name="InfoBar" position="0,700" size="1920,380"><widget name="legacy_infobar" position="0,0" size="100,50"/></screen>
-            <screen name="SecondInfoBar" position="0,0" size="1920,1080">
-              <widget source="session.Event_Now" render="PosterX" position="70,145" size="790,440"/>
-              <widget source="session.Event_Next" render="Label" position="900,145" size="790,80"/>
-              <!-- Same technical bar as primary InfoBar -->
-              <widget name="legacy_second_technical" position="0,700" size="100,50"/>
-            </screen>
-            <screen name="SecondInfoBarECM" position="0,0" size="1920,1080"><widget name="old_ecm" position="0,0" size="100,50"/></screen>
-            <screen name="ChoiceBox" position="center,center" size="1820,930"><widget name="list" position="0,0" size="800,500"/></screen>
-            <screen name="SkinSelector" position="center,center" size="1820,930">
-              <widget name="preview" position="0,0" size="300,200"/>
-              <widget source="skins" render="Listbox" position="300,0" size="800,500">
-                <convert type="TemplatedMultiContent">{"template":[MultiContentEntryText(pos = (20,0), size = (675,64), font = 0, text = 0),MultiContentEntryText(pos = (700,0), size = (400,64), font = 1, text = 1)],"fonts":[gFont("Regular",30),gFont("Regular",33)],"itemHeight":64}</convert>
-              </widget>
-            </screen>
-            <screen name="Setup" position="center,center" size="1820,930"><widget name="config" position="0,0" size="900,500"/><widget name="description" position="950,0" size="500,300"/><widget name="footnote" position="950,320" size="500,180"/></screen>
-            <screen name="SetupSkin" position="center,center" size="1820,930"><widget name="config" position="0,0" size="900,500"/></screen>
-            <screen name="setup_Skin" position="center,center" size="1820,930"><widget name="config" position="0,0" size="900,500"/></screen>
-            <screen name="ChannelSelection" position="center,center" size="1800,900"><widget name="legacy_channel_list" position="0,0" size="100,50"/></screen>
-            <screen name="MessageBox" position="center,center" size="600,500">
-              <widget source="session.CurrentService" render="Label" position="0,0" size="100,40">
-                <convert type="ServiceInfo">IsSDAndWidescreen</convert>
-              </widget>
-              <applet type="onLayoutFinish">if self.timerRunning:
-                  pass</applet>
-            </screen>
-          </skin>
-          EOF
+          cp -f installer/openatv_compat.py /tmp/cvstage/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openatv_compat.py
+          cp -f installer/CineViewPosterX.py /tmp/cvstage/usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.py
 
-          python3 /tmp/published-openatv.py /tmp/cvskin >/tmp/openatv-adapter.log
-          grep -Fx '1' /tmp/openatv-adapter.log
+          python3 /tmp/cvstage/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openatv_compat.py /tmp/cvstage/usr/share/enigma2/CineView_FHD >/tmp/openatv-patch-count.txt
+          test "$(cat /tmp/openatv-patch-count.txt)" -gt 0
 
           python3 - <<'PY'
           from pathlib import Path
-          import re
-          import xml.etree.ElementTree as ET
-
-          s=Path('/tmp/cvskin/skin.xml').read_text()
-          ET.fromstring(s)
-
-          def one(name):
-              m=re.findall(r'(?s)<screen\b(?=[^>]*\bname=["\']'+re.escape(name)+r'["\'])[^>]*>.*?</screen>',s)
-              assert len(m)==1,(name,len(m))
-              return m[0]
-
-          # These core native CineView screens must be preserved and not replaced
-          # by the later experimental full-screen OpenATV redesign.
-          assert 'legacy_infobar' in one('InfoBar')
-          assert 'legacy_channel_list' in one('ChannelSelection')
-
-          for name in (
-              'PluginBrowser','PluginBrowserList','PluginBrowserGrid',
-              'QuickMenu','EventView','EventViewSimple','InfoBarEventView',
-              'SecondInfoBar','SecondInfoBarECM',
-              'EPGSelection','EPGSelectionMulti','QuickEPG',
-              'GraphicalEPG','GraphicalEPGPIG','GraphicalInfoBarEPG',
-              'EPGvertical','EPGverticalPIG','MessageBox','MessageBoxModal'
-          ):
-              one(name)
-
-          assert 'source="pluginList"' in one('PluginBrowserList')
-          assert 'source="pluginGrid"' in one('PluginBrowserGrid')
-          assert 'name="FullDescription"' in one('EventView')
-          second=one('SecondInfoBar')
-          assert 'session.Event_Next' in second
-          assert 'render="CineViewPosterX"' in second
-          assert 'position="70,145" size="790,440"' in second
-          assert 'legacy_infobar' in second
-          assert 'name="legacy_second_technical"' not in second
-          assert 'NumberOfRows="9"' in one('GraphicalEPG')
-          assert 'ServiceFontGraphical="Regular;28"' in one('GraphicalEPG')
-          assert 'gFont("Regular",34)' in one('SkinSelector')
-          assert 'itemHeight="70"' in one('Setup')
-          assert 'name="ChoiceList" font="Regular" size="31" height="64"' in s
-          assert '<configList entryLeftOffset="18"' in s
-          assert '<applet' not in one('MessageBox')
-          assert 'if self.timerRunning:' not in s
-          assert 'ServiceInfo">IsSDAndWidescreen' not in s
-          assert 'render="PosterX"' not in s
-          print('OPENATV8_ROLLBACK_CONTRACTS_OK')
+          import collections, re, xml.etree.ElementTree as ET
+          root=Path('/tmp/cvstage/usr/share/enigma2/CineView_FHD')
+          files=sorted(root.glob('skin*.xml'))
+          assert files
+          for p in files:
+              s=p.read_text(errors='ignore')
+              ET.fromstring(s)
+              names=re.findall(r'<screen name="([^"]+)"',s)
+              dup=[n for n,c in collections.Counter(names).items() if c>1]
+              assert not dup,(p.name,dup)
+              assert 'render="PosterX"' not in s
+              assert 'ServiceInfo">IsSDAndWidescreen' not in s
+              assert 'ServiceInfo">IsSDAndNotWidescreen' not in s
+          s=(root/'skin.xml').read_text(errors='ignore')
+          assert 'size=(185, 80)' in s
+          assert 'flags=BT_SCALE)' in s
+          assert 'position="45,110" size="1830,800"' in s
+          assert 'position="45,90" size="640,820"' in s
+          assert 'position="735,90" size="640,820"' in s
+          assert 'position="1420,92" size="455,256"' in s
+          assert '<screen name="SkinSelection"' in s
+          assert 'itemHeight="64" font="Regular;30"' in s
+          print('XML_AND_UI_CONTRACTS_OK',len(files))
           PY
+
+          for ref in 7.4 7.5 7.6 8.0; do
+            curl -fsSL "https://raw.githubusercontent.com/openatv/enigma2/$ref/lib/python/Screens/PluginBrowser.py" -o "/tmp/PluginBrowser-$ref.py"
+            grep -q 'pluginList' "/tmp/PluginBrowser-$ref.py"
+            grep -q 'pluginGrid' "/tmp/PluginBrowser-$ref.py"
+            grep -q 'PluginBrowserList' "/tmp/PluginBrowser-$ref.py"
+            grep -q 'PluginBrowserGrid' "/tmp/PluginBrowser-$ref.py"
+            grep -q 'quickselect' "/tmp/PluginBrowser-$ref.py"
+            grep -q 'description' "/tmp/PluginBrowser-$ref.py"
+          done
+          echo OPENATV_74_75_76_80_CONTRACTS_OK

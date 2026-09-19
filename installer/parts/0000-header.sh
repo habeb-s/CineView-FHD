@@ -275,6 +275,27 @@ Architecture: all
 Maintainer: habeb-s
 Description: CineView FHD 2.1 for OpenATV 7.4-8.0
 EOF
+cat > "$PKGROOT/CONTROL/preinst" <<'EOF'
+#!/bin/sh
+set -e
+iv_get(){
+  key="$1"
+  [ -f /etc/image-version ] || return 0
+  awk -F '=' -v wanted="$key" '{k=$1; gsub(/^[ \t]+|[ \t]+$/, "", k); if (tolower(k)==tolower(wanted)) {v=substr($0,index($0,"=")+1); gsub(/^[ \t]+|[ \t]+$/, "", v); print v; exit}}' /etc/image-version 2>/dev/null
+}
+img=$(cat /etc/image-version /etc/issue /etc/os-release 2>/dev/null | tr 'A-Z' 'a-z' | tr '\n' ' ')
+case "$img" in
+  *openatv*) ;;
+  *) echo "CineView FHD 2.1 requires OpenATV 7.4/7.5/7.6/8.0" >&2; exit 1 ;;
+esac
+ver=$(iv_get Version)
+[ -n "$ver" ] || ver=$(iv_get imageversion)
+case "$ver" in
+  7.4*|7.5*|7.6*|8.0*) exit 0 ;;
+  *) echo "Unsupported OpenATV version: $ver. CineView supports 7.4, 7.5, 7.6 and 8.0." >&2; exit 1 ;;
+esac
+EOF
+chmod 755 "$PKGROOT/CONTROL/preinst"
 printf '2.0\n' > "$TMP/debian-binary"
 tar -C "$PKGROOT/CONTROL" -czf "$TMP/control.tar.gz" . || fail "control package creation failed"
 tar -C "$TMP/stage" -czf "$TMP/data.tar.gz" . || fail "data package creation failed"
