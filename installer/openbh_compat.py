@@ -259,6 +259,163 @@ MultiContentEntryPixmapAlphaTest(pos = (12, 10), size = (64, 48), png = 1, flags
 \t\t\t</convert>
 \t\t</widget>"""
 
+LIVE_FULL_INFO_BAR = r"""<screen name="InfoBar" title="InfoBar" position="fill" backgroundColor="transparent" flags="wfNoBorder">
+    <eLabel position="24,842" size="1872,236" backgroundColor="steThemePrimary" zPosition="5"/>
+    <eLabel position="24,842" size="1872,2" backgroundColor="#007c7c7c" zPosition="6"/>
+    <eLabel position="24,1076" size="1872,2" backgroundColor="#007c7c7c" zPosition="6"/>
+    <eLabel position="24,842" size="2,236" backgroundColor="#007c7c7c" zPosition="6"/>
+    <eLabel position="1894,842" size="2,236" backgroundColor="#007c7c7c" zPosition="6"/>
+    <widget source="session.Event_Now" render="CineViewPosterX" position="40,850" size="105,158" zPosition="20"/>
+    <eLabel position="156,852" size="2,154" backgroundColor="#00444444" zPosition="8"/>
+    <widget source="session.CurrentService" render="Picon" position="170,858" size="260,70" alphatest="blend" transparent="1" zPosition="20"><convert type="ServiceName">Reference</convert></widget>
+    <widget source="session.CurrentService" render="RunningText" position="170,934" size="260,36" transparent="1" zPosition="20" foregroundColor="foreground" font="Regular;23" noWrap="1" options="movetype=running,direction=left,step=2,steptime=55,startdelay=1600,pause=1000,repeat=0,always=0"><convert type="ServiceName">NameOnly</convert></widget>
+    <widget source="session.CurrentService" render="ChannelNumber" position="170,978" size="58,27" transparent="1" zPosition="20" foregroundColor="grey" font="Regular;20"/>
+    <widget source="session.CurrentService" render="RunningText" position="235,978" size="195,27" transparent="1" zPosition="20" foregroundColor="grey" font="Regular;18" noWrap="1" options="movetype=running,direction=left,step=2,steptime=60,startdelay=1500,pause=1000,repeat=0,always=0"><convert type="ServiceName">Provider</convert></widget>
+
+    <eLabel position="446,852" size="2,154" backgroundColor="#00444444" zPosition="8"/>
+    <widget source="session.CurrentService" render="Label" position="464,850" size="340,72" transparent="1" zPosition="20" foregroundColor="secondFG" font="Regular;18" valign="center"><convert type="PliExtraInfo">TransponderInfo</convert></widget>
+    <widget source="session.CurrentService" render="Label" position="464,928" size="98,30" transparent="1" zPosition="20" foregroundColor="foreground" font="Regular;18"><convert type="ServiceOrbitalPosition"/></widget>
+    <widget source="session.CurrentService" render="Label" position="566,928" size="238,30" transparent="1" zPosition="20" foregroundColor="grey" font="Regular;18" noWrap="1"><convert type="ServiceName">Provider</convert></widget>
+    <eLabel position="812,852" size="2,154" backgroundColor="#00444444" zPosition="8"/>
+    <widget source="session.CurrentService" render="RunningText" position="830,858" size="225,140" transparent="1" zPosition="20" foregroundColor="#0044dd44" font="Regular;17" valign="top" options="movetype=swimming,direction=top,step=1,steptime=70,startdelay=2200,pause=1400,repeat=0,always=0"><convert type="CineViewCamInfo">Info</convert></widget>
+
+    <eLabel position="1072,852" size="2,154" backgroundColor="#00444444" zPosition="8"/>
+    <widget source="session.Event_Now" render="RunningText" position="1090,854" size="520,38" transparent="1" zPosition="20" foregroundColor="foreground" font="Regular;27" noWrap="1" options="movetype=running,direction=left,step=2,steptime=50,startdelay=1500,pause=1000,repeat=0,always=0"><convert type="EventName">Name</convert></widget>
+    <widget source="session.Event_Now" render="Label" position="1620,856" size="110,28" transparent="1" zPosition="20" font="Regular;19" halign="right"><convert type="EventTime">StartTime</convert><convert type="ClockToText">Format:%H:%M</convert></widget>
+    <widget source="session.Event_Now" render="Label" position="1740,856" size="125,28" transparent="1" zPosition="20" font="Regular;19" halign="right"><convert type="EventTime">EndTime</convert><convert type="ClockToText">Format:%H:%M</convert></widget>
+    <widget source="session.Event_Now" render="Progress" position="1090,900" size="775,7" pixmap="infobar/pbar.png" backgroundColor="un33333a" zPosition="20"><convert type="EventTime">Progress</convert></widget>
+    <widget source="session.Event_Next" render="RunningText" position="1090,924" size="520,34" transparent="1" zPosition="20" foregroundColor="grey" font="Regular;23" noWrap="1" options="movetype=running,direction=left,step=2,steptime=55,startdelay=1700,pause=1000,repeat=0,always=0"><convert type="EventName">Name</convert></widget>
+    <widget source="session.Event_Next" render="Label" position="1620,926" size="110,27" transparent="1" zPosition="20" foregroundColor="grey" font="Regular;18" halign="right"><convert type="EventTime">StartTime</convert><convert type="ClockToText">Format:%H:%M</convert></widget>
+    <widget source="session.Event_Next" render="Label" position="1740,926" size="125,27" transparent="1" zPosition="20" foregroundColor="grey" font="Regular;18" halign="right"><convert type="EventTime">EndTime</convert><convert type="ClockToText">Format:%H:%M</convert></widget>
+    <ePixmap pixmap="infobar/imdb_badge.png" position="1600,968" size="76,28" zPosition="21" alphatest="blend"/>
+    <widget source="session.Event_Now" render="Label" position="1684,969" size="82,27" transparent="1" zPosition="20" foregroundColor="foreground" font="Regular;18"><convert type="CineViewIMDb">Plain</convert></widget>
+    <widget source="session.Event_Now" render="Label" position="1768,969" size="100,27" transparent="1" zPosition="20" foregroundColor="secondFG" font="Regular;17"><convert type="CineViewIMDb">Stars</convert></widget>
+
+    <eLabel position="36,1016" size="1848,2" backgroundColor="#00444444" zPosition="8"/>
+    <eLabel text="SNR:" position="40,1030" size="55,28" transparent="1" zPosition="20" font="Regular;19"/>
+    <widget source="session.FrontendStatus" render="Label" position="94,1030" size="70,28" transparent="1" zPosition="20" font="Regular;19"><convert type="FrontendInfo">SNR</convert></widget>
+    <widget source="session.FrontendStatus" render="Progress" position="165,1038" size="160,10" pixmap="window/progress.png" backgroundColor="un33333a" zPosition="20"><convert type="FrontendInfo">SNR</convert></widget>
+    <eLabel text="dB:" position="338,1030" size="37,28" transparent="1" zPosition="20" foregroundColor="grey" font="Regular;19"/>
+    <widget source="session.FrontendStatus" render="Label" position="377,1030" size="105,28" transparent="1" zPosition="20" foregroundColor="secondFG" font="Regular;19"><convert type="FrontendInfo">SNRdB</convert></widget>
+    <eLabel text="AGC" position="487,1030" size="42,28" transparent="1" zPosition="20" foregroundColor="grey" font="Regular;18"/>
+    <widget source="session.FrontendStatus" render="Label" position="531,1030" size="75,28" transparent="1" zPosition="20" font="Regular;18"><convert type="FrontendInfo">AGC</convert></widget>
+    <eLabel text="BER" position="612,1030" size="42,28" transparent="1" zPosition="20" foregroundColor="grey" font="Regular;18"/>
+    <widget source="session.FrontendStatus" render="Label" position="657,1030" size="70,28" transparent="1" zPosition="20" font="Regular;18"><convert type="FrontendInfo">BER</convert></widget>
+    <widget source="session.CurrentService" render="Label" position="735,1030" size="108,28" transparent="1" zPosition="20" font="Regular;18"><convert type="ServiceOrbitalPosition"/></widget>
+    <widget render="VideoSize" source="session.CurrentService" position="848,1030" size="155,28" font="Regular;18" transparent="1" zPosition="20"/>
+    <widget source="session.CurrentService" render="Pixmap" pixmap="infobar/ico_format_hd.png" position="1008,1027" size="60,32" zPosition="22" alphatest="on"><convert type="ServiceInfo">IsHD</convert><convert type="ConditionalShowHide"/></widget>
+    <widget source="session.CurrentService" render="Pixmap" pixmap="infobar/ico_format_4k.png" position="1008,1027" size="60,32" zPosition="23" alphatest="on"><convert type="ServiceInfo">Is4K</convert><convert type="ConditionalShowHide"/></widget>
+    <widget source="session.CurrentService" render="Label" position="1077,1030" size="132,28" transparent="1" zPosition="24" foregroundColor="secondFG" font="Regular;18"><convert type="CineViewCPUTemp">Short</convert></widget>
+    <widget source="session.CurrentService" render="Pixmap" pixmap="infobar/ico_format_16_9.png" position="1216,1027" size="60,32" zPosition="22" alphatest="on"><convert type="ServiceInfo">IsSDAndWidescreen</convert><convert type="ConditionalShowHide"/></widget>
+    <widget source="session.CurrentService" render="Pixmap" pixmap="infobar/ico_dolby_on.png" position="1280,1027" size="50,32" zPosition="22" alphatest="on"><convert type="ServiceInfo">IsMultichannel</convert><convert type="ConditionalShowHide"/></widget>
+    <widget source="session.CurrentService" render="Pixmap" pixmap="infobar/ico_hbbtv_on.png" position="1336,1027" size="70,32" zPosition="22" alphatest="on"><convert type="ServiceInfo">HasHBBTV</convert><convert type="ConditionalShowHide"/></widget>
+    <widget source="session.CurrentService" render="Pixmap" pixmap="infobar/ico_txt_on.png" position="1410,1027" size="44,32" zPosition="22" alphatest="on"><convert type="ServiceInfo">HasTelext</convert><convert type="ConditionalShowHide"/></widget>
+    <eLabel text="Bitrate:" position="1464,1030" size="72,28" transparent="1" zPosition="20" foregroundColor="grey" font="Regular;18"/>
+    <widget source="session.CurrentService" render="Label" position="1538,1030" size="120,28" transparent="1" zPosition="20" foregroundColor="foreground" font="Regular;18"><convert type="CineViewBitrate">Mbps</convert></widget>
+    <widget source="session.OAWeather" render="OAWeatherPixmap" position="1668,1025" size="34,34" transparent="1" zPosition="24" alphatest="blend"><convert type="OAWeather">weathericon,current</convert></widget>
+    <widget source="session.OAWeather" render="RunningText" position="1708,1030" size="105,28" transparent="1" zPosition="24" foregroundColor="foreground" font="Regular;18" noWrap="1" options="movetype=running,direction=left,step=2,steptime=65,startdelay=1800,pause=1200,repeat=0,always=0"><convert type="OAWeather">city</convert></widget>
+    <widget source="session.OAWeather" render="Label" position="1815,1030" size="66,28" transparent="1" zPosition="24" foregroundColor="secondFG" font="Regular;18" halign="right"><convert type="OAWeather">temperature_current</convert></widget>
+</screen>"""
+LIVE_FULL_SECOND_INFO_BAR = r"""<screen name="SecondInfoBar" title="Second InfoBar" position="fill" backgroundColor="transparent" flags="wfNoBorder">
+    <!-- Enlarged event panels: raised to keep clear of the lower controls. -->
+    <eLabel position="70,145" size="790,440" backgroundColor="steSecondInfoBG" zPosition="2"/>
+    <eLabel position="925,145" size="925,440" backgroundColor="steSecondInfoBG" zPosition="2"/>
+    <widget source="session.Event_Now" render="RunningText" position="95,165" size="480,42" transparent="1" zPosition="12" foregroundColor="secondFG" font="Regular;31" noWrap="1" options="movetype=running,direction=left,step=2,steptime=50,startdelay=1600,pause=900,repeat=0,always=0"><convert type="EventName">Name</convert></widget>
+    <widget source="session.Event_Now" render="RunningText" position="95,220" size="480,295" transparent="1" zPosition="12" foregroundColor="foreground" font="Regular;25" halign="block" options="movetype=running,direction=top,step=2,steptime=65,startdelay=2200,pause=1700,repeat=0,always=0,wrap=1"><convert type="EventName">FullDescription</convert></widget>
+    <widget source="session.Event_Now" render="CineViewPosterX" position="612,180" size="205,308" zPosition="18" nexts="0"/>
+    <widget source="session.Event_Now" render="Label" position="95,535" size="160,30" transparent="1" zPosition="12" font="Regular;22" foregroundColor="grey"><convert type="EventTime">StartTime</convert><convert type="ClockToText">Format:%H:%M</convert></widget>
+    <widget source="session.Event_Now" render="Label" position="415,535" size="160,30" transparent="1" zPosition="12" font="Regular;22" foregroundColor="grey" halign="right"><convert type="EventTime">EndTime</convert><convert type="ClockToText">Format:%H:%M</convert></widget>
+
+    <widget source="session.Event_Next" render="RunningText" position="950,165" size="580,42" transparent="1" zPosition="12" foregroundColor="secondFG" font="Regular;31" noWrap="1" options="movetype=running,direction=left,step=2,steptime=50,startdelay=1600,pause=900,repeat=0,always=0"><convert type="EventName">Name</convert></widget>
+    <widget source="session.Event_Next" render="RunningText" position="950,220" size="580,295" transparent="1" zPosition="12" foregroundColor="foreground" font="Regular;25" halign="block" options="movetype=running,direction=top,step=2,steptime=65,startdelay=2200,pause=1700,repeat=0,always=0,wrap=1"><convert type="EventName">FullDescription</convert></widget>
+    <widget source="session.Event_Now" render="CineViewPosterX" position="1575,180" size="205,308" zPosition="18" nexts="1"/>
+    <widget source="session.Event_Next" render="Label" position="950,535" size="160,30" transparent="1" zPosition="12" font="Regular;22" foregroundColor="grey"><convert type="EventTime">StartTime</convert><convert type="ClockToText">Format:%H:%M</convert></widget>
+    <widget source="session.Event_Next" render="Label" position="1370,535" size="160,30" transparent="1" zPosition="12" font="Regular;22" foregroundColor="grey" halign="right"><convert type="EventTime">EndTime</convert><convert type="ClockToText">Format:%H:%M</convert></widget>
+
+    <!-- Same technical bar as primary InfoBar, aligned to bottom edge. No ButtonTemplate here. -->
+    <eLabel position="24,842" size="1872,236" backgroundColor="steSecondInfoBG" zPosition="5"/>
+    <eLabel position="24,842" size="1872,2" backgroundColor="#007c7c7c" zPosition="6"/>
+    <eLabel position="24,1076" size="1872,2" backgroundColor="#007c7c7c" zPosition="6"/>
+    <eLabel position="24,842" size="2,236" backgroundColor="#007c7c7c" zPosition="6"/>
+    <eLabel position="1894,842" size="2,236" backgroundColor="#007c7c7c" zPosition="6"/>
+    <widget source="session.Event_Now" render="CineViewPosterX" position="40,850" size="105,158" zPosition="20"/>
+    <eLabel position="156,852" size="2,154" backgroundColor="#00444444" zPosition="8"/>
+    <widget source="session.CurrentService" render="Picon" position="170,858" size="260,70" alphatest="blend" transparent="1" zPosition="20"><convert type="ServiceName">Reference</convert></widget>
+    <widget source="session.CurrentService" render="RunningText" position="170,934" size="260,36" transparent="1" zPosition="20" foregroundColor="foreground" font="Regular;23" noWrap="1" options="movetype=running,direction=left,step=2,steptime=55,startdelay=1600,pause=1000,repeat=0,always=0"><convert type="ServiceName">NameOnly</convert></widget>
+    <widget source="session.CurrentService" render="ChannelNumber" position="170,978" size="58,27" transparent="1" zPosition="20" foregroundColor="grey" font="Regular;20"/>
+    <widget source="session.CurrentService" render="RunningText" position="235,978" size="195,27" transparent="1" zPosition="20" foregroundColor="grey" font="Regular;18" noWrap="1" options="movetype=running,direction=left,step=2,steptime=60,startdelay=1500,pause=1000,repeat=0,always=0"><convert type="ServiceName">Provider</convert></widget>
+
+    <eLabel position="446,852" size="2,154" backgroundColor="#00444444" zPosition="8"/>
+    <widget source="session.CurrentService" render="Label" position="464,850" size="340,72" transparent="1" zPosition="20" foregroundColor="secondFG" font="Regular;18" valign="center"><convert type="PliExtraInfo">TransponderInfo</convert></widget>
+    <widget source="session.CurrentService" render="Label" position="464,928" size="98,30" transparent="1" zPosition="20" foregroundColor="foreground" font="Regular;18"><convert type="ServiceOrbitalPosition"/></widget>
+    <widget source="session.CurrentService" render="Label" position="566,928" size="238,30" transparent="1" zPosition="20" foregroundColor="grey" font="Regular;18" noWrap="1"><convert type="ServiceName">Provider</convert></widget>
+    <eLabel position="812,852" size="2,154" backgroundColor="#00444444" zPosition="8"/>
+    <widget source="session.CurrentService" render="RunningText" position="830,858" size="225,140" transparent="1" zPosition="20" foregroundColor="#0044dd44" font="Regular;17" valign="top" options="movetype=swimming,direction=top,step=1,steptime=70,startdelay=2200,pause=1400,repeat=0,always=0"><convert type="CineViewCamInfo">Info</convert></widget>
+
+    <eLabel position="1072,852" size="2,154" backgroundColor="#00444444" zPosition="8"/>
+    <widget source="session.Event_Now" render="RunningText" position="1090,854" size="520,38" transparent="1" zPosition="20" foregroundColor="foreground" font="Regular;27" noWrap="1" options="movetype=running,direction=left,step=2,steptime=50,startdelay=1500,pause=1000,repeat=0,always=0"><convert type="EventName">Name</convert></widget>
+    <widget source="session.Event_Now" render="Label" position="1620,856" size="110,28" transparent="1" zPosition="20" font="Regular;19" halign="right"><convert type="EventTime">StartTime</convert><convert type="ClockToText">Format:%H:%M</convert></widget>
+    <widget source="session.Event_Now" render="Label" position="1740,856" size="125,28" transparent="1" zPosition="20" font="Regular;19" halign="right"><convert type="EventTime">EndTime</convert><convert type="ClockToText">Format:%H:%M</convert></widget>
+    <widget source="session.Event_Now" render="Progress" position="1090,900" size="775,7" pixmap="infobar/pbar.png" backgroundColor="un33333a" zPosition="20"><convert type="EventTime">Progress</convert></widget>
+    <widget source="session.Event_Next" render="RunningText" position="1090,924" size="520,34" transparent="1" zPosition="20" foregroundColor="grey" font="Regular;23" noWrap="1" options="movetype=running,direction=left,step=2,steptime=55,startdelay=1700,pause=1000,repeat=0,always=0"><convert type="EventName">Name</convert></widget>
+    <widget source="session.Event_Next" render="Label" position="1620,926" size="110,27" transparent="1" zPosition="20" foregroundColor="grey" font="Regular;18" halign="right"><convert type="EventTime">StartTime</convert><convert type="ClockToText">Format:%H:%M</convert></widget>
+    <widget source="session.Event_Next" render="Label" position="1740,926" size="125,27" transparent="1" zPosition="20" foregroundColor="grey" font="Regular;18" halign="right"><convert type="EventTime">EndTime</convert><convert type="ClockToText">Format:%H:%M</convert></widget>
+    <ePixmap pixmap="infobar/imdb_badge.png" position="1600,968" size="76,28" zPosition="21" alphatest="blend"/>
+    <widget source="session.Event_Now" render="Label" position="1684,969" size="82,27" transparent="1" zPosition="20" foregroundColor="foreground" font="Regular;18"><convert type="CineViewIMDb">Plain</convert></widget>
+    <widget source="session.Event_Now" render="Label" position="1768,969" size="100,27" transparent="1" zPosition="20" foregroundColor="secondFG" font="Regular;17"><convert type="CineViewIMDb">Stars</convert></widget>
+
+    <eLabel position="36,1016" size="1848,2" backgroundColor="#00444444" zPosition="8"/>
+    <eLabel text="SNR:" position="40,1030" size="55,28" transparent="1" zPosition="20" font="Regular;19"/>
+    <widget source="session.FrontendStatus" render="Label" position="94,1030" size="70,28" transparent="1" zPosition="20" font="Regular;19"><convert type="FrontendInfo">SNR</convert></widget>
+    <widget source="session.FrontendStatus" render="Progress" position="165,1038" size="160,10" pixmap="window/progress.png" backgroundColor="un33333a" zPosition="20"><convert type="FrontendInfo">SNR</convert></widget>
+    <eLabel text="dB:" position="338,1030" size="37,28" transparent="1" zPosition="20" foregroundColor="grey" font="Regular;19"/>
+    <widget source="session.FrontendStatus" render="Label" position="377,1030" size="105,28" transparent="1" zPosition="20" foregroundColor="secondFG" font="Regular;19"><convert type="FrontendInfo">SNRdB</convert></widget>
+    <eLabel text="AGC" position="487,1030" size="42,28" transparent="1" zPosition="20" foregroundColor="grey" font="Regular;18"/>
+    <widget source="session.FrontendStatus" render="Label" position="531,1030" size="75,28" transparent="1" zPosition="20" font="Regular;18"><convert type="FrontendInfo">AGC</convert></widget>
+    <eLabel text="BER" position="612,1030" size="42,28" transparent="1" zPosition="20" foregroundColor="grey" font="Regular;18"/>
+    <widget source="session.FrontendStatus" render="Label" position="657,1030" size="70,28" transparent="1" zPosition="20" font="Regular;18"><convert type="FrontendInfo">BER</convert></widget>
+    <widget source="session.CurrentService" render="Label" position="735,1030" size="108,28" transparent="1" zPosition="20" font="Regular;18"><convert type="ServiceOrbitalPosition"/></widget>
+    <widget render="VideoSize" source="session.CurrentService" position="848,1030" size="155,28" font="Regular;18" transparent="1" zPosition="20"/>
+    <widget source="session.CurrentService" render="Pixmap" pixmap="infobar/ico_format_hd.png" position="1008,1027" size="60,32" zPosition="22" alphatest="on"><convert type="ServiceInfo">IsHD</convert><convert type="ConditionalShowHide"/></widget>
+    <widget source="session.CurrentService" render="Pixmap" pixmap="infobar/ico_format_4k.png" position="1008,1027" size="60,32" zPosition="23" alphatest="on"><convert type="ServiceInfo">Is4K</convert><convert type="ConditionalShowHide"/></widget>
+    <widget source="session.CurrentService" render="Label" position="1077,1030" size="132,28" transparent="1" zPosition="24" foregroundColor="secondFG" font="Regular;18"><convert type="CineViewCPUTemp">Short</convert></widget>
+    <widget source="session.CurrentService" render="Pixmap" pixmap="infobar/ico_format_16_9.png" position="1216,1027" size="60,32" zPosition="22" alphatest="on"><convert type="ServiceInfo">IsSDAndWidescreen</convert><convert type="ConditionalShowHide"/></widget>
+    <widget source="session.CurrentService" render="Pixmap" pixmap="infobar/ico_dolby_on.png" position="1280,1027" size="50,32" zPosition="22" alphatest="on"><convert type="ServiceInfo">IsMultichannel</convert><convert type="ConditionalShowHide"/></widget>
+    <widget source="session.CurrentService" render="Pixmap" pixmap="infobar/ico_hbbtv_on.png" position="1336,1027" size="70,32" zPosition="22" alphatest="on"><convert type="ServiceInfo">HasHBBTV</convert><convert type="ConditionalShowHide"/></widget>
+    <widget source="session.CurrentService" render="Pixmap" pixmap="infobar/ico_txt_on.png" position="1410,1027" size="44,32" zPosition="22" alphatest="on"><convert type="ServiceInfo">HasTelext</convert><convert type="ConditionalShowHide"/></widget>
+    <eLabel text="Bitrate:" position="1464,1030" size="72,28" transparent="1" zPosition="20" foregroundColor="grey" font="Regular;18"/>
+    <widget source="session.CurrentService" render="Label" position="1538,1030" size="120,28" transparent="1" zPosition="20" foregroundColor="foreground" font="Regular;18"><convert type="CineViewBitrate">Mbps</convert></widget>
+    <widget source="session.OAWeather" render="OAWeatherPixmap" position="1668,1025" size="34,34" transparent="1" zPosition="24" alphatest="blend"><convert type="OAWeather">weathericon,current</convert></widget>
+    <widget source="session.OAWeather" render="RunningText" position="1708,1030" size="105,28" transparent="1" zPosition="24" foregroundColor="foreground" font="Regular;18" noWrap="1" options="movetype=running,direction=left,step=2,steptime=65,startdelay=1800,pause=1200,repeat=0,always=0"><convert type="OAWeather">city</convert></widget>
+    <widget source="session.OAWeather" render="Label" position="1815,1030" size="66,28" transparent="1" zPosition="24" foregroundColor="secondFG" font="Regular;18" halign="right"><convert type="OAWeather">temperature_current</convert></widget>
+</screen>"""
+LIVE_FULL_MESSAGE_BOX = r"""<screen name="MessageBox" position="fill" flags="wfNoBorder">
+		<panel name="PigTemplate"/>
+		<widget name="text" position="870,105" size="1020,900" font="Regular;33"/>
+		<widget name="icon" pixmaps="icons/input_question.png,icons/input_info.png,icons/input_warning.png,icons/input_error.png,icons/input_message.png" position="780,105" size="80,80" alphatest="blend" conditional="icon"/>
+		<widget name="ErrorPixmap" pixmap="icons/input_error.png" position="780,105" size="80,80" alphatest="blend" conditional="ErrorPixmap"/>
+		<widget name="QuestionPixmap" pixmap="icons/input_question.png" position="780,105" size="80,80" alphatest="blend" conditional="QuestionPixmap"/>
+		<widget name="WarningPixmap" pixmap="icons/input_warning.png" position="780,105" size="80,80" alphatest="blend" conditional="WarningPixmap"/>
+		<widget name="InfoPixmap" pixmap="icons/input_info.png" position="780,105" size="80,80" alphatest="blend" conditional="InfoPixmap"/>
+		<widget name="list" position="30,560" size="720,380" itemHeight="38" font="Regular;28"/>
+	</screen>"""
+LIVE_FULL_SKIN_SELECTOR = r"""<screen name="SkinSelector" position="fill" flags="wfNoBorder">
+		<panel name="PigTemplate"/>
+		<panel name="DescriptionTemplate"/>
+		<widget name="preview" position="165,680" size="420,315" alphatest="on"/>
+		<widget source="skins" render="Listbox" position="780,100" size="1110,900" scrollbarMode="showOnDemand">
+			<convert type="TemplatedMultiContent">
+		{"template": [
+				MultiContentEntryText(pos = (20,0), size = (675,50), font = 0, flags = RT_HALIGN_LEFT | RT_VALIGN_CENTER, text = 1),
+				MultiContentEntryText(pos = (700,0), size = (400,50), font = 0, flags = RT_HALIGN_RIGHT | RT_VALIGN_CENTER, text = 2)
+			],
+		"fonts": [gFont("Regular",33)],
+		"itemHeight":50
+		}
+			</convert>
+		</widget>
+	</screen>"""
+
 SCREENS = (
     ("ChoiceBox", CHOICEBOX, "center,center", "1100,800", "Select"),
     ("PluginBrowser", PLUGIN_BROWSER, "center,center", "1820,880", "Plugin Browser"),
@@ -290,11 +447,15 @@ def patch_file(path):
     data = data.replace('render="PosterX"', 'render="CineViewPosterX"')
     data = data.replace("render='PosterX'", "render='CineViewPosterX'")
 
+    for exact_name in ("InfoBar", "SecondInfoBar", "MessageBox", "SkinSelector"):
+        data = _remove_screen(data, exact_name)
+
     idx = data.rfind("</skin>")
     if idx < 0:
         return False
     blocks = "".join(_screen(name, body, pos, size, title) for name, body, pos, size, title in SCREENS)
-    data = data[:idx] + blocks + data[idx:]
+    exact = chr(10).join((LIVE_FULL_INFO_BAR, LIVE_FULL_SECOND_INFO_BAR, LIVE_FULL_MESSAGE_BOX, LIVE_FULL_SKIN_SELECTOR)) + chr(10)
+    data = data[:idx] + blocks + exact + data[idx:]
     _write(path, data)
     return True
 
