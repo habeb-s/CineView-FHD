@@ -3,6 +3,7 @@ from __future__ import print_function
 
 import argparse
 import json
+from collections import Counter
 import os
 import shutil
 import subprocess
@@ -13,6 +14,24 @@ import xml.etree.ElementTree as ET
 
 def apply_adapter(adapter, skin_dir):
     subprocess.check_call([sys.executable, adapter, skin_dir])
+
+
+def visual_slots(node):
+    slots = []
+    for child in list(node):
+        if child.tag not in ("widget", "eLabel", "ePixmap", "panel"):
+            continue
+        pos = child.get("position")
+        size = child.get("size")
+        if not pos and not size:
+            continue
+        slots.append((
+            child.tag,
+            pos,
+            size,
+            child.get("font"),
+        ))
+    return slots
 
 
 def screen_map(path):
@@ -26,6 +45,7 @@ def screen_map(path):
             "position": node.get("position"),
             "size": node.get("size"),
             "title": node.get("title"),
+            "visual_slots": visual_slots(node),
         })
     return out
 
@@ -56,8 +76,9 @@ def main():
         if x.startswith("skin") and x.endswith(".xml")
     ))
 
-    report = {"files": {}, "summary": {"geometry_mismatches": 0, "duplicates": 0}}
+    report = {"files": {}, "summary": {"geometry_mismatches": 0, "child_geometry_mismatches": 0, "duplicates": 0}}
     geometry_mismatches = []
+    child_mismatches = []
 
     for name in files:
         apath = os.path.join(atv, name)
@@ -89,12 +110,29 @@ def main():
                 geometry_mismatches.append((name, item))
                 report["summary"]["geometry_mismatches"] += 1
 
-        if f["mismatches"] or f["duplicates"]:
+            ac = Counter(tuple(x) for x in amap[screen][0]["visual_slots"])
+            bc = Counter(tuple(x) for x in bmap[screen][0]["visual_slots"])
+            if ac != bc:
+                missing = list((ac - bc).elements())
+                extra = list((bc - ac).elements())
+                item = {
+                    "screen": screen,
+                    "missing_openatv_slots": [list(x) for x in missing[:30]],
+                    "extra_openbh_slots": [list(x) for x in extra[:30]],
+                    "missing_count": len(missing),
+                    "extra_count": len(extra),
+                }
+                f.setdefault("child_mismatches", []).append(item)
+                child_mismatches.append((name, item))
+                report["summary"]["child_geometry_mismatches"] += 1
+
+        if f["mismatches"] or f["duplicates"] or f.get("child_mismatches"):
             report["files"][name] = f
 
     print("CineView OpenATV/OpenBH geometry parity audit")
     print("skin files:", len(files))
     print("geometry mismatches:", report["summary"]["geometry_mismatches"])
+    print("child geometry mismatches:", report["summary"]["child_geometry_mismatches"])
     print("duplicate screen mismatches:", report["summary"]["duplicates"])
     for filename, item in geometry_mismatches:
         print("MISMATCH %s :: %s :: ATV %s %s :: BH %s %s" % (
@@ -105,13 +143,24 @@ def main():
             item["openbh"]["position"],
             item["openbh"]["size"],
         ))
+    for filename, item in child_mismatches:
+        print("CHILD_MISMATCH %s :: %s :: missing_atv=%d extra_bh=%d" % (
+            filename,
+            item["screen"],
+            item["missing_count"],
+            item["extra_count"],
+        ))
 
     if args.report:
         with open(args.report, "w") as fh:
             json.dump(report, fh, indent=2, sort_keys=True)
 
     shutil.rmtree(tmp, ignore_errors=True)
-    if args.strict and (report["summary"]["geometry_mismatches"] or report["summary"]["duplicates"]):
+    if args.strict and (
+        report["summary"]["geometry_mismatches"]
+        or report["summary"]["child_geometry_mismatches"]
+        or report["summary"]["duplicates"]
+    ):
         return 1
     return 0
 
