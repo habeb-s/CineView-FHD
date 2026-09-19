@@ -601,6 +601,7 @@ SCREENS = (
     ("InfoBarEventView", INFOBAR_EVENT_VIEW, "0,0", "1920,360", "Event View"),
     ("EPGSelectionMulti", MULTI_EPG, "center,center", "1820,880", "Multi EPG"),
     ("QuickEPG", QUICK_EPG, "0,660", "1920,420", "Quick EPG"),
+    ("GraphicalEPG", GRID_EPG, "center,center", "1880,1000", "Graphical EPG"),
     ("GraphicalEPGPIG", GRID_PIG, "center,center", "1820,880", "Graphical EPG"),
     ("GraphicalInfoBarEPG", INFOBAR_GRID, "0,750", "1920,330", "InfoBar EPG"),
     ("EPGvertical", VERTICAL_EPG, "center,center", "1820,880", "Vertical EPG"),
