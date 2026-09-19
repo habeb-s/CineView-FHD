@@ -419,88 +419,90 @@ EVENT_VIEW = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="steT
 \t\t<widget name="key_yellow" position="930,803" size="370,44" font="Regular;27" halign="center" valign="center" foregroundColor="foreground" transparent="1" zPosition="6"/>
 \t\t<widget name="key_blue" position="1365,803" size="370,44" font="Regular;27" halign="center" valign="center" foregroundColor="foreground" transparent="1" zPosition="6"/>"""
 
-GREEN_PANEL = """\t\t<eLabel position="0,0" size="1500,850" backgroundColor="steThemePrimary" zPosition="0"/>
-\t\t<eLabel text="OpenBH Green Panel" position="45,25" size="1410,55" font="Regular;38" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1" zPosition="4"/>
-\t\t<eLabel position="35,92" size="1430,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
-\t\t<widget source="list" render="Listbox" position="45,115" size="1410,595" enableWrapAround="1" scrollbarMode="showOnDemand" foregroundColor="foreground" backgroundColor="steThemePrimary" transparent="1" zPosition="5">
-\t\t\t<convert type="TemplatedMultiContent">
+GREEN_PANEL = """		<eLabel position="0,0" size="1820,880" backgroundColor="steThemePrimary" zPosition="0"/>
+		<eLabel text="OpenBH Green Panel" position="45,25" size="1730,55" font="Regular;38" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1" zPosition="4"/>
+		<eLabel position="35,92" size="1750,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
+		<widget source="list" render="Listbox" position="45,115" size="1730,625" enableWrapAround="1" scrollbarMode="showOnDemand" foregroundColor="foreground" backgroundColor="steThemePrimary" transparent="1" zPosition="5">
+			<convert type="TemplatedMultiContent">
 {"template": [
-MultiContentEntryText(pos = (130, 5), size = (1180, 38), font=0, text = 0),
-MultiContentEntryText(pos = (130, 43), size = (1180, 30), font=1, text = 1),
+MultiContentEntryText(pos = (130, 5), size = (1500, 38), font=0, text = 0),
+MultiContentEntryText(pos = (130, 43), size = (1500, 30), font=1, text = 1),
 MultiContentEntryPixmapAlphaTest(pos = (10, 20), size = (100, 40), png = 2, flags = BT_SCALE)
 ],
 "fonts": [gFont("Regular", 31), gFont("Regular", 23)],
 "itemHeight": 80
 }
-\t\t\t</convert>
-\t\t</widget>
-\t\t<eLabel position="35,735" size="1430,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
-\t\t<eLabel position="50,760" size="330,55" backgroundColor="#00a00000" zPosition="2"/>
-\t\t<eLabel position="405,760" size="330,55" backgroundColor="#00008000" zPosition="2"/>
-\t\t<eLabel position="760,760" size="330,55" backgroundColor="#00a08000" zPosition="2"/>
-\t\t<eLabel position="1115,760" size="330,55" backgroundColor="#000040a0" zPosition="2"/>
-\t\t<widget name="key_red" position="60,765" size="310,45" font="Regular;27" halign="center" valign="center" transparent="1" zPosition="4"/>
-\t\t<widget name="key_green" position="415,765" size="310,45" font="Regular;27" halign="center" valign="center" transparent="1" zPosition="4"/>
-\t\t<widget name="key_yellow" position="770,765" size="310,45" font="Regular;27" halign="center" valign="center" transparent="1" zPosition="4"/>
-\t\t<widget name="key_blue" position="1125,765" size="310,45" font="Regular;27" halign="center" valign="center" transparent="1" zPosition="4"/>"""
+			</convert>
+		</widget>
+		<eLabel position="35,770" size="1750,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
+		<eLabel position="55,795" size="400,55" backgroundColor="#00a00000" zPosition="2"/>
+		<eLabel position="490,795" size="400,55" backgroundColor="#00008000" zPosition="2"/>
+		<eLabel position="925,795" size="400,55" backgroundColor="#00a08000" zPosition="2"/>
+		<eLabel position="1360,795" size="400,55" backgroundColor="#000040a0" zPosition="2"/>
+		<widget name="key_red" position="65,800" size="380,45" font="Regular;27" halign="center" valign="center" transparent="1" zPosition="4"/>
+		<widget name="key_green" position="500,800" size="380,45" font="Regular;27" halign="center" valign="center" transparent="1" zPosition="4"/>
+		<widget name="key_yellow" position="935,800" size="380,45" font="Regular;27" halign="center" valign="center" transparent="1" zPosition="4"/>
+		<widget name="key_blue" position="1370,800" size="380,45" font="Regular;27" halign="center" valign="center" transparent="1" zPosition="4"/>"""
 
-BLUE_PANEL = """\t\t<eLabel position="0,0" size="1500,850" backgroundColor="steThemePrimary" zPosition="0"/>
-\t\t<eLabel text="OpenBH Blue Panel" position="45,25" size="1410,55" font="Regular;38" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1" zPosition="4"/>
-\t\t<eLabel position="35,92" size="1430,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
-\t\t<widget name="lab1" position="45,112" size="360,38" font="Regular;27" foregroundColor="foreground" transparent="1" zPosition="4"/>
-\t\t<widget name="list" position="420,108" size="610,48" font="Regular;29" itemHeight="48" scrollbarMode="showOnDemand" foregroundColor="foreground" backgroundColor="steThemeOverlay" transparent="1" zPosition="4"/>
-\t\t<widget name="lab2" position="1050,112" size="380,38" font="Regular;26" halign="center" foregroundColor="grey" transparent="1" zPosition="4"/>
-\t\t<eLabel position="35,175" size="1430,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
-\t\t<widget name="lab3" position="45,195" size="200,38" font="Regular;27" foregroundColor="grey" transparent="1" zPosition="4"/>
-\t\t<widget name="activecam" position="245,195" size="500,38" font="Regular;29" foregroundColor="secondFG" transparent="1" zPosition="4"/>
-\t\t<widget name="Ilab1" position="45,255" size="680,38" font="Regular;26" foregroundColor="foreground" transparent="1" zPosition="4"/>
-\t\t<widget name="Ilab2" position="45,300" size="680,38" font="Regular;26" foregroundColor="foreground" transparent="1" zPosition="4"/>
-\t\t<widget name="Ilab3" position="45,345" size="680,38" font="Regular;26" foregroundColor="foreground" transparent="1" zPosition="4"/>
-\t\t<widget name="Ilab4" position="45,390" size="680,38" font="Regular;26" foregroundColor="foreground" transparent="1" zPosition="4"/>
-\t\t<eLabel position="760,195" size="2,500" backgroundColor="steThemePanelAlt" zPosition="2"/>
-\t\t<widget name="Ecmtext" position="790,195" size="640,500" font="Regular;24" foregroundColor="foreground" backgroundColor="steThemePrimary" transparent="1" zPosition="4"/>
-\t\t<eLabel position="35,735" size="1430,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
-\t\t<eLabel position="50,760" size="330,55" backgroundColor="#00a00000" zPosition="2"/>
-\t\t<eLabel position="405,760" size="330,55" backgroundColor="#00008000" zPosition="2"/>
-\t\t<eLabel position="760,760" size="330,55" backgroundColor="#00a08000" zPosition="2"/>
-\t\t<eLabel position="1115,760" size="330,55" backgroundColor="#000040a0" zPosition="2"/>
-\t\t<widget name="key_red" position="60,765" size="310,45" font="Regular;27" halign="center" valign="center" transparent="1" zPosition="4"/>
-\t\t<widget name="key_green" position="415,765" size="310,45" font="Regular;27" halign="center" valign="center" transparent="1" zPosition="4"/>
-\t\t<widget name="key_yellow" position="770,765" size="310,45" font="Regular;27" halign="center" valign="center" transparent="1" zPosition="4"/>
-\t\t<widget name="key_blue" position="1125,765" size="310,45" font="Regular;27" halign="center" valign="center" transparent="1" zPosition="4"/>"""
+BLUE_PANEL = """		<eLabel position="0,0" size="1820,880" backgroundColor="steThemePrimary" zPosition="0"/>
+		<eLabel text="OpenBH Blue Panel" position="45,25" size="1730,55" font="Regular;38" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1" zPosition="4"/>
+		<eLabel position="35,92" size="1750,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
+		<widget name="lab1" position="45,112" size="430,38" font="Regular;27" foregroundColor="foreground" transparent="1" zPosition="4"/>
+		<widget name="list" position="490,108" size="650,48" font="Regular;29" itemHeight="48" scrollbarMode="showOnDemand" foregroundColor="foreground" backgroundColor="steThemeOverlay" transparent="1" zPosition="4"/>
+		<widget name="lab2" position="1160,112" size="570,38" font="Regular;26" halign="center" foregroundColor="grey" transparent="1" zPosition="4"/>
+		<eLabel position="35,175" size="1750,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
+		<widget name="lab3" position="45,195" size="220,38" font="Regular;27" foregroundColor="grey" transparent="1" zPosition="4"/>
+		<widget name="activecam" position="275,195" size="570,38" font="Regular;29" foregroundColor="secondFG" transparent="1" zPosition="4"/>
+		<widget name="Ilab1" position="45,255" size="790,38" font="Regular;26" foregroundColor="foreground" transparent="1" zPosition="4"/>
+		<widget name="Ilab2" position="45,300" size="790,38" font="Regular;26" foregroundColor="foreground" transparent="1" zPosition="4"/>
+		<widget name="Ilab3" position="45,345" size="790,38" font="Regular;26" foregroundColor="foreground" transparent="1" zPosition="4"/>
+		<widget name="Ilab4" position="45,390" size="790,38" font="Regular;26" foregroundColor="foreground" transparent="1" zPosition="4"/>
+		<eLabel position="865,195" size="2,545" backgroundColor="steThemePanelAlt" zPosition="2"/>
+		<widget name="Ecmtext" position="895,195" size="835,545" font="Regular;24" foregroundColor="foreground" backgroundColor="steThemePrimary" transparent="1" zPosition="4"/>
+		<eLabel position="35,770" size="1750,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
+		<eLabel position="55,795" size="400,55" backgroundColor="#00a00000" zPosition="2"/>
+		<eLabel position="490,795" size="400,55" backgroundColor="#00008000" zPosition="2"/>
+		<eLabel position="925,795" size="400,55" backgroundColor="#00a08000" zPosition="2"/>
+		<eLabel position="1360,795" size="400,55" backgroundColor="#000040a0" zPosition="2"/>
+		<widget name="key_red" position="65,800" size="380,45" font="Regular;27" halign="center" valign="center" transparent="1" zPosition="4"/>
+		<widget name="key_green" position="500,800" size="380,45" font="Regular;27" halign="center" valign="center" transparent="1" zPosition="4"/>
+		<widget name="key_yellow" position="935,800" size="380,45" font="Regular;27" halign="center" valign="center" transparent="1" zPosition="4"/>
+		<widget name="key_blue" position="1370,800" size="380,45" font="Regular;27" halign="center" valign="center" transparent="1" zPosition="4"/>"""
 
 
-FAST_PLUGIN_SETUP = """\t\t<eLabel position="0,0" size="1300,800" backgroundColor="steThemePrimary" zPosition="0"/>
-\t\t<eLabel text="OpenBH Fast Plugin Setup" position="40,25" size="1220,50" font="Regular;36" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1" zPosition="3"/>
-\t\t<eLabel position="30,88" size="1240,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
-\t\t<widget source="list" render="Listbox" position="40,110" size="1220,565" enableWrapAround="1" scrollbarMode="showOnDemand" foregroundColor="foreground" backgroundColor="steThemePrimary" transparent="1" zPosition="4">
-\t\t\t<convert type="TemplatedMultiContent">
+FAST_PLUGIN_SETUP = """		<eLabel position="0,0" size="1820,880" backgroundColor="steThemePrimary" zPosition="0"/>
+		<eLabel text="OpenBH Fast Plugin Setup" position="45,25" size="1730,55" font="Regular;38" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1" zPosition="3"/>
+		<eLabel position="35,92" size="1750,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
+		<widget source="list" render="Listbox" position="45,115" size="1730,625" enableWrapAround="1" scrollbarMode="showOnDemand" foregroundColor="foreground" backgroundColor="steThemePrimary" transparent="1" zPosition="4">
+			<convert type="TemplatedMultiContent">
 {"template": [
-MultiContentEntryText(pos = (120, 5), size = (1060, 36), font=0, text = 0),
-MultiContentEntryText(pos = (120, 41), size = (1060, 28), font=1, text = 1),
+MultiContentEntryText(pos = (120, 5), size = (1500, 36), font=0, text = 0),
+MultiContentEntryText(pos = (120, 41), size = (1500, 28), font=1, text = 1),
 MultiContentEntryPixmapAlphaTest(pos = (10, 15), size = (90, 50), png = 2, flags = BT_SCALE)
 ],
 "fonts": [gFont("Regular", 30), gFont("Regular", 22)],
 "itemHeight": 80
 }
-\t\t\t</convert>
-\t\t</widget>
-\t\t<eLabel position="30,700" size="1240,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
-\t\t<eLabel position="455,720" size="390,55" backgroundColor="#00a00000" zPosition="2"/>
-\t\t<widget name="key_red" position="465,725" size="370,45" font="Regular;27" halign="center" valign="center" transparent="1" zPosition="4"/>"""
+			</convert>
+		</widget>
+		<eLabel position="35,770" size="1750,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
+		<eLabel position="710,795" size="400,55" backgroundColor="#00a00000" zPosition="2"/>
+		<widget name="key_red" position="720,800" size="380,45" font="Regular;27" halign="center" valign="center" transparent="1" zPosition="4"/>"""
 
-GREEN_PANEL_SETUP = """\t\t<eLabel position="0,0" size="1200,560" backgroundColor="steThemePrimary" zPosition="0"/>
-\t\t<widget source="list" render="Listbox" position="35,35" size="1130,490" enableWrapAround="1" scrollbarMode="showOnDemand" foregroundColor="foreground" backgroundColor="steThemePrimary" transparent="1" zPosition="4">
-\t\t\t<convert type="TemplatedMultiContent">
+GREEN_PANEL_SETUP = """		<eLabel position="0,0" size="1820,880" backgroundColor="steThemePrimary" zPosition="0"/>
+		<eLabel text="OpenBH Green Panel Setup" position="45,25" size="1730,55" font="Regular;38" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1" zPosition="3"/>
+		<eLabel position="35,92" size="1750,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
+		<widget source="list" render="Listbox" position="45,115" size="1730,690" enableWrapAround="1" scrollbarMode="showOnDemand" foregroundColor="foreground" backgroundColor="steThemePrimary" transparent="1" zPosition="4">
+			<convert type="TemplatedMultiContent">
 {"template": [
-MultiContentEntryText(pos = (95, 8), size = (990, 48), font=0, text = 0),
+MultiContentEntryText(pos = (95, 8), size = (1570, 48), font=0, text = 0),
 MultiContentEntryPixmapAlphaTest(pos = (12, 10), size = (64, 48), png = 1, flags = BT_SCALE)
 ],
 "fonts": [gFont("Regular", 29)],
 "itemHeight": 68
 }
-\t\t\t</convert>
-\t\t</widget>"""
+			</convert>
+		</widget>"""
 
 SECOND_INFOBAR = """\t\t<eLabel position="0,0" size="1920,520" backgroundColor="steSecondInfoBG" zPosition="0"/>
 \t\t<widget name="channel" position="45,25" size="1380,52" font="Regular;34" foregroundColor="secondFG" backgroundColor="steSecondInfoBG" transparent="1" zPosition="5"/>
