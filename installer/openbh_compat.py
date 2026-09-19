@@ -501,9 +501,10 @@ def patch_file(path):
     data = data.replace('render="PosterX"', 'render="CineViewPosterX"')
     data = data.replace("render='PosterX'", "render='CineViewPosterX'")
 
-    # Keep the primary InfoBar edge-to-edge. The dedicated OpenBH
-    # SecondInfoBar/ECM screens are appended from the approved full-screen body.
-    data = _extend_infobar_edges(data, "InfoBar")\n    data = _extend_infobar_edges(data, "SecondInfoBar", True)\n    data = _extend_infobar_edges(data, "SecondInfoBarECM", True)
+    # Keep both InfoBars slightly inset from the physical screen edges.
+    data = _extend_infobar_edges(data, "InfoBar")
+    data = _extend_infobar_edges(data, "SecondInfoBar", True)
+    data = _extend_infobar_edges(data, "SecondInfoBarECM", True)
 
     idx = data.rfind("</skin>")
     if idx < 0:
