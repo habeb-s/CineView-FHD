@@ -64,7 +64,7 @@ try:
     checkxml(skin,'EXTRACTED')
 
     ptxt=open(plug+'/plugin.py',errors='ignore').read()
-    vm=re.search(r'\bVERSION\s*=\s*["\x27](2\.1\.\d+)["\x27]',ptxt)
+    vm=re.search(r'\bVERSION\s*=\s*["\x27](\d+(?:\.\d+)+)["\x27]',ptxt)
     if not vm:
         fail('plugin version marker')
     print('PLUGIN_VERSION='+vm.group(1))
