@@ -50,6 +50,55 @@ def screen_map(path):
     return out
 
 
+def allowed_openbh_missing_slots(screen, slots):
+    """Platform-contract exceptions, not visual regressions.
+
+    OpenBH PluginBrowser has no quickselect/description components. Keep the
+    approved OpenATV coordinates for every supported widget and ignore only
+    those two unsupported visual slots.
+    """
+    if screen not in ("PluginBrowser", "PluginBrowserList", "PluginBrowserGrid"):
+        return slots
+    allowed = {
+        ("widget", "45,110", "1830,800", "Regular;120"),
+        ("widget", "45,110", "1830,820", "Regular;120"),
+        ("widget", "55,925", "1810,55", "Regular;24"),
+    }
+    return [slot for slot in slots if tuple(slot) not in allowed]
+
+
+OPENBH_ONLY_EXPECTATIONS = {
+    "DeliteGreenPanel": {
+        "screen": ("center,center", "1820,880"),
+        "slots": [
+            ("eLabel", "0,0", "1820,880", None),
+            ("widget", "45,115", "1730,625", None),
+        ],
+    },
+    "DeliteBluePanel": {
+        "screen": ("center,center", "1820,880"),
+        "slots": [
+            ("eLabel", "0,0", "1820,880", None),
+            ("widget", "895,195", "835,545", "Regular;24"),
+        ],
+    },
+    "DeliteSetupFp": {
+        "screen": ("center,center", "1820,880"),
+        "slots": [
+            ("eLabel", "0,0", "1820,880", None),
+            ("widget", "45,115", "1730,625", None),
+        ],
+    },
+    "BhSetupGreen": {
+        "screen": ("center,center", "1820,880"),
+        "slots": [
+            ("eLabel", "0,0", "1820,880", None),
+            ("widget", "45,115", "1730,690", None),
+        ],
+    },
+}
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--skin-dir", required=True)
@@ -76,7 +125,7 @@ def main():
         if x.startswith("skin") and x.endswith(".xml")
     ))
 
-    report = {"files": {}, "summary": {"geometry_mismatches": 0, "child_geometry_mismatches": 0, "duplicates": 0}}
+    report = {"files": {}, "summary": {"geometry_mismatches": 0, "child_geometry_mismatches": 0, "openbh_only_failures": 0, "duplicates": 0}}
     geometry_mismatches = []
     child_mismatches = []
 
@@ -113,26 +162,49 @@ def main():
             ac = Counter(tuple(x) for x in amap[screen][0]["visual_slots"])
             bc = Counter(tuple(x) for x in bmap[screen][0]["visual_slots"])
             if ac != bc:
-                missing = list((ac - bc).elements())
+                missing = allowed_openbh_missing_slots(screen, list((ac - bc).elements()))
                 extra = list((bc - ac).elements())
-                item = {
-                    "screen": screen,
-                    "missing_openatv_slots": [list(x) for x in missing[:30]],
-                    "extra_openbh_slots": [list(x) for x in extra[:30]],
-                    "missing_count": len(missing),
-                    "extra_count": len(extra),
-                }
-                f.setdefault("child_mismatches", []).append(item)
-                child_mismatches.append((name, item))
-                report["summary"]["child_geometry_mismatches"] += 1
+                if missing or extra:
+                    item = {
+                        "screen": screen,
+                        "missing_openatv_slots": [list(x) for x in missing[:30]],
+                        "extra_openbh_slots": [list(x) for x in extra[:30]],
+                        "missing_count": len(missing),
+                        "extra_count": len(extra),
+                    }
+                    f.setdefault("child_mismatches", []).append(item)
+                    child_mismatches.append((name, item))
+                    report["summary"]["child_geometry_mismatches"] += 1
 
-        if f["mismatches"] or f["duplicates"] or f.get("child_mismatches"):
+        # OpenBH-only screens have no OpenATV peer. Enforce full CineView
+        # geometry explicitly so they cannot regress to small native dialogs.
+        for screen, expected in OPENBH_ONLY_EXPECTATIONS.items():
+            nodes = bmap.get(screen, [])
+            if len(nodes) != 1:
+                continue
+            node = nodes[0]
+            failed = []
+            if (node.get("position"), node.get("size")) != expected["screen"]:
+                failed.append("screen")
+            slots = set(tuple(x) for x in node.get("visual_slots", []))
+            for slot in expected["slots"]:
+                if slot not in slots:
+                    failed.append("slot:%s/%s" % (slot[1], slot[2]))
+            if failed:
+                f.setdefault("openbh_only_failures", []).append({
+                    "screen": screen,
+                    "failed": failed,
+                })
+                report["summary"]["openbh_only_failures"] += 1
+
+        if f["mismatches"] or f["duplicates"] or f.get("child_mismatches") or f.get("openbh_only_failures"):
             report["files"][name] = f
 
     print("CineView OpenATV/OpenBH geometry parity audit")
     print("skin files:", len(files))
     print("geometry mismatches:", report["summary"]["geometry_mismatches"])
     print("child geometry mismatches:", report["summary"]["child_geometry_mismatches"])
+    print("OpenBH-only coverage failures:", report["summary"]["openbh_only_failures"])
     print("duplicate screen mismatches:", report["summary"]["duplicates"])
     for filename, item in geometry_mismatches:
         print("MISMATCH %s :: %s :: ATV %s %s :: BH %s %s" % (
@@ -159,6 +231,7 @@ def main():
     if args.strict and (
         report["summary"]["geometry_mismatches"]
         or report["summary"]["child_geometry_mismatches"]
+        or report["summary"]["openbh_only_failures"]
         or report["summary"]["duplicates"]
     ):
         return 1
