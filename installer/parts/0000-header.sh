@@ -1,5 +1,5 @@
 #!/bin/sh
-# CineView FHD 2.1 Official OpenATV Installer
+# CineView FHD 2.1 Smart Multi-Image Installer
 # Designed by habeb-s
 set -u
 SELF="$0"
@@ -52,35 +52,65 @@ iv_get(){
       }
     }' /etc/image-version 2>/dev/null
 }
-ATV_DISTRO="${CINEVIEW_DISTRO:-}"
-[ -n "$ATV_DISTRO" ] || ATV_DISTRO="$(iv_get distro)"
-ATV_DISTRO=$(printf '%s' "$ATV_DISTRO" | tr 'A-Z' 'a-z' | tr -d ' ')
-[ -n "$ATV_DISTRO" ] || case "$LOW" in *openatv*) ATV_DISTRO=openatv;; esac
+IMAGE_DISTRO="${CINEVIEW_DISTRO:-}"
+[ -n "$IMAGE_DISTRO" ] || IMAGE_DISTRO="$(iv_get distro)"
+IMAGE_DISTRO=$(printf '%s' "$IMAGE_DISTRO" | tr 'A-Z' 'a-z' | tr -d ' ')
+[ -n "$IMAGE_DISTRO" ] || case "$LOW" in
+  *openatv*) IMAGE_DISTRO=openatv;;
+  *openvix*) IMAGE_DISTRO=openvix;;
+  *openbh*|*openblackhole*) IMAGE_DISTRO=openbh;;
+esac
 
-ATV_VERSION="${CINEVIEW_IMAGE_VERSION:-}"
-[ -n "$ATV_VERSION" ] || ATV_VERSION="$(iv_get Version)"
-[ -n "$ATV_VERSION" ] || ATV_VERSION="$(iv_get imageversion)"
-[ -n "$ATV_VERSION" ] || ATV_VERSION=$(printf '%s\n' "$IMG" | sed -n 's/.*version=\([^ ]*\).*/\1/p' | head -n1)
+IMAGE_VERSION="${CINEVIEW_IMAGE_VERSION:-}"
+[ -n "$IMAGE_VERSION" ] || IMAGE_VERSION="$(iv_get Version)"
+[ -n "$IMAGE_VERSION" ] || IMAGE_VERSION="$(iv_get imageversion)"
+[ -n "$IMAGE_VERSION" ] || IMAGE_VERSION=$(printf '%s\n' "$IMG" | sed -n 's/.*version=\([^ ]*\).*/\1/p' | head -n1)
 
-case "$ATV_DISTRO" in
+version_at_least(){
+  have=$(printf '%s' "$1" | sed -n 's/^[^0-9]*\([0-9][0-9.]*\).*/\1/p')
+  need="$2"
+  [ -n "$have" ] || return 1
+  awk -v A="$have" -v B="$need" 'BEGIN {
+    na=split(A,a,"."); nb=split(B,b,"."); n=(na>nb?na:nb)
+    for(i=1;i<=n;i++){
+      ai=(i<=na?a[i]+0:0); bi=(i<=nb?b[i]+0:0)
+      if(ai>bi) exit 0
+      if(ai<bi) exit 1
+    }
+    exit 0
+  }'
+}
+
+case "$IMAGE_DISTRO" in
   openatv)
-    case "$ATV_VERSION" in
+    case "$IMAGE_VERSION" in
       7.4*|7.5*|7.6*|8.0*) ;;
-      *) fail "unsupported OpenATV version: $ATV_VERSION; supported: 7.4, 7.5, 7.6, 8.0" ;;
+      *) fail "unsupported OpenATV version: $IMAGE_VERSION; supported: 7.4, 7.5, 7.6, 8.0" ;;
     esac
     ;;
-  openbh)
+  openvix)
+    version_at_least "$IMAGE_VERSION" "6.7" || fail "unsupported OpenViX version: $IMAGE_VERSION; minimum supported: 6.7"
+    ;;
+  openbh|openblackhole)
+    version_at_least "$IMAGE_VERSION" "5.4" || fail "unsupported OpenBH version: $IMAGE_VERSION; minimum supported: 5.4"
+    IMAGE_DISTRO=openbh
     ;;
   *)
-    fail "CineView FHD 2.1 supports OpenATV 7.4-8.0 and OpenBH 6.x"
+    fail "CineView FHD 2.1 supports OpenATV 7.4-8.0, OpenViX 6.7+, and OpenBH 5.4+"
     ;;
 esac
+
+if [ "${CINEVIEW_GATE_ONLY:-0}" = 1 ]; then
+  ok "Version gate passed: $IMAGE_DISTRO $IMAGE_VERSION"
+  exit 0
+fi
 
 if command -v opkg >/dev/null 2>&1; then PM=opkg; elif command -v apt-get >/dev/null 2>&1; then PM=apt; else PM=none; fi
 if command -v python3 >/dev/null 2>&1; then PY=python3; else fail "Python 3 is required by CineView FHD 2.1"; fi
 PYVER=$($PY -V 2>&1 | head -n1)
 ARCH=$(uname -m 2>/dev/null || echo unknown)
 printf "%s--- Receiver / Image Detection ---%s\n" "$BOLD" "$RESET"
+ok "Image: $IMAGE_DISTRO $IMAGE_VERSION"
 ok "Image family: $FAMILY"
 ok "Package manager: $PM"
 ok "Python: $PYVER"
@@ -163,11 +193,9 @@ fi
 # OpenATV compatibility: use the supported OpenATV 7.4-8.0 screen contracts.
 # OpenATV 8 PluginBrowser uses pluginList/pluginGrid mandatory sources and must not
 # be skinned with the OpenViX/OpenBH list bindings.
-case "$LOW" in
-  *openatv*)
-    ATV_VERSION=$(printf '%s\n' "$IMG" | sed -n 's/.*version=\([^ ]*\).*/\1/p' | head -n1)
-    [ -n "$ATV_VERSION" ] || ATV_VERSION=detected
-    adapt "OpenATV detected ($ATV_VERSION) -> applying dedicated CineView FHD OpenATV screen contracts"
+case "$IMAGE_DISTRO" in
+  openatv)
+    adapt "OpenATV detected ($IMAGE_VERSION) -> applying dedicated CineView FHD OpenATV screen contracts"
     "$PY" "$PLUGSTAGE/openatv_compat.py" "$SKINSTAGE" >/dev/null 2>&1 || fail "OpenATV screen compatibility patch failed"
     ok "OpenATV PluginBrowser list/grid, EventView, SecondInfoBar and EPG layouts adapted"
     ;;
@@ -177,9 +205,9 @@ esac
 # Current OpenViX supports both classic <widget name="list"> and templated source/list
 # modes. The classic path avoids grid/template regressions and duplicate PluginBrowser
 # definitions while preserving the native PluginList component.
-case "$LOW" in
-  *openvix*)
-    adapt "OpenViX detected -> applying stable native PluginBrowser list binding"
+case "$IMAGE_DISTRO" in
+  openvix)
+    adapt "OpenViX detected ($IMAGE_VERSION) -> applying stable native PluginBrowser list binding"
     "$PY" - "$SKINSTAGE" <<'PY'
 from __future__ import print_function
 import os, re, sys
@@ -227,9 +255,9 @@ PY
     ;;
 esac
 
-case "$LOW" in
-  *openbh*|*openblackhole*)
-    adapt "OpenBH detected -> applying dedicated CineView FHD plugin/EPG compatibility"
+case "$IMAGE_DISTRO" in
+  openbh)
+    adapt "OpenBH detected ($IMAGE_VERSION) -> applying dedicated CineView FHD plugin/EPG compatibility"
     "$PY" "$PLUGSTAGE/openbh_compat.py" "$SKINSTAGE" >/dev/null 2>&1 || fail "OpenBH screen compatibility patch failed"
 
     # activate.sh rebuilds skin.xml whenever the user changes CineView options.
@@ -299,10 +327,14 @@ fi
 
 PKGROOT="$TMP/pkg"
 mkdir -p "$PKGROOT/CONTROL" || fail "cannot create package metadata"
-case "$ATV_DISTRO" in
+case "$IMAGE_DISTRO" in
   openbh)
     PKGNAME="enigma2-plugin-skins-cineview-fhd-openbh"
     PKGSUFFIX="openbh"
+    ;;
+  openvix)
+    PKGNAME="enigma2-plugin-skins-cineview-fhd"
+    PKGSUFFIX="openvix"
     ;;
   *)
     PKGNAME="enigma2-plugin-skins-cineview-fhd"
@@ -314,7 +346,7 @@ Package: $PKGNAME
 Version: 2.1.1
 Architecture: all
 Maintainer: habeb-s
-Description: CineView FHD 2.1 for OpenATV 7.4-8.0 and OpenBH 6.x
+Description: CineView FHD 2.1 for OpenATV 7.4-8.0, OpenViX 6.7+, and OpenBH 5.4+
 Conflicts: cineview-openbh6-reviewfix, cineview-quickicons-hotfix, enigma2-plugin-skins-cineview-fhd-openbh6
 Replaces: cineview-openbh6-reviewfix, cineview-quickicons-hotfix, enigma2-plugin-skins-cineview-fhd-openbh6
 EOF
@@ -326,17 +358,50 @@ iv_get(){
   [ -f /etc/image-version ] || return 0
   awk -F '=' -v wanted="$key" '{k=$1; gsub(/^[ \t]+|[ \t]+$/, "", k); if (tolower(k)==tolower(wanted)) {v=substr($0,index($0,"=")+1); gsub(/^[ \t]+|[ \t]+$/, "", v); print v; exit}}' /etc/image-version 2>/dev/null
 }
+version_at_least(){
+  have=$(printf '%s' "$1" | sed -n 's/^[^0-9]*\([0-9][0-9.]*\).*/\1/p')
+  need="$2"
+  [ -n "$have" ] || return 1
+  awk -v A="$have" -v B="$need" 'BEGIN {
+    na=split(A,a,"."); nb=split(B,b,"."); n=(na>nb?na:nb)
+    for(i=1;i<=n;i++){
+      ai=(i<=na?a[i]+0:0); bi=(i<=nb?b[i]+0:0)
+      if(ai>bi) exit 0
+      if(ai<bi) exit 1
+    }
+    exit 0
+  }'
+}
 img=$(cat /etc/image-version /etc/issue /etc/os-release 2>/dev/null | tr 'A-Z' 'a-z' | tr '\n' ' ')
-case "$img" in
-  *openbh*|*openblackhole*) exit 0 ;;
-  *openatv*) ;;
-  *) echo "CineView FHD 2.1 requires OpenATV 7.4-8.0 or OpenBH 6.x" >&2; exit 1 ;;
+distro=$(iv_get distro | tr 'A-Z' 'a-z' | tr -d ' ')
+[ -n "$distro" ] || case "$img" in
+  *openatv*) distro=openatv ;;
+  *openvix*) distro=openvix ;;
+  *openbh*|*openblackhole*) distro=openbh ;;
 esac
 ver=$(iv_get Version)
 [ -n "$ver" ] || ver=$(iv_get imageversion)
-case "$ver" in
-  7.4*|7.5*|7.6*|8.0*) exit 0 ;;
-  *) echo "Unsupported OpenATV version: $ver. CineView supports 7.4, 7.5, 7.6 and 8.0." >&2; exit 1 ;;
+case "$distro" in
+  openatv)
+    case "$ver" in
+      7.4*|7.5*|7.6*|8.0*) exit 0 ;;
+      *) echo "Unsupported OpenATV version: $ver. CineView supports 7.4, 7.5, 7.6 and 8.0." >&2; exit 1 ;;
+    esac
+    ;;
+  openvix)
+    version_at_least "$ver" "6.7" && exit 0
+    echo "Unsupported OpenViX version: $ver. CineView requires 6.7 or newer." >&2
+    exit 1
+    ;;
+  openbh|openblackhole)
+    version_at_least "$ver" "5.4" && exit 0
+    echo "Unsupported OpenBH version: $ver. CineView requires 5.4 or newer." >&2
+    exit 1
+    ;;
+  *)
+    echo "CineView FHD 2.1 requires OpenATV 7.4-8.0, OpenViX 6.7+, or OpenBH 5.4+." >&2
+    exit 1
+    ;;
 esac
 EOF
 chmod 755 "$PKGROOT/CONTROL/preinst"
