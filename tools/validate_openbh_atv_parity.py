@@ -16,6 +16,15 @@ def apply_adapter(adapter, skin_dir):
     subprocess.check_call([sys.executable, adapter, skin_dir])
 
 
+VISUAL_ATTRS = (
+    "position", "size", "font",
+    "foregroundColor", "backgroundColor",
+    "transparent", "halign", "valign",
+    "zPosition", "pixmap", "itemHeight",
+    "scrollbarMode", "alphatest",
+)
+
+
 def visual_slots(node):
     slots = []
     for child in list(node):
@@ -34,6 +43,19 @@ def visual_slots(node):
     return slots
 
 
+def visual_signatures(node):
+    signatures = []
+    for child in list(node):
+        if child.tag not in ("widget", "eLabel", "ePixmap", "panel"):
+            continue
+        pos = child.get("position")
+        size = child.get("size")
+        if not pos and not size:
+            continue
+        signatures.append(tuple([child.tag] + [child.get(k) for k in VISUAL_ATTRS]))
+    return signatures
+
+
 def screen_map(path):
     root = ET.parse(path).getroot()
     out = {}
@@ -46,6 +68,9 @@ def screen_map(path):
             "size": node.get("size"),
             "title": node.get("title"),
             "visual_slots": visual_slots(node),
+            "visual_signatures": visual_signatures(node),
+            "flags": node.get("flags"),
+            "backgroundColor": node.get("backgroundColor"),
         })
     return out
 
@@ -125,9 +150,20 @@ def main():
         if x.startswith("skin") and x.endswith(".xml")
     ))
 
-    report = {"files": {}, "summary": {"geometry_mismatches": 0, "child_geometry_mismatches": 0, "openbh_only_failures": 0, "duplicates": 0}}
+    report = {"files": {}, "summary": {
+        "screen_presence_mismatches": 0,
+        "geometry_mismatches": 0,
+        "screen_style_mismatches": 0,
+        "child_geometry_mismatches": 0,
+        "child_style_mismatches": 0,
+        "openbh_only_failures": 0,
+        "duplicates": 0,
+    }}
+    presence_mismatches = []
     geometry_mismatches = []
+    screen_style_mismatches = []
     child_mismatches = []
+    child_style_mismatches = []
 
     for name in files:
         apath = os.path.join(atv, name)
@@ -136,6 +172,12 @@ def main():
         bmap = screen_map(bpath)
         common = sorted(set(amap) & set(bmap))
         f = {"mismatches": [], "duplicates": []}
+
+        missing_screens = sorted(set(amap) - set(bmap))
+        if missing_screens:
+            f["missing_screens"] = missing_screens
+            report["summary"]["screen_presence_mismatches"] += len(missing_screens)
+            presence_mismatches.extend((name, x) for x in missing_screens)
 
         for screen in common:
             if len(amap[screen]) != 1 or len(bmap[screen]) != 1:
@@ -159,6 +201,18 @@ def main():
                 geometry_mismatches.append((name, item))
                 report["summary"]["geometry_mismatches"] += 1
 
+            ast = (amap[screen][0].get("flags"), amap[screen][0].get("backgroundColor"))
+            bst = (bmap[screen][0].get("flags"), bmap[screen][0].get("backgroundColor"))
+            if ast != bst:
+                item = {
+                    "screen": screen,
+                    "openatv": {"flags": ast[0], "backgroundColor": ast[1]},
+                    "openbh": {"flags": bst[0], "backgroundColor": bst[1]},
+                }
+                f.setdefault("screen_style_mismatches", []).append(item)
+                screen_style_mismatches.append((name, item))
+                report["summary"]["screen_style_mismatches"] += 1
+
             ac = Counter(tuple(x) for x in amap[screen][0]["visual_slots"])
             bc = Counter(tuple(x) for x in bmap[screen][0]["visual_slots"])
             if ac != bc:
@@ -175,6 +229,30 @@ def main():
                     f.setdefault("child_mismatches", []).append(item)
                     child_mismatches.append((name, item))
                     report["summary"]["child_geometry_mismatches"] += 1
+
+            av = Counter(tuple(x) for x in amap[screen][0]["visual_signatures"])
+            bv = Counter(tuple(x) for x in bmap[screen][0]["visual_signatures"])
+            if av != bv:
+                missing_v = list((av - bv).elements())
+                extra_v = list((bv - av).elements())
+                # The only intentional visual omissions are the same two
+                # unsupported OpenBH PluginBrowser slots. Filter by geometry.
+                if screen in ("PluginBrowser", "PluginBrowserList", "PluginBrowserGrid"):
+                    def keep(sig):
+                        slot = (sig[0], sig[1], sig[2], sig[3])
+                        return bool(allowed_openbh_missing_slots(screen, [slot]))
+                    missing_v = [x for x in missing_v if keep(x)]
+                if missing_v or extra_v:
+                    item = {
+                        "screen": screen,
+                        "missing_count": len(missing_v),
+                        "extra_count": len(extra_v),
+                        "missing_openatv": [list(x) for x in missing_v[:20]],
+                        "extra_openbh": [list(x) for x in extra_v[:20]],
+                    }
+                    f.setdefault("child_style_mismatches", []).append(item)
+                    child_style_mismatches.append((name, item))
+                    report["summary"]["child_style_mismatches"] += 1
 
         # OpenBH-only screens have no OpenATV peer. Enforce full CineView
         # geometry explicitly so they cannot regress to small native dialogs.
@@ -197,15 +275,25 @@ def main():
                 })
                 report["summary"]["openbh_only_failures"] += 1
 
-        if f["mismatches"] or f["duplicates"] or f.get("child_mismatches") or f.get("openbh_only_failures"):
+        if (
+            f["mismatches"] or f["duplicates"] or f.get("missing_screens")
+            or f.get("screen_style_mismatches")
+            or f.get("child_mismatches") or f.get("child_style_mismatches")
+            or f.get("openbh_only_failures")
+        ):
             report["files"][name] = f
 
     print("CineView OpenATV/OpenBH geometry parity audit")
     print("skin files:", len(files))
+    print("screen presence mismatches:", report["summary"]["screen_presence_mismatches"])
     print("geometry mismatches:", report["summary"]["geometry_mismatches"])
+    print("screen style mismatches:", report["summary"]["screen_style_mismatches"])
     print("child geometry mismatches:", report["summary"]["child_geometry_mismatches"])
+    print("child style mismatches:", report["summary"]["child_style_mismatches"])
     print("OpenBH-only coverage failures:", report["summary"]["openbh_only_failures"])
     print("duplicate screen mismatches:", report["summary"]["duplicates"])
+    for filename, screen in presence_mismatches:
+        print("MISSING_SCREEN %s :: %s" % (filename, screen))
     for filename, item in geometry_mismatches:
         print("MISMATCH %s :: %s :: ATV %s %s :: BH %s %s" % (
             filename,
@@ -222,6 +310,13 @@ def main():
             item["missing_count"],
             item["extra_count"],
         ))
+    for filename, item in child_style_mismatches:
+        print("STYLE_MISMATCH %s :: %s :: missing_atv=%d extra_bh=%d" % (
+            filename,
+            item["screen"],
+            item["missing_count"],
+            item["extra_count"],
+        ))
 
     if args.report:
         with open(args.report, "w") as fh:
@@ -229,8 +324,11 @@ def main():
 
     shutil.rmtree(tmp, ignore_errors=True)
     if args.strict and (
-        report["summary"]["geometry_mismatches"]
+        report["summary"]["screen_presence_mismatches"]
+        or report["summary"]["geometry_mismatches"]
+        or report["summary"]["screen_style_mismatches"]
         or report["summary"]["child_geometry_mismatches"]
+        or report["summary"]["child_style_mismatches"]
         or report["summary"]["openbh_only_failures"]
         or report["summary"]["duplicates"]
     ):
