@@ -39,7 +39,35 @@ jobs:
           mkdir -p /tmp/cvskin
           cat > /tmp/cvskin/skin.xml <<'EOF'
           <skin>
+            <aliases>
+              <alias name="ChoiceList" font="Regular" size="24" height="40"/>
+              <alias name="SelectionList" font="Regular" size="24" height="40"/>
+            </aliases>
+            <parameters>
+              <parameter name="ChoicelistVerticalAlignment" value="center"/>
+              <parameter name="ChoicelistNameSingle" value="0,0,900,40"/>
+              <parameter name="ChoicelistName" value="40,0,860,40"/>
+              <parameter name="ChoicelistIcon" value="0,0,40,40"/>
+            </parameters>
+            <windowstyle id="0" type="skinned"><title offset="20,10" font="Regular;30"/></windowstyle>
             <screen name="InfoBar" position="0,700" size="1920,380"><widget name="legacy_infobar" position="0,0" size="100,50"/></screen>
+            <screen name="SecondInfoBar" position="0,0" size="1920,1080">
+              <widget source="session.Event_Now" render="PosterX" position="70,145" size="790,440"/>
+              <widget source="session.Event_Next" render="Label" position="900,145" size="790,80"/>
+              <!-- Same technical bar as primary InfoBar -->
+              <widget name="legacy_second_technical" position="0,700" size="100,50"/>
+            </screen>
+            <screen name="SecondInfoBarECM" position="0,0" size="1920,1080"><widget name="old_ecm" position="0,0" size="100,50"/></screen>
+            <screen name="ChoiceBox" position="center,center" size="1820,930"><widget name="list" position="0,0" size="800,500"/></screen>
+            <screen name="SkinSelector" position="center,center" size="1820,930">
+              <widget name="preview" position="0,0" size="300,200"/>
+              <widget source="skins" render="Listbox" position="300,0" size="800,500">
+                <convert type="TemplatedMultiContent">{"template":[MultiContentEntryText(pos = (20,0), size = (675,64), font = 0, text = 0),MultiContentEntryText(pos = (700,0), size = (400,64), font = 1, text = 1)],"fonts":[gFont("Regular",30),gFont("Regular",33)],"itemHeight":64}</convert>
+              </widget>
+            </screen>
+            <screen name="Setup" position="center,center" size="1820,930"><widget name="config" position="0,0" size="900,500"/><widget name="description" position="950,0" size="500,300"/><widget name="footnote" position="950,320" size="500,180"/></screen>
+            <screen name="SetupSkin" position="center,center" size="1820,930"><widget name="config" position="0,0" size="900,500"/></screen>
+            <screen name="setup_Skin" position="center,center" size="1820,930"><widget name="config" position="0,0" size="900,500"/></screen>
             <screen name="ChannelSelection" position="center,center" size="1800,900"><widget name="legacy_channel_list" position="0,0" size="100,50"/></screen>
             <screen name="MessageBox" position="center,center" size="600,500">
               <widget source="session.CurrentService" render="Label" position="0,0" size="100,40">
@@ -85,7 +113,18 @@ jobs:
           assert 'source="pluginList"' in one('PluginBrowserList')
           assert 'source="pluginGrid"' in one('PluginBrowserGrid')
           assert 'name="epg_description"' in one('EventView')
-          assert 'name="epg_description"' in one('SecondInfoBar')
+          second=one('SecondInfoBar')
+          assert 'session.Event_Next' in second
+          assert 'render="CineViewPosterX"' in second
+          assert 'position="70,145" size="790,440"' in second
+          assert 'legacy_infobar' in second
+          assert 'name="legacy_second_technical"' not in second
+          assert 'NumberOfRows="9"' in one('GraphicalEPG')
+          assert 'ServiceFontGraphical="Regular;28"' in one('GraphicalEPG')
+          assert 'gFont("Regular",34)' in one('SkinSelector')
+          assert 'itemHeight="70"' in one('Setup')
+          assert 'name="ChoiceList" font="Regular" size="31" height="64"' in s
+          assert '<configList entryLeftOffset="18"' in s
           assert '<applet' not in one('MessageBox')
           assert 'if self.timerRunning:' not in s
           assert 'ServiceInfo">IsSDAndWidescreen' not in s
