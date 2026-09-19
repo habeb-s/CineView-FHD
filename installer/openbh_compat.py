@@ -478,6 +478,79 @@ SECOND_INFOBAR = """\t\t<eLabel position="0,0" size="1920,520" backgroundColor="
 \t\t<widget source="key_yellow" render="Label" position="1345,452" size="220,40" font="Regular;23" halign="center" transparent="1"/>
 \t\t<widget source="key_blue" render="Label" position="1575,452" size="220,40" font="Regular;23" halign="center" transparent="1"/>"""
 
+MESSAGE_BOX = """\t\t<eLabel position="0,0" size="960,520" backgroundColor="steThemePrimary" zPosition="0"/>
+\t\t<widget name="icon" pixmaps="icons/input_question.png,icons/input_info.png,icons/input_warning.png,icons/input_error.png,icons/input_message.png" position="35,35" size="64,64" alphatest="blend" conditional="icon" scale="1" transparent="1" zPosition="4"/>
+\t\t<widget name="text" position="125,35" size="790,300" font="Regular;28" foregroundColor="foreground" backgroundColor="steThemePrimary" transparent="1" zPosition="4"/>
+\t\t<widget name="list" position="35,355" size="890,125" conditional="list" enableWrapAround="1" font="Regular;28" itemHeight="50" scrollbarMode="showOnDemand" backgroundColor="steThemePrimary" transparent="1" zPosition="4"/>"""
+
+QUICK_MENU = """		<eLabel position="0,0" size="1920,1080" backgroundColor="steThemePrimary" zPosition="0"/>
+		<widget source="mainlist" render="Listbox" position="45,90" size="640,820" backgroundColor="steThemePrimary" transparent="1" itemHeight="86" zPosition="5">
+			<templates>
+				<template name="Default" fonts="Regular;29,Regular;20" itemWidth="640" itemHeight="86">
+					<mode name="default">
+						<pixmap index="2" position="10,11" size="64,64" alpha="blend" scale="centerScaled"/>
+						<text index="0" position="90,4" size="530,43" font="0" verticalAlignment="center"/>
+						<text index="1" position="105,47" size="515,30" font="1" verticalAlignment="center"/>
+					</mode>
+				</template>
+			</templates>
+		</widget>
+		<eLabel position="710,88" size="2,825" backgroundColor="steThemePanelAlt" zPosition="2"/>
+		<widget source="sublist" render="Listbox" position="735,90" size="640,820" backgroundColor="steThemePrimary" transparent="1" itemHeight="86" zPosition="5">
+			<templates>
+				<template name="Default" fonts="Regular;29,Regular;20" itemWidth="640" itemHeight="86">
+					<mode name="default">
+						<text index="0" position="10,4" size="620,43" font="0" verticalAlignment="center"/>
+						<text index="1" position="25,47" size="605,30" font="1" verticalAlignment="center"/>
+					</mode>
+				</template>
+			</templates>
+		</widget>
+		<eLabel position="1420,92" size="455,256" backgroundColor="black" zPosition="3"/>
+		<widget source="session.VideoPicture" render="Pig" position="1420,92" size="455,256" backgroundColor="black" zPosition="4"/>
+		<widget name="description" position="1420,375" size="455,535" backgroundColor="steThemePrimary" transparent="1" font="Regular;24" foregroundColor="foreground" halign="center" valign="center" zPosition="4"/>
+		<eLabel position="35,995" size="1850,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
+		<widget source="key_red" render="Label" position="55,1010" size="360,45" backgroundColor="key_red" font="Regular;24" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>
+		<widget source="key_green" render="Label" position="435,1010" size="360,45" backgroundColor="key_green" font="Regular;24" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>
+		<widget source="key_yellow" render="Label" position="815,1010" size="360,45" backgroundColor="key_yellow" font="Regular;24" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>
+		<widget source="key_help" render="Label" position="1575,1010" size="300,45" backgroundColor="key_back" font="Regular;24" foregroundColor="key_text" halign="center" valign="center"><convert type="ConditionalShowHide"/></widget>
+	"""
+
+EVENT_SIMPLE = """\t\t<eLabel position="0,0" size="1820,760" backgroundColor="steThemePrimary" zPosition="0"/>
+\t\t<widget name="channel" position="45,28" size="1180,45" font="Regular;30" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1"/>
+\t\t<widget source="Title" render="Label" position="45,82" size="1180,60" font="Regular;38" foregroundColor="foreground" backgroundColor="steThemePrimary" transparent="1"/>
+\t\t<widget name="datetime" position="45,150" size="420,38" font="Regular;24" foregroundColor="grey" transparent="1"/>
+\t\t<widget name="duration" position="480,150" size="180,38" font="Regular;24" foregroundColor="secondFG" transparent="1"/>
+\t\t<widget name="FullDescription" position="45,205" size="1190,500" font="Regular;26" foregroundColor="foreground" backgroundColor="steThemePrimary" transparent="1"/>
+\t\t<widget source="Event" render="CineViewPosterX" position="1385,55" size="340,510" zPosition="8"/>"""
+
+INFOBAR_EVENT_VIEW = """\t\t<eLabel position="0,0" size="1920,360" backgroundColor="steThemePrimary" zPosition="0"/>
+\t\t<widget source="Title" render="Label" position="45,28" size="1320,48" font="Regular;34" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1"/>
+\t\t<widget name="datetime" position="1380,30" size="320,36" font="Regular;23" foregroundColor="grey" transparent="1"/>
+\t\t<widget name="duration" position="1710,30" size="165,36" font="Regular;23" foregroundColor="secondFG" transparent="1"/>
+\t\t<widget name="FullDescription" position="45,95" size="1510,225" font="Regular;25" foregroundColor="foreground" backgroundColor="steThemePrimary" transparent="1"/>
+\t\t<widget source="Event" render="CineViewPosterX" position="1630,82" size="210,260" zPosition="8"/>"""
+
+VERTICAL_EPG = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="steThemePrimary" zPosition="0"/>
+\t\t<widget source="Title" render="Label" position="45,25" size="1730,52" font="Regular;35" foregroundColor="secondFG" transparent="1"/>
+\t\t<widget name="bouquetlist" position="45,90" size="1730,700" backgroundColor="steThemePrimary" scrollbarMode="showNever" zPosition="20"/>
+\t\t<widget name="list" position="45,90" size="1730,700" backgroundColor="steThemePrimary" scrollbarMode="showNever" zPosition="19"/>
+\t\t<widget name="currCh1" position="45,95" size="330,42" font="Regular;27" foregroundColor="secondFG" transparent="1"/>
+\t\t<widget name="currCh2" position="385,95" size="330,42" font="Regular;27" foregroundColor="secondFG" transparent="1"/>
+\t\t<widget name="currCh3" position="725,95" size="330,42" font="Regular;27" foregroundColor="secondFG" transparent="1"/>
+\t\t<widget name="currCh4" position="1065,95" size="330,42" font="Regular;27" foregroundColor="secondFG" transparent="1"/>
+\t\t<widget name="currCh5" position="1405,95" size="330,42" font="Regular;27" foregroundColor="secondFG" transparent="1"/>
+\t\t<widget name="list1" position="45,145" size="330,590" backgroundColor="steThemePrimary" scrollbarMode="showNever"/>
+\t\t<widget name="list2" position="385,145" size="330,590" backgroundColor="steThemePrimary" scrollbarMode="showNever"/>
+\t\t<widget name="list3" position="725,145" size="330,590" backgroundColor="steThemePrimary" scrollbarMode="showNever"/>
+\t\t<widget name="list4" position="1065,145" size="330,590" backgroundColor="steThemePrimary" scrollbarMode="showNever"/>
+\t\t<widget name="list5" position="1405,145" size="330,590" backgroundColor="steThemePrimary" scrollbarMode="showNever"/>
+\t\t<eLabel position="35,775" size="1750,2" backgroundColor="steThemePanelAlt"/>
+\t\t<widget source="key_red" render="Label" position="55,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
+\t\t<widget source="key_green" render="Label" position="490,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
+\t\t<widget source="key_yellow" render="Label" position="925,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
+\t\t<widget source="key_blue" render="Label" position="1360,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>"""
+
 SCREENS = (
     ("PluginBrowserList", PLUGIN_BROWSER, "0,0", "1920,1080", "Plugin Browser"),
     ("PluginBrowserGrid", PLUGIN_BROWSER, "0,0", "1920,1080", "Plugin Browser"),
