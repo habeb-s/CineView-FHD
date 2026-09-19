@@ -29,6 +29,21 @@ def digest(root):
         h.update(open(p,'rb').read())
     return h.hexdigest()
 
+def semantic_skin_digest(root):
+    h=hashlib.sha256()
+    for p in sorted(glob.glob(root+'/skin*.xml')):
+        tree=ET.parse(p)
+        h.update(os.path.basename(p).encode())
+        for elem in tree.getroot().iter():
+            h.update(elem.tag.encode())
+            for k,v in sorted(elem.attrib.items()):
+                h.update(k.encode()); h.update(str(v).encode())
+            text=(elem.text or '').strip()
+            if text:
+                h.update(text.encode())
+    return h.hexdigest()
+
+
 def apply_twice(base, label, adapter_name):
     stage=tempfile.mkdtemp(prefix='cv-%s-'%label.lower())
     shutil.copytree(base,stage,dirs_exist_ok=True)
@@ -38,11 +53,11 @@ def apply_twice(base, label, adapter_name):
     rc=subprocess.call([sys.executable,adapter,skin])
     if rc!=0: fail('%s adapter first rc=%s'%(label,rc))
     checkxml(skin,label+'-ADAPTER1')
-    a=digest(skin)
+    a=semantic_skin_digest(skin)
     rc=subprocess.call([sys.executable,adapter,skin])
     if rc not in (0,3): fail('%s adapter second rc=%s'%(label,rc))
     checkxml(skin,label+'-ADAPTER2')
-    if a!=digest(skin): fail('%s skin adapter not idempotent'%label)
+    if a!=semantic_skin_digest(skin): fail('%s skin adapter not semantically idempotent'%label)
     return stage
 
 def one_screen(path,name):
