@@ -25,6 +25,109 @@ def _remove_screen(data, name):
     return re.sub(SCREEN_RE % re.escape(name), "\n", data, flags=re.S)
 
 
+
+def _scale_number_text(value, factor=1.5):
+    def repl(match):
+        raw = match.group(0)
+        try:
+            return str(int(round(int(raw) * factor)))
+        except Exception:
+            return raw
+    return re.sub(r"-?\d+", repl, value)
+
+
+def _scale_font(value, factor=1.5):
+    # Enigma2 font attributes are normally "Family;pixelSize".
+    parts = value.split(";")
+    if len(parts) >= 2:
+        try:
+            parts[-1] = str(int(round(int(parts[-1]) * factor)))
+        except Exception:
+            pass
+    return ";".join(parts)
+
+
+def _native_asset_path(value, asset_root):
+    value = value.strip()
+    if not value or value.startswith("/") or value.startswith("~/"):
+        return value
+    candidate = os.path.join(asset_root, value)
+    if os.path.isfile(candidate):
+        return candidate
+    return value
+
+
+def _scale_native_element(elem, factor, asset_root):
+    pair_attrs = {
+        "position", "size", "offset", "spacing", "pointer", "pointer1", "pointer2",
+    }
+    scalar_attrs = {
+        "itemHeight", "serviceItemHeight", "progressbarHeight", "progressBarWidth",
+        "progressPercentWidth", "fieldMargins", "nonplayableMargins", "piconMargin",
+        "setColGap", "setIconDistance", "scrollbarWidth", "borderWidth",
+    }
+    font_attrs = {
+        "font", "serviceNumberFont", "serviceNameFont", "serviceInfoFont",
+        "setEventItemFont", "setEventTimeFont",
+    }
+    for node in elem.iter():
+        for key in list(node.attrib):
+            val = node.attrib.get(key, "")
+            if key in pair_attrs:
+                node.set(key, _scale_number_text(val, factor))
+            elif key in scalar_attrs:
+                try:
+                    node.set(key, str(int(round(int(val) * factor))))
+                except Exception:
+                    pass
+            elif key in font_attrs or key.lower().endswith("font"):
+                node.set(key, _scale_font(val, factor))
+            elif key == "pixmap":
+                node.set(key, _native_asset_path(val, asset_root))
+            elif key == "pixmaps":
+                node.set(key, ",".join(_native_asset_path(x, asset_root) for x in val.split(",")))
+
+
+def _append_openatv_native_fallbacks(data, native_path):
+    """Import only screens CineView does not define, from this exact OpenATV image.
+
+    OpenATV 8 ships many legacy/default screens at 1280x720 coordinates.  When
+    CineView has no explicit override, importing and scaling the image's own
+    contract by 1.5 preserves its widget/source contract while making it native
+    Full-HD.  Existing CineView screens always win and are never replaced.
+    """
+    if not native_path or not os.path.isfile(native_path):
+        return data, 0
+    try:
+        native_root = ET.parse(native_path).getroot()
+    except Exception:
+        return data, 0
+
+    current = set(re.findall(r'<screen\b[^>]*\bname=["\']([^"\']+)["\']', data))
+    default_dir = os.path.dirname(native_path)
+    asset_root = os.path.join(default_dir, "skin_default")
+    blocks = []
+    for src in native_root.findall(".//screen"):
+        name = src.get("name")
+        if not name or name in current:
+            continue
+        try:
+            clone = ET.fromstring(ET.tostring(src, encoding="unicode"))
+        except Exception:
+            continue
+        _scale_native_element(clone, 1.5, asset_root)
+        blocks.append(ET.tostring(clone, encoding="unicode"))
+        current.add(name)
+
+    if not blocks:
+        return data, 0
+    idx = data.rfind("</skin>")
+    if idx < 0:
+        return data, 0
+    payload = "\n<!-- OpenATV image-native FHD fallback layer -->\n" + "\n".join(blocks) + "\n"
+    return data[:idx] + payload + data[idx:], len(blocks)
+
+
 def _screen(name, body, position="center,center", size="1820,880", title=""):
     t = (' title="%s"' % title) if title else ""
     return '\n\t<screen name="%s" position="%s" size="%s" flags="wfNoBorder"%s>\n%s\n\t</screen>\n' % (
@@ -427,6 +530,17 @@ def patch_file(path):
     blocks = "".join(_screen(name, body, pos, size, title) for name, body, pos, size, title in SCREENS)
     blocks += "\n".join(cloned)
     data = data[:idx] + blocks + data[idx:]
+
+    # Only the active skin.xml carries the full image-native fallback layer.
+    # Layout variants stay compact; CineView Control re-applies this adapter
+    # after selecting a variant.
+    if os.path.basename(path) == "skin.xml":
+        native_path = os.environ.get(
+            "CINEVIEW_OPENATV_NATIVE_SKIN",
+            "/usr/share/enigma2/skin_default.xml",
+        )
+        data, imported = _append_openatv_native_fallbacks(data, native_path)
+
     try:
         ET.fromstring(data)
     except Exception:
