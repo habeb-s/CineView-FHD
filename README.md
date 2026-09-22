@@ -1,22 +1,22 @@
 # CineView FHD 2.1
 
-Official Full HD skin for **OpenATV 7.4, 7.5, 7.6 and 8.0**.
+Official Full HD CineView skin with a pinned live OpenViX reference snapshot.
 
-## Supported platform
+## Supported installation paths
 
-- OpenATV only
-- OpenATV 7.4 / 7.5 / 7.6 / 8.0
+- OpenViX 6.9 build 002: installs the exact live snapshot captured from the Vu+ Duo 4K SE on 2026-09-22.
+- OpenATV 7.4 / 7.5 / 7.6 / 8.0: keeps the existing CineView FHD 2.1 smart-installer path.
 - Python 3
 - Full HD 1920×1080
-
-Unsupported images and versions are rejected before the installer changes the receiver.
 
 ## Installation
 
     wget -qO- https://raw.githubusercontent.com/habeb-s/CineView-FHD/main/install.sh | sh
 
-The installer performs a compatibility preflight, safely adapts the staged skin to OpenATV, validates every XML file before installation, backs up an existing CineView installation, installs the package, then restarts Enigma2.
+For the immutable OpenViX snapshot directly:
 
-Optional weather features use a safe fallback when the provider is unavailable. CineView includes its own poster renderer and compatibility converters.
+    wget -qO- https://raw.githubusercontent.com/habeb-s/CineView-FHD/3c4519ba47ba59444ff2392507e67d9c133f14ec/install-openvix-live.sh | sh
+
+The OpenViX installer is pinned to snapshot commit `981fddfe4d88519c96101ab10951d65163cb2eaf` and validates SHA256 `a55d3dfc3282c04f6b82be77fbd11e9c8435d4e5361b862f5c8c859eb5cbac29` before installation. It creates a rollback archive under `/tmp` and does not use `/media/hdd`.
 
 **CineView FHD 2.1 — Designed by habeb-s**
