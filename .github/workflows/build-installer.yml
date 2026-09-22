@@ -7,6 +7,7 @@ on:
       - 'installer/CineViewPosterX.py'
       - 'installer/openbh_compat.py'
       - 'installer/openatv_compat.py'
+      - 'installer/patch_runtime_hooks.py'
       - 'tools/validate_openbh_atv_parity.py'
       - 'tools/release_validate.py'
 permissions:
@@ -28,6 +29,7 @@ jobs:
           cp -f installer/CineViewPosterX.py /tmp/cvstage/usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.py
           cp -f installer/openbh_compat.py /tmp/cvstage/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openbh_compat.py
           cp -f installer/openatv_compat.py /tmp/cvstage/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openatv_compat.py
+          python3 installer/patch_runtime_hooks.py /tmp/cvstage/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl
           python3 -m py_compile /tmp/cvstage/usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.py
           python3 -m py_compile /tmp/cvstage/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openbh_compat.py
           python3 -m py_compile /tmp/cvstage/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openatv_compat.py
