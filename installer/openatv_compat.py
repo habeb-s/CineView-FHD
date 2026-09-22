@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# OpenATV 8 live contract audited on Vu+ Duo 4K SE, build 20260917.
+# OpenATV 8 live contract audited on Vu+ Duo 4K SE, build 20260922 (compile 20260922140732, Python 3.14.7).
 from __future__ import print_function
 
 import io
@@ -282,32 +282,104 @@ VERTICAL_EPG = """\t\t<eLabel position="0,0" size="1820,880" backgroundColor="st
 \t\t<widget source="key_yellow" render="Label" position="925,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
 \t\t<widget source="key_blue" render="Label" position="1360,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>"""
 
+
+SKIN_SELECTION = """		<eLabel position="0,0" size="1920,1080" backgroundColor="steThemePrimary" zPosition="0"/>
+		<widget source="Title" render="Label" position="35,24" size="1850,54" font="Regular;38" foregroundColor="foreground" transparent="1" zPosition="2"/>
+		<eLabel position="30,92" size="1860,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
+		<widget name="preview" position="60,145" size="620,465" alphatest="on" zPosition="3"/>
+		<eLabel position="735,120" size="2,800" backgroundColor="steThemePanelAlt" zPosition="2"/>
+		<widget name="config" position="780,120" size="1080,520" itemHeight="64" font="Regular;30" transparent="1" enableWrapAround="1" scrollbarMode="showOnDemand" zPosition="3"/>
+		<widget name="description" position="780,660" size="1080,160" font="Regular;25" foregroundColor="foreground" transparent="1" valign="top" zPosition="3"/>
+		<widget name="footnote" position="780,825" size="1080,90" font="Regular;22" foregroundColor="secondFG" transparent="1" valign="top" zPosition="3"/>
+		<eLabel position="30,935" size="1860,2" backgroundColor="steThemePanelAlt" zPosition="2"/>
+		<panel name="ButtonTemplate"/>
+		<widget name="HelpWindow" position="0,0" size="0,0" alphatest="blend" transparent="1" zPosition="1"/>"""
+
+VERTICAL_EPG_PIG = """		<eLabel position="0,0" size="1820,880" backgroundColor="steThemePrimary" zPosition="0"/>
+		<widget source="Title" render="Label" position="45,25" size="1080,52" font="Regular;35" foregroundColor="secondFG" transparent="1"/>
+		<eLabel position="1190,45" size="585,330" backgroundColor="black" zPosition="3"/>
+		<widget source="session.VideoPicture" render="Pig" position="1205,60" size="555,300" backgroundColor="black" zPosition="4"/>
+		<widget source="Event" render="Label" position="45,95" size="1090,270" font="Regular;24" foregroundColor="foreground" transparent="1" valign="top"><convert type="EventName">FullDescription</convert></widget>
+		<widget name="bouquetlist" position="45,395" size="1730,350" backgroundColor="steThemePrimary" scrollbarMode="showNever" transparent="0" zPosition="15"/>
+		<widget name="list" position="45,395" size="1730,350" backgroundColor="steThemePrimary" scrollbarMode="showNever" transparent="1" zPosition="10"/>
+		<eLabel position="35,775" size="1750,2" backgroundColor="steThemePanelAlt"/>
+		<widget source="key_red" render="Label" position="55,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
+		<widget source="key_green" render="Label" position="490,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
+		<widget source="key_yellow" render="Label" position="925,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>
+		<widget source="key_blue" render="Label" position="1360,800" size="400,45" font="Regular;26" halign="center" transparent="1"/>"""
+
 SCREENS = (
     ("PluginBrowserList", PLUGIN_LIST, "0,0", "1920,1080", "Plugin Browser"),
     ("PluginBrowserGrid", PLUGIN_GRID, "0,0", "1920,1080", "Plugin Browser"),
     ("PluginBrowser", PLUGIN_LIST, "0,0", "1920,1080", "Plugin Browser"),
     ("MessageBox", MESSAGE_BOX, "center,center", "960,520", "Message"),
     ("MessageBoxModal", MESSAGE_BOX, "center,center", "960,520", "Message"),
+    ("SkinSelection", SKIN_SELECTION, "0,0", "1920,1080", "Skin Settings"),
     ("QuickMenu", QUICK_MENU, "0,0", "1920,1080", "Quick Launch Menu"),
     ("EventViewSimple", EVENT_SIMPLE, "center,center", "1820,760", "Event View"),
     ("InfoBarEventView", INFOBAR_EVENT_VIEW, "0,0", "1920,360", "Event View"),
     ("SecondInfoBarECM", SECOND_INFO, "0,560", "1920,520", "Second InfoBar"),
-    ("EPGSelectionMulti", MULTI_EPG, "center,center", "1820,880", "Multi EPG"),
     ("QuickEPG", QUICK_EPG, "0,660", "1920,420", "Quick EPG"),
+    ("GraphicalEPG", GRID, "center,center", "1820,880", "Graphical EPG"),
     ("GraphicalEPGPIG", GRID_PIG, "center,center", "1820,880", "Graphical EPG"),
     ("GraphicalInfoBarEPG", INFOBAR_GRID, "0,750", "1920,330", "InfoBar EPG"),
     ("EPGvertical", VERTICAL_EPG, "center,center", "1820,880", "Vertical EPG"),
-    ("EPGverticalPIG", VERTICAL_EPG, "center,center", "1820,880", "Vertical EPG"),
+    ("EPGverticalPIG", VERTICAL_EPG_PIG, "center,center", "1820,880", "Vertical EPG"),
 )
 
 
 def patch_file(path):
     data = _read(path)
+
+    # Preserve the already-approved OpenATV primary InfoBar geometry.  The
+    # latest CineView visual source is used everywhere else, but the primary
+    # InfoBar is an explicit invariant on this receiver.
+    info_pat = re.compile(SCREEN_RE % re.escape("InfoBar"), re.S)
+    m = info_pat.search(data)
+    if m:
+        b = m.group(0)
+        for old, new in (
+            ('position="16,842" size="1888,236"', 'position="24,842" size="1872,236"'),
+            ('position="16,842" size="1888,2"', 'position="24,842" size="1872,2"'),
+            ('position="16,1076" size="1888,2"', 'position="24,1076" size="1872,2"'),
+            ('position="16,842" size="2,236"', 'position="24,842" size="2,236"'),
+            ('position="1902,842" size="2,236"', 'position="1894,842" size="2,236"'),
+            ('position="170,858" size="260,70"', 'mode="infobar" scale="aspect" position="200,852" size="200,110"'),
+            ('position="170,934" size="260,36"', 'position="170,966" size="260,28"'),
+            ('font="Regular;23" noWrap="1" options="movetype=running,direction=left,step=2,steptime=55,startdelay=1600,pause=1000,repeat=0,always=0"', 'font="Regular;21" noWrap="1" options="movetype=running,direction=left,step=2,steptime=55,startdelay=1600,pause=1000,repeat=0,always=0"'),
+            ('position="170,978" size="58,27"', 'position="170,994" size="50,20"'),
+            ('foregroundColor="grey" font="Regular;20"', 'foregroundColor="grey" font="Regular;16"'),
+            ('position="235,978" size="195,27"', 'position="225,994" size="205,20"'),
+            ('foregroundColor="grey" font="Regular;18" noWrap="1" options="movetype=running,direction=left,step=2,steptime=60,startdelay=1500,pause=1000,repeat=0,always=0"', 'foregroundColor="grey" font="Regular;16" noWrap="1" options="movetype=running,direction=left,step=2,steptime=60,startdelay=1500,pause=1000,repeat=0,always=0"'),
+            ('position="28,1016" size="1864,2"', 'position="36,1016" size="1848,2"'),
+        ):
+            b = b.replace(old, new)
+        data = data[:m.start()] + b + data[m.end():]
+
+    # Runtime-only OpenATV alternatives.  Clone CineView's own FHD layouts so
+    # these modes never fall back to the small 1280x720 default skin.
+    cloned = []
+    for src_name, dst_name in (
+        ("SimpleChannelSelection", "ChannelSelection_PIG"),
+        ("SimpleChannelSelection", "SlimChannelSelection"),
+        ("MovieSelection", "MovieSelectionSlim"),
+    ):
+        pat = re.compile(SCREEN_RE % re.escape(src_name), re.S)
+        sm = pat.search(data)
+        if sm:
+            block = sm.group(0)
+            block = re.sub(r'(<screen\\b[^>]*\\bname=["\\'])%s(["\\'])' % re.escape(src_name),
+                           r'\\1%s\\2' % dst_name, block, count=1)
+            data = _remove_screen(data, dst_name)
+            cloned.append(block)
+
     for name, body, pos, size, title in SCREENS:
         data = _remove_screen(data, name)
 
     data = data.replace('render="PosterX"', 'render="CineViewPosterX"')
     data = data.replace("render='PosterX'", "render='CineViewPosterX'")
+    data = data.replace('<convert type="PliExtraInfo">TransponderInfo</convert>',
+                        '<convert type="CineViewTransponderInfo">TransponderInfo</convert>')
     # OpenATV 7.4-8.0 no longer exposes the old combined SD/aspect flags.
     # Preserve the visual intent using the supported aspect-ratio flags.
     data = re.sub(
@@ -349,6 +421,7 @@ def patch_file(path):
     if idx < 0:
         return False
     blocks = "".join(_screen(name, body, pos, size, title) for name, body, pos, size, title in SCREENS)
+    blocks += "\n".join(cloned)
     data = data[:idx] + blocks + data[idx:]
     try:
         ET.fromstring(data)
