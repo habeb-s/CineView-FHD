@@ -1,10 +1,10 @@
 #!/bin/sh
 set -eu
 
-TMP="/tmp/cineview-smart-installer.$$.sh"
+TMP="/tmp/cineview-smart-installer.$.sh"\nAUDIT_TMP="/tmp/cineview-openatv-auditfix.$.py"
 ESC="$(printf '\033')"
 GREEN="$ESC[32m"; YELLOW="$ESC[33m"; CYAN="$ESC[36m"; RED="$ESC[31m"; RESET="$ESC[0m"
-cleanup(){ rm -f "$TMP"; }
+cleanup(){ rm -f "$TMP" "$AUDIT_TMP"; }
 trap cleanup EXIT INT TERM
 
 iv_get(){
@@ -150,10 +150,52 @@ CINEVIEW_DISTRO="$DISTRO_ID" \
 CINEVIEW_IMAGE_NAME="$IMAGE_NAME" \
 CINEVIEW_IMAGE_VERSION="$IMAGE_VERSION" \
 CINEVIEW_IMAGE_BUILD="$IMAGE_BUILD" \
-/bin/sh "$TMP" --restart
+/bin/sh "$TMP" --no-restart
 
 RC=$?
-rm -f "$TMP"
+
+if [ "$RC" -eq 0 ] && printf '%s' "$IMAGE_VERSION" | grep -q '^8'; then
+  AUDIT_RAW="https://raw.githubusercontent.com/habeb-s/CineView-FHD/main/installer/openatv_auditfix.py"
+  PLUGIN_DIR="/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl"
+  printf "%s[ADAPT]%s Installing persistent OpenATV 8 audit hook...\n" "$CYAN" "$RESET"
+  if command -v wget >/dev/null 2>&1; then
+    wget -q --no-check-certificate -O "$AUDIT_TMP" "$AUDIT_RAW" || RC=1
+  elif command -v curl >/dev/null 2>&1; then
+    curl -fsSLk "$AUDIT_RAW" -o "$AUDIT_TMP" || RC=1
+  else
+    RC=1
+  fi
+  if [ "$RC" -eq 0 ] && [ -s "$AUDIT_TMP" ] && [ -d "$PLUGIN_DIR" ]; then
+    cp -f "$AUDIT_TMP" "$PLUGIN_DIR/openatv_auditfix.py"
+    chmod 644 "$PLUGIN_DIR/openatv_auditfix.py"
+    python3 -m py_compile "$PLUGIN_DIR/openatv_auditfix.py" || RC=1
+  else
+    RC=1
+  fi
+  if [ "$RC" -eq 0 ] && [ -f "$PLUGIN_DIR/activate.sh" ]; then
+    if ! grep -q 'openatv_auditfix.py' "$PLUGIN_DIR/activate.sh"; then
+      sed -i '/openatv_v5.py.*skin.xml/a \\"$PY\\" \\"$PLUGIN/openatv_auditfix.py\\" \\"$SKIN/skin.xml\\" >/dev/null 2>\\&1 || true' "$PLUGIN_DIR/activate.sh"
+    fi
+    sh -n "$PLUGIN_DIR/activate.sh" || RC=1
+    [ "$RC" -eq 0 ] && "$PLUGIN_DIR/activate.sh" || true
+  else
+    RC=1
+  fi
+  [ "$RC" -eq 0 ] || printf "%s[FAIL]%s OpenATV 8 audit hook installation failed.\n" "$RED" "$RESET" >&2
+fi
+
+rm -f "$TMP" "$AUDIT_TMP"
 trap - EXIT INT TERM
-[ "$RC" -eq 0 ] && printf "%s[DONE]%s Installer file removed.\n" "$GREEN" "$RESET"
+
+if [ "$RC" -eq 0 ]; then
+  printf "%s[CineView]%s Restarting Enigma2 once after final OpenATV adaptation...\n" "$CYAN" "$RESET"
+  sync
+  if command -v systemctl >/dev/null 2>&1 && systemctl list-unit-files 2>/dev/null | grep -q '^enigma2.service'; then
+    systemctl restart enigma2.service || true
+  elif command -v killall >/dev/null 2>&1; then
+    killall -9 enigma2 >/dev/null 2>&1 || true
+  fi
+fi
+
+[ "$RC" -eq 0 ] && printf "%s[DONE]%s Installer files removed.\n" "$GREEN" "$RESET"
 exit "$RC"
