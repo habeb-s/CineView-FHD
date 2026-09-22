@@ -46,6 +46,27 @@ case "$IMG" in
   *) IMAGE_NAME="$(iv_get Creator)"; [ -n "$IMAGE_NAME" ] || IMAGE_NAME="Unknown Enigma2 image"; FAMILY=generic; PROFILE="generic" ;;
 esac
 
+# OpenViX live-reference path: install the exact receiver snapshot captured on 2026-09-22.
+if [ "$DISTRO_ID" = "openvix" ]; then
+  LIVE_RAW="https://raw.githubusercontent.com/habeb-s/CineView-FHD/3c4519ba47ba59444ff2392507e67d9c133f14ec/install-openvix-live.sh"
+  printf "%s[CineView]%s OpenViX detected -> using pinned live receiver snapshot installer.\n" "$CYAN" "$RESET"
+  if command -v wget >/dev/null 2>&1; then
+    wget -q --no-check-certificate -O "$TMP" "$LIVE_RAW"
+  elif command -v curl >/dev/null 2>&1; then
+    curl -fsSLk "$LIVE_RAW" -o "$TMP"
+  else
+    printf "%s[FAIL]%s wget/curl not found\n" "$RED" "$RESET" >&2
+    exit 1
+  fi
+  [ -s "$TMP" ] || { printf "%s[FAIL]%s OpenViX live installer download failed\n" "$RED" "$RESET" >&2; exit 1; }
+  chmod 755 "$TMP"
+  /bin/sh "$TMP"
+  RC=$?
+  rm -f "$TMP"
+  trap - EXIT INT TERM
+  exit "$RC"
+fi
+
 # Official CineView FHD 2.1 OpenATV support gate.
 if [ "$DISTRO_ID" != "openatv" ]; then
   printf "%s[FAIL]%s CineView FHD 2.1 supports OpenATV only. Detected: %s\n" "$RED" "$RESET" "$IMAGE_NAME" >&2
