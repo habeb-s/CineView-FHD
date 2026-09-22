@@ -1,0 +1,5 @@
+OpenATV CineView baseline before 20260922 native-contract rebuild
+Image: OpenATV 8.0.0-beta build 20260922
+SHA256: 132cb9493f99e4e0bdc5e1efa4ef2322f9dbc83782a45e24d077af5c6d20897c
+Entries: 418
+Archive bytes: 2443541

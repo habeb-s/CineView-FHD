@@ -1,0 +1,4 @@
+config.plugins.cineview.theme=navy
+config.skin.primary_skin=CineView_FHD/skin.xml
+config.usage.pluginListLayout=0
+config.usage.show_second_infobar=2
