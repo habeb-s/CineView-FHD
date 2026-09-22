@@ -25,8 +25,7 @@ EVENT_VIEW = r'''
 		<widget name="duration" position="590,190" size="300,42" font="Regular;30" valign="center" halign="left"/>
 		<widget name="epg_description" position="70,255" size="1780,710" font="Regular;30"/>
 	</screen>
-'''.strip("
-")
+'''.strip()
 
 
 def screen_pattern(name: str) -> re.Pattern[str]:
