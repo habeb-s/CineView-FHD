@@ -368,8 +368,12 @@ def patch_file(path):
         sm = pat.search(data)
         if sm:
             block = sm.group(0)
-            block = re.sub(r'(<screen\\b[^>]*\\bname=["\\'])%s(["\\'])' % re.escape(src_name),
-                           r'\\1%s\\2' % dst_name, block, count=1)
+            old_q = 'name="%s"' % src_name
+            new_q = 'name="%s"' % dst_name
+            if old_q in block:
+                block = block.replace(old_q, new_q, 1)
+            else:
+                block = block.replace("name='%s'" % src_name, "name='%s'" % dst_name, 1)
             data = _remove_screen(data, dst_name)
             cloned.append(block)
 
