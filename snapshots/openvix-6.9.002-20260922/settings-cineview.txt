@@ -1,0 +1,2 @@
+config.plugins.cineview.theme=navy
+config.skin.primary_skin=CineView_FHD/skin.xml

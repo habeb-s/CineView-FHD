@@ -1,0 +1,9 @@
+CineView live receiver snapshot
+Captured: 2026-09-22
+Receiver: Vu+ Duo 4K SE
+Image: OpenViX 6.9.002
+Archive: cineview-live-openvix-6.9.002.tar.gz
+SHA256: a55d3dfc3282c04f6b82be77fbd11e9c8435d4e5361b862f5c8c859eb5cbac29
+Archive bytes: 4801402
+Archive entries: 585
+Source: live receiver 192.168.1.250
