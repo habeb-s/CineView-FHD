@@ -174,7 +174,15 @@ if [ "$RC" -eq 0 ] && printf '%s' "$IMAGE_VERSION" | grep -q '^8'; then
   fi
   if [ "$RC" -eq 0 ] && [ -f "$PLUGIN_DIR/activate.sh" ]; then
     if ! grep -q 'openatv_auditfix.py' "$PLUGIN_DIR/activate.sh"; then
-      sed -i '/openatv_v5.py.*skin.xml/a \\"$PY\\" \\"$PLUGIN/openatv_auditfix.py\\" \\"$SKIN/skin.xml\\" >/dev/null 2>\\&1 || true' "$PLUGIN_DIR/activate.sh"
+      HOOK_LINE='"$PY" "$PLUGIN/openatv_auditfix.py" "$SKIN/skin.xml" >/dev/null 2>&1 || true'
+      HOOK_TMP="$PLUGIN_DIR/activate.sh.audit.$"
+      awk -v hook="$HOOK_LINE" '{ print; if ($0 ~ /openatv_v5.py.*skin.xml/) print hook }' "$PLUGIN_DIR/activate.sh" > "$HOOK_TMP" || RC=1
+      if [ "$RC" -eq 0 ]; then
+        chmod --reference="$PLUGIN_DIR/activate.sh" "$HOOK_TMP" 2>/dev/null || chmod 755 "$HOOK_TMP"
+        mv -f "$HOOK_TMP" "$PLUGIN_DIR/activate.sh"
+      else
+        rm -f "$HOOK_TMP"
+      fi
     fi
     sh -n "$PLUGIN_DIR/activate.sh" || RC=1
     [ "$RC" -eq 0 ] && "$PLUGIN_DIR/activate.sh" || true
