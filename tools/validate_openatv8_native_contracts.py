@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import hashlib
 import re
 import sys
@@ -79,7 +80,11 @@ def has_name(screen, name: str) -> bool:
 
 
 def canonical_hash(screen) -> str:
-    return hashlib.sha256(ET.tostring(screen, encoding="utf-8")).hexdigest()
+    # ElementTree serializes element.tail too. Tail whitespace belongs to the
+    # surrounding document, not to the screen contract, so exclude it.
+    node = copy.deepcopy(screen)
+    node.tail = None
+    return hashlib.sha256(ET.tostring(node, encoding="utf-8")).hexdigest()
 
 
 def require_screen(screens, name):
