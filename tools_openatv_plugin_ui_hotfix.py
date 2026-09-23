@@ -89,6 +89,43 @@ def color_plugin_footer(text, name):
     if changed:
         text=text[:m.start()] + m.group(1)+body+m.group(3)+text[m.end():]
     return text, changed
+def ensure_static_color_bars(text, name, keys=('red','green','yellow','blue')):
+    pat = re.compile(r'(<screen\b(?=[^>]*\bname=["\']%s["\'])[^>]*>)(.*?)(</screen>)' % re.escape(name), re.S)
+    m=pat.search(text)
+    if not m:
+        return text, False
+    body=m.group(2)
+    changed=False
+    for key in keys:
+        marker='cineviewKeyBar_%s' % key
+        if marker in body:
+            continue
+        wp=re.compile(r'(<widget\b(?=[^>]*source=["\']key_%s["\'])[^>]*(?:/>|>.*?</widget>))' % key, re.S)
+        wm=wp.search(body)
+        if not wm:
+            continue
+        tag=wm.group(1)
+        pm=re.search(r'position=["\']([^"\']+)["\']',tag)
+        sm=re.search(r'size=["\']([^"\']+)["\']',tag)
+        if not pm or not sm:
+            continue
+        bg='key_%s' % key
+        bar='<eLabel name="%s" position="%s" size="%s" backgroundColor="%s" zPosition="1"/>' % (marker,pm.group(1),sm.group(1),bg)
+        # Make source label transparent and draw over the static color bar.
+        if 'transparent=' in tag:
+            tag=re.sub(r'transparent=["\'][^"\']*["\']','transparent="1"',tag,count=1)
+        else:
+            tag=tag.replace('<widget ','<widget transparent="1" ',1)
+        if 'zPosition=' in tag:
+            tag=re.sub(r'zPosition=["\'][^"\']*["\']','zPosition="2"',tag,count=1)
+        else:
+            tag=tag.replace('<widget ','<widget zPosition="2" ',1)
+        body=body[:wm.start()] + bar + '\n    ' + tag + body[wm.end():]
+        changed=True
+    if changed:
+        text=text[:m.start()] + m.group(1)+body+m.group(3)+text[m.end():]
+    return text, changed
+
 
 count=0
 stats={}
@@ -105,11 +142,25 @@ for p in ROOT.rglob('*.xml'):
     text,ch=color_plugin_footer(text,'QuickMenu')
     if ch: stats['QuickMenu']=stats.get('QuickMenu',0)+1
 
+    for n,keys in [
+        ('PluginBrowser',('red','green','yellow','blue')),
+        ('PluginBrowserList',('red','green','yellow','blue')),
+        ('PluginBrowserGrid',('red','green','yellow','blue')),
+        ('QuickMenu',('red','green','yellow')),
+    ]:
+        text,ch=ensure_static_color_bars(text,n,keys)
+        if ch: stats[n+'_bars']=stats.get(n+'_bars',0)+1
+
     # FHD package/download screens.
     for n,xml in [('PackageAction',PACKAGE_ACTION),('PackageActionLog',PACKAGE_LOG),('PluginDownloadBrowser',PLUGIN_DOWNLOAD)]:
         # Only add PackageAction screens to the principal/live layout family files; safe to add to all CineView XML layouts too.
         text,mode=replace_screen(text,n,xml)
         stats[n]=stats.get(n,0)+1
+
+    text,ch=ensure_static_color_bars(text,'PackageAction',('red','green','yellow'))
+    if ch: stats['PackageAction_bars']=stats.get('PackageAction_bars',0)+1
+    text,ch=ensure_static_color_bars(text,'PackageActionLog',('red',))
+    if ch: stats['PackageActionLog_bars']=stats.get('PackageActionLog_bars',0)+1
 
     if text != orig:
         ET.fromstring(text)
