@@ -42,8 +42,8 @@ esac
 
 case "$DISTRO" in
   openvix)
-    URL='https://raw.githubusercontent.com/habeb-s/CineView-FHD/3c4519ba47ba59444ff2392507e67d9c133f14ec/install-openvix-live.sh'
-    echo "[CineView] OpenViX detected -> pinned live OpenViX installer"
+    URL='https://raw.githubusercontent.com/habeb-s/CineView-FHD/main/install-openvix-live.sh'
+    echo "[CineView] OpenViX detected -> final 2026-09-23 live snapshot"
     ;;
   openatv)
     case "$VERSION" in

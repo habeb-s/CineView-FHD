@@ -2,10 +2,10 @@
 set -eu
 
 # CineView live OpenViX snapshot installer
-# Snapshot captured from the user's Vu+ Duo 4K SE on 2026-09-22.
-SNAP_COMMIT='981fddfe4d88519c96101ab10951d65163cb2eaf'
-SNAP_SHA256='a55d3dfc3282c04f6b82be77fbd11e9c8435d4e5361b862f5c8c859eb5cbac29'
-SNAP_REL='snapshots/openvix-6.9.002-20260922/cineview-live-openvix-6.9.002.tar.gz'
+# Final snapshot captured from the user's Vu+ Duo 4K SE on 2026-09-23.
+SNAP_COMMIT='b14044bb26995b60d7862c1733306e978f01022f'
+SNAP_SHA256='ec20a8e4d31c82fe5242e89af9c29f5b029f6d522b18ff4bea940c180a3733bc'
+SNAP_REL='snapshots/openvix-final-20260923/cineview-live-openvix-final-20260923.tar.gz'
 SNAP_URL="https://raw.githubusercontent.com/habeb-s/CineView-FHD/$SNAP_COMMIT/$SNAP_REL"
 TMP="/tmp/cineview-live-openvix.$$"
 ARCHIVE="$TMP/cineview-live.tar.gz"
@@ -35,7 +35,7 @@ BUILD="$(iv_get Build)"
 [ "$BUILD" = 002 ] || fail "this live snapshot requires OpenViX build 002; detected: $BUILD"
 
 mkdir -p "$STAGE"
-echo '[CineView] Downloading pinned live snapshot...'
+echo '[CineView] Downloading pinned final OpenViX snapshot...'
 if command -v wget >/dev/null 2>&1; then
   wget -q --no-check-certificate -O "$ARCHIVE" "$SNAP_URL" || fail 'snapshot download failed'
 elif command -v curl >/dev/null 2>&1; then
@@ -65,6 +65,7 @@ ok "Snapshot checksum verified: $ACTUAL"
 tar -tzf "$ARCHIVE" > "$TMP/list.txt" || fail 'snapshot archive is invalid'
 grep -q '^usr/share/enigma2/CineView_FHD/skin.xml$' "$TMP/list.txt" || fail 'skin.xml missing from snapshot'
 grep -q '^usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/plugin.py$' "$TMP/list.txt" || fail 'CineViewControl missing from snapshot'
+grep -q '^usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openvix_final.py$' "$TMP/list.txt" || fail 'OpenViX final compatibility helper missing from snapshot'
 grep -q '^usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.py$' "$TMP/list.txt" || fail 'CineViewPosterX missing from snapshot'
 grep -q '^usr/lib/enigma2/python/Components/Converter/CineViewTransponderInfo.py$' "$TMP/list.txt" || fail 'CineViewTransponderInfo missing from snapshot'
 tar -xzf "$ARCHIVE" -C "$STAGE" || fail 'snapshot extraction failed'
@@ -110,7 +111,7 @@ else
   echo 'config.skin.primary_skin=CineView_FHD/skin.xml' >> "$SETTINGS"
 fi
 sync
-ok 'Live OpenViX CineView snapshot installed exactly from pinned GitHub commit.'
+ok 'Final OpenViX CineView snapshot installed exactly from pinned GitHub commit.'
 ok "Source commit: $SNAP_COMMIT"
 ok "Rollback backup: $BACKUP"
 
