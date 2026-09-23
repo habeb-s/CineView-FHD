@@ -62,3 +62,11 @@ The smart installer for this snapshot:
 - does not modify /media/hdd,
 - validates the snapshot SHA256 before install,
 - validates skin XML before replacing the live skin.
+
+## 2026-09-23 GraphicalEPG Full-FHD correction
+- Corrected GraphicalEPG from centered 1900x1040 to true 1920x1080 at position 0,0.
+- Corrected the GraphicalEPG background to 1920x1080.
+- Applied the same correction to all 34 CineView layout XML variants containing GraphicalEPG.
+- Updated openatv_v5.py so future CineView activation preserves the 1920x1080 geometry.
+- Persistence test passed after running openatv_v5.py followed by openatv_auditfix.py.
+- 35 CineView XML files parsed successfully after the correction.
