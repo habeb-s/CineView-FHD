@@ -48,16 +48,16 @@ case "$DISTRO" in
   openatv)
     case "$VERSION" in
       7.4*|7.5*|7.6*|8.0*) ;;
-      *) fail "unsupported OpenATV version: \${VERSION:-unknown}; supported: 7.4 / 7.5 / 7.6 / 8.0" ;;
+      *) fail "unsupported OpenATV version: ${VERSION:-unknown}; supported: 7.4 / 7.5 / 7.6 / 8.0" ;;
     esac
     URL='https://raw.githubusercontent.com/habeb-s/CineView-FHD/main/install-openatv-live.sh'
-    echo "[CineView] OpenATV \${VERSION:-unknown} detected -> final 2026-09-23 live snapshot"
+    echo "[CineView] OpenATV ${VERSION:-unknown} detected -> final 2026-09-23 live snapshot"
     ;;
   openbh)
     fail "OpenBH port is not published yet; use the saved OpenATV engineering reference when the OpenBH port is ready"
     ;;
   *)
-    fail "unsupported image: \${DISTRO:-unknown}"
+    fail "unsupported image: ${DISTRO:-unknown}"
     ;;
 esac
 

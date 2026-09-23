@@ -33,10 +33,10 @@ iv_get(){
 DISTRO="$(iv_get distro | tr 'A-Z' 'a-z' | tr -d ' ')"
 VERSION="$(iv_get Version)"
 [ -n "$VERSION" ] || VERSION="$(iv_get imageversion)"
-[ "$DISTRO" = openatv ] || fail "this snapshot is for OpenATV; detected: \${DISTRO:-unknown}"
+[ "$DISTRO" = openatv ] || fail "this snapshot is for OpenATV; detected: ${DISTRO:-unknown}"
 case "$VERSION" in
   7.4*|7.5*|7.6*|8.0*) ;;
-  *) fail "unsupported OpenATV version: \${VERSION:-unknown}; supported: 7.4 / 7.5 / 7.6 / 8.0" ;;
+  *) fail "unsupported OpenATV version: ${VERSION:-unknown}; supported: 7.4 / 7.5 / 7.6 / 8.0" ;;
 esac
 command -v python3 >/dev/null 2>&1 || fail "Python 3 is required"
 
@@ -165,7 +165,7 @@ ok "Pinned source commit: $SNAP_COMMIT"
 ok "Snapshot SHA256: $SNAP_SHA256"
 ok "No /media/hdd data was modified"
 
-if [ "\${CINEVIEW_NO_RESTART:-0}" != 1 ]; then
+if [ "${CINEVIEW_NO_RESTART:-0}" != 1 ]; then
   echo "[CineView] Restarting Enigma2..."
   if command -v systemctl >/dev/null 2>&1 && systemctl list-unit-files 2>/dev/null | grep -q '^enigma2.service'; then
     systemctl restart enigma2.service || true
