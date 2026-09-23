@@ -32,10 +32,10 @@ VERSION="$(iv_get Version)"
 BUILD="$(iv_get Build)"
 case "$DISTRO" in
   openbh|openblackhole) ;;
-  *) fail "this final snapshot is for OpenBH; detected: \${DISTRO:-unknown}" ;;
+  *) fail "this final snapshot is for OpenBH; detected: ${DISTRO:-unknown}" ;;
 esac
-[ "$VERSION" = 6.0 ] || fail "this final snapshot requires OpenBH 6.0; detected: \${VERSION:-unknown}"
-[ "$BUILD" = 001 ] || fail "this final snapshot requires OpenBH build 001; detected: \${BUILD:-unknown}"
+[ "$VERSION" = 6.0 ] || fail "this final snapshot requires OpenBH 6.0; detected: ${VERSION:-unknown}"
+[ "$BUILD" = 001 ] || fail "this final snapshot requires OpenBH build 001; detected: ${BUILD:-unknown}"
 command -v python3 >/dev/null 2>&1 || fail "Python 3 is required"
 
 mkdir -p "$STAGE"
@@ -155,7 +155,7 @@ ok "Pinned source commit: $SNAP_COMMIT"
 ok "Snapshot SHA256: $SNAP_SHA256"
 ok "No /media/hdd data was modified"
 
-if [ "\${CINEVIEW_NO_RESTART:-0}" != 1 ]; then
+if [ "${CINEVIEW_NO_RESTART:-0}" != 1 ]; then
   echo "[CineView] Restarting Enigma2..."
   if command -v systemctl >/dev/null 2>&1 && systemctl list-unit-files 2>/dev/null | grep -q '^enigma2.service'; then
     systemctl restart enigma2.service || true
