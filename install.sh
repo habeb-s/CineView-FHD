@@ -58,7 +58,7 @@ case "$DISTRO" in
       6.0*) ;;
       *) fail "unsupported OpenBH version: ${VERSION:-unknown}; supported final snapshot: 6.0 build 001" ;;
     esac
-    URL='https://raw.githubusercontent.com/habeb-s/CineView-FHD/main/install-openbh-live.sh'
+    URL='https://raw.githubusercontent.com/habeb-s/CineView-FHD/131bc89a7955b05e8e856ab7892bc0a505680dc2/install-openbh-live.sh'
     echo "[CineView] OpenBH ${VERSION:-unknown} build ${BUILD:-unknown} detected -> final 2026-09-23 live snapshot"
     ;;
   *)
