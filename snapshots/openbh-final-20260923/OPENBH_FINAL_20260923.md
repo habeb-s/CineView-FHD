@@ -39,3 +39,17 @@ The final openbh_compat.py is the persistent source of OpenBH-specific contracts
   9017ab3455632ef5f93d46def51a8d26738f6bd8ce24ddacedabaad31bcadf3c
 - cineview-openbh-engineering-history-20260923.tar.gz
   6dbcf6bb0f9d4402f7a23e9243cec9df8c2cf90b8b0eacfac0a35653a20676d3
+
+## Final smart-link end-to-end validation
+Performed on the live Vu+ Duo 4K SE after booting MultiBoot Slot 1 (OpenBH 6.0.001):
+- Public smart link detected OpenBH 6.0 build 001 correctly.
+- Downloaded the pinned OpenBH final snapshot.
+- SHA256 matched 9017ab3455632ef5f93d46def51a8d26738f6bd8ce24ddacedabaad31bcadf3c.
+- Validated 34 CineView XML files.
+- Created rollback backup under /tmp.
+- Installed and activated the final OpenBH snapshot successfully.
+- Enigma2 restart passed.
+- OpenWebif returned normally after restart.
+- AL Arabiya HD verified live at 1920x1080.
+- SecondInfoBar and Full FHD EPG were visually revalidated after the smart-link install.
+- No /media/hdd data was modified.
