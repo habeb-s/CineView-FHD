@@ -42,3 +42,6 @@ A real activate.sh run was executed after the fix. Semantic comparison of the ac
 - cineview-openvix-engineering-history-20260923.tar.gz
 - SHA256SUMS.txt
 - validation/ screenshots
+
+## 2026-09-23 poster-cache update
+- Poster cache now prefers persistent writable storage: /media/hdd/poster first, then another local writable /media block mount; multiboot media is skipped; /tmp/CINEVIEW/poster is fallback only.

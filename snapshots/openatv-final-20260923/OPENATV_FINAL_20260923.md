@@ -70,3 +70,9 @@ The smart installer for this snapshot:
 - Updated openatv_v5.py so future CineView activation preserves the 1920x1080 geometry.
 - Persistence test passed after running openatv_v5.py followed by openatv_auditfix.py.
 - 35 CineView XML files parsed successfully after the correction.
+
+## 2026-09-23 final online correction
+- GraphicalEPG is rebuilt from the previously accepted layout, then promoted to a true 1920x1080 screen without collapsing its internal grid/event/poster geometry.
+- openatv_v5.py now emits the same canonical GraphicalEPG and openatv_auditfix.py was made idempotent for timeline_now.
+- Poster cache now prefers persistent writable storage: /media/hdd/poster first, then another local writable /media block mount; multiboot media is skipped; /tmp/CINEVIEW/poster is fallback only.
+- EMC shares the same CineView poster cache.

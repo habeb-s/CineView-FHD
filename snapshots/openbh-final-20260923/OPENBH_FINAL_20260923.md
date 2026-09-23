@@ -53,3 +53,7 @@ Performed on the live Vu+ Duo 4K SE after booting MultiBoot Slot 1 (OpenBH 6.0.0
 - AL Arabiya HD verified live at 1920x1080.
 - SecondInfoBar and Full FHD EPG were visually revalidated after the smart-link install.
 - No /media/hdd data was modified.
+
+## 2026-09-23 poster-cache update
+- Poster cache now prefers persistent writable storage: /media/hdd/poster first, then another local writable /media block mount; multiboot media is skipped; /tmp/CINEVIEW/poster is fallback only.
+- EMC shares the same CineView poster cache.
