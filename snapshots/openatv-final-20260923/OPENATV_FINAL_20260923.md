@@ -76,3 +76,10 @@ The smart installer for this snapshot:
 - openatv_v5.py now emits the same canonical GraphicalEPG and openatv_auditfix.py was made idempotent for timeline_now.
 - Poster cache now prefers persistent writable storage: /media/hdd/poster first, then another local writable /media block mount; multiboot media is skipped; /tmp/CINEVIEW/poster is fallback only.
 - EMC shares the same CineView poster cache.
+
+## 2026-09-23 plugin UI/FHD correction
+- PluginBrowser, PluginBrowserList and PluginBrowserGrid are full 1920x1080 and include visible colored key areas.
+- QuickMenu keeps full 1920x1080 layout with visible colored key areas.
+- PluginDownloadBrowser is full 1920x1080 instead of the old PIG/right-column layout.
+- PackageAction and PackageActionLog are full 1920x1080 to keep install/remove plugin flows consistent.
+- Static contract audit is enforced by tools_openatv_plugin_ui_hotfix.py.
