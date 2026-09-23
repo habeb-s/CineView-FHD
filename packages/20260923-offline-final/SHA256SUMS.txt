@@ -1,0 +1,3 @@
+0f8a31fb318981d0fd80da2c8a6eb2df9bc39376eedcc74e21f943ab377bad55  cineview-fhd-openatv-offline-final_2.1.20260923-r1_all.ipk
+f108728f6047035d0b80f345537350cb6a4ba52ce799c69893fc1cc2dfc45c1a  cineview-fhd-openbh-offline-final_2.1.20260923-r1_all.ipk
+523394f79d78f0e04ab6d7c60956fcf6fa820d618b10669ff519149f0259ccee  cineview-fhd-openvix-offline-final_2.1.20260923-r1_all.ipk
