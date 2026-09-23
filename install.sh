@@ -5,7 +5,7 @@ set -eu
 # Designed by habeb-s
 
 SELF="$0"
-PIN='2057dbbc6379a285988b7715bd672c598ec6fafe'
+PIN='bb1957836cadb5f8252eab1797ab3d5d02ac6429'
 TMP="/tmp/cineview-smart-installer.$$"
 
 ESC="$(printf '\033')"
