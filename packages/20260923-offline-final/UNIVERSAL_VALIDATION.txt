@@ -1,0 +1,34 @@
+CineView FHD Universal Offline Final - Validation - 2026-09-23
+
+Package:
+cineview-fhd-universal-offline-final_2.1.20260923-r1_all.ipk
+
+SHA256:
+9f6ae39fa221d3ccd8994fa4a118aa0317004d0ed2f8802a2dc5b8a41ffe372a
+
+Embedded snapshots:
+- OpenATV final snapshot SHA256:
+  3cb41ec6b54d9ecf4bd12edb1731fee178179d66c3e1dedd131d7c74380c4683
+- OpenViX final snapshot SHA256:
+  ec20a8e4d31c82fe5242e89af9c29f5b029f6d522b18ff4bea940c180a3733bc
+- OpenBH final snapshot SHA256:
+  9017ab3455632ef5f93d46def51a8d26738f6bd8ce24ddacedabaad31bcadf3c
+
+Live end-to-end install tests:
+- OpenBH 6.0 build 001:
+  auto-detected openbh, verified embedded SHA256, validated 34 XML files,
+  installed successfully, Enigma2 restart passed, WebIF returned.
+- OpenViX 6.9 build 002:
+  auto-detected openvix, verified embedded SHA256, validated 34 XML files,
+  installed successfully, Enigma2 restart passed, WebIF returned.
+- OpenATV 8.0.0-beta build 20260922:
+  auto-detected openatv, verified embedded SHA256, validated 35 XML files,
+  installed successfully, Enigma2 restart passed, WebIF returned.
+
+Design:
+- Self-contained: no GitHub or Internet is required after the IPK is copied to the receiver.
+- Package owns only its private embedded payloads.
+- Correct snapshot is selected from /etc/image-version.
+- Unsupported image/version is rejected before CineView is changed.
+- Rollback backup is created under /tmp before installation.
+- No /media/hdd data is modified.
