@@ -1,0 +1,4 @@
+enigma2-plugin-extensions-oaweather - 2.3-git155+6c371a81+6c371a88a9-r0.5
+enigma2-plugin-extensions-openwebif - 2.3.3-git321+b01352210+b013522b02-r0.181
+enigma2-plugin-extensions-openwebif-themes - 2.3.3-git321+b01352210+b013522b02-r0.181
+enigma2-plugin-skins-cineview-fhd-openbh - 2.1.1

@@ -1,0 +1,11 @@
+config.plugins.Aglare.ChannSelector=channellist_4_posters_PX
+config.plugins.Aglare.InfobarPosterx=infobar_posters_posterx_on
+config.plugins.Aglare.InfobarStyle=infobar_base2
+config.plugins.Aglare.myemupara=source caid reader ecm_time
+config.plugins.Aglare.SecondInfobarPosterx=secondinfobar_posters_posterx_on
+config.plugins.Aglare.SecondInfobarStyle=secondinfobar_base2
+config.plugins.cineview.theme=navy
+config.plugins.Luka.EventView=eventview_1_poster
+config.plugins.Luka.InfobarPosterx=infobar_posters_posterx_on
+config.plugins.Luka.SecondInfobarPosterx=secondinfobar_posters_posterx_on
+config.skin.primary_skin=CineView_FHD/skin.xml

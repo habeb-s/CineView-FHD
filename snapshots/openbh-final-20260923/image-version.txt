@@ -1,0 +1,9 @@
+Creator = OpenBh
+Version = 6.0
+Build = 001
+Type = release
+Machine = vuduo4kse
+URL = http://www.openbh.net
+distro=openbh
+compile-date=20260730
+compile-datetime=20260730113154
