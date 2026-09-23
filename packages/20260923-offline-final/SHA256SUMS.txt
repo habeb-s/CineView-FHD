@@ -1,4 +1,4 @@
-0f8a31fb318981d0fd80da2c8a6eb2df9bc39376eedcc74e21f943ab377bad55  cineview-fhd-openatv-offline-final_2.1.20260923-r1_all.ipk
-f108728f6047035d0b80f345537350cb6a4ba52ce799c69893fc1cc2dfc45c1a  cineview-fhd-openbh-offline-final_2.1.20260923-r1_all.ipk
-523394f79d78f0e04ab6d7c60956fcf6fa820d618b10669ff519149f0259ccee  cineview-fhd-openvix-offline-final_2.1.20260923-r1_all.ipk
-9f6ae39fa221d3ccd8994fa4a118aa0317004d0ed2f8802a2dc5b8a41ffe372a  cineview-fhd-universal-offline-final_2.1.20260923-r1_all.ipk
+2fddfc9373a930847999de3ae13ac6396ebbd2dcb9585c20edc1f1619e2c86aa  cineview-fhd-openatv-offline-final_2.1.20260923-r2_all.ipk
+bfcb00702acf6eeb3bf2814b030483323572a477074d1fac4a1ee6ac033a827e  cineview-fhd-openbh-offline-final_2.1.20260923-r2_all.ipk
+16a56c49b1dd7fb9a6809c263f78cec895a16f8f8dfefb77926beecee4ddcbc7  cineview-fhd-openvix-offline-final_2.1.20260923-r2_all.ipk
+06c4f9155c48a813ecbec29c9e87959380bc25103c81c594d35edff1701c0f96  cineview-fhd-universal-offline-final_2.1.20260923-r2_all.ipk
