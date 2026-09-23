@@ -83,3 +83,12 @@ The smart installer for this snapshot:
 - PluginDownloadBrowser is full 1920x1080 instead of the old PIG/right-column layout.
 - PackageAction and PackageActionLog are full 1920x1080 to keep install/remove plugin flows consistent.
 - Static contract audit is enforced by tools_openatv_plugin_ui_hotfix.py.
+
+## 2026-09-23 plugin UI closure
+- PluginBrowser / PluginBrowserList / PluginBrowserGrid: true FHD contract with visible red/green/yellow/blue action bars.
+- QuickMenu: FHD contract with persistent color-key footer handling.
+- PluginDownloadBrowser: converted from the narrow PigTemplate contract to 1920x1080.
+- Added OpenATV 7.6 PackageAction and PackageActionLog FHD contracts for install/remove/update package workflows.
+- Added openatv_plugin_ui.py and wired it into activate.sh so the plugin UI fixes survive future CineView activation/layout switching.
+- Persistence chain verified with openatv_v5.py + openatv_auditfix.py + openatv_plugin_ui.py.
+- Live OpenATV 7.6 visual validation captured for PluginBrowser and PackageAction.
