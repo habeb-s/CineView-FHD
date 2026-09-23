@@ -1,8 +1,8 @@
 #!/bin/sh
 set -eu
 
-SNAP_COMMIT='ff42ec271f269bd8e4a79e34443e103c8f349604'
-SNAP_SHA256='0154df16f6d109b7b1b3c875c0ce82f28ec9aa7b397d7c07c9270a62292639eb'
+SNAP_COMMIT='2057dbbc6379a285988b7715bd672c598ec6fafe'
+SNAP_SHA256='6a7f78b2410daf5d92ac84dd441a4bb545c1839b1b981992246cd72ad0d3e15f'
 SNAP_REL='snapshots/openatv-final-20260923/cineview-live-openatv-final-20260923.tar.gz'
 SNAP_URL="https://raw.githubusercontent.com/habeb-s/CineView-FHD/$SNAP_COMMIT/$SNAP_REL"
 TMP="/tmp/cineview-openatv-final.$$"
