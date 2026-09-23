@@ -1,31 +1,27 @@
-CineView FHD 2.1 - Final Offline Packages - 2026-09-23 r2
+CineView FHD 2.1 - Final Offline Packages - 2026-09-23 r3
 
 PRIMARY:
-cineview-fhd-universal-offline-final_2.1.20260923-r2_all.ipk
+cineview-fhd-universal-offline-final_2.1.20260923-r3_all.ipk
 - One smart offline IPK containing all three final snapshots.
 - Auto-detects OpenATV / OpenViX / OpenBH.
 - Does not require GitHub after the IPK is copied to the receiver.
 
 SEPARATE FALLBACKS:
-cineview-fhd-openatv-offline-final_2.1.20260923-r2_all.ipk
-cineview-fhd-openvix-offline-final_2.1.20260923-r2_all.ipk
-cineview-fhd-openbh-offline-final_2.1.20260923-r2_all.ipk
+cineview-fhd-openatv-offline-final_2.1.20260923-r3_all.ipk
+cineview-fhd-openvix-offline-final_2.1.20260923-r3_all.ipk
+cineview-fhd-openbh-offline-final_2.1.20260923-r3_all.ipk
 
-Final r2 updates:
-- OpenATV GraphicalEPG uses the accepted internal layout with a true 1920x1080 screen contract.
-- OpenATV EPG generator and audit fix preserve that layout after activation.
-- All three images use persistent poster storage when available:
-  /media/hdd/poster first, then another local writable /media block storage mount.
-- Multiboot storage is excluded from the poster cache.
-- /tmp/CINEVIEW/poster is fallback only.
-- OpenATV/OpenBH EMC uses the same CineView poster cache.
+r3 closure:
+- OpenATV PluginBrowser/List/Grid: FHD and visible colored action bars.
+- OpenATV PackageAction / PackageActionLog: FHD for install/remove/update plugin workflows.
+- OpenATV PluginDownloadBrowser: FHD instead of the narrow PigTemplate layout.
+- QuickMenu remains FHD and uses the CineView color-key footer handling.
+- OpenATV GraphicalEPG remains true 1920x1080 and persists after activate.
+- Persistent poster cache policy remains enabled on all three images:
+  /media/hdd/poster first; other suitable local media next; /tmp fallback only.
+- Multiboot media is excluded from poster cache.
 
 Supported:
 - OpenATV 7.4 / 7.5 / 7.6 / 8.0
 - OpenViX 6.9 build 002
 - OpenBH 6.0 build 001
-
-Safety:
-- Wrong/unsupported images are rejected.
-- Embedded snapshot SHA256 is checked before extraction.
-- A rollback archive is created under /tmp before CineView files are changed.

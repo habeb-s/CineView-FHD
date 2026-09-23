@@ -1,8 +1,7 @@
-CineView FHD Universal Offline r2 - static validation
+CineView FHD Universal Offline r3 - validation
 
-Universal IPK contains and verifies:
 OpenATV snapshot:
-b95ab922b8a8fab3955bd17dc1235353bcdc59e925530a6d6bee0ce14d89af72
+6a7f78b2410daf5d92ac84dd441a4bb545c1839b1b981992246cd72ad0d3e15f
 
 OpenViX snapshot:
 06e08ab6498832680645f2eb29c44f47bed984148d786bc08a2def042ebe3ffa
@@ -10,11 +9,15 @@ OpenViX snapshot:
 OpenBH snapshot:
 7c120a007a94e32f8d9f5200c84bdff30eb71d461c5fee8182b7ad3bc8c052c5
 
-Static package validation passed:
+Validation passed:
 - all four IPK control/preinst/postinst scripts parse
-- all embedded payload SHA256 values match the final snapshots
-- persistent poster policy is present in all three payloads
-- OpenATV GraphicalEPG is 0,0 / 1920x1080
-- OpenATV auditfix includes idempotent timeline_now handling
-
-No live receiver was touched during this r2 packaging validation.
+- all embedded payload SHA256 values match
+- poster-cache policy present in all three images
+- OpenATV GraphicalEPG = 0,0 / 1920x1080
+- OpenATV PluginBrowser = 0,0 / 1920x1080
+- OpenATV PluginDownloadBrowser = 0,0 / 1920x1080
+- OpenATV PackageAction = 0,0 / 1920x1080
+- OpenATV PackageActionLog = 0,0 / 1920x1080
+- OpenATV colored action-bar contract present
+- OpenATV activate.sh reruns openatv_plugin_ui.py
+- live visual checks passed on OpenATV 7.6 for PluginBrowser and PackageAction
