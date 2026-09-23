@@ -3,8 +3,8 @@ set -eu
 
 # CineView live OpenViX snapshot installer
 # Final snapshot captured from the user's Vu+ Duo 4K SE on 2026-09-23.
-SNAP_COMMIT='b14044bb26995b60d7862c1733306e978f01022f'
-SNAP_SHA256='ec20a8e4d31c82fe5242e89af9c29f5b029f6d522b18ff4bea940c180a3733bc'
+SNAP_COMMIT='26d1390db22d41a1de29920a8d7a0cc446848a9c'
+SNAP_SHA256='06e08ab6498832680645f2eb29c44f47bed984148d786bc08a2def042ebe3ffa'
 SNAP_REL='snapshots/openvix-final-20260923/cineview-live-openvix-final-20260923.tar.gz'
 SNAP_URL="https://raw.githubusercontent.com/habeb-s/CineView-FHD/$SNAP_COMMIT/$SNAP_REL"
 TMP="/tmp/cineview-live-openvix.$$"
@@ -69,6 +69,8 @@ grep -q '^usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openvix_fina
 grep -q '^usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.py$' "$TMP/list.txt" || fail 'CineViewPosterX missing from snapshot'
 grep -q '^usr/lib/enigma2/python/Components/Converter/CineViewTransponderInfo.py$' "$TMP/list.txt" || fail 'CineViewTransponderInfo missing from snapshot'
 tar -xzf "$ARCHIVE" -C "$STAGE" || fail 'snapshot extraction failed'
+grep -q '_cineview_poster_cache_root' "$STAGE/usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.py" || fail 'persistent poster-cache policy missing'
+ok 'Persistent poster-cache policy verified'
 
 if command -v python3 >/dev/null 2>&1; then
   python3 - "$STAGE/usr/share/enigma2/CineView_FHD" <<'PY' || fail 'XML validation failed'

@@ -1,8 +1,8 @@
 #!/bin/sh
 set -eu
 
-SNAP_COMMIT='0d5c9b884244ba1ea0235fe9d668c2581f843abd'
-SNAP_SHA256='9017ab3455632ef5f93d46def51a8d26738f6bd8ce24ddacedabaad31bcadf3c'
+SNAP_COMMIT='26d1390db22d41a1de29920a8d7a0cc446848a9c'
+SNAP_SHA256='7c120a007a94e32f8d9f5200c84bdff30eb71d461c5fee8182b7ad3bc8c052c5'
 SNAP_REL='snapshots/openbh-final-20260923/cineview-live-openbh-final-20260923.tar.gz'
 SNAP_URL="https://raw.githubusercontent.com/habeb-s/CineView-FHD/$SNAP_COMMIT/$SNAP_REL"
 TMP="/tmp/cineview-openbh-final.$$"
@@ -77,6 +77,8 @@ do
   grep -qx "$req" "$TMP/list.txt" || fail "required file missing: $req"
 done
 tar -xzf "$ARCHIVE" -C "$STAGE" || fail "snapshot extraction failed"
+grep -q '_cineview_poster_cache_root' "$STAGE/usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.py" || fail "persistent poster-cache policy missing"
+ok "Persistent poster-cache policy verified"
 
 python3 - "$STAGE" <<'PY' || fail "snapshot validation failed"
 import os,sys,ast,xml.etree.ElementTree as ET

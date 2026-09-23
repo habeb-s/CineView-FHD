@@ -1,8 +1,8 @@
 #!/bin/sh
 set -eu
 
-SNAP_COMMIT='8d4e843706785ae691c7ad09e2d9cab9b4d34bb4'
-SNAP_SHA256='935f63b0865f8209169dae5a5e9d36734957971967e536a677a38075014dc6ad'
+SNAP_COMMIT='26d1390db22d41a1de29920a8d7a0cc446848a9c'
+SNAP_SHA256='b95ab922b8a8fab3955bd17dc1235353bcdc59e925530a6d6bee0ce14d89af72'
 SNAP_REL='snapshots/openatv-final-20260923/cineview-live-openatv-final-20260923.tar.gz'
 SNAP_URL="https://raw.githubusercontent.com/habeb-s/CineView-FHD/$SNAP_COMMIT/$SNAP_REL"
 TMP="/tmp/cineview-openatv-final.$$"
@@ -73,6 +73,8 @@ grep -qx 'usr/share/enigma2/CineView_FHD/openatv_skin.xml' "$TMP/list.txt" || fa
 grep -qx 'usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.py' "$TMP/list.txt" || fail "CineViewPosterX missing"
 grep -qx 'usr/lib/enigma2/python/Components/Renderer/LukaPosterXEMC.py' "$TMP/list.txt" || fail "LukaPosterXEMC missing"
 tar -xzf "$ARCHIVE" -C "$STAGE" || fail "snapshot extraction failed"
+grep -q '_cineview_poster_cache_root' "$STAGE/usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.py" || fail "persistent poster-cache policy missing"
+ok "Persistent poster-cache policy verified"
 
 python3 - "$STAGE" <<'PY' || fail "snapshot validation failed"
 import os,sys,ast,xml.etree.ElementTree as ET
