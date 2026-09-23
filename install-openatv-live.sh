@@ -1,8 +1,8 @@
 #!/bin/sh
 set -eu
 
-SNAP_COMMIT='b76abeb9d369e8395a1470a06e1378c081505eb0'
-SNAP_SHA256='3cb41ec6b54d9ecf4bd12edb1731fee178179d66c3e1dedd131d7c74380c4683'
+SNAP_COMMIT='8d4e843706785ae691c7ad09e2d9cab9b4d34bb4'
+SNAP_SHA256='935f63b0865f8209169dae5a5e9d36734957971967e536a677a38075014dc6ad'
 SNAP_REL='snapshots/openatv-final-20260923/cineview-live-openatv-final-20260923.tar.gz'
 SNAP_URL="https://raw.githubusercontent.com/habeb-s/CineView-FHD/$SNAP_COMMIT/$SNAP_REL"
 TMP="/tmp/cineview-openatv-final.$$"
@@ -93,6 +93,13 @@ for rel in (
  'usr/lib/enigma2/python/Components/Renderer/LukaPosterXEMC.py'):
     p=os.path.join(root,rel)
     with open(p,'r',encoding='utf-8',errors='ignore') as f: ast.parse(f.read(), filename=p)
+# Enforce the accepted true Full-HD GraphicalEPG contract.
+sp=os.path.join(skin,'skin.xml')
+rr=ET.parse(sp).getroot()
+ge=[x for x in rr.findall('.//screen') if x.get('name')=='GraphicalEPG']
+if not ge or ge[0].get('position')!='0,0' or ge[0].get('size')!='1920,1080':
+    raise SystemExit('GraphicalEPG is not true 1920x1080')
+print('[CineView][OK] GraphicalEPG verified at 1920x1080')
 print('[CineView][OK] validated %d skin XML files' % n)
 PY
 
