@@ -54,7 +54,12 @@ case "$DISTRO" in
     echo "[CineView] OpenATV ${VERSION:-unknown} detected -> final 2026-09-23 live snapshot"
     ;;
   openbh)
-    fail "OpenBH port is not published yet; use the saved OpenATV engineering reference when the OpenBH port is ready"
+    case "$VERSION" in
+      6.0*) ;;
+      *) fail "unsupported OpenBH version: ${VERSION:-unknown}; supported final snapshot: 6.0 build 001" ;;
+    esac
+    URL='https://raw.githubusercontent.com/habeb-s/CineView-FHD/main/install-openbh-live.sh'
+    echo "[CineView] OpenBH ${VERSION:-unknown} build ${BUILD:-unknown} detected -> final 2026-09-23 live snapshot"
     ;;
   *)
     fail "unsupported image: ${DISTRO:-unknown}"

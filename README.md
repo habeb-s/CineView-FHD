@@ -43,6 +43,20 @@ Engineering notes and validation evidence are stored under:
     snapshots/openvix-final-20260923/
 
 ### OpenBH
-The OpenBH image-specific port is not published yet. The complete OpenATV engineering reference is preserved in the repository so the visual/layout work can be ported without repeating the OpenATV session.
+The smart installer routes OpenBH 6.0 build 001 to the final live OpenBH snapshot finalized on 2026-09-23.
+
+The OpenBH snapshot is pinned and SHA256-verified before installation. Its final compatibility layer preserves OpenBH-native screen contracts and reapplies the accepted CineView layouts after future option changes.
+
+Snapshot source commit:
+
+    0d5c9b884244ba1ea0235fe9d668c2581f843abd
+
+Snapshot SHA256:
+
+    9017ab3455632ef5f93d46def51a8d26738f6bd8ce24ddacedabaad31bcadf3c
+
+Engineering history, manifests and validation evidence are stored under:
+
+    snapshots/openbh-final-20260923/
 
 **CineView FHD 2.1 — Designed by habeb-s**
