@@ -1,0 +1,10 @@
+Creator = OpenViX
+Version = 6.9
+Build = 002
+Dev = 036
+Type = release
+Machine = vuduo4kse
+URL = http://www.world-of-satellite.com
+distro=openvix
+compile-date=20260902
+compile-datetime=20260902121242
