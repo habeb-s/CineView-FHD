@@ -1,8 +1,8 @@
 #!/bin/sh
 set -eu
 
-SNAP_COMMIT='26d1390db22d41a1de29920a8d7a0cc446848a9c'
-SNAP_SHA256='b95ab922b8a8fab3955bd17dc1235353bcdc59e925530a6d6bee0ce14d89af72'
+SNAP_COMMIT='ff42ec271f269bd8e4a79e34443e103c8f349604'
+SNAP_SHA256='0154df16f6d109b7b1b3c875c0ce82f28ec9aa7b397d7c07c9270a62292639eb'
 SNAP_REL='snapshots/openatv-final-20260923/cineview-live-openatv-final-20260923.tar.gz'
 SNAP_URL="https://raw.githubusercontent.com/habeb-s/CineView-FHD/$SNAP_COMMIT/$SNAP_REL"
 TMP="/tmp/cineview-openatv-final.$$"
@@ -101,6 +101,20 @@ rr=ET.parse(sp).getroot()
 ge=[x for x in rr.findall('.//screen') if x.get('name')=='GraphicalEPG']
 if not ge or ge[0].get('position')!='0,0' or ge[0].get('size')!='1920,1080':
     raise SystemExit('GraphicalEPG is not true 1920x1080')
+# Enforce plugin UI/FHD contracts.
+for name in ('PluginBrowser','PluginBrowserList','PluginBrowserGrid','QuickMenu','PluginDownloadBrowser','PackageAction','PackageActionLog'):
+    xs=[x for x in rr.findall('.//screen') if x.get('name')==name]
+    if not xs:
+        raise SystemExit('%s missing' % name)
+    if xs[0].get('position')!='0,0' or xs[0].get('size')!='1920,1080':
+        raise SystemExit('%s is not 1920x1080' % name)
+for name in ('PluginBrowser','PluginBrowserList','PluginBrowserGrid'):
+    sc=next(x for x in rr.findall('.//screen') if x.get('name')==name)
+    for key in ('red','green','yellow','blue'):
+        w=next((x for x in list(sc) if x.get('source')=='key_'+key),None)
+        if w is None or w.get('backgroundColor')!='key_'+key:
+            raise SystemExit('%s missing colored key %s' % (name,key))
+print('[CineView][OK] plugin UI/FHD contracts verified')
 print('[CineView][OK] GraphicalEPG verified at 1920x1080')
 print('[CineView][OK] validated %d skin XML files' % n)
 PY
