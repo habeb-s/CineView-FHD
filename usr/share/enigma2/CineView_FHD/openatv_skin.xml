@@ -1,0 +1,260 @@
+<skin>
+    
+
+    
+    <screen name="MultiBootStartup" position="center,center" size="1050,375" title="MultiBoot STARTUP Selector" backgroundColor="steThemePrimary" flags="wfNoBorder">
+        <eLabel position="0,0" size="1050,375" backgroundColor="steThemePrimary" zPosition="-2" />
+        <widget source="Title" render="Label" position="30,20" size="990,55" font="Regular;36" foregroundColor="secondFG" halign="center" valign="center" transparent="1" />
+        <eLabel position="30,88" size="990,2" backgroundColor="steThemePanelAlt" />
+        <widget source="config" render="Label" position="70,120" size="850,58" font="Regular;32" foregroundColor="foreground" halign="center" valign="center" transparent="1" />
+        <eLabel position="30,240" size="990,2" backgroundColor="steThemePanelAlt" />
+        <widget source="key_red" render="Label" position="40,300" size="280,42" font="Regular;27" foregroundColor="foreground" transparent="1" />
+        <widget source="key_green" render="Label" position="385,300" size="280,42" font="Regular;27" foregroundColor="foreground" transparent="1" />
+        
+    
+        <ePixmap pixmap="buttons/red.png" position="40,312" size="34,34" alphatest="blend" />
+        <widget source="key_red" render="Label" position="84,310" size="260,38" font="Regular;25" foregroundColor="foreground" transparent="1" />
+        <ePixmap pixmap="buttons/green.png" position="385,312" size="34,34" alphatest="blend" />
+        <widget source="key_green" render="Label" position="429,310" size="260,38" font="Regular;25" foregroundColor="foreground" transparent="1" />
+        <ePixmap pixmap="buttons/yellow.png" position="730,312" size="34,34" alphatest="blend" />
+        <widget source="key_yellow" render="Label" position="774,310" size="240,38" font="Regular;25" foregroundColor="foreground" transparent="1" />
+</screen>
+    <screen name="MultiBootStartupDS" position="center,center" size="1050,375" title="MultiBoot STARTUP Selector" backgroundColor="steThemePrimary" flags="wfNoBorder">
+        <eLabel position="0,0" size="1050,375" backgroundColor="steThemePrimary" zPosition="-2" />
+        <widget source="Title" render="Label" position="30,20" size="990,55" font="Regular;36" foregroundColor="secondFG" halign="center" valign="center" transparent="1" />
+        <eLabel position="30,88" size="990,2" backgroundColor="steThemePanelAlt" />
+        <widget source="config" render="Label" position="70,118" size="850,55" font="Regular;31" foregroundColor="foreground" halign="center" valign="center" transparent="1" />
+        <widget source="options" render="Label" position="70,180" size="850,45" font="Regular;25" foregroundColor="grey" halign="center" valign="center" transparent="1" />
+        <eLabel position="30,240" size="990,2" backgroundColor="steThemePanelAlt" />
+        <widget name="description" position="40,250" size="970,42" font="Regular;23" foregroundColor="grey" halign="center" valign="center" transparent="1" />
+        
+    
+        <ePixmap pixmap="buttons/red.png" position="40,312" size="34,34" alphatest="blend" />
+        <widget source="key_red" render="Label" position="84,310" size="260,38" font="Regular;25" foregroundColor="foreground" transparent="1" />
+        <ePixmap pixmap="buttons/green.png" position="385,312" size="34,34" alphatest="blend" />
+        <widget source="key_green" render="Label" position="429,310" size="260,38" font="Regular;25" foregroundColor="foreground" transparent="1" />
+        <ePixmap pixmap="buttons/yellow.png" position="730,312" size="34,34" alphatest="blend" />
+        <widget source="key_yellow" render="Label" position="774,310" size="240,38" font="Regular;25" foregroundColor="foreground" transparent="1" />
+</screen>
+    <screen name="MultiBootStartupOPT" position="center,center" size="1050,375" title="MultiBoot STARTUP Selector" backgroundColor="steThemePrimary" flags="wfNoBorder">
+        <eLabel position="0,0" size="1050,375" backgroundColor="steThemePrimary" zPosition="-2" />
+        <widget source="Title" render="Label" position="30,20" size="990,55" font="Regular;36" foregroundColor="secondFG" halign="center" valign="center" transparent="1" />
+        <eLabel position="30,88" size="990,2" backgroundColor="steThemePanelAlt" />
+        <widget source="config" render="Label" position="70,112" size="850,50" font="Regular;30" foregroundColor="foreground" halign="center" valign="center" transparent="1" />
+        <widget source="options" render="Label" position="70,172" size="850,46" font="Regular;25" foregroundColor="grey" halign="center" valign="center" transparent="1" />
+        <eLabel position="30,235" size="990,2" backgroundColor="steThemePanelAlt" />
+        <widget name="description" position="40,245" size="970,48" font="Regular;23" foregroundColor="grey" halign="center" valign="center" transparent="1" />
+        
+    
+        <ePixmap pixmap="buttons/red.png" position="40,312" size="34,34" alphatest="blend" />
+        <widget source="key_red" render="Label" position="84,310" size="260,38" font="Regular;25" foregroundColor="foreground" transparent="1" />
+        <ePixmap pixmap="buttons/green.png" position="385,312" size="34,34" alphatest="blend" />
+        <widget source="key_green" render="Label" position="429,310" size="260,38" font="Regular;25" foregroundColor="foreground" transparent="1" />
+        <ePixmap pixmap="buttons/yellow.png" position="730,312" size="34,34" alphatest="blend" />
+        <widget source="key_yellow" render="Label" position="774,310" size="240,38" font="Regular;25" foregroundColor="foreground" transparent="1" />
+</screen>
+
+    
+    <screen name="MultiBootSelector" position="fill" title="Multiboot Image Selector" backgroundColor="steThemePrimary" flags="wfNoBorder">
+        <panel name="PigLessTemplate" />
+        <widget source="Title" render="Label" position="35,25" size="1850,55" font="Regular;38" foregroundColor="secondFG" transparent="1" />
+        <widget source="description" render="Label" position="45,115" size="640,210" font="Regular;27" foregroundColor="foreground" halign="center" valign="center" transparent="1" />
+        <eLabel position="720,100" size="2,850" backgroundColor="steThemePanelAlt" />
+        <widget name="config" position="780,115" size="1080,720" itemHeight="58" font="Regular;30" scrollbarMode="showOnDemand" />
+        <widget source="options" render="Label" position="780,855" size="1080,95" font="Regular;25" foregroundColor="grey" halign="center" valign="center" transparent="1" />
+        
+    </screen>
+    <screen name="MultiBootWizard" position="fill" title="MultiBoot maintenance" backgroundColor="steThemePrimary" flags="wfNoBorder">
+        <panel name="PigLessTemplate" />
+        <widget source="Title" render="Label" position="35,25" size="1850,55" font="Regular;38" foregroundColor="secondFG" transparent="1" />
+        <widget source="description" render="Label" position="45,115" size="640,210" font="Regular;27" foregroundColor="foreground" halign="center" valign="center" transparent="1" />
+        <eLabel position="720,100" size="2,850" backgroundColor="steThemePanelAlt" />
+        <widget name="config" position="780,115" size="1080,720" itemHeight="58" font="Regular;30" scrollbarMode="showOnDemand" />
+        <widget source="options" render="Label" position="780,855" size="1080,95" font="Regular;25" foregroundColor="grey" halign="center" valign="center" transparent="1" />
+        
+    </screen>
+    <screen name="MultiBootManager" position="fill" title="Multiboot Image Manager" backgroundColor="steThemePrimary" flags="wfNoBorder">
+        <panel name="PigLessTemplate" />
+        <widget source="Title" render="Label" position="35,25" size="1850,55" font="Regular;38" foregroundColor="secondFG" transparent="1" />
+        <widget name="slotlist" position="780,115" size="1080,760" itemHeight="58" font="Regular;30" scrollbarMode="showOnDemand" />
+        <widget source="description" render="Label" position="45,160" size="640,500" font="Regular;27" foregroundColor="foreground" halign="center" valign="center" transparent="1" />
+        
+    </screen>
+    <screen name="KexecInit" position="fill" title="Kexec MultiBoot Manager" backgroundColor="steThemePrimary" flags="wfNoBorder">
+        <panel name="PigLessTemplate" />
+        <widget source="Title" render="Label" position="35,25" size="1850,55" font="Regular;38" foregroundColor="secondFG" transparent="1" />
+        <widget source="description" render="Label" position="120,220" size="1680,400" font="Regular;31" foregroundColor="foreground" halign="center" valign="center" transparent="1" />
+        
+    </screen>
+
+    
+    <screen name="AboutOE" position="center,center" size="1180,820" title="About" backgroundColor="steThemePrimary">
+        <widget source="lab1" render="Label" position="45,35" size="1090,48" font="Regular;34" foregroundColor="secondFG" transparent="1" />
+        <widget source="lab2" render="Label" position="45,90" size="1090,38" font="Regular;25" foregroundColor="grey" transparent="1" />
+        <widget source="lab3" render="Label" position="45,132" size="1090,38" font="Regular;25" foregroundColor="grey" transparent="1" />
+        <eLabel position="45,185" size="1090,2" backgroundColor="steThemePanelAlt" />
+        <widget name="AboutScrollLabel" position="45,210" size="1090,515" font="Regular;27" foregroundColor="foreground" transparent="1" scrollbarMode="showOnDemand" />
+        <widget name="key_green" position="55,750" size="300,45" font="Regular;26" foregroundColor="foreground" transparent="1" />
+    </screen>
+    <screen name="SystemMemoryInfo" position="center,center" size="1180,760" title="Memory Information" backgroundColor="steThemePrimary">
+        <widget source="lab1" render="Label" position="45,35" size="1090,48" font="Regular;34" foregroundColor="secondFG" transparent="1" />
+        <widget source="lab2" render="Label" position="45,90" size="1090,38" font="Regular;25" foregroundColor="grey" transparent="1" />
+        <eLabel position="45,145" size="1090,2" backgroundColor="steThemePanelAlt" />
+        <widget name="AboutScrollLabel" position="45,175" size="1090,535" font="Regular;27" foregroundColor="foreground" transparent="1" scrollbarMode="showOnDemand" />
+    </screen>
+    <screen name="SystemNetworkInfo" position="center,center" size="1240,820" title="Network Information" backgroundColor="steThemePrimary">
+        <widget name="AboutScrollLabel" position="45,45" size="1150,600" font="Regular;27" foregroundColor="foreground" transparent="1" scrollbarMode="showOnDemand" />
+        <eLabel position="45,665" size="1150,2" backgroundColor="steThemePanelAlt" />
+        <widget source="IFtext" render="Label" position="55,690" size="250,38" font="Regular;25" foregroundColor="grey" transparent="1" />
+        <widget source="IF" render="Label" position="310,690" size="820,38" font="Regular;25" foregroundColor="foreground" transparent="1" />
+        <widget source="Statustext" render="Label" position="55,738" size="250,38" font="Regular;25" foregroundColor="grey" transparent="1" />
+        <widget name="statuspic" position="310,744" size="25,25" transparent="1" />
+    </screen>
+    <screen name="Devices" position="center,center" size="1320,860" title="Devices" backgroundColor="steThemePrimary">
+        <widget source="TunerHeader" render="Label" position="45,35" size="1230,45" font="Regular;31" foregroundColor="secondFG" transparent="1" />
+        <widget source="nims" render="Label" position="45,90" size="1230,190" font="Regular;25" foregroundColor="foreground" transparent="1" noWrap="1" />
+        <eLabel position="45,295" size="1230,2" backgroundColor="steThemePanelAlt" />
+        <widget source="HDDHeader" render="Label" position="45,320" size="1230,45" font="Regular;31" foregroundColor="secondFG" transparent="1" />
+        <widget source="hdd" render="Label" position="45,375" size="1230,190" font="Regular;25" foregroundColor="foreground" transparent="1" noWrap="1" />
+        <eLabel position="45,580" size="1230,2" backgroundColor="steThemePanelAlt" />
+        <widget source="MountsHeader" render="Label" position="45,605" size="1230,45" font="Regular;31" foregroundColor="secondFG" transparent="1" />
+        <widget source="mounts" render="Label" position="45,660" size="1230,150" font="Regular;25" foregroundColor="foreground" transparent="1" noWrap="1" />
+    </screen>
+    <screen name="AboutReleaseNotes" position="center,center" size="1240,850" title="Release Notes" backgroundColor="steThemePrimary">
+        <widget name="list" position="45,45" size="1150,750" font="Regular;25" foregroundColor="foreground" backgroundColor="steThemePrimary" scrollbarMode="showOnDemand" />
+    </screen>
+    
+    <screen name="NetworkInadynLog" position="fill" title="Network Log" backgroundColor="steThemePrimary" flags="wfNoBorder">
+        <widget source="Title" render="Label" position="45,30" size="1830,52" font="Regular;36" foregroundColor="secondFG" transparent="1" />
+        <eLabel position="45,95" size="1830,2" backgroundColor="steThemePanelAlt" />
+        <widget name="infotext" position="45,120" size="1830,890" font="Console;23" foregroundColor="foreground" backgroundColor="steThemePrimary" scrollbarMode="showOnDemand" />
+    </screen>
+    <screen name="NetworkVpnLog" position="fill" title="Network Log" backgroundColor="steThemePrimary" flags="wfNoBorder">
+        <widget source="Title" render="Label" position="45,30" size="1830,52" font="Regular;36" foregroundColor="secondFG" transparent="1" />
+        <eLabel position="45,95" size="1830,2" backgroundColor="steThemePanelAlt" />
+        <widget name="infotext" position="45,120" size="1830,890" font="Console;23" foregroundColor="foreground" backgroundColor="steThemePrimary" scrollbarMode="showOnDemand" />
+    </screen>
+
+    
+    <screen name="ButtonSetup" position="fill" title="Button Setup" backgroundColor="steThemePrimary" flags="wfNoBorder">
+    <panel name="PigTemplate" />
+    <widget source="Title" render="Label" position="780,38" size="1080,50" font="Regular;35" foregroundColor="secondFG" transparent="1" />
+    <widget name="list" position="780,110" size="1080,560" itemHeight="54" font="Regular;29" scrollbarMode="showOnDemand" />
+    <eLabel position="780,690" size="1080,2" backgroundColor="steThemePanelAlt" />
+    <widget name="choosen" position="780,715" size="1080,150" itemHeight="50" font="Regular;27" foregroundColor="secondFG" scrollbarMode="showOnDemand" />
+    <widget name="description" position="780,885" size="1080,90" font="Regular;24" foregroundColor="grey" halign="center" valign="center" transparent="1" />
+</screen>
+<screen name="ButtonSetupSelect" position="fill" title="Button Setup" backgroundColor="steThemePrimary" flags="wfNoBorder">
+    <panel name="PigTemplate" />
+    <widget source="Title" render="Label" position="780,38" size="1080,50" font="Regular;35" foregroundColor="secondFG" transparent="1" />
+    <widget name="list" position="780,110" size="1080,560" itemHeight="54" font="Regular;29" scrollbarMode="showOnDemand" />
+    <eLabel position="780,690" size="1080,2" backgroundColor="steThemePanelAlt" />
+    <widget name="choosen" position="780,715" size="1080,150" itemHeight="50" font="Regular;27" foregroundColor="secondFG" scrollbarMode="showOnDemand" />
+    <widget name="description" position="780,885" size="1080,90" font="Regular;24" foregroundColor="grey" halign="center" valign="center" transparent="1" />
+    <panel name="ButtonTemplate" />
+</screen>
+<screen name="CronTimers" position="fill" title="Cron Manager" backgroundColor="steThemePrimary" flags="wfNoBorder">
+    <panel name="PigLessTemplate" />
+    <widget source="Title" render="Label" position="45,30" size="1810,50" font="Regular;36" foregroundColor="secondFG" transparent="1" />
+    <widget name="lab1" position="90,115" size="210,42" font="Regular;27" foregroundColor="foreground" transparent="1" />
+    <widget name="labdisabled" position="305,115" size="170,42" font="Regular;25" foregroundColor="foreground" backgroundColor="red" halign="center" valign="center" />
+    <widget name="labactive" position="305,115" size="170,42" font="Regular;25" foregroundColor="foreground" backgroundColor="green" halign="center" valign="center" />
+    <widget name="lab2" position="540,115" size="260,42" font="Regular;27" foregroundColor="foreground" transparent="1" />
+    <widget name="labstop" position="805,115" size="170,42" font="Regular;25" foregroundColor="foreground" backgroundColor="red" halign="center" valign="center" />
+    <widget name="labrun" position="805,115" size="170,42" font="Regular;25" foregroundColor="foreground" backgroundColor="green" halign="center" valign="center" />
+    <eLabel position="90,180" size="1740,2" backgroundColor="steThemePanelAlt" />
+    <widget source="list" render="Listbox" position="90,210" size="1740,650" scrollbarMode="showOnDemand"><convert type="StringList" /></widget>
+    <widget name="key" position="90,885" size="1740,45" font="Regular;23" foregroundColor="grey" halign="center" transparent="1" />
+    <panel name="ButtonTemplate" />
+</screen>
+<screen name="HistoryZapSelector" position="center,center" size="1200,700" title="History Zap" backgroundColor="steThemePrimary">
+    <widget source="menu" render="Listbox" position="35,35" size="1130,630" scrollbarMode="showOnDemand" enableWrapAround="1">
+        <convert type="TemplatedMultiContent">{"template": [
+            MultiContentEntryText(pos=(145,2), size=(32,82), font=2, flags=RT_HALIGN_CENTER|RT_VALIGN_CENTER, text=1),
+            MultiContentEntryText(pos=(195,4), size=(520,32), font=0, flags=RT_HALIGN_LEFT|RT_VALIGN_CENTER, text=2),
+            MultiContentEntryText(pos=(195,38), size=(520,30), font=1, flags=RT_HALIGN_LEFT|RT_VALIGN_CENTER, text=3),
+            MultiContentEntryText(pos=(195,68), size=(260,26), font=2, flags=RT_HALIGN_LEFT, text=5),
+            MultiContentEntryText(pos=(735,8), size=(360,78), font=2, flags=RT_HALIGN_LEFT|RT_WRAP, text=4),
+            MultiContentEntryPixmapAlphaBlend(pos=(20,6), size=(110,82), png=6, flags=BT_SCALE|BT_KEEP_ASPECT_RATIO)
+        ], "fonts":[gFont("Regular",28),gFont("Regular",24),gFont("Regular",21)], "itemHeight":96}</convert>
+    </widget>
+</screen>
+<screen name="LogManager" position="fill" title="Log Manager" backgroundColor="steThemePrimary" flags="wfNoBorder">
+    <panel name="PigLessTemplate" />
+    <widget source="Title" render="Label" position="45,30" size="1810,50" font="Regular;36" foregroundColor="secondFG" transparent="1" />
+    <widget name="list" position="90,120" size="1740,760" scrollbarMode="showOnDemand" itemHeight="48" />
+    <widget source="LogsSize" render="Label" position="90,895" size="1740,40" font="Regular;24" foregroundColor="grey" halign="right" transparent="1" />
+    <panel name="ButtonTemplate" />
+</screen>
+<screen name="LogManagerViewLog" position="fill" title="Log Manager" backgroundColor="steThemePrimary" flags="wfNoBorder">
+    <widget name="list" position="45,45" size="1830,970" font="Console;24" foregroundColor="foreground" backgroundColor="steThemePrimary" scrollbarMode="showOnDemand" />
+</screen>
+<screen name="NetworkLogScreen" position="center,center" size="1320,820" title="Network Log" backgroundColor="steThemePrimary">
+    <widget name="infotext" position="45,45" size="1230,730" font="Console;24" foregroundColor="foreground" backgroundColor="steThemePrimary" scrollbarMode="showOnDemand" />
+</screen>
+<screen name="SlimChannelSelection" position="fill" title="Channel Selection" backgroundColor="steThemePrimary" flags="wfNoBorder">
+    <panel name="PigTemplate" />
+    <widget name="list" position="780,108" size="1110,790" itemHeight="48" transparent="1" serviceNumberFont="Regular;31" scrollbarMode="showOnDemand" serviceInfoFont="Regular;27" serviceNameFont="Regular;31" serviceItemHeight="48" picServiceEventProgressbar="window/progress.png" progressbarHeight="12" progressBarWidth="70" progressPercentWidth="78" colorEventProgressbarBorder="un33333a" fieldMargins="12" nonplayableMargins="12" colorEventProgressbarBorderSelected="darkgrey" colorServiceDescription="yellowsoft" progressbarBorderWidth="0" foregroundColorServiceNotAvail="#656565" backgroundColorMarked="#656565" colorServiceDescriptionFallback="yellowsoft" colorServiceDescriptionSelectedFallback="yellowsoft" colorFallbackItem="#aaaaaa" colorServiceSelectedFallback="yellowsoft" piconMargin="3" />
+    <widget source="ServiceEvent" render="Label" position="790,915" size="140,35" font="Regular;24" foregroundColor="secondFG" transparent="1"><convert type="EventTime">StartTime</convert><convert type="ClockToText">Format:%H:%M</convert></widget>
+    <widget source="ServiceEvent" render="RunningText" position="945,910" size="915,42" font="Regular;27" foregroundColor="foreground" transparent="1" noWrap="1"><convert type="EventName">Name</convert></widget>
+</screen>
+<screen name="MovieListTags" position="center,center" size="1100,760" zPosition="5" backgroundColor="steThemePrimary">
+    <widget name="text" position="40,35" size="1020,80" font="Regular;28" foregroundColor="secondFG" transparent="1" />
+    <eLabel position="40,125" size="1020,2" backgroundColor="steThemePanelAlt" />
+    <widget name="list" position="40,150" size="1020,565" itemHeight="54" font="Regular;28" enableWrapAround="1" scrollbarMode="showOnDemand" />
+</screen>
+<screen name="RecordTimerQuestion" position="center,center" size="960,620" zPosition="20" backgroundColor="steThemePrimary">
+    <widget name="text" position="35,30" size="890,85" font="Regular;27" foregroundColor="secondFG" halign="center" valign="center" transparent="1" />
+    <eLabel position="35,125" size="890,2" backgroundColor="steThemePanelAlt" />
+    <widget name="list" position="35,150" size="890,425" itemHeight="56" font="Regular;28" enableWrapAround="1" scrollbarMode="showOnDemand" />
+</screen>
+<screen name="Information" position="fill" title="Information" backgroundColor="steThemePrimary" flags="wfNoBorder">
+    <panel name="PigLessTemplate" />
+    <widget source="Title" render="Label" position="45,28" size="1810,54" font="Regular;38" foregroundColor="secondFG" transparent="1" />
+    <eLabel position="45,95" size="1810,2" backgroundColor="steThemePanelAlt" />
+    <widget name="information" position="75,120" size="1770,790" font="Regular;27" foregroundColor="foreground" backgroundColor="steThemePrimary" transparent="1" scrollbarMode="showOnDemand" splitPosition="620" />
+    <widget name="Image" position="1260,150" size="520,520" alphatest="blend" transparent="1" />
+    <widget source="key_red" render="Label" position="75,955" size="260,42" font="Regular;25" foregroundColor="foreground" transparent="1"><convert type="ConditionalShowHide" /></widget>
+    <widget source="key_green" render="Label" position="370,955" size="260,42" font="Regular;25" foregroundColor="foreground" transparent="1"><convert type="ConditionalShowHide" /></widget>
+    <widget source="key_yellow" render="Label" position="665,955" size="260,42" font="Regular;25" foregroundColor="foreground" transparent="1"><convert type="ConditionalShowHide" /></widget>
+    <widget source="key_blue" render="Label" position="960,955" size="260,42" font="Regular;25" foregroundColor="foreground" transparent="1"><convert type="ConditionalShowHide" /></widget>
+    <widget source="key_menu" render="Label" position="1350,955" size="130,42" font="Regular;23" foregroundColor="grey" halign="center" transparent="1"><convert type="ConditionalShowHide" /></widget>
+    <widget source="key_info" render="Label" position="1500,955" size="130,42" font="Regular;23" foregroundColor="grey" halign="center" transparent="1"><convert type="ConditionalShowHide" /></widget>
+    <widget source="key_help" render="Label" position="1650,955" size="130,42" font="Regular;23" foregroundColor="grey" halign="center" transparent="1"><convert type="ConditionalShowHide" /></widget>
+</screen>
+<screen name="OSCamInfo" position="fill" title="OSCam Information" backgroundColor="steThemePrimary" flags="wfNoBorder">
+    <panel name="PigLessTemplate" />
+    <widget source="Title" render="Label" position="45,28" size="1810,54" font="Regular;38" foregroundColor="secondFG" transparent="1" />
+    <widget source="buildinfos" render="Label" position="70,115" size="620,55" font="Regular;26" foregroundColor="grey" transparent="1" />
+    <widget source="extrainfos" render="Label" position="70,175" size="620,95" font="Regular;24" foregroundColor="foreground" transparent="1" />
+    <widget source="timerinfos" render="Label" position="70,280" size="620,50" font="Regular;24" foregroundColor="secondFG" transparent="1" />
+    <widget source="outlist" render="Listbox" position="740,115" size="1110,610" itemHeight="52" scrollbarMode="showOnDemand" />
+    <widget name="logtext" position="70,360" size="620,365" font="Console;22" foregroundColor="foreground" backgroundColor="steThemePrimary" scrollbarMode="showOnDemand" />
+    <eLabel position="70,755" size="1780,2" backgroundColor="steThemePanelAlt" />
+    <widget source="camname" render="Label" position="70,785" size="430,40" font="Regular;27" foregroundColor="secondFG" transparent="1" />
+    <widget source="total" render="Label" position="530,785" size="260,40" font="Regular;24" foregroundColor="foreground" transparent="1" />
+    <widget source="used" render="Label" position="810,785" size="260,40" font="Regular;24" foregroundColor="foreground" transparent="1" />
+    <widget source="free" render="Label" position="1090,785" size="260,40" font="Regular;24" foregroundColor="foreground" transparent="1" />
+    <widget source="buffer" render="Label" position="1370,785" size="260,40" font="Regular;24" foregroundColor="foreground" transparent="1" />
+    <panel name="ButtonTemplate" />
+</screen>
+<screen name="OSCamEntitlements" position="fill" title="OSCam Entitlements" backgroundColor="steThemePrimary" flags="wfNoBorder">
+    <panel name="PigLessTemplate" />
+    <widget source="Title" render="Label" position="45,28" size="1810,54" font="Regular;38" foregroundColor="secondFG" transparent="1" />
+    <widget source="entitleslist" render="Listbox" position="90,120" size="1740,780" itemHeight="50" scrollbarMode="showOnDemand" />
+    <panel name="ButtonTemplate" />
+</screen>
+<screen name="OSCamEntitleDetails" position="fill" title="OSCam Entitlement Details" backgroundColor="steThemePrimary" flags="wfNoBorder">
+    <panel name="PigLessTemplate" />
+    <widget source="Title" render="Label" position="45,28" size="1810,54" font="Regular;38" foregroundColor="secondFG" transparent="1" />
+    <widget source="ProvIDlist" render="Listbox" position="90,130" size="520,700" itemHeight="48" scrollbarMode="showOnDemand" />
+    <widget source="Providerlist" render="Listbox" position="700,130" size="520,700" itemHeight="48" scrollbarMode="showOnDemand" />
+    <widget source="Nodelist" render="Listbox" position="1310,130" size="520,700" itemHeight="48" scrollbarMode="showOnDemand" />
+</screen>
+<screen name="OSCamInfoCapability" position="fill" title="OSCam Capabilities" backgroundColor="steThemePrimary" flags="wfNoBorder">
+    <widget name="captext" position="70,80" size="1780,900" font="Console;24" foregroundColor="foreground" backgroundColor="steThemePrimary" scrollbarMode="showOnDemand" />
+</screen>
+<screen name="OSCamInfoLog" position="fill" title="OSCam Log" backgroundColor="steThemePrimary" flags="wfNoBorder">
+    <widget name="logtext" position="70,80" size="1780,900" font="Console;24" foregroundColor="foreground" backgroundColor="steThemePrimary" scrollbarMode="showOnDemand" />
+</screen>
+</skin>
