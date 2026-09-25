@@ -92,14 +92,12 @@ case "$DISTRO" in
     info "Detected: OpenATV ${VERSION:-unknown}"
     ;;
   openvix)
-    case "$VERSION" in 6.9*) ;; *) fail "Unsupported OpenViX version: ${VERSION:-unknown}" ;; esac
-    [ "$BUILD" = "002" ] || fail "OpenViX build 002 required; detected: ${BUILD:-unknown}"
+    case "$VERSION" in 6.7*|6.8*|6.9*|7.*|8.*|9.*|[1-9][0-9].*) ;; *) fail "Unsupported OpenViX version: ${VERSION:-unknown}; minimum is 6.7" ;; esac
     URL="$BASE/install-openvix-live.sh"
     info "Detected: OpenViX ${VERSION:-unknown} build ${BUILD:-unknown}"
     ;;
   openbh|openblackhole)
-    case "$VERSION" in 6.0*) ;; *) fail "Unsupported OpenBH version: ${VERSION:-unknown}" ;; esac
-    [ "$BUILD" = "001" ] || fail "OpenBH build 001 required; detected: ${BUILD:-unknown}"
+    case "$VERSION" in 6.5*|6.6*|6.7*|6.8*|6.9*|7.*|8.*|9.*|[1-9][0-9].*) ;; *) fail "Unsupported OpenBH version: ${VERSION:-unknown}; minimum is 6.5" ;; esac
     URL="$BASE/install-openbh-live.sh"
     info "Detected: OpenBH ${VERSION:-unknown} build ${BUILD:-unknown}"
     ;;
