@@ -152,7 +152,7 @@ case "$DISTRO" in
 esac
 
 if [ -n "$UPDATE_PKG" ]; then
-  UPDATE_URL="https://github.com/habeb-s/CineView-FHD/releases/download/$UPDATE_TAG/$UPDATE_PKG?cv=20260925-1519"
+  UPDATE_URL="https://github.com/habeb-s/CineView-FHD/releases/download/$UPDATE_TAG/$UPDATE_PKG?cv=20260925-1827"
   info "Applying CineView Control 2.3.4 update layer..."
   if command -v wget >/dev/null 2>&1; then
     wget -q --no-check-certificate -O "$UPDATE_IPK" "$UPDATE_URL" || fail "CineView Control update download failed"
