@@ -13,7 +13,7 @@ from Components.ActionMap import ActionMap
 from Components.Label import Label
 from Components.ProgressBar import ProgressBar
 
-PLUGIN_VERSION = "2.3.3"
+PLUGIN_VERSION = "2.3.4"
 OWNER = "habeb-s/CineView-FHD"
 BASE_RAW = "https://raw.githubusercontent.com/%s/main" % OWNER
 MANIFEST_URL = BASE_RAW + "/update.json"
