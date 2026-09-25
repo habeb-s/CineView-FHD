@@ -1,0 +1,18 @@
+{
+  "version": "2.3.3",
+  "release_date": "2026-09-25",
+  "packages": {
+    "openatv": {
+      "tag": "openatv-7.6-cineview-final",
+      "file": "enigma2-plugin-skins-cineview-openatv_2.3.3_all.ipk"
+    },
+    "openvix": {
+      "tag": "openvix-6.9-cineview-2.3.2",
+      "file": "enigma2-plugin-skins-cineview-openvix_2.3.3_all.ipk"
+    },
+    "openbh": {
+      "tag": "v2.1.1-openbh6",
+      "file": "enigma2-plugin-skins-cineview-openbh_2.3.3_all.ipk"
+    }
+  }
+}
