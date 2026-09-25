@@ -121,7 +121,7 @@ fi
 chmod 755 "$TMP"
 ok "Image-specific installer downloaded"
 
-if /bin/sh "$TMP"; then
+if CINEVIEW_NO_RESTART=1 /bin/sh "$TMP"; then
   RC=0
 else
   RC=$?
@@ -193,6 +193,15 @@ fi
 
 rm -rf "$UPDATE_TMP" 2>/dev/null || true
 ok "CineView Control temporary update files removed"
+
+sync
+ok "All CineView files installed and temporary files cleaned"
+info "Restarting Enigma2 to activate CineView FHD 2.3.4..."
+if command -v systemctl >/dev/null 2>&1 && systemctl list-unit-files 2>/dev/null | grep -q '^enigma2.service'; then
+  systemctl restart enigma2.service || true
+else
+  ( sleep 1; killall -9 enigma2 >/dev/null 2>&1 || true ) &
+fi
 
 case "$SELF" in
   /*|./*|../*)
