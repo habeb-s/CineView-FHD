@@ -176,6 +176,7 @@ if [ -n "$UPDATE_PKG" ]; then
   CONTROL_SRC="$UPDATE_STAGE/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl"
   [ -f "$CONTROL_SRC/plugin.py" ] || fail "CineView Control plugin.py missing from update"
   [ -f "$CONTROL_SRC/updater.py" ] || fail "CineView Control updater.py missing from update"
+  [ -f "$CONTROL_SRC/plugin.png" ] || fail "CineView Control plugin icon missing from update"
 
   python3 - "$CONTROL_SRC/plugin.py" "$CONTROL_SRC/updater.py" <<'PY' || fail "CineView Control update validation failed"
 import ast,sys
@@ -189,7 +190,8 @@ PY
   mkdir -p "$CONTROL_DST"
   cp -af "$CONTROL_SRC/plugin.py" "$CONTROL_DST/plugin.py"
   cp -af "$CONTROL_SRC/updater.py" "$CONTROL_DST/updater.py"
-  chmod 644 "$CONTROL_DST/plugin.py" "$CONTROL_DST/updater.py" 2>/dev/null || true
+  cp -af "$CONTROL_SRC/plugin.png" "$CONTROL_DST/plugin.png"
+  chmod 644 "$CONTROL_DST/plugin.py" "$CONTROL_DST/updater.py" "$CONTROL_DST/plugin.png" 2>/dev/null || true
   ok "CineView Control 2.3.4 installed; image-specific skin design preserved"
 fi
 
