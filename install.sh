@@ -141,6 +141,8 @@ UPDATE_TMP="${TMP}.control"
 UPDATE_IPK="$UPDATE_TMP/cineview-control.ipk"
 UPDATE_STAGE="$UPDATE_TMP/stage"
 mkdir -p "$UPDATE_STAGE"
+cleanup_update(){ rm -rf "$UPDATE_TMP" 2>/dev/null || true; }
+trap cleanup_update EXIT INT TERM
 
 case "$DISTRO" in
   openatv) UPDATE_PKG="enigma2-plugin-skins-cineview-openatv_2.3.4_all.ipk" ;;
@@ -150,7 +152,7 @@ case "$DISTRO" in
 esac
 
 if [ -n "$UPDATE_PKG" ]; then
-  UPDATE_URL="https://github.com/habeb-s/CineView-FHD/releases/download/$UPDATE_TAG/$UPDATE_PKG"
+  UPDATE_URL="https://github.com/habeb-s/CineView-FHD/releases/download/$UPDATE_TAG/$UPDATE_PKG?cv=20260925-1519"
   info "Applying CineView Control 2.3.4 update layer..."
   if command -v wget >/dev/null 2>&1; then
     wget -q --no-check-certificate -O "$UPDATE_IPK" "$UPDATE_URL" || fail "CineView Control update download failed"
@@ -192,6 +194,7 @@ PY
 fi
 
 rm -rf "$UPDATE_TMP" 2>/dev/null || true
+trap - EXIT INT TERM
 ok "CineView Control temporary update files removed"
 
 sync
