@@ -1,11 +1,11 @@
 #!/bin/sh
 set -eu
 
-# CineView FHD 2.1 Smart Multi-Image Installer
+# CineView FHD 2.3.4 Smart Multi-Image Installer
 # Designed by habeb-s
 
 SELF="$0"
-PIN='bb1957836cadb5f8252eab1797ab3d5d02ac6429'
+PIN='main'
 TMP="/tmp/cineview-smart-installer.$$"
 
 ESC="$(printf '\033')"
@@ -29,7 +29,7 @@ cleanup(){
 trap cleanup EXIT INT TERM
 
 printf "\n%s%s============================================================%s\n" "$BOLD" "$CYAN" "$RESET"
-printf "%s%s        CineView FHD 2.1 Smart Installer%s\n" "$BOLD" "$GREEN" "$RESET"
+printf "%s%s        CineView FHD 2.3.4 Smart Installer%s\n" "$BOLD" "$GREEN" "$RESET"
 printf "%s              Designed by habeb-s%s\n" "$CYAN" "$RESET"
 printf "%s%s============================================================%s\n" "$BOLD" "$CYAN" "$RESET"
 printf "%sInstallation requirements / شروط التثبيت:%s\n" "$BOLD" "$RESET"
@@ -71,6 +71,15 @@ case "$IMG" in
   *openbh*|*openblackhole*) DISTRO=openbh ;;
 esac
 
+printf "%sReceiver / Image information:%s\n" "$BOLD" "$RESET"
+MODEL="$(cat /proc/stb/info/model /proc/stb/info/boxtype 2>/dev/null | head -n 1 || true)"
+MACHINE="$(iv_get machinebuild)"
+[ -n "$MACHINE" ] || MACHINE="$(iv_get machine)"
+printf "  %sImage:%s   %s\n" "$CYAN" "$RESET" "${DISTRO:-unknown}"
+printf "  %sVersion:%s %s\n" "$CYAN" "$RESET" "${VERSION:-unknown}"
+printf "  %sBuild:%s   %s\n" "$CYAN" "$RESET" "${BUILD:-unknown}"
+printf "  %sModel:%s   %s\n" "$CYAN" "$RESET" "${MODEL:-${MACHINE:-unknown}}"
+printf "  %sPython:%s  %s\n\n" "$CYAN" "$RESET" "$(python3 -V 2>&1)"
 BASE="https://raw.githubusercontent.com/habeb-s/CineView-FHD/$PIN"
 
 case "$DISTRO" in
@@ -126,6 +135,65 @@ if [ "$RC" -ne 0 ]; then
   fail "Installation failed with exit code $RC"
 fi
 
+# Install CineView Control 2.3.4 update layer without replacing accepted image-specific skin/layout files.
+UPDATE_TAG="v2.3.4"
+UPDATE_TMP="/tmp/cineview-control-update.$"
+UPDATE_IPK="$UPDATE_TMP/cineview-control.ipk"
+UPDATE_STAGE="$UPDATE_TMP/stage"
+mkdir -p "$UPDATE_STAGE"
+
+case "$DISTRO" in
+  openatv) UPDATE_PKG="enigma2-plugin-skins-cineview-openatv_2.3.4_all.ipk" ;;
+  openvix) UPDATE_PKG="enigma2-plugin-skins-cineview-openvix_2.3.4_all.ipk" ;;
+  openbh|openblackhole) UPDATE_PKG="enigma2-plugin-skins-cineview-openbh_2.3.4_all.ipk" ;;
+  *) UPDATE_PKG="" ;;
+esac
+
+if [ -n "$UPDATE_PKG" ]; then
+  UPDATE_URL="https://github.com/habeb-s/CineView-FHD/releases/download/$UPDATE_TAG/$UPDATE_PKG"
+  info "Applying CineView Control 2.3.4 update layer..."
+  if command -v wget >/dev/null 2>&1; then
+    wget -q --no-check-certificate -O "$UPDATE_IPK" "$UPDATE_URL" || fail "CineView Control update download failed"
+  elif command -v curl >/dev/null 2>&1; then
+    curl -fsSLk "$UPDATE_URL" -o "$UPDATE_IPK" || fail "CineView Control update download failed"
+  else
+    fail "wget/curl not found"
+  fi
+  [ -s "$UPDATE_IPK" ] || fail "Downloaded CineView Control update is empty"
+
+  if command -v dpkg-deb >/dev/null 2>&1; then
+    dpkg-deb -x "$UPDATE_IPK" "$UPDATE_STAGE" || fail "Unable to extract CineView Control update"
+  else
+    mkdir -p "$UPDATE_TMP/ar"
+    (cd "$UPDATE_TMP/ar" && ar x "$UPDATE_IPK") || fail "Unable to unpack update package"
+    DATA_ARCHIVE="$(find "$UPDATE_TMP/ar" -maxdepth 1 -type f -name 'data.tar*' | head -n 1)"
+    [ -n "$DATA_ARCHIVE" ] || fail "Update package data archive missing"
+    tar -xf "$DATA_ARCHIVE" -C "$UPDATE_STAGE" || fail "Unable to extract update data"
+  fi
+
+  CONTROL_SRC="$UPDATE_STAGE/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl"
+  [ -f "$CONTROL_SRC/plugin.py" ] || fail "CineView Control plugin.py missing from update"
+  [ -f "$CONTROL_SRC/updater.py" ] || fail "CineView Control updater.py missing from update"
+
+  python3 - "$CONTROL_SRC/plugin.py" "$CONTROL_SRC/updater.py" <<'PY' || fail "CineView Control update validation failed"
+import ast,sys
+for p in sys.argv[1:]:
+    with open(p,'r',encoding='utf-8',errors='ignore') as f:
+        ast.parse(f.read(), filename=p)
+print('[CineView][OK] CineView Control 2.3.4 Python validation passed')
+PY
+
+  CONTROL_DST="/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl"
+  mkdir -p "$CONTROL_DST"
+  cp -af "$CONTROL_SRC/plugin.py" "$CONTROL_DST/plugin.py"
+  cp -af "$CONTROL_SRC/updater.py" "$CONTROL_DST/updater.py"
+  chmod 644 "$CONTROL_DST/plugin.py" "$CONTROL_DST/updater.py" 2>/dev/null || true
+  ok "CineView Control 2.3.4 installed; image-specific skin design preserved"
+fi
+
+rm -rf "$UPDATE_TMP" 2>/dev/null || true
+ok "CineView Control temporary update files removed"
+
 case "$SELF" in
   /*|./*|../*)
     if [ -f "$SELF" ] && [ "$SELF" != "/bin/sh" ]; then
@@ -136,7 +204,7 @@ case "$SELF" in
 esac
 
 printf "\n%s%s============================================================%s\n" "$BOLD" "$GREEN" "$RESET"
-printf "%s%s       CineView FHD 2.1 installation complete%s\n" "$BOLD" "$GREEN" "$RESET"
+printf "%s%s       CineView FHD 2.3.4 installation complete%s\n" "$BOLD" "$GREEN" "$RESET"
 printf "%s              Designed by habeb-s%s\n" "$CYAN" "$RESET"
 printf "%s%s============================================================%s\n\n" "$BOLD" "$GREEN" "$RESET"
 exit 0
