@@ -1,8 +1,8 @@
 #!/bin/sh
 set -eu
 
-SNAP_COMMIT='26d1390db22d41a1de29920a8d7a0cc446848a9c'
-SNAP_SHA256='7c120a007a94e32f8d9f5200c84bdff30eb71d461c5fee8182b7ad3bc8c052c5'
+SNAP_COMMIT='93978534f8d36e1530a372db4edf64bbd98c150d'
+SNAP_SHA256='b6cc4d73f827c6473deee3bdf223f8403aa29a1ba46bb36db28e43a019be3995'
 SNAP_REL='snapshots/openbh-final-20260923/cineview-live-openbh-final-20260923.tar.gz'
 SNAP_URL="https://raw.githubusercontent.com/habeb-s/CineView-FHD/$SNAP_COMMIT/$SNAP_REL"
 TMP="/tmp/cineview-openbh-final.$$"
