@@ -34,7 +34,7 @@ printf "%s              Designed by habeb-s%s\n" "$CYAN" "$RESET"
 printf "%s%s============================================================%s\n" "$BOLD" "$CYAN" "$RESET"
 printf "%sInstallation requirements / شروط التثبيت:%s\n" "$BOLD" "$RESET"
 printf "  %s•%s Root access and Python 3\n" "$YELLOW" "$RESET"
-printf "  %s•%s Supported: OpenATV 7.4/7.5/7.6/8.0, OpenViX 6.7+, OpenBH 6.5+\n" "$YELLOW" "$RESET"
+printf "  %s•%s Supported: OpenATV 7.4/7.5/7.6/8.0, OpenViX 6.7+, OpenBH 5.6+\n" "$YELLOW" "$RESET"
 printf "  %s•%s A rollback backup is created before CineView files are replaced\n" "$YELLOW" "$RESET"
 printf "  %s•%s Poster cache prefers persistent storage (/media/hdd/poster), then local media storage; /tmp is fallback only\n" "$YELLOW" "$RESET"
 printf "  %s•%s Multiboot storage is excluded from poster cache\n" "$YELLOW" "$RESET"
@@ -97,7 +97,7 @@ case "$DISTRO" in
     info "Detected: OpenViX ${VERSION:-unknown} build ${BUILD:-unknown}"
     ;;
   openbh|openblackhole)
-    case "$VERSION" in 6.5*|6.6*|6.7*|6.8*|6.9*|7.*|8.*|9.*|[1-9][0-9].*) ;; *) fail "Unsupported OpenBH version: ${VERSION:-unknown}; minimum is 6.5" ;; esac
+    case "$VERSION" in 5.6*|5.7*|5.8*|5.9*|6.*|7.*|8.*|9.*|[1-9][0-9].*) ;; *) fail "Unsupported OpenBH version: ${VERSION:-unknown}; minimum is 5.6" ;; esac
     URL="$BASE/install-openbh-live.sh"
     info "Detected: OpenBH ${VERSION:-unknown} build ${BUILD:-unknown}"
     ;;
