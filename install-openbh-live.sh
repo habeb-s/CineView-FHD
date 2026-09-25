@@ -34,8 +34,7 @@ case "$DISTRO" in
   openbh|openblackhole) ;;
   *) fail "this final snapshot is for OpenBH; detected: ${DISTRO:-unknown}" ;;
 esac
-[ "$VERSION" = 6.0 ] || fail "this final snapshot requires OpenBH 6.0; detected: ${VERSION:-unknown}"
-[ "$BUILD" = 001 ] || fail "this final snapshot requires OpenBH build 001; detected: ${BUILD:-unknown}"
+case "$VERSION" in 6.5*|6.6*|6.7*|6.8*|6.9*|7.*|8.*|9.*|[1-9][0-9].*) ;; *) fail "this final snapshot requires OpenBH 6.5 or newer; detected: ${VERSION:-unknown}" ;; esac
 command -v python3 >/dev/null 2>&1 || fail "Python 3 is required"
 
 mkdir -p "$STAGE"
