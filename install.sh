@@ -137,7 +137,7 @@ fi
 
 # Install CineView Control 2.3.4 update layer without replacing accepted image-specific skin/layout files.
 UPDATE_TAG="v2.3.4"
-UPDATE_TMP="/tmp/cineview-control-update.$"
+UPDATE_TMP="${TMP}.control"
 UPDATE_IPK="$UPDATE_TMP/cineview-control.ipk"
 UPDATE_STAGE="$UPDATE_TMP/stage"
 mkdir -p "$UPDATE_STAGE"
