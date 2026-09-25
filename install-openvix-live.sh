@@ -31,8 +31,7 @@ DISTRO="$(iv_get distro | tr 'A-Z' 'a-z' | tr -d ' ')"
 VERSION="$(iv_get Version)"
 BUILD="$(iv_get Build)"
 [ "$DISTRO" = openvix ] || fail "this live snapshot is for OpenViX; detected: $DISTRO"
-[ "$VERSION" = 6.9 ] || fail "this live snapshot requires OpenViX 6.9; detected: $VERSION"
-[ "$BUILD" = 002 ] || fail "this live snapshot requires OpenViX build 002; detected: $BUILD"
+case "$VERSION" in 6.7*|6.8*|6.9*|7.*|8.*|9.*|[1-9][0-9].*) ;; *) fail "this live snapshot requires OpenViX 6.7 or newer; detected: ${VERSION:-unknown}" ;; esac
 
 mkdir -p "$STAGE"
 echo '[CineView] Downloading pinned final OpenViX snapshot...'
