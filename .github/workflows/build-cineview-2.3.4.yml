@@ -1,0 +1,104 @@
+name: Build CineView 2.3.4 updater packages
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'updater/CineViewUpdater/plugin.py'
+      - '.github/workflows/build-cineview-2.3.4.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      VER: 2.3.4
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build packages
+        shell: bash
+        run: |
+          set -euxo pipefail
+          mkdir -p work dist snaps
+          wget -q -O work/atv.ipk https://github.com/habeb-s/CineView-FHD/releases/download/openatv-7.6-cineview-final/enigma2-plugin-skins-cineview-openatv_2.3.3_all.ipk
+          wget -q -O work/vix.ipk https://github.com/habeb-s/CineView-FHD/releases/download/openvix-6.9-cineview-2.3.2/enigma2-plugin-skins-cineview-openvix_2.3.3_all.ipk
+          wget -q -O work/bh.ipk https://github.com/habeb-s/CineView-FHD/releases/download/v2.1.1-openbh6/enigma2-plugin-skins-cineview-openbh_2.3.3_all.ipk
+          wget -q -O work/atv-snap.tgz https://raw.githubusercontent.com/habeb-s/CineView-FHD/main/snapshots/openatv-final-20260923/cineview-live-openatv-final-20260923.tar.gz
+          wget -q -O work/vix-snap.tgz https://raw.githubusercontent.com/habeb-s/CineView-FHD/main/snapshots/openvix-final-20260923/cineview-live-openvix-final-20260923.tar.gz
+          wget -q -O work/bh-snap.tgz https://raw.githubusercontent.com/habeb-s/CineView-FHD/main/snapshots/openbh-final-20260923/cineview-live-openbh-final-20260923.tar.gz
+
+          for k in atv vix bh; do
+            mkdir -p snaps/$k
+            tar -xzf work/$k-snap.tgz -C snaps/$k
+            dpkg-deb -R work/$k.ipk work/pkg-$k
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import re, shutil
+          root=Path('.')
+          ver='2.3.4'
+          cfg={
+            'atv': ('openatv', True),
+            'vix': ('openvix', False),
+            'bh': ('openbh', False),
+          }
+          for k,(name,full) in cfg.items():
+              src=root/'snaps'/k/'usr/lib/enigma2/python/Plugins/Extensions/CineViewControl'
+              dst=root/'work'/('pkg-'+k)/'usr/lib/enigma2/python/Plugins/Extensions/CineViewControl'
+              if dst.exists():
+                  shutil.rmtree(dst)
+              shutil.copytree(src,dst)
+              shutil.copy2(root/'updater/CineViewUpdater/plugin.py', dst/'updater.py')
+              p=dst/'plugin.py'
+              s=p.read_text()
+              if 'from .updater import CineViewUpdater' not in s:
+                  s=s.replace('from Components.Label import Label','from Components.Label import Label\nfrom .updater import CineViewUpdater')
+              s=s.replace("VERSION='2.0'","VERSION='2.3.4'")
+              s=s.replace('Official 2.0','Official 2.3.4')
+              if full:
+                  anchor='        <eLabel text="GREEN  Save" position="1274,913" size="462,42"'
+                  blue='        <eLabel text="BLUE  Online Update" position="760,913" size="420,42" font="Regular;25" foregroundColor="#003399ff" transparent="1" halign="center" />\n'
+              else:
+                  anchor='        <eLabel text="GREEN  Save" position="825,714" size="310,36"'
+                  blue='        <eLabel text="BLUE  Online Update" position="405,714" size="370,36" font="Regular;25" foregroundColor="#003399ff" transparent="1" halign="center" />\n'
+              if 'BLUE  Online Update' not in s:
+                  pos=s.find(anchor)
+                  if pos < 0:
+                      raise RuntimeError('blue footer anchor missing: '+k)
+                  s=s[:pos]+blue+s[pos:]
+              old="self['actions']=ActionMap(['OkCancelActions','ColorActions'],{'cancel':self.keyCancel,'red':self.keyCancel,'green':self.keySave,'ok':self.keySave},-2)"
+              new="self['actions']=ActionMap(['OkCancelActions','ColorActions'],{'cancel':self.keyCancel,'red':self.keyCancel,'green':self.keySave,'ok':self.keySave,'blue':self.keyUpdate},-2)"
+              s=s.replace(old,new)
+              if 'def keyUpdate(self):' not in s:
+                  s=s.replace('    def keySave(self):',"    def keyUpdate(self):\n        self.session.open(CineViewUpdater)\n\n    def keySave(self):")
+              p.write_text(s)
+              control=root/'work'/('pkg-'+k)/'DEBIAN/control'
+              c=control.read_text()
+              c=re.sub(r'^Version:.*$','Version: '+ver,c,flags=re.M)
+              control.write_text(c)
+          PY
+
+          dpkg-deb -b work/pkg-atv dist/enigma2-plugin-skins-cineview-openatv_2.3.4_all.ipk
+          dpkg-deb -b work/pkg-vix dist/enigma2-plugin-skins-cineview-openvix_2.3.4_all.ipk
+          dpkg-deb -b work/pkg-bh dist/enigma2-plugin-skins-cineview-openbh_2.3.4_all.ipk
+          ls -lh dist
+
+      - name: Validate package contents
+        run: |
+          set -e
+          for f in dist/*.ipk; do
+            dpkg-deb -c "$f" | grep -q 'CineViewControl/plugin.py'
+            dpkg-deb -c "$f" | grep -q 'CineViewControl/updater.py'
+          done
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view v2.3.4 >/dev/null 2>&1 || gh release create v2.3.4 --title "CineView FHD 2.3.4" --notes "Adds the blue Online Update button inside CineView Control with update checking, download progress, automatic install, and Enigma2 restart."
+          gh release upload v2.3.4 dist/*.ipk --clobber
