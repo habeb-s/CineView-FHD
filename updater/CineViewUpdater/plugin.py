@@ -42,16 +42,19 @@ def _image_key():
 
 class CineViewUpdater(Screen):
     skin = """
-    <screen name="CineViewUpdater" position="center,center" size="1180,560" title="CineView FHD Updater">
-        <widget name="title" position="60,45" size="1060,55" font="Regular;38" halign="center" />
-        <widget name="current" position="80,135" size="1020,45" font="Regular;30" />
-        <widget name="status" position="80,215" size="1020,80" font="Regular;28" halign="center" valign="center" />
-        <widget name="progress" position="120,330" size="940,34" />
-        <widget name="percent" position="120,375" size="940,45" font="Regular;28" halign="center" />
-        <eLabel position="80,485" size="28,28" backgroundColor="#0066cc" />
-        <widget name="blue" position="120,474" size="500,48" font="Regular;28" />
-        <eLabel position="770,485" size="28,28" backgroundColor="#aa0000" />
-        <widget name="red" position="810,474" size="290,48" font="Regular;28" />
+    <screen name="CineViewUpdater" position="center,center" size="1180,560" title="" backgroundColor="steThemePrimary" flags="wfNoBorder">
+        <eLabel position="0,0" size="1180,4" backgroundColor="steThemeAccent" />
+        <widget name="title" position="60,32" size="1060,58" font="Regular;38" foregroundColor="steThemeAccent" transparent="1" halign="center" />
+        <eLabel position="70,98" size="1040,2" backgroundColor="steThemePanelAlt" />
+        <widget name="current" position="90,125" size="1000,44" font="Regular;28" foregroundColor="foreground" transparent="1" />
+        <widget name="status" position="90,205" size="1000,72" font="Regular;28" foregroundColor="steThemeAccent" transparent="1" halign="center" valign="center" />
+        <widget name="progress" position="140,314" size="900,30" foregroundColor="steThemeAccent" backgroundColor="steThemePanelAlt" borderWidth="1" borderColor="steThemePanelAlt" />
+        <widget name="percent" position="140,356" size="900,42" font="Regular;26" foregroundColor="steThemeAccent" transparent="1" halign="center" />
+        <eLabel position="70,452" size="1040,2" backgroundColor="steThemePanelAlt" />
+        <eLabel position="90,490" size="26,26" backgroundColor="#003399ff" />
+        <widget name="blue" position="130,479" size="420,48" font="Regular;27" foregroundColor="foreground" transparent="1" />
+        <eLabel position="810,490" size="26,26" backgroundColor="#00cc2222" />
+        <widget name="red" position="850,479" size="240,48" font="Regular;27" foregroundColor="foreground" transparent="1" />
     </screen>
     """
 
@@ -63,7 +66,9 @@ class CineViewUpdater(Screen):
         self["status"] = Label("Press BLUE to check for updates")
         self["progress"] = ProgressBar()
         self["progress"].setValue(0)
-        self["percent"] = Label("0%")
+        self["percent"] = Label("")
+        self["progress"].hide()
+        self["percent"].hide()
         self["blue"] = Label("Check / Update")
         self["red"] = Label("Close")
         self.container = None
@@ -112,6 +117,8 @@ class CineViewUpdater(Screen):
         self["status"].setText("Checking for updates...")
         self["progress"].setValue(0)
         self["percent"].setText("0%")
+        self["progress"].show()
+        self["percent"].show()
         cmd = "rm -f %s; wget -q --no-check-certificate -O %s '%s'" % (
             TMP_MANIFEST, TMP_MANIFEST, MANIFEST_URL
         )
@@ -121,6 +128,8 @@ class CineViewUpdater(Screen):
         if retval != 0 or not os.path.exists(TMP_MANIFEST):
             self.busy = False
             self["status"].setText("Unable to check for updates")
+            self["progress"].hide()
+            self["percent"].hide()
             self.session.open(MessageBox, "Update check failed. Check internet connection.", MessageBox.TYPE_ERROR, timeout=6)
             return
         try:
@@ -128,14 +137,18 @@ class CineViewUpdater(Screen):
             remote_version = str(self.remote.get("version", "0"))
         except Exception:
             self.busy = False
+            self["progress"].hide()
+            self["percent"].hide()
             self.session.open(MessageBox, "Invalid update information.", MessageBox.TYPE_ERROR, timeout=6)
             return
 
         if _version_tuple(remote_version) <= _version_tuple(PLUGIN_VERSION):
             self.busy = False
             self["status"].setText("No update available")
-            self["progress"].setValue(100)
-            self["percent"].setText("100%")
+            self["progress"].setValue(0)
+            self["percent"].setText("")
+            self["progress"].hide()
+            self["percent"].hide()
             self.session.open(MessageBox, "No update available.\nYou already have the latest CineView FHD version (%s)." % PLUGIN_VERSION, MessageBox.TYPE_INFO, timeout=6)
             return
 
@@ -143,6 +156,8 @@ class CineViewUpdater(Screen):
         package = (self.remote.get("packages") or {}).get(key or "")
         if not package:
             self.busy = False
+            self["progress"].hide()
+            self["percent"].hide()
             self.session.open(MessageBox, "This Enigma2 image is not supported by the updater.", MessageBox.TYPE_ERROR, timeout=7)
             return
 
@@ -150,6 +165,8 @@ class CineViewUpdater(Screen):
         filename = package.get("file")
         if not tag or not filename:
             self.busy = False
+            self["progress"].hide()
+            self["percent"].hide()
             self.session.open(MessageBox, "Update package information is incomplete.", MessageBox.TYPE_ERROR, timeout=7)
             return
 
@@ -164,6 +181,8 @@ class CineViewUpdater(Screen):
         if retval != 0 or not os.path.exists(TMP_IPK) or os.path.getsize(TMP_IPK) < 1024:
             self.busy = False
             self["status"].setText("Download failed")
+            self["progress"].hide()
+            self["percent"].hide()
             self.session.open(MessageBox, "CineView FHD update download failed.", MessageBox.TYPE_ERROR, timeout=7)
             return
         self["progress"].setValue(100)
@@ -180,6 +199,8 @@ class CineViewUpdater(Screen):
             pass
         if retval != 0:
             self["status"].setText("Installation failed")
+            self["progress"].hide()
+            self["percent"].hide()
             self.session.open(MessageBox, "CineView FHD update installation failed.", MessageBox.TYPE_ERROR, timeout=8)
             return
         remote_version = str((self.remote or {}).get("version", ""))
@@ -206,7 +227,7 @@ def Plugins(**kwargs):
             name="CineView FHD Updater",
             description="Check and install CineView FHD updates",
             where=PluginDescriptor.WHERE_PLUGINMENU,
-            icon=None,
+            icon="plugin.png",
             fnc=main,
         ),
         PluginDescriptor(
