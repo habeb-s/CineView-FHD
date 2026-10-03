@@ -191,9 +191,10 @@ SIB_TEXTFIT = {
 }
 SIB_OPTS = {
 	# title: two wrapped lines, scrolls vertically only when a title needs more than two lines
-	"title": ('font="Regular;27"', "movetype=running,direction=top,step=1,steptime=70,startdelay=3000,pause=2500,repeat=0,always=0,wrap=1"),
-	# description: unchanged font; box = 9 whole lines, same vertical scrolling as approved
-	"desc": ('font="Regular;25"', "movetype=running,direction=top,step=2,steptime=65,startdelay=2200,pause=1700,repeat=0,always=0,wrap=1"),
+	"title": ('font="Regular;27"', "movetype=swimming,direction=top,step=1,steptime=70,startdelay=3000,pause=3000,repeat=0,always=0,wrap=1"),
+	# description: unchanged font; box = 9 whole lines; 'swimming' (native RunningText) starts with the
+	# first lines visible and moves up to the last line and back, never outside the box
+	"desc": ('font="Regular;25"', "movetype=swimming,direction=top,step=1,steptime=60,startdelay=4000,pause=3000,repeat=0,always=0,wrap=1"),
 }
 
 
