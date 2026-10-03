@@ -95,7 +95,7 @@ def describe(el):
 
 
 LIVE = re.compile(r"^(global\.CurrentTime|session\.FrontendStatus|session\.Event_Now|session\.Event_Next|session\.OAWeather|ServiceEvent|session\.CurrentService|Event|session\.RecordState|CurrentTime)$")
-LIVE_NAMES = re.compile(r"^(list|timeline_text|timeline_now|information|AboutScrollLabel|lab\d|config|epg_description|channel|FullDescription|Event)$")
+LIVE_NAMES = re.compile(r"^(list|timeline_text|timeline_now|information|AboutScrollLabel|lab\d|epg_description|channel|FullDescription|Event)$")
 
 
 def _children(screens, s, depth=0):
