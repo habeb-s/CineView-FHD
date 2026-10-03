@@ -123,7 +123,7 @@ def current_selection():
 	try:
 		return json.load(open(_s("selection.json")))
 	except (OSError, ValueError):
-		return {"theme": "golden", "layouts": {s: "classic" for s in sections()}}
+		return {"theme": "navy", "layouts": {s: "classic" for s in sections()}}
 
 
 # ---------------------------------------------------------------- validation
@@ -392,7 +392,7 @@ def status():
 
 def _parse_args(argv):
 	sel = current_selection()
-	sel = {"theme": sel.get("theme", "golden"), "layouts": dict(sel.get("layouts", {}))}
+	sel = {"theme": sel.get("theme", "navy"), "layouts": dict(sel.get("layouts", {}))}
 	trial, to = False, "lkg"
 	i = 0
 	while i < len(argv):
