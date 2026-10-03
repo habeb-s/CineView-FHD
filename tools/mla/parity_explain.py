@@ -100,7 +100,7 @@ LIVE_NAMES = re.compile(r"^(list|timeline_text|timeline_now|information|AboutScr
 
 def _children(screens, s, depth=0):
 	for el in s:
-		if el.tag == "panel" and el.get("name") and depth < 4 and el.get("name") in screens:
+		if el.tag == "panel" and el.get("name") and depth < 10 and el.get("name") in screens:
 			yield from _children(screens, screens[el.get("name")], depth + 1)
 		elif el.tag == "panel":
 			yield from _children(screens, el, depth + 1)
