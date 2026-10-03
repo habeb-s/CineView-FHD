@@ -33,7 +33,7 @@ Deep Purple (navy residue 0.44 % IB / 0.35 % SIB), Arabic right-aligned descript
 
 ## Details — run 2 (build20, 23:13–23:29)
 - Tour, 5 channels: SecondInfoBar opened every time (opener fixed in the test script: OK, OK within 1 s).
-  Live values differ per channel and match webif (e.g. SNR 74/73/68/67 %, TP 11636 H / 11636 V / 11678 H / 11553 H,
+  Live values differ per channel and agree with webif `/api/signal` sampled seconds apart (AGC 75/71/73/76 % equal; SNR within 1 %, e.g. HBO 74 vs 73; TP 11636 H / 11636 V / 11678 H / 11553 H,
   bitrate 4.75 / 1.60 / 3.14 / 3.08 Mbps).
 - D-1…D-8 verified fixed on screen: no half lines, NEXT description under the title with posters off, default image
   in empty poster slots, no `--` without IMDb data, no lone dash, purple progress bar, service names start visible.
