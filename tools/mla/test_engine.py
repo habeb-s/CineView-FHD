@@ -75,6 +75,16 @@ check("rollback returns to lkg", rc == 0 and active() == g1, out)
 rc, out = cli("rollback", "--to", "factory")
 check("rollback --to factory", rc == 0 and active() == "g000000", out)
 
+fresh(); m = engine()
+rc, out = cli("apply", "--theme", "purple"); gp = active()
+import hashlib
+h = lambda f: hashlib.sha256(open(f, "rb").read()).hexdigest()
+check("G-1: generation carries the theme's bitmaps (purple)", all(h(os.path.join(SKIN, "generations", gp, "assets", r)) == h(os.path.join(SKIN, "themes", "purple", "assets", r)) for r in m.THEME_ASSETS), out)
+check("G-1: factory generation carries the Classic (navy) bitmaps", all(h(os.path.join(SKIN, "generations", "g000000", "assets", r)) == h(os.path.join(SKIN, "themes", "navy", "assets", r)) for r in m.THEME_ASSETS))
+check("G-1: skin paths of theme bitmaps are symlinks into active/assets", all(os.path.islink(os.path.join(SKIN, r)) and os.readlink(os.path.join(SKIN, r)).endswith("active/assets/" + r) for r in m.THEME_ASSETS))
+os.remove(os.path.join(SKIN, "generations", gp, "assets", "infobar", "hd.png"))
+check("G-1: generation missing a theme bitmap is not valid", not m.verify_generation(gp))
+fresh(); m = engine(); cli("apply", "--theme", "graphite"); cli("apply", "--theme", "purple", "--trial"); cli("rollback", "--to", "factory")
 check("factory rollback makes factory the last-known-good", open(os.path.join(STATE, "lkg")).read().strip() == "g000000")
 
 # 1b. trial lifecycle across sessions (P6): a trial that got a GUI session but was never confirmed is

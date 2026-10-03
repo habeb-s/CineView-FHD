@@ -25,6 +25,9 @@ import xml.etree.ElementTree as ET
 SKIN_DIR = os.environ.get("MLA_SKIN_DIR", "/usr/share/enigma2/CineView_FHD_MLA")
 STATE_DIR = os.environ.get("MLA_STATE_DIR", "/etc/enigma2/cineview_mla")
 FACTORY = "g000000"
+# Bitmaps that differ per colour theme (the original CineView theme engine swapped exactly these).
+THEME_ASSETS = ("infobar/hd.png", "infobar/bl80.png", "extensions/transblack.png",
+	"window/progress.png", "dvr/position_pointer1.png", "epg/CurrentEvent.png")  # skin paths are symlinks to active/assets
 KEEP = 3
 BUILTIN_COLORS = {"key_back", "key_blue", "key_green", "key_red", "key_text", "key_yellow", "transparent", "black", "white",
 	"red", "green", "blue", "yellow", "grey", "gray", "orange", "foreground", "background", "darkgrey", "lightgrey", "cyan", "magenta"}
@@ -225,7 +228,8 @@ def verify_generation(gid):
 				return False
 	except (OSError, ValueError):
 		return False
-	return True
+	# A generation made before G-1 has no theme bitmaps; the skin now needs them -> not usable.
+	return all(os.path.isfile(os.path.join(d, "assets", rel)) for rel in THEME_ASSETS)
 
 
 def _next_gid():
@@ -263,9 +267,15 @@ def build_generation(selection, gid):
 	for sec in sections():
 		lid = selection["layouts"][sec]
 		files[f"{sec}.xml"] = _p("layouts", sec, lid, lays[sec][lid]["targets"]["openatv"]["file"])
+	# Theme bitmaps travel WITH the generation (G-1): the skin paths are symlinks to active/assets/<rel>,
+	# so colours and bitmaps switch together, atomically, and are covered by the manifest.
+	for rel in THEME_ASSETS:
+		src = _p("themes", selection["theme"], "assets", rel)
+		files["assets/" + rel] = src if os.path.isfile(src) else _p("themes", "navy", "assets", rel)  # fallback: Classic bitmap
 	lines = []
 	for name, src in files.items():
 		dst = os.path.join(d, name)
+		os.makedirs(os.path.dirname(dst), exist_ok=True)
 		shutil.copyfile(src, dst)
 		_fsync_file(dst)
 		lines.append(f"{_sha(dst)}  {name}")

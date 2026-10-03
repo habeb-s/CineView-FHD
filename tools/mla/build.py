@@ -292,6 +292,54 @@ def make_default_poster(path):
 	im.save(path, "JPEG", quality=90)
 
 
+def recolor_png(src, dst, base_hex, black=False):
+	"""Re-tint a navy-tinted Classic bitmap for another theme: pixels in the navy hue band take the theme's
+	hue/saturation (lightness kept, scaled toward the theme base); alpha and neutral pixels are untouched."""
+	import colorsys
+	from PIL import Image
+	NAVY = (0x0A, 0x1D, 0x35)
+	nh, nl, ns = colorsys.rgb_to_hls(*[c / 255.0 for c in NAVY])
+	tr, tg, tb = (int(base_hex[i:i + 2], 16) / 255.0 for i in (1, 3, 5))
+	th, tl, ts = colorsys.rgb_to_hls(tr, tg, tb)
+	im = Image.open(src).convert("RGBA")
+	px = im.load()
+	for y in range(im.height):
+		for x in range(im.width):
+			r, g, b, a = px[x, y]
+			h, l, s = colorsys.rgb_to_hls(r / 255.0, g / 255.0, b / 255.0)
+			if a == 0 or s < 0.12 or not (195 / 360.0 <= h <= 240 / 360.0):
+				continue
+			if black:
+				h2, s2, l2 = h, s * 0.06, l * 0.9
+			else:
+				h2, s2 = th, min(1.0, s * ts / ns)
+				l2 = min(1.0, l * (0.5 + 0.5 * tl / nl))
+			r2, g2, b2 = colorsys.hls_to_rgb(h2, l2, s2)
+			px[x, y] = (int(r2 * 255 + 0.5), int(g2 * 255 + 0.5), int(b2 * 255 + 0.5), a)
+	os.makedirs(os.path.dirname(dst), exist_ok=True)
+	im.save(dst, "PNG")
+
+
+def make_preview_none(path):
+	"""Designs UI placeholder when an item has no preview (replaces the empty grey frame).  Neutral charcoal
+	that sits well on every colour theme, a language-free 'picture' glyph and the constant accent yellow."""
+	from PIL import Image, ImageDraw
+	W, H = 720, 405
+	im = Image.new("RGB", (W, H))
+	d = ImageDraw.Draw(im)
+	for y in range(H):
+		t = y / (H - 1)
+		v = int(22 + 10 * t)
+		d.line([(0, y), (W, y)], fill=(v, v + 2, v + 6))
+	cx, cy, w, h = W // 2, H // 2, 210, 150
+	d.rounded_rectangle([cx - w // 2, cy - h // 2, cx + w // 2, cy + h // 2], radius=16, outline=(110, 116, 128), width=7)
+	d.polygon([(cx - 80, cy + 50), (cx - 25, cy - 10), (cx + 10, cy + 25), (cx + 35, cy + 2), (cx + 80, cy + 50)], fill=(110, 116, 128))
+	d.ellipse([cx + 34, cy - 50, cx + 66, cy - 18], fill=(249, 199, 49))
+	d.line([(cx - w // 2 - 14, cy + h // 2 + 14), (cx + w // 2 + 14, cy - h // 2 - 14)], fill=(160, 166, 176), width=8)
+	os.makedirs(os.path.dirname(path), exist_ok=True)
+	im.save(path, "PNG")
+
+
 def run(*a):
 	subprocess.check_call(list(a))
 
@@ -408,6 +456,28 @@ def main(golden, comps, control, out):
 		for key in os.listdir(src_theme_assets):
 			shutil.copytree(os.path.join(src_theme_assets, key), os.path.join(skin, "themes", key, "assets"), dirs_exist_ok=True)
 
+	# G-1: per-theme bitmaps.  The original engine swapped 3 hand-made bitmaps per theme; the scan of the skin
+	# for navy-tinted bitmaps in use found 3 more (progress bar, PVR position pointer, and the GraphicalEPG
+	# "now" cell, which 57b7a51 loads natively by fixed path).  Every theme bitmap lives in the generation
+	# (active/assets/<rel>) and the skin path is a symlink to it, so the XML is untouched (Classic parity) and
+	# bitmaps switch atomically with the colours.  navy = the original files.
+	theme_assets = ("infobar/hd.png", "infobar/bl80.png", "extensions/transblack.png",
+		"window/progress.png", "dvr/position_pointer1.png", "epg/CurrentEvent.png")
+	for rel in theme_assets:
+		orig = os.path.join(skin, rel)
+		navy = os.path.join(skin, "themes", "navy", "assets", rel)
+		os.makedirs(os.path.dirname(navy), exist_ok=True)
+		if not os.path.isfile(navy):
+			shutil.copy2(orig, navy)
+		assert open(navy, "rb").read() == open(orig, "rb").read(), "navy asset must equal the Classic bitmap: " + rel
+		for key in theme.THEMES:
+			dst = os.path.join(skin, "themes", key, "assets", rel)
+			if not os.path.isfile(dst):
+				recolor_png(orig, dst, theme.THEMES[key][1], key == "black")
+		os.remove(orig)
+		os.symlink(os.path.join("..", "active", "assets", rel), orig)
+	print("G-1 theme assets (symlinked to active/assets):", len(theme_assets))
+
 	# Engine + section definitions.
 	shutil.copytree(os.path.join(REPO, "mla", "engine"), os.path.join(skin, "mla", "engine"), ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
 	shutil.copy2(os.path.join(REPO, "mla", "sections.json"), os.path.join(skin, "mla", "sections.json"))
@@ -484,6 +554,7 @@ def main(golden, comps, control, out):
 	with open(posterx, "a", encoding="utf-8") as f:
 		f.write(open(os.path.join(HERE, "patches", "posterx_identity.py"), encoding="utf-8").read())
 	make_default_poster(os.path.join(skin, "mla_assets", "poster_default.jpg"))
+	make_preview_none(os.path.join(skin, "mla_assets", "preview_none.png"))
 
 	# Runtime plugin + native pre-start hook (installed by the deploy step, not by the build).
 	shutil.copytree(os.path.join(REPO, "mla", "plugin", "CineViewMLA"), os.path.join(out, "usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA"), ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))

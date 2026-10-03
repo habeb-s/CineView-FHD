@@ -25,6 +25,7 @@ from Tools.LoadPixmap import LoadPixmap
 SKIN_DIR = "/usr/share/enigma2/CineView_FHD_MLA"
 STATE = "/etc/enigma2/cineview_mla"
 RUNTIME = os.path.join(STATE, "runtime.json")
+PREVIEW_NONE = os.path.join(SKIN_DIR, "mla_assets", "preview_none.png")
 POSTER_SECTIONS = ("infobar", "secondinfobar", "channelselection", "epg", "eventview")
 HEALTHY_AFTER_MS = 60000
 TRIAL_CONFIRM_SECONDS = 20
@@ -302,17 +303,23 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 	def updatePreview(self):
 		cfg, kind, sec = self._current()[1:]  # never bind "_": it is gettext here
 		p = self._preview_path()
-		if p and self["preview"].instance:
-			self["preview"].instance.setPixmap(LoadPixmap(p))
-			self["preview"].show()
-		else:
-			self["preview"].hide()
+		if self["preview"].instance:
+			# Never an empty grey frame: items without a preview show the neutral placeholder (P6 review).
+			shown = p or (PREVIEW_NONE if os.path.isfile(PREVIEW_NONE) else None)
+			if shown:
+				self["preview"].instance.setPixmap(LoadPixmap(shown))
+				self["preview"].show()
+			else:
+				self["preview"].hide()
 		desc = ""
 		if kind == "layout":
 			m = self.layouts.get(sec, {}).get(cfg.value, {})
 			desc = "%s\n%s %s" % (m.get("name", cfg.value), _("Version"), m.get("version", ""))
 		elif kind == "poster":
 			desc = _("Applied without a restart, from the next channel or event change.")
+		if not p:
+			note = _("No preview is available for this item.") if kind in ("layout", "theme") else _("This option has no visual preview.")
+			desc = (desc + "\n\n" + note) if desc else note
 		self["description"].setText(desc)
 		st = self.eng.status()
 		self["status"].setText(_("Active generation: %s   Last known good: %s") % (st.get("active"), st.get("lkg")))
@@ -355,6 +362,8 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 		p = self._preview_path()
 		if p:
 			self.session.open(CineViewMLAPreview, p)
+		else:
+			self.session.open(MessageBox, _("No preview is available for this item."), MessageBox.TYPE_INFO, timeout=4)
 
 	def keyFactory(self):
 		self.session.openWithCallback(self._factory, MessageBox, _("Return to the factory CineView Classic design?"), MessageBox.TYPE_YESNO, default=False)
