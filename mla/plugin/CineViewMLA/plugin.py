@@ -190,6 +190,13 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 		self["config"].onSelectionChanged.append(self.updatePreview)
 		self.onLayoutFinish.append(self.updatePreview)
 
+	def createSummary(self):
+		# Screen.createSummary() (first in the MRO) returns None, so 57b7a51 falls back to ScreenSummary, which
+		# picks the "SetupSummary" skin (skinName contains "Setup") without its "entry"/"value" sources
+		# -> skin errors in the log (18:45:05).  Use the native SetupSummary like ConfigListScreen does.
+		from Screens.Setup import SetupSummary
+		return SetupSummary
+
 	def _current(self):
 		cur = self["config"].getCurrent()
 		return cur if cur and len(cur) >= 4 else (None, None, None, None)

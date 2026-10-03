@@ -271,6 +271,27 @@ def _textfit_section(skin, section, screen_names, changes):
 	open(path, "w", encoding="utf-8").write(new)
 
 
+def make_default_poster(path):
+	"""Neutral, language-free CineView placeholder (2:3, JPEG for loadJPG): dark panel + film-frame glyph."""
+	from PIL import Image, ImageDraw
+	W, H = 600, 900
+	im = Image.new("RGB", (W, H))
+	d = ImageDraw.Draw(im)
+	for y in range(H):  # vertical gradient in the Classic panel tones
+		t = y / (H - 1)
+		d.line([(0, y), (W, y)], fill=(int(14 + 10 * t), int(24 + 14 * t), int(42 + 20 * t)))
+	d.rectangle([18, 18, W - 19, H - 19], outline=(60, 78, 104), width=3)
+	cx, cy, fw, fh = W // 2, H // 2 - 20, 260, 190  # film frame with sprocket holes
+	d.rounded_rectangle([cx - fw // 2, cy - fh // 2, cx + fw // 2, cy + fh // 2], radius=14, outline=(120, 140, 168), width=8)
+	for i in range(6):
+		x = cx - fw // 2 + 22 + i * ((fw - 44) // 5) - 9
+		for yy in (cy - fh // 2 + 16, cy + fh // 2 - 34):
+			d.rounded_rectangle([x, yy, x + 18, yy + 18], radius=4, fill=(120, 140, 168))
+	d.polygon([(cx - 28, cy - 34), (cx - 28, cy + 34), (cx + 36, cy)], fill=(232, 176, 48))
+	os.makedirs(os.path.dirname(path), exist_ok=True)
+	im.save(path, "JPEG", quality=90)
+
+
 def run(*a):
 	subprocess.check_call(list(a))
 
@@ -453,9 +474,16 @@ def main(golden, comps, control, out):
 	# MLA's own components (not derived from the golden set).
 	own = os.path.join(REPO, "mla", "components")
 	for kind in sorted(os.listdir(own)) if os.path.isdir(own) else []:
+		dest = os.path.join(out, PY) if kind == "_lib" else os.path.join(out, PY, kind)  # _lib = plain modules
 		for f in sorted(os.listdir(os.path.join(own, kind))):
 			if f.endswith(".py"):
-				shutil.copy2(os.path.join(own, kind, f), os.path.join(out, PY, kind, f))
+				shutil.copy2(os.path.join(own, kind, f), os.path.join(dest, f))
+
+	# P5: unified poster identity (one engine and one cache key for every screen) + neutral default poster.
+	posterx = os.path.join(out, PY, "Renderer", "CineViewMLAPosterX.py")
+	with open(posterx, "a", encoding="utf-8") as f:
+		f.write(open(os.path.join(HERE, "patches", "posterx_identity.py"), encoding="utf-8").read())
+	make_default_poster(os.path.join(skin, "mla_assets", "poster_default.jpg"))
 
 	# Runtime plugin + native pre-start hook (installed by the deploy step, not by the build).
 	shutil.copytree(os.path.join(REPO, "mla", "plugin", "CineViewMLA"), os.path.join(out, "usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA"), ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
