@@ -100,6 +100,39 @@ def main(golden, comps, control, out):
 	shutil.copy2(os.path.join(REPO, "mla", "sections.json"), os.path.join(skin, "mla", "sections.json"))
 	shutil.copytree(os.path.join(REPO, "mla", "guardian"), os.path.join(skin, "mla", "guardian"))
 
+	# MLA control screens (new, uniquely named) — included after core/common.
+	shutil.copy2(os.path.join(REPO, "mla", "ui", "mla_ui.openatv.xml"), os.path.join(skin, "core", "mla_ui.openatv.xml"))
+	sk = open(os.path.join(skin, "skin.xml"), encoding="utf-8").read()
+	anchor = '<include filename="core/common.openatv.xml" />'
+	assert sk.count(anchor) == 1, "include anchor missing"
+	sk = sk.replace(anchor, anchor + '\n\t<include filename="core/mla_ui.openatv.xml" />')
+	open(os.path.join(skin, "skin.xml"), "w", encoding="utf-8").write(sk)
+
+	# Preview images.  Layout previews come from REAL device screenshots (env MLA_PREVIEWS:
+	# dir with <section>.png); theme previews are color swatches of the palette.
+	try:
+		from PIL import Image, ImageDraw
+		prev = os.environ.get("MLA_PREVIEWS")
+		if prev:
+			for sec in json.load(open(os.path.join(REPO, "mla", "sections.json")))["sections"]:
+				src = os.path.join(prev, sec + ".png")
+				if os.path.isfile(src):
+					Image.open(src).convert("RGB").resize((720, 405)).save(os.path.join(skin, "layouts", sec, "classic", "preview.png"))
+		for key in theme.THEMES:
+			pal = theme.palette(key)
+			rgb = lambda h: tuple(int(h[i:i + 2], 16) for i in (3, 5, 7))
+			im = Image.new("RGB", (720, 405), rgb(pal["steThemePrimary"]))
+			d = ImageDraw.Draw(im)
+			d.rectangle([0, 0, 720, 70], fill=rgb(pal["steThemeTop"]))
+			d.rectangle([30, 100, 340, 375], fill=rgb(pal["steThemePanel"]))
+			d.rectangle([370, 100, 690, 375], fill=rgb(pal["steThemePanelAlt"]))
+			d.rectangle([370, 160, 690, 210], fill=rgb(pal["steThemeSelected"]))
+			d.rectangle([30, 20, 260, 50], fill=rgb(pal["steThemeAccent"]))
+			d.text((390, 175), theme.THEMES[key][0], fill=rgb(pal["steThemeText"]))
+			im.save(os.path.join(skin, "themes", key, "preview.png"))
+	except ImportError:
+		print("PIL not available: previews skipped")
+
 	# Python components: renamed copies, isolated config + isolated poster cache.
 	sys.path.insert(0, HERE)
 	from migrate_classic import COMPONENT_RENAMES
