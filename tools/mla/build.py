@@ -468,6 +468,7 @@ def main(golden, comps, control, out):
 	for scr, source, kind in apply_sib_textfit(skin):
 		print("SIB-TEXTFIT %-20s %-18s %s (narrow+wide)" % (scr, source, kind))
 	# P7: Details family (user-approved direction 2026-10-03; Classic packs untouched).
+	make_default_poster(os.path.join(skin, "mla_assets", "poster_default.jpg"))  # the P7 poster slots embed it
 	sys.path.insert(0, os.path.join(HERE, "p7"))
 	import gen_details
 	import gen_cinema
