@@ -74,12 +74,26 @@ def load_screens(skin):
 	return screens
 
 
-def rect(el, off=(0, 0)):
+def _coord(v, total):
+	"""Enigma2 skin coordinate: N, e, e-N, c, c+N, c-N, N%."""
+	v = v.strip()
+	if v.endswith("%"):
+		return int(float(v[:-1]) * total / 100)
+	for base, val in (("e", total), ("c", total // 2)):
+		if v.startswith(base):
+			rest = v[1:]
+			return val + (int(rest) if rest else 0)
+	return int(v)
+
+
+def rect(el, off=(0, 0), parent=(1920, 1080)):
 	try:
-		x, y = [int(v) for v in el.get("position", "").split(",")]
-		w, h = [int(v) for v in el.get("size", "").split(",")]
+		px, py = [p.strip() for p in el.get("position", "").split(",")]
+		sw, sh = [p.strip() for p in el.get("size", "").split(",")]
+		w, h = _coord(sw, parent[0]), _coord(sh, parent[1])
+		x, y = _coord(px, parent[0]), _coord(py, parent[1])
 		return (x + off[0], y + off[1], w, h)
-	except ValueError:
+	except (ValueError, AttributeError):
 		return None
 
 
