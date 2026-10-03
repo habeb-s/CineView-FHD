@@ -1,0 +1,42 @@
+{
+ "17_subtitle": {
+  "diff_pct": 0.0129,
+  "regions": [
+   {
+    "box": [
+     1840,
+     0,
+     32,
+     48
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=global.CurrentTime render=Label convert=ClockToText(Format:%H:%M) @1665,5,225,40 [AudioSelection] LIVE",
+     "widget source=global.CurrentTime render=Label convert=ClockToText(Date) @1440,45,450,37 [AudioSelection] LIVE",
+     "widget source=ScreenPath render=Label @30,5,1860,35 [AudioSelection]",
+     "widget source=Title render=Label @30,36,1890,45 [AudioSelection]"
+    ]
+   }
+  ],
+  "mask": [
+   [
+    1665,
+    5,
+    225,
+    40
+   ],
+   [
+    1440,
+    45,
+    450,
+    37
+   ]
+  ],
+  "residual_px": 0,
+  "unexplained": 0,
+  "needs_visual": 1,
+  "unmapped_dynamic": 0,
+  "verdict": "PASS-IF-CROPS-CONFIRMED"
+ }
+}
