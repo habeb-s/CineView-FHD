@@ -96,7 +96,29 @@ BITRATE_PATCHES = [
 	# video=0 for the whole service (display "0.13 Mbps" = audio only) while a fresh reader on the same
 	# PIDs reads 4-6 Mbps.  The original engine never restarts a reader for the same service, and on a
 	# service change starts the new reader in the same tick it kills the old one.
-	("import NavigationInstance\n", "import NavigationInstance\nimport time\n"),
+	("import NavigationInstance\n", """import NavigationInstance
+import os
+import signal
+import time
+
+
+def _kill_orphan_readers():
+    # A `bitrate` reader whose parent is not this enigma2 is left over from a previous enigma2
+    # session (eConsoleAppContainer children survive init 4/3).  The demux hands the video PES of a
+    # service to one reader only, so such an orphan makes every new reader report video=0 (T6).
+    me = os.getpid()
+    for pid in os.listdir("/proc"):
+        if not pid.isdigit():
+            continue
+        try:
+            stat = open("/proc/%s/stat" % pid).read()
+            comm = stat[stat.index("(") + 1:stat.rindex(")")]
+            ppid = int(stat[stat.rindex(")") + 2:].split()[1])
+            if comm == "bitrate" and ppid != me:
+                os.kill(int(pid), signal.SIGKILL)
+        except Exception:
+            pass
+"""),
 	("""        self.vmin = self.vmax = self.vavg = self.vcur = 0
         self.amin = self.amax = self.aavg = self.acur = 0
 
@@ -145,6 +167,7 @@ BITRATE_PATCHES = [
             self.zero_video = 0
             self.started_at = now
             self.running = True
+            _kill_orphan_readers()
             rc = self.container.execute(cmd)"""),
 	("""            if key != self.service_key:
                 self.stop()

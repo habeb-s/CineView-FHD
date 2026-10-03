@@ -72,6 +72,7 @@ def main(build):
 	spec = importlib.util.spec_from_file_location("cvb", path)
 	mod = importlib.util.module_from_spec(spec)
 	spec.loader.exec_module(mod)
+	mod._kill_orphan_readers = lambda: None  # never touch processes of the test host
 	eng = mod._ENGINE
 	clock = [1000.0]
 	mod.time.time = lambda: clock[0]
