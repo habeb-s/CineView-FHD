@@ -36,8 +36,8 @@ best, conf, why = M.choose(c, [film, series, series_tvm])
 check("ambiguous title without event data -> no poster (%s)" % why, best is None)
 
 # 3. Localised film title + year: IMDb answers the Croatian title with the English one.
-hp = M.identify("Harry Potter i kamen mudraca", "Na 11. rođendan Harry Potter saznaje...", "(Engleska/SAD, 2001, film) Na 11. rođendan...")
-hpc = {"provider": "imdb", "id": "tt0241527", "title": "Harry Potter and the Sorcerer's Stone", "year": 2001, "year_end": 2001, "kind": "movie", "url": "hp", "rank": 0}
+hp = M.identify("Harry Potter i kamen mudraca", "Na 11. rođendan Harry Potter saznaje...", "(Engleska/SAD, 2001, film) Na 11. rođendan... Uloge: Daniel Radcliffe, Rupert Grint, Emma Watson")
+hpc = {"provider": "imdb", "id": "tt0241527", "title": "Harry Potter and the Sorcerer's Stone", "year": 2001, "year_end": 2001, "kind": "movie", "url": "hp", "rank": 0, "stars": "Daniel Radcliffe, Rupert Grint"}
 hp2 = {"provider": "imdb", "id": "tt0295297", "title": "Harry Potter and the Chamber of Secrets", "year": 2002, "year_end": 2002, "kind": "movie", "url": "hp2", "rank": 1}
 best, conf, why = M.choose(hp, [hpc, hp2])
 check("localised title + year -> correct film (%s)" % why, best is hpc)
@@ -70,6 +70,24 @@ e = M.identify("Columbo 9,")
 check("trailing number/comma cleaned: %r" % e["title"], e["title"] == "Columbo 9")
 e = M.identify("Kosti S05E12")
 check("SxxEyy -> series, title cleaned (%s/%s)" % (e["title"], e["kind"]), e["kind"] == "series" and e["title"] == "Kosti")
+
+# 9. Device cases 2026-10-03 21:40 (identity engine on Slot 8)
+i = M.identify("Nitko", "", "(SAD, 2021, film) Hutch Mansell... Uloge: Bob Odenkirk, Connie Nielsen, Christopher Lloyd.")
+wrong = {"provider": "imdb", "id": "tt1", "title": "No One Gets Out Alive", "year": 2021, "year_end": 2021, "kind": "movie", "url": "x", "rank": 0, "stars": "Cristina Rodlo, Marc Menchaca"}
+right = {"provider": "imdb", "id": "tt7888964", "title": "Nobody", "year": 2021, "year_end": 2021, "kind": "movie", "url": "y", "rank": 1, "stars": "Bob Odenkirk, Aleksey Serebryakov"}
+best, conf, why = M.choose(i, [wrong])
+check("localised title without cast confirmation rejected (%s)" % why, best is None)
+best, conf, why = M.choose(i, [wrong, right])
+check("cast in description confirms the right film (%s)" % why, best is right)
+for raw, title, kind, year in (
+		("Indijski začin na francuski način, američko-francuski film (2014.) (12) (R)", "Indijski začin na francuski način", "movie", 2014),
+		("Francuska s Evom Longorijom, dokumentarna serija ( )", "Francuska s Evom Longorijom", "series", None),
+		("Clarksonova farma (3): Buđenje, dokumentarna serija ( )", "Clarksonova farma: Buđenje", "series", None),
+		("Love Island Adria, . reality show", "Love Island Adria", "series", None),
+		("Chicago u plamenu 10, . serija", "Chicago u plamenu", "series", None),
+		("Prijatelji 7, . serija", "Prijatelji", "series", None)):
+	e = M.identify(raw)
+	check("clean %r -> %r/%s/%s" % (raw, e["title"], e["kind"], e["year"]), (e["title"], e["kind"], e["year"]) == (title, kind, year))
 
 print("RESULT: %s" % ("all passed" if FAIL == 0 else "%d failed" % FAIL))
 sys.exit(1 if FAIL else 0)

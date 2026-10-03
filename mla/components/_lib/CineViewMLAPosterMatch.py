@@ -65,6 +65,22 @@ def identify(name, short="", extended="", now_year=None):
 	"""-> dict(title, kind, year, key, generic, reason).  Deterministic for the same event data."""
 	raw = (name or "").replace("\x86", "").replace("\x87", "").strip()
 	title, kind, year = raw, None, None
+	# Device-observed EPG title noise (HRT/RTL, 16.0E): "( )", "(12)", "(R)", "(2014.)", ", . serija",
+	# ", dokumentarna serija", ", američko-francuski film (2014.)", ", . reality show".
+	ym = re.search(r"\((19\d{2}|20\d{2})\.?\)", title)
+	if ym:
+		year = int(ym.group(1))
+	title = re.sub(r"\((?:\s*|\d{1,2}|R|PG|PG-13|[A-Z]{1,3}|(?:19|20)\d{2}\.?)\)", " ", title)
+	title = re.sub(r",\s*\.\s*", ", ", title)
+	parts = [p.strip() for p in title.split(",")]
+	while len(parts) > 1:
+		tail = parts[-1].lower()
+		k = _kind_of(re.sub(r"[-–./]", " ", tail)) or ("series" if "reality" in tail or "show" in tail else None)
+		if k is None or len(tail.split()) > 5:
+			break
+		kind = kind or k
+		parts.pop()
+	title = ", ".join(parts)
 	m = _TITLE_KIND_SUFFIX.search(title)
 	if m:
 		kind = "series" if m.group(1).lower() in ("serija", "series") else "movie"
@@ -73,6 +89,9 @@ def identify(name, short="", extended="", now_year=None):
 		kind = kind or "series"
 		title = _EPISODE.sub(" ", title)
 	title = re.sub(r"\s+", " ", title).strip(" ,-:|.")
+	title = re.sub(r"\s+([:,])", r"\1", title)
+	if kind == "series":
+		title = re.sub(r"\s+\d{1,2}$", "", title)  # season number ("Chicago u plamenu 10")
 	desc = " ".join(x for x in (short or "", extended or "") if x)
 	# "(SAD, 2012, film)", "(Engleska/SAD, 2001, film)", "(Hrvatska, 2019.)", "(USA 1987, Serie)"
 	for inner in _PAREN.findall(desc[:600]):
@@ -94,7 +113,7 @@ def identify(name, short="", extended="", now_year=None):
 	elif words & _GENERIC_WORDS or any(p in n for p in _GENERIC_PHRASES):
 		generic = "generic-word"
 	key = "%s~%s~%s" % (n[:150], kind or "", year or "")
-	return {"title": title, "norm": n, "kind": kind, "year": year, "key": key, "generic": generic}
+	return {"title": title, "norm": n, "kind": kind, "year": year, "key": key, "generic": generic, "desc_norm": norm(desc)}
 
 
 # ------------------------------------------------------------------ provider candidates
@@ -125,7 +144,7 @@ def imdb_candidates(data):
 		y0, y1 = _range(row.get("yr") or row.get("y"))
 		kind = _imdb_kind(row)
 		out.append({"provider": "imdb", "id": row.get("id"), "title": row.get("l") or "", "year": y0,
-			"year_end": y1 if kind == "series" else y0, "kind": kind, "url": url, "rank": rank})
+			"year_end": y1 if kind == "series" else y0, "kind": kind, "url": url, "rank": rank, "stars": row.get("s") or ""})
 	return out
 
 
@@ -175,6 +194,16 @@ def similarity(a, b):
 	return r
 
 
+def cast_hit(ident, cand):
+	"""True when a lead actor of the candidate (IMDb 's' field) is named in the event description."""
+	desc = " " + ident.get("desc_norm", "") + " "
+	for star in (cand.get("stars") or "").split(",")[:3]:
+		last = norm(star).split()
+		if last and len(last[-1]) > 3 and (" " + last[-1] + " ") in desc:
+			return True
+	return False
+
+
 def score(ident, cand):
 	"""-> (confidence 0..1, reasons).  A known kind/year that contradicts the candidate rejects it."""
 	reasons = []
@@ -200,13 +229,16 @@ def score(ident, cand):
 				# IMDb's suggestion search matched the (often localised) EPG title AND the production year
 				# is identical: same film even when the canonical title differs (Croatian EPG title vs.
 				# English IMDb title).  Only trusted for IMDb's top two answers; elsewhere the title must match.
-				if sim >= 0.6 or (cand["provider"] == "imdb" and cand.get("rank", 9) <= 1):
+				cast = cast_hit(ident, cand)
+				if sim >= 0.6 or (cand["provider"] == "imdb" and cand.get("rank", 9) <= 1 and cast):
+					# A localised title is trusted only when the cast in the EPG description confirms the
+					# work (device case: "Nitko" 2021 = "Nobody", IMDb's top answer "No One Gets Out Alive").
 					conf = max(conf, 0.70) + 0.25
 				else:
 					conf += 0.10
-				reasons.append("year=%d" % year)
+				reasons.append("year=%d" % year + (",cast" if cast else ""))
 			elif abs(year - y0) == 1:
-				conf = max(conf, 0.60) + 0.15
+				conf += 0.10  # EPG year off by one (release vs. production year): a hint, never a rescue
 				reasons.append("year~%d/%d" % (year, y0))
 			else:
 				return 0.0, reasons + ["year %d!=%d" % (year, y0)]

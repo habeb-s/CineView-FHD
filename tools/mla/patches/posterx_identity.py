@@ -193,8 +193,10 @@ class _CineViewMLAPosterXIdentity(_CineViewMLAPosterXBase):
         ev = self._resolve_event()
         name, short, ext, begin = _mla_event_texts(ev) if ev is not None else ("", "", "", 0)
         if not name:
-            self.instance.hide()
+            # No EPG event: neutral default poster, never an empty frame (user rule, 21:09).
             self._title = ""
+            self._timer.stop()
+            self._show_default()
             return
         ident = _mla_identify(name, short, ext, now_year=_mla_time.localtime().tm_year + 1)
         self._ident = ident
