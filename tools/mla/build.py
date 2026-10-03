@@ -91,6 +91,73 @@ RENDERER_PATCHES = [
 ]
 
 
+BITRATE_PATCHES = [
+	# T6 (device-proven): a `bitrate` reader started while the service is still starting can stay at
+	# video=0 for the whole service (display "0.13 Mbps" = audio only) while a fresh reader on the same
+	# PIDs reads 4-6 Mbps.  The original engine never restarts a reader for the same service, and on a
+	# service change starts the new reader in the same tick it kills the old one.
+	("import NavigationInstance\n", "import NavigationInstance\nimport time\n"),
+	("""        self.vmin = self.vmax = self.vavg = self.vcur = 0
+        self.amin = self.amax = self.aavg = self.acur = 0
+
+    def _clear_values(self):""", """        self.vmin = self.vmax = self.vavg = self.vcur = 0
+        self.amin = self.amax = self.aavg = self.acur = 0
+        self.has_video = False
+        self.zero_video = 0
+        self.started_at = 0.0
+        self.last_restart = 0.0
+        self.not_before = 0.0
+
+    def _clear_values(self):"""),
+	("""        self.remaining = ""
+        self.lines = []
+        self._clear_values()
+
+    def _closed(self, retval):""", """        self.remaining = ""
+        self.lines = []
+        self._clear_values()
+        self.zero_video = 0
+        self.not_before = time.time() + 1.0  # let the killed reader release its demux filters
+
+    def _closed(self, retval):"""),
+	("""                    self.amin, self.amax, self.aavg, self.acur = [int(float(x)) for x in a[:4]]""", """                    self.amin, self.amax, self.aavg, self.acur = [int(float(x)) for x in a[:4]]
+                    self.zero_video = self.zero_video + 1 if (self.has_video and not self.vcur) else 0"""),
+	("""            key = ref.toString()
+            if self.running and key == self.service_key:
+                return""", """            key = ref.toString()
+            now = time.time()
+            if self.running and key == self.service_key:
+                # watchdog: video PID present but the reader keeps delivering 0 kbit/s video
+                if self.zero_video >= 5 and now - self.started_at > 5 and now - self.last_restart > 10:
+                    self.last_restart = now
+                    self.stop()
+                return
+            if now < self.not_before:
+                return"""),
+	("""            self.remaining = ""
+            self.lines = []
+            self._clear_values()
+            self.running = True
+            rc = self.container.execute(cmd)""", """            self.remaining = ""
+            self.lines = []
+            self._clear_values()
+            self.has_video = bool(vpid)
+            self.zero_video = 0
+            self.started_at = now
+            self.running = True
+            rc = self.container.execute(cmd)"""),
+	("""            if key != self.service_key:
+                self.stop()
+            self.service_key = key""", """            if key != self.service_key:
+                was_running = self.running
+                self.stop()
+                self.service_key = key
+                if was_running:
+                    return  # start the new reader on the next poll, after the old one released the demux
+            self.service_key = key"""),
+]
+
+
 def run(*a):
 	subprocess.check_call(list(a))
 
@@ -254,6 +321,10 @@ def main(golden, comps, control, out):
 			for old, new in sorted(COMPONENT_RENAMES.items(), key=lambda kv: -len(kv[0])):
 				src = re.sub(r"\b" + old + r"\b", new, src)
 			src = src.replace("config.plugins.cineview.", "config.plugins.cineviewmla.").replace('hasattr(config.plugins, "cineview")', 'hasattr(config.plugins, "cineviewmla")').replace("config.plugins.cineview =", "config.plugins.cineviewmla =").replace('hasattr(config.plugins.cineview,', 'hasattr(config.plugins.cineviewmla,')
+			if base == "CineViewBitrate":
+				for old, new in BITRATE_PATCHES:
+					assert src.count(old) == 1, "bitrate patch anchor not unique: %r" % old[:50]
+					src = src.replace(old, new)
 			if base == "CineViewPosterX":
 				assert src.count(POSTER_PATCH_OLD) == 1
 				for old, new in RENDERER_PATCHES:
