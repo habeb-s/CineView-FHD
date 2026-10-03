@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RTL one-line title experiment (TextTest2 'file' = this absolute path). Each row: one RunningText config. -->
+<skin>
+	<screen name="RTLTest" position="fill" flags="wfNoBorder">
+		<eLabel position="80,80" size="1760,900" backgroundColor="#08182B" zPosition="1" />
+		<eLabel text="A swimming,left halign=right noWrap" position="100,100" size="700,30" font="Regular;22" foregroundColor="#B6B6B6" backgroundColor="#08182B" zPosition="2" />
+		<widget source="session.Event_Now" render="RunningText" position="900,96" size="800,42" transparent="1" zPosition="3" foregroundColor="#F0F0F0" font="Regular;36" halign="right" noWrap="1" options="movetype=swimming,direction=left,step=2,steptime=50,startdelay=3000,pause=2500,repeat=0,always=0"><convert type="EventName">Name</convert></widget>
+		<eLabel text="B swimming,right halign=right noWrap" position="100,200" size="700,30" font="Regular;22" foregroundColor="#B6B6B6" backgroundColor="#08182B" zPosition="2" />
+		<widget source="session.Event_Now" render="RunningText" position="900,196" size="800,42" transparent="1" zPosition="3" foregroundColor="#F0F0F0" font="Regular;36" halign="right" noWrap="1" options="movetype=swimming,direction=right,step=2,steptime=50,startdelay=3000,pause=2500,repeat=0,always=0"><convert type="EventName">Name</convert></widget>
+		<eLabel text="C running,right halign=right noWrap" position="100,300" size="700,30" font="Regular;22" foregroundColor="#B6B6B6" backgroundColor="#08182B" zPosition="2" />
+		<widget source="session.Event_Now" render="RunningText" position="900,296" size="800,42" transparent="1" zPosition="3" foregroundColor="#F0F0F0" font="Regular;36" halign="right" noWrap="1" options="movetype=running,direction=right,step=2,steptime=50,startdelay=3000,pause=2500,repeat=0,always=0"><convert type="EventName">Name</convert></widget>
+		<eLabel text="D swimming,left halign=left noWrap" position="100,400" size="700,30" font="Regular;22" foregroundColor="#B6B6B6" backgroundColor="#08182B" zPosition="2" />
+		<widget source="session.Event_Now" render="RunningText" position="900,396" size="800,42" transparent="1" zPosition="3" foregroundColor="#F0F0F0" font="Regular;36" noWrap="1" options="movetype=swimming,direction=left,step=2,steptime=50,startdelay=3000,pause=2500,repeat=0,always=0"><convert type="EventName">Name</convert></widget>
+		<eLabel text="E Label halign=right noWrap (static)" position="100,500" size="700,30" font="Regular;22" foregroundColor="#B6B6B6" backgroundColor="#08182B" zPosition="2" />
+		<widget source="session.Event_Now" render="Label" position="900,496" size="800,42" transparent="1" zPosition="3" foregroundColor="#F0F0F0" font="Regular;36" halign="right" noWrap="1"><convert type="EventName">Name</convert></widget>
+		<eLabel text="F swimming,top halign=right wrap (current Classic way)" position="100,600" size="700,30" font="Regular;22" foregroundColor="#B6B6B6" backgroundColor="#08182B" zPosition="2" />
+		<widget source="session.Event_Now" render="RunningText" position="900,596" size="800,41" transparent="1" zPosition="3" foregroundColor="#F0F0F0" font="Regular;36" halign="right" options="movetype=swimming,direction=top,step=1,steptime=70,startdelay=3000,pause=3000,repeat=0,always=0,wrap=1"><convert type="EventName">Name</convert></widget>
+		<eLabel text="G running,left halign=right noWrap" position="100,700" size="700,30" font="Regular;22" foregroundColor="#B6B6B6" backgroundColor="#08182B" zPosition="2" />
+		<widget source="session.Event_Now" render="RunningText" position="900,696" size="800,42" transparent="1" zPosition="3" foregroundColor="#F0F0F0" font="Regular;36" halign="right" noWrap="1" options="movetype=running,direction=left,step=2,steptime=50,startdelay=3000,pause=2500,repeat=0,always=0"><convert type="EventName">Name</convert></widget>
+	</screen>
+</skin>
