@@ -221,15 +221,25 @@ def apply_sib_textfit(skin):
 	"""SecondInfoBar fix (approved by the user for Slot 8 / MLA classic): full event title and
 	description inside their panels; when posters are off the texts use the poster area instead of
 	leaving it empty.  Uses CineViewMLAShowIf (text pass-through + native-style visibility)."""
-	path = os.path.join(skin, "layouts", "secondinfobar", "classic", "screens.openatv.xml")
-	src = open(path, encoding="utf-8").read()
-	key = POSTER_TOGGLE % "secondinfobar"
 	changes = []
+	for section, names in SIB_TEXTFIT_SCREENS:
+		_textfit_section(skin, section, names, changes)
+	return changes
+
+
+# EventView added on the user's approval (2026-10-03 18:19): same four widgets/positions/sources.
+SIB_TEXTFIT_SCREENS = (("secondinfobar", ("SecondInfoBar", "SecondInfoBarSimple")), ("eventview", ("EventView",)))
+
+
+def _textfit_section(skin, section, screen_names, changes):
+	path = os.path.join(skin, "layouts", section, "classic", "screens.openatv.xml")
+	src = open(path, encoding="utf-8").read()
+	key = POSTER_TOGGLE % section
 
 	def screen_fix(m):
 		body = m.group(0)
 		name = _attrs(body[:body.index(">")]).get("name", "?")
-		if name not in ("SecondInfoBar", "SecondInfoBarSimple"):
+		if name not in screen_names:
 			return body
 
 		def widget_fix(wm):
@@ -255,7 +265,6 @@ def apply_sib_textfit(skin):
 
 	new = re.sub(r"<screen\b.*?</screen>", screen_fix, src, flags=re.S)
 	open(path, "w", encoding="utf-8").write(new)
-	return changes
 
 
 def run(*a):
