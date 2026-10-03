@@ -50,6 +50,18 @@ CAPMAP = {
 	"16_audio": ["AudioSelection", "Setup"],
 	"17_subtitle": ["SubtitleSelection", "AudioSelection", "Setup"],
 	"18_usagegui": ["Menu", "MenuHorizontal"],
+	# M8 functional steps
+	"f01_infobar_shown": ["InfoBar"],
+	"f03_sib_shown": ["SecondInfoBar", "InfoBar"],
+	"f04_sib_after15s": ["SecondInfoBar", "InfoBar"],
+	"f06_chlist_down3": ["ChannelSelection"],
+	"f07_chlist_red": ["ChannelSelection"],
+	"f08_chlist_menu": ["ChannelContextMenu", "ChoiceBox", "Setup"],
+	"f09_epg_right2": ["GraphicalEPG"],
+	"f10_epg_down2": ["GraphicalEPG"],
+	"f11_epg_info": ["EventView", "EPGSelection", "GraphicalEPG"],
+	"f15_eventview_right": ["EventView", "InfoBar"],
+	"f16_audio_down": ["AudioSelection", "Setup"],
 }
 
 
