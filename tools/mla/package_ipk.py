@@ -71,7 +71,8 @@ S=/usr/share/enigma2/CineView_FHD_MLA
 E="python3 $S/mla/engine/composer.py"
 mkdir -p /etc/enigma2/cineview_mla
 if [ ! -e "$S/active" ]; then  # first install (or a dangling link)
-  rm -f "$S/active"; ln -s generations/g000000 "$S/active"
+  # factory = active, last-known-good and the stored selection (also resets a selection kept from an earlier install)
+  $E rollback --to factory >/tmp/cineview_mla_postinst.log 2>&1 || { rm -f "$S/active"; ln -s generations/g000000 "$S/active"; }
   echo "CineView MLA: factory design (Classic, Navy) active."
 elif [ "$(readlink $S/active)" != "generations/g000000" ]; then
   if $E apply >/tmp/cineview_mla_postinst.log 2>&1; then

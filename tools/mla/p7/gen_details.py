@@ -27,7 +27,9 @@ import spec_p7 as S  # noqa: E402
 FRAME_DIR = "mla_assets"
 T_OPTS = "movetype=swimming,direction=top,step=1,steptime=70,startdelay=3000,pause=3000,repeat=0,always=0,wrap=1"
 D_OPTS = "movetype=swimming,direction=top,step=1,steptime=60,startdelay=4000,pause=3000,repeat=0,always=0,wrap=1"
-RUN_OPTS = "movetype=running,direction=left,step=2,steptime=55,startdelay=1600,pause=1000,repeat=0,always=0"
+# one-line service/provider/city fields: horizontal SWIMMING (the start of the text is shown first; Classic's
+# "running" mode slides the text in from the right edge, so a long name is half-missing for a while)
+RUN_OPTS = "movetype=swimming,direction=left,step=2,steptime=55,startdelay=2500,pause=2500,repeat=0,always=0"
 H_OPTS = "movetype=swimming,direction=left,step=2,steptime=50,startdelay=3000,pause=2500,repeat=0,always=0"
 SWIM_SHORT = "movetype=swimming,direction=top,step=1,steptime=70,startdelay=2200,pause=1400,repeat=0,always=0"
 
