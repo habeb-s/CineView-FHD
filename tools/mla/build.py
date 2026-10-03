@@ -292,6 +292,21 @@ def make_default_poster(path):
 	im.save(path, "JPEG", quality=90)
 
 
+def recolor_rgb(rgb, base_hex, black=False):
+	"""Same re-tint rule as recolor_png() for one colour -> 'RRGGBB'."""
+	import colorsys
+	nh, nl, ns = colorsys.rgb_to_hls(0x0A / 255.0, 0x1D / 255.0, 0x35 / 255.0)
+	th, tl, ts = colorsys.rgb_to_hls(*(int(base_hex[i:i + 2], 16) / 255.0 for i in (1, 3, 5)))
+	h, l, s = colorsys.rgb_to_hls(*(c / 255.0 for c in rgb))
+	if base_hex.upper() == "#0A1D35":
+		return "%02X%02X%02X" % rgb
+	if black:
+		h2, s2, l2 = h, s * 0.06, l * 0.9
+	else:
+		h2, s2, l2 = th, min(1.0, s * ts / ns), min(1.0, l * (0.5 + 0.5 * tl / nl))
+	return "%02X%02X%02X" % tuple(int(c * 255 + 0.5) for c in colorsys.hls_to_rgb(h2, l2, s2))
+
+
 def recolor_png(src, dst, base_hex, black=False):
 	"""Re-tint a navy-tinted Classic bitmap for another theme: pixels in the navy hue band take the theme's
 	hue/saturation (lightness kept, scaled toward the theme base); alpha and neutral pixels are untouched."""
@@ -449,6 +464,38 @@ def main(golden, comps, control, out):
 		open(os.path.join(skin, "themes", key, "theme.xml"), "w", encoding="utf-8").write(data)
 		json.dump({"id": key, "label": theme.THEMES[key][0], "base": theme.THEMES[key][1]}, open(os.path.join(skin, "themes", key, "theme.json"), "w"))
 	assert open(os.path.join(skin, "themes", "navy", "theme.xml")).read() == tpl, "navy must equal golden colors"
+	# G-1 (EPG): the GraphicalEPG cells use enigma2's NATIVE default 0x2D455E (EpgList.backColor), a slate
+	# blue that stayed in every theme (theme sweep: ~25 % navy residue on the EPG only).  A theme role
+	# steEpgCell takes over: navy = exactly 0x2D455E (Classic unchanged), other themes = the same cell
+	# re-tinted to the theme hue (black: neutral).
+	for key in theme.THEMES:
+		cell = "#00%s" % recolor_rgb((0x2D, 0x45, 0x5E), theme.THEMES[key][1], key == "black")
+		tx = os.path.join(skin, "themes", key, "theme.xml")
+		x = open(tx, encoding="utf-8").read()
+		anchor = "</colors>"
+		assert x.count(anchor) == 1
+		x = x.replace(anchor, '\t<color name="steEpgCell" value="%s" />\n\t%s' % (cell, anchor))
+		open(tx, "w", encoding="utf-8").write(x)
+	n_epg = 0
+	ep = os.path.join(skin, "layouts", "epg", "classic", "screens.openatv.xml")
+	x = open(ep, encoding="utf-8").read()
+	for scr in ("GraphicalEPG", "GraphicalEPGPIG", "GraphicalInfoBarEPG", "GraphMultiEPG"):
+		m = re.search(r'<screen name="%s"[^>]*>.*?</screen>' % scr, x, re.S)
+		if not m:
+			continue
+		body = m.group(0)
+		w = re.search(r'<widget name="list"[^>]*?/?>', body)
+		if not w:
+			continue
+		tag = w.group(0)
+		add = "".join(' %s="steEpgCell"' % a for a in ("EntryBackgroundColor", "EntryBackgroundColorPast", "ServiceBackgroundColor", "TimeBackgroundColor") if (a + "=") not in tag)
+		if add:
+			end = -2 if tag.endswith("/>") else -1
+			body2 = body.replace(tag, tag[:end].rstrip() + add + tag[end:], 1)
+			x = x.replace(body, body2, 1)
+			n_epg += 1
+	open(ep, "w", encoding="utf-8").write(x)
+	print("G-1 EPG cell colour role on %d GraphicalEPG list widget(s)" % n_epg)
 	shutil.rmtree(os.path.join(skin, "themes", "golden"))
 	# Per-theme bitmap assets of the original theme engine (if shipped).
 	src_theme_assets = os.path.join(golden, "themes")
