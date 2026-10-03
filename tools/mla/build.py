@@ -175,6 +175,7 @@ def load_theme_module(control_dir):
 
 
 def main(golden, comps, control, out):
+	sys.dont_write_bytecode = True  # the engine is imported from the output tree below
 	skin = os.path.join(out, SKIN)
 	if os.path.exists(out):
 		shutil.rmtree(out)
