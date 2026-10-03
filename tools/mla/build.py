@@ -61,17 +61,22 @@ CACHE_ROOT = _mla_cache_root()
 IMDB_PATCHES = [
 	("        self.mode = (type or 'plain').lower()\n",
 	 "        args = [a.strip() for a in (type or 'plain').lower().split(',')]\n        self.mode = args[0] or 'plain'\n        self.empty = '' if 'hide' in args[1:] else '--'\n"),
-	("        if not title:\n            return '--'\n", "        if not title:\n            return self.empty\n        if self.empty == '' and _cv_generic(title):\n            return ''  # news/weather/magazines: a title search would return some other work's rating\n"),
+	("        if not title:\n            return '--'\n", "        if not title:\n            return self.empty\n        if self.empty == '' and not _cv_rateable(title, self.source):\n            return ''  # only films/series identified from the EPG text get a rating (title searches mis-match)\n"),
 	("        if rating is None:\n            return '--'\n", "        if rating is None:\n            return self.empty\n"),
 ]
 IMDB_GENERIC_HELPER = """
 
-def _cv_generic(title):
-    # P7 device test 23:35: 'Dnevnik 3' (news) got IMDb 8.5/10.  Same generic-title rules as the poster identity
-    # engine (CineViewMLAPosterMatch.identify): generic programmes never show a rating.
+def _cv_rateable(title, source):
+    # P7 device tests: 'Dnevnik 3' (news) got IMDb 8.5/10, 'Skener 7' (sports magazine) 7.9/10 - a bare title
+    # search returns some other work.  With ',hide' a rating is shown only when the event is identified as a
+    # film or a series from its own EPG text (same rules as the poster identity engine) and is not generic.
     try:
         from Components.CineViewMLAPosterMatch import identify
-        return identify(title).get('generic') is not None
+        ev = getattr(source, 'event', None)
+        short = (ev.getShortDescription() if ev else '') or ''
+        ext = (ev.getExtendedDescription() if ev else '') or ''
+        i = identify(title, short, ext)
+        return i.get('generic') is None and i.get('kind') in ('movie', 'series')
     except Exception:
         return False
 """
