@@ -1,0 +1,2974 @@
+{
+ "f01_infobar_shown": {
+  "diff_pct": 0.2637,
+  "regions": [
+   {
+    "box": [
+     96,
+     1024,
+     32,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": [
+     "widget source=session.FrontendStatus render=Label convert=FrontendInfo(SNR) @94,1030,70,28 [InfoBar] LIVE"
+    ]
+   },
+   {
+    "box": [
+     272,
+     1024,
+     16,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": [
+     "widget source=session.FrontendStatus render=Progress convert=FrontendInfo(SNR) @165,1038,160,10 [InfoBar] LIVE"
+    ]
+   },
+   {
+    "box": [
+     400,
+     1024,
+     16,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": [
+     "widget source=session.FrontendStatus render=Label convert=FrontendInfo(SNRdB) @377,1030,105,28 [InfoBar] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1104,
+     896,
+     720,
+     16
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.448,
+    "elements": [
+     "widget source=session.Event_Now render=Progress convert=EventTime(Progress) @1090,900,775,7 [InfoBar] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1120,
+     1024,
+     32,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": [
+     "widget source=session.CurrentService render=Label convert=CineViewMLACPUTemp(Short) @1077,1030,132,28 [InfoBar] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1536,
+     1024,
+     48,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.CurrentService render=Label convert=CineViewMLABitrate(Mbps) @1538,1030,120,28 [InfoBar] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1840,
+     1024,
+     16,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.OAWeather render=Label convert=OAWeather(temperature_current) @1815,1030,66,28 [InfoBar] LIVE"
+    ]
+   }
+  ],
+  "mask": [
+   [
+    94,
+    1030,
+    70,
+    28
+   ],
+   [
+    165,
+    1038,
+    160,
+    10
+   ],
+   [
+    377,
+    1030,
+    105,
+    28
+   ],
+   [
+    1090,
+    900,
+    775,
+    7
+   ],
+   [
+    1077,
+    1030,
+    132,
+    28
+   ],
+   [
+    1538,
+    1030,
+    120,
+    28
+   ],
+   [
+    1815,
+    1030,
+    66,
+    28
+   ]
+  ],
+  "residual_px": 0,
+  "unexplained": 0,
+  "needs_visual": 3,
+  "unmapped_dynamic": 0,
+  "verdict": "PASS-IF-CROPS-CONFIRMED"
+ },
+ "f02_infobar_after8s": {
+  "diff_pct": 0.0,
+  "regions": [],
+  "mask": [],
+  "residual_px": 0,
+  "unexplained": 0,
+  "needs_visual": 0,
+  "unmapped_dynamic": 0,
+  "verdict": "PASS"
+ },
+ "f03_sib_shown": {
+  "diff_pct": 1.8921,
+  "regions": [
+   {
+    "box": [
+     80,
+     160,
+     112,
+     48
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Now render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True) @95,165,480,64 [SecondInfoBar] LIVE",
+     "widget source=session.Event_Now render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True,Invert) @95,165,725,64 [SecondInfoBar] LIVE"
+    ]
+   },
+   {
+    "box": [
+     96,
+     224,
+     464,
+     80
+    ],
+    "class": "UNEXPLAINED",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Now render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True) @95,165,480,64 [SecondInfoBar] LIVE",
+     "widget source=session.Event_Now render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True,Invert) @95,165,725,64 [SecondInfoBar] LIVE",
+     "widget source=session.Event_Now render=RunningText convert=EventName(FullDescription)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True) @95,245,480,261 [SecondInfoBar] LIVE",
+     "widget source=session.Event_Now render=RunningText convert=EventName(FullDescription)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True,Invert) @95,245,725,261 [SecondInfoBar] LIVE"
+    ]
+   },
+   {
+    "box": [
+     96,
+     1024,
+     32,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": [
+     "widget source=session.FrontendStatus render=Label convert=FrontendInfo(SNR) @94,1030,70,28 [SecondInfoBar] LIVE"
+    ]
+   },
+   {
+    "box": [
+     272,
+     1024,
+     16,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": [
+     "widget source=session.FrontendStatus render=Progress convert=FrontendInfo(SNR) @165,1038,160,10 [SecondInfoBar] LIVE"
+    ]
+   },
+   {
+    "box": [
+     384,
+     1024,
+     32,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.FrontendStatus render=Label convert=FrontendInfo(SNRdB) @377,1030,105,28 [SecondInfoBar] LIVE"
+    ]
+   },
+   {
+    "box": [
+     944,
+     160,
+     272,
+     48
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Next render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True) @950,165,580,64 [SecondInfoBar] LIVE",
+     "widget source=session.Event_Next render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True,Invert) @950,165,890,64 [SecondInfoBar] LIVE"
+    ]
+   },
+   {
+    "box": [
+     944,
+     224,
+     592,
+     176
+    ],
+    "class": "UNEXPLAINED",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Next render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True) @950,165,580,64 [SecondInfoBar] LIVE",
+     "widget source=session.Event_Next render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True,Invert) @950,165,890,64 [SecondInfoBar] LIVE",
+     "widget source=session.Event_Next render=RunningText convert=EventName(FullDescription)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True) @950,245,580,261 [SecondInfoBar] LIVE",
+     "widget source=session.Event_Next render=RunningText convert=EventName(FullDescription)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True,Invert) @950,245,890,261 [SecondInfoBar] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1120,
+     1024,
+     32,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.CurrentService render=Label convert=CineViewMLACPUTemp(Short) @1077,1030,132,28 [SecondInfoBar] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1136,
+     896,
+     704,
+     16
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.454,
+    "elements": [
+     "widget source=session.Event_Now render=Progress convert=EventTime(Progress) @1090,900,775,7 [SecondInfoBar] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1536,
+     1024,
+     48,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": [
+     "widget source=session.CurrentService render=Label convert=CineViewMLABitrate(Mbps) @1538,1030,120,28 [SecondInfoBar] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1840,
+     1024,
+     16,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.OAWeather render=Label convert=OAWeather(temperature_current) @1815,1030,66,28 [SecondInfoBar] LIVE"
+    ]
+   }
+  ],
+  "mask": [
+   [
+    95,
+    165,
+    480,
+    64
+   ],
+   [
+    95,
+    165,
+    725,
+    64
+   ],
+   [
+    94,
+    1030,
+    70,
+    28
+   ],
+   [
+    165,
+    1038,
+    160,
+    10
+   ],
+   [
+    377,
+    1030,
+    105,
+    28
+   ],
+   [
+    950,
+    165,
+    580,
+    64
+   ],
+   [
+    950,
+    165,
+    890,
+    64
+   ],
+   [
+    1077,
+    1030,
+    132,
+    28
+   ],
+   [
+    1090,
+    900,
+    775,
+    7
+   ],
+   [
+    1538,
+    1030,
+    120,
+    28
+   ],
+   [
+    1815,
+    1030,
+    66,
+    28
+   ]
+  ],
+  "residual_px": 29714,
+  "unexplained": 2,
+  "needs_visual": 6,
+  "unmapped_dynamic": 0,
+  "verdict": "REVIEW"
+ },
+ "f04_sib_after15s": {
+  "diff_pct": 1.8788,
+  "regions": [
+   {
+    "box": [
+     80,
+     160,
+     112,
+     48
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Now render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True) @95,165,480,64 [SecondInfoBar] LIVE",
+     "widget source=session.Event_Now render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True,Invert) @95,165,725,64 [SecondInfoBar] LIVE"
+    ]
+   },
+   {
+    "box": [
+     96,
+     224,
+     464,
+     80
+    ],
+    "class": "UNEXPLAINED",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Now render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True) @95,165,480,64 [SecondInfoBar] LIVE",
+     "widget source=session.Event_Now render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True,Invert) @95,165,725,64 [SecondInfoBar] LIVE",
+     "widget source=session.Event_Now render=RunningText convert=EventName(FullDescription)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True) @95,245,480,261 [SecondInfoBar] LIVE",
+     "widget source=session.Event_Now render=RunningText convert=EventName(FullDescription)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True,Invert) @95,245,725,261 [SecondInfoBar] LIVE"
+    ]
+   },
+   {
+    "box": [
+     96,
+     1024,
+     32,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": [
+     "widget source=session.FrontendStatus render=Label convert=FrontendInfo(SNR) @94,1030,70,28 [SecondInfoBar] LIVE"
+    ]
+   },
+   {
+    "box": [
+     256,
+     1024,
+     32,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": [
+     "widget source=session.FrontendStatus render=Progress convert=FrontendInfo(SNR) @165,1038,160,10 [SecondInfoBar] LIVE"
+    ]
+   },
+   {
+    "box": [
+     400,
+     1024,
+     16,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": [
+     "widget source=session.FrontendStatus render=Label convert=FrontendInfo(SNRdB) @377,1030,105,28 [SecondInfoBar] LIVE"
+    ]
+   },
+   {
+    "box": [
+     944,
+     160,
+     272,
+     48
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Next render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True) @950,165,580,64 [SecondInfoBar] LIVE",
+     "widget source=session.Event_Next render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True,Invert) @950,165,890,64 [SecondInfoBar] LIVE"
+    ]
+   },
+   {
+    "box": [
+     944,
+     224,
+     592,
+     176
+    ],
+    "class": "UNEXPLAINED",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Next render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True) @950,165,580,64 [SecondInfoBar] LIVE",
+     "widget source=session.Event_Next render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True,Invert) @950,165,890,64 [SecondInfoBar] LIVE",
+     "widget source=session.Event_Next render=RunningText convert=EventName(FullDescription)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True) @950,245,580,261 [SecondInfoBar] LIVE",
+     "widget source=session.Event_Next render=RunningText convert=EventName(FullDescription)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True,Invert) @950,245,890,261 [SecondInfoBar] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1168,
+     896,
+     688,
+     16
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.426,
+    "elements": [
+     "widget source=session.Event_Now render=Progress convert=EventTime(Progress) @1090,900,775,7 [SecondInfoBar] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1536,
+     1024,
+     48,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": [
+     "widget source=session.CurrentService render=Label convert=CineViewMLABitrate(Mbps) @1538,1030,120,28 [SecondInfoBar] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1840,
+     1024,
+     16,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.OAWeather render=Label convert=OAWeather(temperature_current) @1815,1030,66,28 [SecondInfoBar] LIVE"
+    ]
+   }
+  ],
+  "mask": [
+   [
+    95,
+    165,
+    480,
+    64
+   ],
+   [
+    95,
+    165,
+    725,
+    64
+   ],
+   [
+    94,
+    1030,
+    70,
+    28
+   ],
+   [
+    165,
+    1038,
+    160,
+    10
+   ],
+   [
+    377,
+    1030,
+    105,
+    28
+   ],
+   [
+    950,
+    165,
+    580,
+    64
+   ],
+   [
+    950,
+    165,
+    890,
+    64
+   ],
+   [
+    1090,
+    900,
+    775,
+    7
+   ],
+   [
+    1538,
+    1030,
+    120,
+    28
+   ],
+   [
+    1815,
+    1030,
+    66,
+    28
+   ]
+  ],
+  "residual_px": 29714,
+  "unexplained": 2,
+  "needs_visual": 4,
+  "unmapped_dynamic": 0,
+  "verdict": "REVIEW"
+ },
+ "f05_sib_after25s": {
+  "diff_pct": 0.0,
+  "regions": [],
+  "mask": [],
+  "residual_px": 0,
+  "unexplained": 0,
+  "needs_visual": 0,
+  "unmapped_dynamic": 0,
+  "verdict": "PASS"
+ },
+ "f06_chlist_down3": {
+  "diff_pct": 0.6857,
+  "regions": [
+   {
+    "box": [
+     320,
+     512,
+     416,
+     80
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget name=list @65,118,1050,790 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     368,
+     160,
+     224,
+     48
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget name=list @65,118,1050,790 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1008,
+     176,
+     16,
+     16
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.667,
+    "elements": [
+     "widget name=list @65,118,1050,790 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1008,
+     304,
+     64,
+     16
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.59,
+    "elements": [
+     "widget name=list @65,118,1050,790 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1008,
+     512,
+     64,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.107,
+    "elements": [
+     "widget name=list @65,118,1050,790 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1008,
+     560,
+     32,
+     16
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.5,
+    "elements": [
+     "widget name=list @65,118,1050,790 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1008,
+     736,
+     48,
+     16
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.618,
+    "elements": [
+     "widget name=list @65,118,1050,790 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1024,
+     384,
+     32,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.696,
+    "elements": [
+     "widget name=list @65,118,1050,790 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1024,
+     432,
+     16,
+     16
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.846,
+    "elements": [
+     "widget name=list @65,118,1050,790 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1024,
+     464,
+     48,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.585,
+    "elements": [
+     "widget name=list @65,118,1050,790 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1024,
+     816,
+     32,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": [
+     "widget name=list @65,118,1050,790 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1024,
+     864,
+     32,
+     16
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.857,
+    "elements": [
+     "widget name=list @65,118,1050,790 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1040,
+     208,
+     16,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.923,
+    "elements": [
+     "widget name=list @65,118,1050,790 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1040,
+     256,
+     32,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.778,
+    "elements": [
+     "widget name=list @65,118,1050,790 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1040,
+     336,
+     48,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.68,
+    "elements": [
+     "widget name=list @65,118,1050,790 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1056,
+     592,
+     32,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.923,
+    "elements": [
+     "widget name=list @65,118,1050,790 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1056,
+     640,
+     32,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.812,
+    "elements": [
+     "widget name=list @65,118,1050,790 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1056,
+     688,
+     32,
+     16
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.923,
+    "elements": [
+     "widget name=list @65,118,1050,790 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1344,
+     256,
+     208,
+     16
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.469,
+    "elements": [
+     "widget source=ServiceEvent render=Progress convert=EventTime(Progress) @1325,259,380,8 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1792,
+     48,
+     64,
+     48
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.497,
+    "elements": [
+     "widget source=global.CurrentTime render=Label convert=ClockToText(Format:%H:%M) @1640,48,205,62 [ChannelSelection] LIVE"
+    ]
+   }
+  ],
+  "mask": [
+   [
+    65,
+    118,
+    1050,
+    790
+   ],
+   [
+    1325,
+    259,
+    380,
+    8
+   ],
+   [
+    1640,
+    48,
+    205,
+    62
+   ]
+  ],
+  "residual_px": 0,
+  "unexplained": 0,
+  "needs_visual": 19,
+  "unmapped_dynamic": 0,
+  "verdict": "PASS-IF-CROPS-CONFIRMED"
+ },
+ "f07_chlist_red": {
+  "diff_pct": 7.8495,
+  "regions": [
+   {
+    "box": [
+     272,
+     160,
+     240,
+     48
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget name=list @65,118,1050,790 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     304,
+     336,
+     448,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": [
+     "widget name=list @65,118,1050,790 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1008,
+     128,
+     64,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.59,
+    "elements": [
+     "widget name=list @65,118,1050,790 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1008,
+     176,
+     32,
+     16
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.6,
+    "elements": [
+     "widget name=list @65,118,1050,790 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1024,
+     336,
+     32,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": [
+     "widget name=list @65,118,1050,790 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1040,
+     208,
+     16,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.917,
+    "elements": [
+     "widget name=list @65,118,1050,790 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1200,
+     336,
+     352,
+     192
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=ServiceEvent render=RunningText convert=EventName(FullDescription) @1205,305,340,383 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1232,
+     240,
+     32,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=ServiceEvent render=Label convert=EventTime(StartTime)>ClockToText(Format:%H:%M) @1205,248,110,30 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1232,
+     736,
+     128,
+     192
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=ServiceEvent render=CineViewMLAPosterX @1240,746,120,180 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1328,
+     256,
+     64,
+     16
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.128,
+    "elements": [
+     "widget source=ServiceEvent render=Progress convert=EventTime(Progress) @1325,259,380,8 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1392,
+     176,
+     272,
+     48
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=ServiceEvent render=RunningText convert=EventName(Name) @1205,180,635,58 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1424,
+     736,
+     144,
+     192
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=ServiceEvent render=CineViewMLAPosterX @1435,746,120,180 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1568,
+     336,
+     240,
+     352
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=ServiceEvent render=CineViewMLAPosterX @1580,350,225,338 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1616,
+     736,
+     144,
+     192
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=ServiceEvent render=CineViewMLAPosterX @1630,746,120,180 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1792,
+     48,
+     64,
+     48
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.499,
+    "elements": [
+     "widget source=global.CurrentTime render=Label convert=ClockToText(Format:%H:%M) @1640,48,205,62 [ChannelSelection] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1792,
+     240,
+     48,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=ServiceEvent render=Label convert=EventTime(EndTime)>ClockToText(Format:%H:%M) @1715,248,125,30 [ChannelSelection] LIVE"
+    ]
+   }
+  ],
+  "mask": [
+   [
+    65,
+    118,
+    1050,
+    790
+   ],
+   [
+    1205,
+    305,
+    340,
+    383
+   ],
+   [
+    1205,
+    248,
+    110,
+    30
+   ],
+   [
+    1240,
+    746,
+    120,
+    180
+   ],
+   [
+    1325,
+    259,
+    380,
+    8
+   ],
+   [
+    1205,
+    180,
+    635,
+    58
+   ],
+   [
+    1435,
+    746,
+    120,
+    180
+   ],
+   [
+    1580,
+    350,
+    225,
+    338
+   ],
+   [
+    1630,
+    746,
+    120,
+    180
+   ],
+   [
+    1640,
+    48,
+    205,
+    62
+   ],
+   [
+    1715,
+    248,
+    125,
+    30
+   ]
+  ],
+  "residual_px": 0,
+  "unexplained": 0,
+  "needs_visual": 14,
+  "unmapped_dynamic": 0,
+  "verdict": "PASS-IF-CROPS-CONFIRMED"
+ },
+ "f08_chlist_menu": {
+  "diff_pct": 0.0246,
+  "regions": [
+   {
+    "box": [
+     1840,
+     0,
+     64,
+     48
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.53,
+    "elements": [
+     "widget source=global.CurrentTime render=Label convert=ClockToText(Format:%H:%M) @1665,5,225,40 [ChannelContextMenu] LIVE",
+     "widget source=global.CurrentTime render=Label convert=ClockToText(Date) @1440,45,450,37 [ChannelContextMenu] LIVE",
+     "widget source=ScreenPath render=Label @30,5,1860,35 [ChannelContextMenu]",
+     "widget source=Title render=Label @30,36,1890,45 [ChannelContextMenu]"
+    ]
+   }
+  ],
+  "mask": [
+   [
+    1665,
+    5,
+    225,
+    40
+   ],
+   [
+    1440,
+    45,
+    450,
+    37
+   ]
+  ],
+  "residual_px": 0,
+  "unexplained": 0,
+  "needs_visual": 1,
+  "unmapped_dynamic": 0,
+  "verdict": "PASS-IF-CROPS-CONFIRMED"
+ },
+ "f09_epg_right2": {
+  "diff_pct": 12.1723,
+  "regions": [
+   {
+    "box": [
+     32,
+     64,
+     176,
+     256
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=Event render=CineViewMLAPosterX @45,72,155,233 [GraphicalEPG] LIVE",
+     "widget source=session.CurrentService render=Pixmap convert=ConfigEntryTest(config.plugins.cineviewmla.poster_epg,False,Invert)>ConditionalShowHide @39,66,167,245 [GraphicalEPG] LIVE",
+     "widget source=Title render=Label @45,22,1810,45 [GraphicalEPG]"
+    ]
+   },
+   {
+    "box": [
+     224,
+     64,
+     464,
+     48
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=Event render=RunningText convert=EventName(Name) @230,72,1625,48 [GraphicalEPG] LIVE",
+     "widget source=Title render=Label @45,22,1810,45 [GraphicalEPG]"
+    ]
+   },
+   {
+    "box": [
+     224,
+     128,
+     1600,
+     192
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=Event render=Label convert=EventTime(StartTime)>ClockToText(Format:%H:%M) @230,126,110,34 [GraphicalEPG] LIVE",
+     "widget source=Event render=Label convert=EventTime(EndTime)>ClockToText(Format:- %H:%M) @350,126,125,34 [GraphicalEPG] LIVE",
+     "widget source=Event render=RunningText convert=EventName(FullDescription) @230,168,1625,138 [GraphicalEPG] LIVE"
+    ]
+   },
+   {
+    "box": [
+     384,
+     336,
+     1472,
+     592
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget name=timeline_text @45,340,1810,42 [GraphicalEPG] LIVE",
+     "widget name=lab1 @45,385,1810,545 [GraphicalEPG] LIVE",
+     "widget name=bouquetlist @45,385,1810,545 [GraphicalEPG]",
+     "widget name=list @45,385,1810,545 [GraphicalEPG] LIVE"
+    ]
+   },
+   {
+    "box": [
+     432,
+     336,
+     48,
+     48
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget name=timeline_text @45,340,1810,42 [GraphicalEPG] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1648,
+     336,
+     48,
+     48
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget name=timeline_text @45,340,1810,42 [GraphicalEPG] LIVE"
+    ]
+   }
+  ],
+  "mask": [
+   [
+    45,
+    72,
+    155,
+    233
+   ],
+   [
+    39,
+    66,
+    167,
+    245
+   ],
+   [
+    230,
+    72,
+    1625,
+    48
+   ],
+   [
+    230,
+    126,
+    110,
+    34
+   ],
+   [
+    350,
+    126,
+    125,
+    34
+   ],
+   [
+    230,
+    168,
+    1625,
+    138
+   ],
+   [
+    45,
+    340,
+    1810,
+    42
+   ],
+   [
+    45,
+    385,
+    1810,
+    545
+   ]
+  ],
+  "residual_px": 0,
+  "unexplained": 0,
+  "needs_visual": 6,
+  "unmapped_dynamic": 0,
+  "verdict": "PASS-IF-CROPS-CONFIRMED"
+ },
+ "f10_epg_down2": {
+  "diff_pct": 6.7549,
+  "regions": [
+   {
+    "box": [
+     384,
+     336,
+     736,
+     192
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget name=timeline_text @45,340,1810,42 [GraphicalEPG] LIVE",
+     "widget name=lab1 @45,385,1810,545 [GraphicalEPG] LIVE",
+     "widget name=bouquetlist @45,385,1810,545 [GraphicalEPG]",
+     "widget name=list @45,385,1810,545 [GraphicalEPG] LIVE"
+    ]
+   },
+   {
+    "box": [
+     432,
+     336,
+     48,
+     48
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget name=timeline_text @45,340,1810,42 [GraphicalEPG] LIVE"
+    ]
+   },
+   {
+    "box": [
+     432,
+     448,
+     1424,
+     480
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget name=lab1 @45,385,1810,545 [GraphicalEPG] LIVE",
+     "widget name=bouquetlist @45,385,1810,545 [GraphicalEPG]",
+     "widget name=list @45,385,1810,545 [GraphicalEPG] LIVE"
+    ]
+   },
+   {
+    "box": [
+     912,
+     336,
+     48,
+     48
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget name=timeline_text @45,340,1810,42 [GraphicalEPG] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1168,
+     336,
+     48,
+     48
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget name=timeline_text @45,340,1810,42 [GraphicalEPG] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1408,
+     336,
+     48,
+     48
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget name=timeline_text @45,340,1810,42 [GraphicalEPG] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1472,
+     384,
+     384,
+     144
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget name=lab1 @45,385,1810,545 [GraphicalEPG] LIVE",
+     "widget name=bouquetlist @45,385,1810,545 [GraphicalEPG]",
+     "widget name=list @45,385,1810,545 [GraphicalEPG] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1648,
+     336,
+     48,
+     48
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget name=timeline_text @45,340,1810,42 [GraphicalEPG] LIVE"
+    ]
+   }
+  ],
+  "mask": [
+   [
+    45,
+    340,
+    1810,
+    42
+   ],
+   [
+    45,
+    385,
+    1810,
+    545
+   ]
+  ],
+  "residual_px": 0,
+  "unexplained": 0,
+  "needs_visual": 8,
+  "unmapped_dynamic": 0,
+  "verdict": "PASS-IF-CROPS-CONFIRMED"
+ },
+ "f11_epg_info": {
+  "diff_pct": 9.506,
+  "regions": [
+   {
+    "box": [
+     32,
+     848,
+     128,
+     160
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=Event render=CineViewMLAPosterX @40,850,105,158 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     80,
+     160,
+     288,
+     48
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Now render=RunningText convert=EventName(Name) @95,165,480,42 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     96,
+     240,
+     480,
+     128
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Now render=RunningText convert=EventName(FullDescription) @95,220,480,295 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     96,
+     1024,
+     32,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": [
+     "widget source=session.FrontendStatus render=Label convert=FrontendInfo(SNR) @94,1030,70,28 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     112,
+     528,
+     48,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Now render=Label convert=EventTime(StartTime)>ClockToText(Format:%H:%M) @95,535,160,30 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     272,
+     1024,
+     16,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": [
+     "widget source=session.FrontendStatus render=Progress convert=FrontendInfo(SNR) @165,1038,160,10 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     384,
+     1024,
+     32,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": [
+     "widget source=session.FrontendStatus render=Label convert=FrontendInfo(SNRdB) @377,1030,105,28 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     528,
+     528,
+     48,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Now render=Label convert=EventTime(EndTime)>ClockToText(Format:%H:%M) @415,535,160,30 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     608,
+     176,
+     224,
+     320
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=Event render=CineViewMLAPosterX @612,180,205,308 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     944,
+     160,
+     464,
+     48
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Next render=RunningText convert=EventName(Name) @950,165,580,42 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     944,
+     224,
+     592,
+     144
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Next render=RunningText convert=EventName(FullDescription) @950,220,580,295 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     944,
+     432,
+     592,
+     96
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Next render=RunningText convert=EventName(FullDescription) @950,220,580,295 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     960,
+     528,
+     48,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Next render=Label convert=EventTime(StartTime)>ClockToText(Format:%H:%M) @950,535,160,30 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1088,
+     848,
+     240,
+     48
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Now render=RunningText convert=EventName(Name) @1090,854,520,38 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1088,
+     896,
+     784,
+     64
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.573,
+    "elements": [
+     "widget source=session.Event_Next render=Label convert=EventTime(StartTime)>ClockToText(Format:%H:%M) @1620,926,110,27 [EventView] LIVE",
+     "widget source=session.Event_Next render=Label convert=EventTime(EndTime)>ClockToText(Format:%H:%M) @1740,926,125,27 [EventView] LIVE",
+     "widget source=session.Event_Now render=Progress convert=EventTime(Progress) @1090,900,775,7 [EventView] LIVE",
+     "widget source=session.Event_Next render=RunningText convert=EventName(Name) @1090,924,520,34 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1120,
+     1024,
+     32,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": [
+     "widget source=session.CurrentService render=Label convert=CineViewMLACPUTemp(Short) @1077,1030,132,28 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1488,
+     528,
+     48,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Next render=Label convert=EventTime(EndTime)>ClockToText(Format:%H:%M) @1370,535,160,30 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1536,
+     1024,
+     48,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": [
+     "widget source=session.CurrentService render=Label convert=CineViewMLABitrate(Mbps) @1538,1030,120,28 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1568,
+     176,
+     224,
+     320
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=Event render=CineViewMLAPosterX @1575,180,205,308 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1680,
+     960,
+     64,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Now render=Label convert=CineViewMLAIMDb(Plain) @1684,969,82,27 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1696,
+     848,
+     48,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Now render=Label convert=EventTime(StartTime)>ClockToText(Format:%H:%M) @1620,856,110,28 [EventView] LIVE",
+     "widget source=session.Event_Now render=Label convert=EventTime(EndTime)>ClockToText(Format:%H:%M) @1740,856,125,28 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1696,
+     928,
+     48,
+     16
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Next render=Label convert=EventTime(StartTime)>ClockToText(Format:%H:%M) @1620,926,110,27 [EventView] LIVE",
+     "widget source=session.Event_Next render=Label convert=EventTime(EndTime)>ClockToText(Format:%H:%M) @1740,926,125,27 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1760,
+     960,
+     96,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Now render=Label convert=CineViewMLAIMDb(Plain) @1684,969,82,27 [EventView] LIVE",
+     "widget source=session.Event_Now render=Label convert=CineViewMLAIMDb(Stars) @1768,969,100,27 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1824,
+     848,
+     48,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Now render=Label convert=EventTime(EndTime)>ClockToText(Format:%H:%M) @1740,856,125,28 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1824,
+     928,
+     48,
+     16
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Next render=Label convert=EventTime(EndTime)>ClockToText(Format:%H:%M) @1740,926,125,27 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1840,
+     1024,
+     16,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.OAWeather render=Label convert=OAWeather(temperature_current) @1815,1030,66,28 [EventView] LIVE"
+    ]
+   }
+  ],
+  "mask": [
+   [
+    40,
+    850,
+    105,
+    158
+   ],
+   [
+    95,
+    165,
+    480,
+    42
+   ],
+   [
+    95,
+    220,
+    480,
+    295
+   ],
+   [
+    94,
+    1030,
+    70,
+    28
+   ],
+   [
+    95,
+    535,
+    160,
+    30
+   ],
+   [
+    165,
+    1038,
+    160,
+    10
+   ],
+   [
+    377,
+    1030,
+    105,
+    28
+   ],
+   [
+    415,
+    535,
+    160,
+    30
+   ],
+   [
+    612,
+    180,
+    205,
+    308
+   ],
+   [
+    950,
+    165,
+    580,
+    42
+   ],
+   [
+    950,
+    220,
+    580,
+    295
+   ],
+   [
+    950,
+    535,
+    160,
+    30
+   ],
+   [
+    1090,
+    854,
+    520,
+    38
+   ],
+   [
+    1620,
+    926,
+    110,
+    27
+   ],
+   [
+    1740,
+    926,
+    125,
+    27
+   ],
+   [
+    1090,
+    900,
+    775,
+    7
+   ],
+   [
+    1090,
+    924,
+    520,
+    34
+   ],
+   [
+    1077,
+    1030,
+    132,
+    28
+   ],
+   [
+    1370,
+    535,
+    160,
+    30
+   ],
+   [
+    1538,
+    1030,
+    120,
+    28
+   ],
+   [
+    1575,
+    180,
+    205,
+    308
+   ],
+   [
+    1684,
+    969,
+    82,
+    27
+   ],
+   [
+    1620,
+    856,
+    110,
+    28
+   ],
+   [
+    1740,
+    856,
+    125,
+    28
+   ],
+   [
+    1768,
+    969,
+    100,
+    27
+   ],
+   [
+    1815,
+    1030,
+    66,
+    28
+   ]
+  ],
+  "residual_px": 0,
+  "unexplained": 0,
+  "needs_visual": 21,
+  "unmapped_dynamic": 0,
+  "verdict": "PASS-IF-CROPS-CONFIRMED"
+ },
+ "f12_plugins_right": {
+  "diff_pct": 0.0,
+  "regions": [],
+  "mask": [],
+  "residual_px": 0,
+  "unexplained": 0,
+  "needs_visual": 0,
+  "unmapped_dynamic": 0,
+  "verdict": "PASS"
+ },
+ "f13_plugins_red": {
+  "diff_pct": 0.0,
+  "regions": [],
+  "mask": [],
+  "residual_px": 0,
+  "unexplained": 0,
+  "needs_visual": 0,
+  "unmapped_dynamic": 0,
+  "verdict": "PASS"
+ },
+ "f14_blue_down": {
+  "diff_pct": 0.0,
+  "regions": [],
+  "mask": [],
+  "residual_px": 0,
+  "unexplained": 0,
+  "needs_visual": 0,
+  "unmapped_dynamic": 0,
+  "verdict": "PASS"
+ },
+ "f15_eventview_right": {
+  "diff_pct": 8.841,
+  "regions": [
+   {
+    "box": [
+     32,
+     848,
+     128,
+     160
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=Event render=CineViewMLAPosterX @40,850,105,158 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     80,
+     160,
+     288,
+     48
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Now render=RunningText convert=EventName(Name) @95,165,480,42 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     96,
+     240,
+     480,
+     128
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Now render=RunningText convert=EventName(FullDescription) @95,220,480,295 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     96,
+     1024,
+     32,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": [
+     "widget source=session.FrontendStatus render=Label convert=FrontendInfo(SNR) @94,1030,70,28 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     112,
+     528,
+     48,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Now render=Label convert=EventTime(StartTime)>ClockToText(Format:%H:%M) @95,535,160,30 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     272,
+     1024,
+     16,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": [
+     "widget source=session.FrontendStatus render=Progress convert=FrontendInfo(SNR) @165,1038,160,10 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     384,
+     1024,
+     32,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": [
+     "widget source=session.FrontendStatus render=Label convert=FrontendInfo(SNRdB) @377,1030,105,28 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     528,
+     528,
+     48,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Now render=Label convert=EventTime(EndTime)>ClockToText(Format:%H:%M) @415,535,160,30 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     608,
+     176,
+     224,
+     320
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=Event render=CineViewMLAPosterX @612,180,205,308 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     944,
+     160,
+     464,
+     48
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Next render=RunningText convert=EventName(Name) @950,165,580,42 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     944,
+     224,
+     592,
+     144
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Next render=RunningText convert=EventName(FullDescription) @950,220,580,295 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     960,
+     528,
+     48,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Next render=Label convert=EventTime(StartTime)>ClockToText(Format:%H:%M) @950,535,160,30 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1088,
+     848,
+     240,
+     48
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Now render=RunningText convert=EventName(Name) @1090,854,520,38 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1088,
+     912,
+     352,
+     48
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Next render=RunningText convert=EventName(Name) @1090,924,520,34 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1120,
+     1024,
+     32,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": [
+     "widget source=session.CurrentService render=Label convert=CineViewMLACPUTemp(Short) @1077,1030,132,28 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1488,
+     528,
+     48,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Next render=Label convert=EventTime(EndTime)>ClockToText(Format:%H:%M) @1370,535,160,30 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1536,
+     1024,
+     48,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": [
+     "widget source=session.CurrentService render=Label convert=CineViewMLABitrate(Mbps) @1538,1030,120,28 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1568,
+     176,
+     224,
+     320
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=Event render=CineViewMLAPosterX @1575,180,205,308 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1680,
+     960,
+     64,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Now render=Label convert=CineViewMLAIMDb(Plain) @1684,969,82,27 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1696,
+     848,
+     48,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Now render=Label convert=EventTime(StartTime)>ClockToText(Format:%H:%M) @1620,856,110,28 [EventView] LIVE",
+     "widget source=session.Event_Now render=Label convert=EventTime(EndTime)>ClockToText(Format:%H:%M) @1740,856,125,28 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1696,
+     928,
+     48,
+     16
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Next render=Label convert=EventTime(StartTime)>ClockToText(Format:%H:%M) @1620,926,110,27 [EventView] LIVE",
+     "widget source=session.Event_Next render=Label convert=EventTime(EndTime)>ClockToText(Format:%H:%M) @1740,926,125,27 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1760,
+     960,
+     96,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Now render=Label convert=CineViewMLAIMDb(Plain) @1684,969,82,27 [EventView] LIVE",
+     "widget source=session.Event_Now render=Label convert=CineViewMLAIMDb(Stars) @1768,969,100,27 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1824,
+     848,
+     48,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Now render=Label convert=EventTime(EndTime)>ClockToText(Format:%H:%M) @1740,856,125,28 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1824,
+     928,
+     48,
+     16
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.Event_Next render=Label convert=EventTime(EndTime)>ClockToText(Format:%H:%M) @1740,926,125,27 [EventView] LIVE"
+    ]
+   },
+   {
+    "box": [
+     1840,
+     1024,
+     16,
+     32
+    ],
+    "class": "DYNAMIC-SOURCE",
+    "observed_change": 0.0,
+    "elements": [
+     "widget source=session.OAWeather render=Label convert=OAWeather(temperature_current) @1815,1030,66,28 [EventView] LIVE"
+    ]
+   }
+  ],
+  "mask": [
+   [
+    40,
+    850,
+    105,
+    158
+   ],
+   [
+    95,
+    165,
+    480,
+    42
+   ],
+   [
+    95,
+    220,
+    480,
+    295
+   ],
+   [
+    94,
+    1030,
+    70,
+    28
+   ],
+   [
+    95,
+    535,
+    160,
+    30
+   ],
+   [
+    165,
+    1038,
+    160,
+    10
+   ],
+   [
+    377,
+    1030,
+    105,
+    28
+   ],
+   [
+    415,
+    535,
+    160,
+    30
+   ],
+   [
+    612,
+    180,
+    205,
+    308
+   ],
+   [
+    950,
+    165,
+    580,
+    42
+   ],
+   [
+    950,
+    220,
+    580,
+    295
+   ],
+   [
+    950,
+    535,
+    160,
+    30
+   ],
+   [
+    1090,
+    854,
+    520,
+    38
+   ],
+   [
+    1090,
+    924,
+    520,
+    34
+   ],
+   [
+    1077,
+    1030,
+    132,
+    28
+   ],
+   [
+    1370,
+    535,
+    160,
+    30
+   ],
+   [
+    1538,
+    1030,
+    120,
+    28
+   ],
+   [
+    1575,
+    180,
+    205,
+    308
+   ],
+   [
+    1684,
+    969,
+    82,
+    27
+   ],
+   [
+    1620,
+    856,
+    110,
+    28
+   ],
+   [
+    1740,
+    856,
+    125,
+    28
+   ],
+   [
+    1620,
+    926,
+    110,
+    27
+   ],
+   [
+    1740,
+    926,
+    125,
+    27
+   ],
+   [
+    1768,
+    969,
+    100,
+    27
+   ],
+   [
+    1815,
+    1030,
+    66,
+    28
+   ]
+  ],
+  "residual_px": 0,
+  "unexplained": 0,
+  "needs_visual": 20,
+  "unmapped_dynamic": 0,
+  "verdict": "PASS-IF-CROPS-CONFIRMED"
+ },
+ "f16_audio_down": {
+  "diff_pct": 0.0266,
+  "regions": [
+   {
+    "box": [
+     1840,
+     0,
+     64,
+     48
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": [
+     "widget source=global.CurrentTime render=Label convert=ClockToText(Format:%H:%M) @1665,5,225,40 [AudioSelection] LIVE",
+     "widget source=global.CurrentTime render=Label convert=ClockToText(Date) @1440,45,450,37 [AudioSelection] LIVE",
+     "widget source=ScreenPath render=Label @30,5,1860,35 [AudioSelection]",
+     "widget source=Title render=Label @30,36,1890,45 [AudioSelection]"
+    ]
+   }
+  ],
+  "mask": [
+   [
+    1665,
+    5,
+    225,
+    40
+   ],
+   [
+    1440,
+    45,
+    450,
+    37
+   ]
+  ],
+  "residual_px": 0,
+  "unexplained": 0,
+  "needs_visual": 0,
+  "unmapped_dynamic": 0,
+  "verdict": "PASS"
+ },
+ "f17_emc_list": {
+  "diff_pct": 5.6688,
+  "regions": [
+   {
+    "box": [
+     64,
+     480,
+     176,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": []
+   },
+   {
+    "box": [
+     64,
+     592,
+     560,
+     112
+    ],
+    "class": "UNEXPLAINED",
+    "observed_change": 0.897,
+    "elements": []
+   },
+   {
+    "box": [
+     256,
+     480,
+     160,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": []
+   },
+   {
+    "box": [
+     400,
+     128,
+     240,
+     80
+    ],
+    "class": "UNEXPLAINED",
+    "observed_change": 0.0,
+    "elements": []
+   },
+   {
+    "box": [
+     560,
+     480,
+     80,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": []
+   },
+   {
+    "box": [
+     656,
+     224,
+     1200,
+     64
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": []
+   },
+   {
+    "box": [
+     656,
+     320,
+     1200,
+     48
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": []
+   },
+   {
+    "box": [
+     1792,
+     160,
+     48,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": []
+   }
+  ],
+  "mask": [
+   [
+    64,
+    480,
+    176,
+    32
+   ],
+   [
+    256,
+    480,
+    160,
+    32
+   ],
+   [
+    560,
+    480,
+    80,
+    32
+   ],
+   [
+    656,
+    224,
+    1200,
+    64
+   ],
+   [
+    656,
+    320,
+    1200,
+    48
+   ],
+   [
+    1792,
+    160,
+    48,
+    32
+   ]
+  ],
+  "residual_px": 14289,
+  "unexplained": 2,
+  "needs_visual": 0,
+  "unmapped_dynamic": 6,
+  "verdict": "REVIEW"
+ },
+ "f18_emc_select": {
+  "diff_pct": 5.6792,
+  "regions": [
+   {
+    "box": [
+     64,
+     480,
+     176,
+     32
+    ],
+    "class": "UNEXPLAINED",
+    "observed_change": 0.0,
+    "elements": []
+   },
+   {
+    "box": [
+     64,
+     592,
+     560,
+     112
+    ],
+    "class": "UNEXPLAINED",
+    "observed_change": 0.275,
+    "elements": []
+   },
+   {
+    "box": [
+     256,
+     480,
+     160,
+     32
+    ],
+    "class": "UNEXPLAINED",
+    "observed_change": 0.0,
+    "elements": []
+   },
+   {
+    "box": [
+     400,
+     128,
+     240,
+     80
+    ],
+    "class": "UNEXPLAINED",
+    "observed_change": 0.0,
+    "elements": []
+   },
+   {
+    "box": [
+     560,
+     480,
+     80,
+     32
+    ],
+    "class": "UNEXPLAINED",
+    "observed_change": 0.0,
+    "elements": []
+   },
+   {
+    "box": [
+     656,
+     272,
+     1200,
+     96
+    ],
+    "class": "UNEXPLAINED",
+    "observed_change": 0.741,
+    "elements": []
+   },
+   {
+    "box": [
+     1792,
+     160,
+     48,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": []
+   }
+  ],
+  "mask": [
+   [
+    1792,
+    160,
+    48,
+    32
+   ]
+  ],
+  "residual_px": 117372,
+  "unexplained": 6,
+  "needs_visual": 0,
+  "unmapped_dynamic": 1,
+  "verdict": "REVIEW"
+ },
+ "f19_emc_play": {
+  "diff_pct": 0.9079,
+  "regions": [
+   {
+    "box": [
+     400,
+     80,
+     464,
+     128
+    ],
+    "class": "UNEXPLAINED",
+    "observed_change": 0.446,
+    "elements": []
+   },
+   {
+    "box": [
+     656,
+     272,
+     48,
+     48
+    ],
+    "class": "UNEXPLAINED",
+    "observed_change": 0.949,
+    "elements": []
+   },
+   {
+    "box": [
+     720,
+     272,
+     320,
+     48
+    ],
+    "class": "UNEXPLAINED",
+    "observed_change": 0.793,
+    "elements": []
+   },
+   {
+    "box": [
+     1424,
+     272,
+     128,
+     48
+    ],
+    "class": "UNEXPLAINED",
+    "observed_change": 0.0,
+    "elements": []
+   },
+   {
+    "box": [
+     1616,
+     288,
+     160,
+     32
+    ],
+    "class": "UNEXPLAINED",
+    "observed_change": 0.0,
+    "elements": []
+   },
+   {
+    "box": [
+     1792,
+     160,
+     48,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": []
+   }
+  ],
+  "mask": [
+   [
+    1792,
+    160,
+    48,
+    32
+   ]
+  ],
+  "residual_px": 18416,
+  "unexplained": 5,
+  "needs_visual": 0,
+  "unmapped_dynamic": 1,
+  "verdict": "REVIEW"
+ },
+ "f20_emc_after_end": {
+  "diff_pct": 0.9082,
+  "regions": [
+   {
+    "box": [
+     400,
+     80,
+     464,
+     128
+    ],
+    "class": "UNEXPLAINED",
+    "observed_change": 0.446,
+    "elements": []
+   },
+   {
+    "box": [
+     656,
+     272,
+     48,
+     48
+    ],
+    "class": "UNEXPLAINED",
+    "observed_change": 0.949,
+    "elements": []
+   },
+   {
+    "box": [
+     720,
+     272,
+     320,
+     48
+    ],
+    "class": "UNEXPLAINED",
+    "observed_change": 0.793,
+    "elements": []
+   },
+   {
+    "box": [
+     1424,
+     272,
+     128,
+     48
+    ],
+    "class": "UNEXPLAINED",
+    "observed_change": 0.0,
+    "elements": []
+   },
+   {
+    "box": [
+     1616,
+     288,
+     160,
+     32
+    ],
+    "class": "UNEXPLAINED",
+    "observed_change": 0.0,
+    "elements": []
+   },
+   {
+    "box": [
+     1792,
+     160,
+     48,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": []
+   }
+  ],
+  "mask": [
+   [
+    1792,
+    160,
+    48,
+    32
+   ]
+  ],
+  "residual_px": 18416,
+  "unexplained": 5,
+  "needs_visual": 0,
+  "unmapped_dynamic": 1,
+  "verdict": "REVIEW"
+ }
+}

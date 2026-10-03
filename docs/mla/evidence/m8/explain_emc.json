@@ -1,0 +1,155 @@
+{
+ "e1_home": {
+  "diff_pct": 0.3197,
+  "regions": [
+   {
+    "box": [
+     368,
+     128,
+     304,
+     80
+    ],
+    "class": "UNEXPLAINED",
+    "observed_change": 0.0,
+    "elements": []
+   },
+   {
+    "box": [
+     1808,
+     160,
+     32,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": []
+   }
+  ],
+  "mask": [
+   [
+    1808,
+    160,
+    32,
+    32
+   ]
+  ],
+  "residual_px": 6461,
+  "unexplained": 1,
+  "needs_visual": 0,
+  "unmapped_dynamic": 1,
+  "verdict": "REVIEW"
+ },
+ "e2_select": {
+  "diff_pct": 0.3197,
+  "regions": [
+   {
+    "box": [
+     368,
+     128,
+     304,
+     80
+    ],
+    "class": "UNEXPLAINED",
+    "observed_change": 0.0,
+    "elements": []
+   },
+   {
+    "box": [
+     1808,
+     160,
+     32,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": []
+   }
+  ],
+  "mask": [
+   [
+    1808,
+    160,
+    32,
+    32
+   ]
+  ],
+  "residual_px": 6461,
+  "unexplained": 1,
+  "needs_visual": 0,
+  "unmapped_dynamic": 1,
+  "verdict": "REVIEW"
+ },
+ "e3_play": {
+  "diff_pct": 0.0309,
+  "regions": [
+   {
+    "box": [
+     784,
+     928,
+     16,
+     16
+    ],
+    "class": "UNEXPLAINED",
+    "observed_change": 0.0,
+    "elements": []
+   },
+   {
+    "box": [
+     1808,
+     832,
+     80,
+     48
+    ],
+    "class": "UNEXPLAINED",
+    "observed_change": 0.67,
+    "elements": []
+   }
+  ],
+  "mask": [],
+  "residual_px": 641,
+  "unexplained": 2,
+  "needs_visual": 0,
+  "unmapped_dynamic": 0,
+  "verdict": "REVIEW"
+ },
+ "e4_after_end": {
+  "diff_pct": 0.3225,
+  "regions": [
+   {
+    "box": [
+     368,
+     128,
+     304,
+     80
+    ],
+    "class": "UNEXPLAINED",
+    "observed_change": 0.0,
+    "elements": []
+   },
+   {
+    "box": [
+     1808,
+     160,
+     32,
+     32
+    ],
+    "class": "DYNAMIC",
+    "observed_change": 1.0,
+    "elements": []
+   }
+  ],
+  "mask": [
+   [
+    1808,
+    160,
+    32,
+    32
+   ]
+  ],
+  "residual_px": 6461,
+  "unexplained": 1,
+  "needs_visual": 0,
+  "unmapped_dynamic": 1,
+  "verdict": "REVIEW"
+ }
+}

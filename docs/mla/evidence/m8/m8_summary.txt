@@ -1,0 +1,178 @@
+f01_infobar_shown      diff= 0.2637%  regions= 7  unexplained=0  residual=0  PASS-IF-CROPS-CONFIRMED
+     DYNAMIC        [96, 1024, 32, 32]     seen=1.00  widget source=session.FrontendStatus render=Label convert=FrontendInfo(SNR) @94,1030,70,28 [InfoBar] LIVE
+     DYNAMIC        [272, 1024, 16, 32]    seen=1.00  widget source=session.FrontendStatus render=Progress convert=FrontendInfo(SNR) @165,1038,160,10 [InfoBar] LIVE
+     DYNAMIC        [400, 1024, 16, 32]    seen=1.00  widget source=session.FrontendStatus render=Label convert=FrontendInfo(SNRdB) @377,1030,105,28 [InfoBar] LIVE
+     DYNAMIC-SOURCE [1104, 896, 720, 16]   seen=0.45  widget source=session.Event_Now render=Progress convert=EventTime(Progress) @1090,900,775,7 [InfoBar] LIVE
+     DYNAMIC        [1120, 1024, 32, 32]   seen=1.00  widget source=session.CurrentService render=Label convert=CineViewMLACPUTemp(Short) @1077,1030,132,28 [InfoBar] LIVE
+     DYNAMIC-SOURCE [1536, 1024, 48, 32]   seen=0.00  widget source=session.CurrentService render=Label convert=CineViewMLABitrate(Mbps) @1538,1030,120,28 [InfoBar] LIVE
+     DYNAMIC-SOURCE [1840, 1024, 16, 32]   seen=0.00  widget source=session.OAWeather render=Label convert=OAWeather(temperature_current) @1815,1030,66,28 [InfoBar] LIVE
+f02_infobar_after8s    diff= 0.0000%  regions= 0  unexplained=0  residual=0  PASS
+f03_sib_shown          diff= 1.8921%  regions=11  unexplained=2  residual=29714  REVIEW
+     DYNAMIC-SOURCE [80, 160, 112, 48]     seen=0.00  widget source=session.Event_Now render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True) @95,165,480,64 [SecondInfoBar] LIVE | widget source=session.Event_Now render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True,Invert) @95,165,725,64 [SecondInfoBar] LIVE
+     UNEXPLAINED    [96, 224, 464, 80]     seen=0.00  widget source=session.Event_Now render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True) @95,165,480,64 [SecondInfoBar] LIVE | widget source=session.Event_Now render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True,Invert) @95,165,725,64 [SecondInfoBar] LIVE
+     DYNAMIC        [96, 1024, 32, 32]     seen=1.00  widget source=session.FrontendStatus render=Label convert=FrontendInfo(SNR) @94,1030,70,28 [SecondInfoBar] LIVE
+     DYNAMIC        [272, 1024, 16, 32]    seen=1.00  widget source=session.FrontendStatus render=Progress convert=FrontendInfo(SNR) @165,1038,160,10 [SecondInfoBar] LIVE
+     DYNAMIC-SOURCE [384, 1024, 32, 32]    seen=0.00  widget source=session.FrontendStatus render=Label convert=FrontendInfo(SNRdB) @377,1030,105,28 [SecondInfoBar] LIVE
+     DYNAMIC-SOURCE [944, 160, 272, 48]    seen=0.00  widget source=session.Event_Next render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True) @950,165,580,64 [SecondInfoBar] LIVE | widget source=session.Event_Next render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True,Invert) @950,165,890,64 [SecondInfoBar] LIVE
+     UNEXPLAINED    [944, 224, 592, 176]   seen=0.00  widget source=session.Event_Next render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True) @950,165,580,64 [SecondInfoBar] LIVE | widget source=session.Event_Next render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True,Invert) @950,165,890,64 [SecondInfoBar] LIVE
+     DYNAMIC-SOURCE [1120, 1024, 32, 32]   seen=0.00  widget source=session.CurrentService render=Label convert=CineViewMLACPUTemp(Short) @1077,1030,132,28 [SecondInfoBar] LIVE
+     DYNAMIC-SOURCE [1136, 896, 704, 16]   seen=0.45  widget source=session.Event_Now render=Progress convert=EventTime(Progress) @1090,900,775,7 [SecondInfoBar] LIVE
+     DYNAMIC        [1536, 1024, 48, 32]   seen=1.00  widget source=session.CurrentService render=Label convert=CineViewMLABitrate(Mbps) @1538,1030,120,28 [SecondInfoBar] LIVE
+     DYNAMIC-SOURCE [1840, 1024, 16, 32]   seen=0.00  widget source=session.OAWeather render=Label convert=OAWeather(temperature_current) @1815,1030,66,28 [SecondInfoBar] LIVE
+f04_sib_after15s       diff= 1.8788%  regions=10  unexplained=2  residual=29714  REVIEW
+     DYNAMIC-SOURCE [80, 160, 112, 48]     seen=0.00  widget source=session.Event_Now render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True) @95,165,480,64 [SecondInfoBar] LIVE | widget source=session.Event_Now render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True,Invert) @95,165,725,64 [SecondInfoBar] LIVE
+     UNEXPLAINED    [96, 224, 464, 80]     seen=0.00  widget source=session.Event_Now render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True) @95,165,480,64 [SecondInfoBar] LIVE | widget source=session.Event_Now render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True,Invert) @95,165,725,64 [SecondInfoBar] LIVE
+     DYNAMIC        [96, 1024, 32, 32]     seen=1.00  widget source=session.FrontendStatus render=Label convert=FrontendInfo(SNR) @94,1030,70,28 [SecondInfoBar] LIVE
+     DYNAMIC        [256, 1024, 32, 32]    seen=1.00  widget source=session.FrontendStatus render=Progress convert=FrontendInfo(SNR) @165,1038,160,10 [SecondInfoBar] LIVE
+     DYNAMIC        [400, 1024, 16, 32]    seen=1.00  widget source=session.FrontendStatus render=Label convert=FrontendInfo(SNRdB) @377,1030,105,28 [SecondInfoBar] LIVE
+     DYNAMIC-SOURCE [944, 160, 272, 48]    seen=0.00  widget source=session.Event_Next render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True) @950,165,580,64 [SecondInfoBar] LIVE | widget source=session.Event_Next render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True,Invert) @950,165,890,64 [SecondInfoBar] LIVE
+     UNEXPLAINED    [944, 224, 592, 176]   seen=0.00  widget source=session.Event_Next render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True) @950,165,580,64 [SecondInfoBar] LIVE | widget source=session.Event_Next render=RunningText convert=EventName(Name)>CineViewMLAShowIf(config.plugins.cineviewmla.poster_secondinfobar,True,Invert) @950,165,890,64 [SecondInfoBar] LIVE
+     DYNAMIC-SOURCE [1168, 896, 688, 16]   seen=0.43  widget source=session.Event_Now render=Progress convert=EventTime(Progress) @1090,900,775,7 [SecondInfoBar] LIVE
+     DYNAMIC        [1536, 1024, 48, 32]   seen=1.00  widget source=session.CurrentService render=Label convert=CineViewMLABitrate(Mbps) @1538,1030,120,28 [SecondInfoBar] LIVE
+     DYNAMIC-SOURCE [1840, 1024, 16, 32]   seen=0.00  widget source=session.OAWeather render=Label convert=OAWeather(temperature_current) @1815,1030,66,28 [SecondInfoBar] LIVE
+f05_sib_after25s       diff= 0.0000%  regions= 0  unexplained=0  residual=0  PASS
+f06_chlist_down3       diff= 0.6857%  regions=20  unexplained=0  residual=0  PASS-IF-CROPS-CONFIRMED
+     DYNAMIC-SOURCE [320, 512, 416, 80]    seen=0.00  widget name=list @65,118,1050,790 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [368, 160, 224, 48]    seen=0.00  widget name=list @65,118,1050,790 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1008, 176, 16, 16]    seen=0.67  widget name=list @65,118,1050,790 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1008, 304, 64, 16]    seen=0.59  widget name=list @65,118,1050,790 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1008, 512, 64, 32]    seen=0.11  widget name=list @65,118,1050,790 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1008, 560, 32, 16]    seen=0.50  widget name=list @65,118,1050,790 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1008, 736, 48, 16]    seen=0.62  widget name=list @65,118,1050,790 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1024, 384, 32, 32]    seen=0.70  widget name=list @65,118,1050,790 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1024, 432, 16, 16]    seen=0.85  widget name=list @65,118,1050,790 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1024, 464, 48, 32]    seen=0.58  widget name=list @65,118,1050,790 [ChannelSelection] LIVE
+     DYNAMIC        [1024, 816, 32, 32]    seen=1.00  widget name=list @65,118,1050,790 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1024, 864, 32, 16]    seen=0.86  widget name=list @65,118,1050,790 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1040, 208, 16, 32]    seen=0.92  widget name=list @65,118,1050,790 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1040, 256, 32, 32]    seen=0.78  widget name=list @65,118,1050,790 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1040, 336, 48, 32]    seen=0.68  widget name=list @65,118,1050,790 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1056, 592, 32, 32]    seen=0.92  widget name=list @65,118,1050,790 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1056, 640, 32, 32]    seen=0.81  widget name=list @65,118,1050,790 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1056, 688, 32, 16]    seen=0.92  widget name=list @65,118,1050,790 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1344, 256, 208, 16]   seen=0.47  widget source=ServiceEvent render=Progress convert=EventTime(Progress) @1325,259,380,8 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1792, 48, 64, 48]     seen=0.50  widget source=global.CurrentTime render=Label convert=ClockToText(Format:%H:%M) @1640,48,205,62 [ChannelSelection] LIVE
+f07_chlist_red         diff= 7.8495%  regions=16  unexplained=0  residual=0  PASS-IF-CROPS-CONFIRMED
+     DYNAMIC-SOURCE [272, 160, 240, 48]    seen=0.00  widget name=list @65,118,1050,790 [ChannelSelection] LIVE
+     DYNAMIC        [304, 336, 448, 32]    seen=1.00  widget name=list @65,118,1050,790 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1008, 128, 64, 32]    seen=0.59  widget name=list @65,118,1050,790 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1008, 176, 32, 16]    seen=0.60  widget name=list @65,118,1050,790 [ChannelSelection] LIVE
+     DYNAMIC        [1024, 336, 32, 32]    seen=1.00  widget name=list @65,118,1050,790 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1040, 208, 16, 32]    seen=0.92  widget name=list @65,118,1050,790 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1200, 336, 352, 192]  seen=0.00  widget source=ServiceEvent render=RunningText convert=EventName(FullDescription) @1205,305,340,383 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1232, 240, 32, 32]    seen=0.00  widget source=ServiceEvent render=Label convert=EventTime(StartTime)>ClockToText(Format:%H:%M) @1205,248,110,30 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1232, 736, 128, 192]  seen=0.00  widget source=ServiceEvent render=CineViewMLAPosterX @1240,746,120,180 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1328, 256, 64, 16]    seen=0.13  widget source=ServiceEvent render=Progress convert=EventTime(Progress) @1325,259,380,8 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1392, 176, 272, 48]   seen=0.00  widget source=ServiceEvent render=RunningText convert=EventName(Name) @1205,180,635,58 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1424, 736, 144, 192]  seen=0.00  widget source=ServiceEvent render=CineViewMLAPosterX @1435,746,120,180 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1568, 336, 240, 352]  seen=0.00  widget source=ServiceEvent render=CineViewMLAPosterX @1580,350,225,338 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1616, 736, 144, 192]  seen=0.00  widget source=ServiceEvent render=CineViewMLAPosterX @1630,746,120,180 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1792, 48, 64, 48]     seen=0.50  widget source=global.CurrentTime render=Label convert=ClockToText(Format:%H:%M) @1640,48,205,62 [ChannelSelection] LIVE
+     DYNAMIC-SOURCE [1792, 240, 48, 32]    seen=0.00  widget source=ServiceEvent render=Label convert=EventTime(EndTime)>ClockToText(Format:%H:%M) @1715,248,125,30 [ChannelSelection] LIVE
+f08_chlist_menu        diff= 0.0246%  regions= 1  unexplained=0  residual=0  PASS-IF-CROPS-CONFIRMED
+     DYNAMIC-SOURCE [1840, 0, 64, 48]      seen=0.53  widget source=global.CurrentTime render=Label convert=ClockToText(Format:%H:%M) @1665,5,225,40 [ChannelContextMenu] LIVE | widget source=global.CurrentTime render=Label convert=ClockToText(Date) @1440,45,450,37 [ChannelContextMenu] LIVE
+f09_epg_right2         diff=12.1723%  regions= 6  unexplained=0  residual=0  PASS-IF-CROPS-CONFIRMED
+     DYNAMIC-SOURCE [32, 64, 176, 256]     seen=0.00  widget source=Event render=CineViewMLAPosterX @45,72,155,233 [GraphicalEPG] LIVE | widget source=session.CurrentService render=Pixmap convert=ConfigEntryTest(config.plugins.cineviewmla.poster_epg,False,Invert)>ConditionalShowHide @39,66,167,245 [GraphicalEPG] LIVE
+     DYNAMIC-SOURCE [224, 64, 464, 48]     seen=0.00  widget source=Event render=RunningText convert=EventName(Name) @230,72,1625,48 [GraphicalEPG] LIVE | widget source=Title render=Label @45,22,1810,45 [GraphicalEPG]
+     DYNAMIC-SOURCE [224, 128, 1600, 192]  seen=0.00  widget source=Event render=Label convert=EventTime(StartTime)>ClockToText(Format:%H:%M) @230,126,110,34 [GraphicalEPG] LIVE | widget source=Event render=Label convert=EventTime(EndTime)>ClockToText(Format:- %H:%M) @350,126,125,34 [GraphicalEPG] LIVE
+     DYNAMIC-SOURCE [384, 336, 1472, 592]  seen=0.00  widget name=timeline_text @45,340,1810,42 [GraphicalEPG] LIVE | widget name=lab1 @45,385,1810,545 [GraphicalEPG] LIVE
+     DYNAMIC-SOURCE [432, 336, 48, 48]     seen=0.00  widget name=timeline_text @45,340,1810,42 [GraphicalEPG] LIVE
+     DYNAMIC-SOURCE [1648, 336, 48, 48]    seen=0.00  widget name=timeline_text @45,340,1810,42 [GraphicalEPG] LIVE
+f10_epg_down2          diff= 6.7549%  regions= 8  unexplained=0  residual=0  PASS-IF-CROPS-CONFIRMED
+     DYNAMIC-SOURCE [384, 336, 736, 192]   seen=0.00  widget name=timeline_text @45,340,1810,42 [GraphicalEPG] LIVE | widget name=lab1 @45,385,1810,545 [GraphicalEPG] LIVE
+     DYNAMIC-SOURCE [432, 336, 48, 48]     seen=0.00  widget name=timeline_text @45,340,1810,42 [GraphicalEPG] LIVE
+     DYNAMIC-SOURCE [432, 448, 1424, 480]  seen=0.00  widget name=lab1 @45,385,1810,545 [GraphicalEPG] LIVE | widget name=bouquetlist @45,385,1810,545 [GraphicalEPG]
+     DYNAMIC-SOURCE [912, 336, 48, 48]     seen=0.00  widget name=timeline_text @45,340,1810,42 [GraphicalEPG] LIVE
+     DYNAMIC-SOURCE [1168, 336, 48, 48]    seen=0.00  widget name=timeline_text @45,340,1810,42 [GraphicalEPG] LIVE
+     DYNAMIC-SOURCE [1408, 336, 48, 48]    seen=0.00  widget name=timeline_text @45,340,1810,42 [GraphicalEPG] LIVE
+     DYNAMIC-SOURCE [1472, 384, 384, 144]  seen=0.00  widget name=lab1 @45,385,1810,545 [GraphicalEPG] LIVE | widget name=bouquetlist @45,385,1810,545 [GraphicalEPG]
+     DYNAMIC-SOURCE [1648, 336, 48, 48]    seen=0.00  widget name=timeline_text @45,340,1810,42 [GraphicalEPG] LIVE
+f11_epg_info           diff= 9.5060%  regions=26  unexplained=0  residual=0  PASS-IF-CROPS-CONFIRMED
+     DYNAMIC-SOURCE [32, 848, 128, 160]    seen=0.00  widget source=Event render=CineViewMLAPosterX @40,850,105,158 [EventView] LIVE
+     DYNAMIC-SOURCE [80, 160, 288, 48]     seen=0.00  widget source=session.Event_Now render=RunningText convert=EventName(Name) @95,165,480,42 [EventView] LIVE
+     DYNAMIC-SOURCE [96, 240, 480, 128]    seen=0.00  widget source=session.Event_Now render=RunningText convert=EventName(FullDescription) @95,220,480,295 [EventView] LIVE
+     DYNAMIC        [96, 1024, 32, 32]     seen=1.00  widget source=session.FrontendStatus render=Label convert=FrontendInfo(SNR) @94,1030,70,28 [EventView] LIVE
+     DYNAMIC-SOURCE [112, 528, 48, 32]     seen=0.00  widget source=session.Event_Now render=Label convert=EventTime(StartTime)>ClockToText(Format:%H:%M) @95,535,160,30 [EventView] LIVE
+     DYNAMIC        [272, 1024, 16, 32]    seen=1.00  widget source=session.FrontendStatus render=Progress convert=FrontendInfo(SNR) @165,1038,160,10 [EventView] LIVE
+     DYNAMIC        [384, 1024, 32, 32]    seen=1.00  widget source=session.FrontendStatus render=Label convert=FrontendInfo(SNRdB) @377,1030,105,28 [EventView] LIVE
+     DYNAMIC-SOURCE [528, 528, 48, 32]     seen=0.00  widget source=session.Event_Now render=Label convert=EventTime(EndTime)>ClockToText(Format:%H:%M) @415,535,160,30 [EventView] LIVE
+     DYNAMIC-SOURCE [608, 176, 224, 320]   seen=0.00  widget source=Event render=CineViewMLAPosterX @612,180,205,308 [EventView] LIVE
+     DYNAMIC-SOURCE [944, 160, 464, 48]    seen=0.00  widget source=session.Event_Next render=RunningText convert=EventName(Name) @950,165,580,42 [EventView] LIVE
+     DYNAMIC-SOURCE [944, 224, 592, 144]   seen=0.00  widget source=session.Event_Next render=RunningText convert=EventName(FullDescription) @950,220,580,295 [EventView] LIVE
+     DYNAMIC-SOURCE [944, 432, 592, 96]    seen=0.00  widget source=session.Event_Next render=RunningText convert=EventName(FullDescription) @950,220,580,295 [EventView] LIVE
+     DYNAMIC-SOURCE [960, 528, 48, 32]     seen=0.00  widget source=session.Event_Next render=Label convert=EventTime(StartTime)>ClockToText(Format:%H:%M) @950,535,160,30 [EventView] LIVE
+     DYNAMIC-SOURCE [1088, 848, 240, 48]   seen=0.00  widget source=session.Event_Now render=RunningText convert=EventName(Name) @1090,854,520,38 [EventView] LIVE
+     DYNAMIC-SOURCE [1088, 896, 784, 64]   seen=0.57  widget source=session.Event_Next render=Label convert=EventTime(StartTime)>ClockToText(Format:%H:%M) @1620,926,110,27 [EventView] LIVE | widget source=session.Event_Next render=Label convert=EventTime(EndTime)>ClockToText(Format:%H:%M) @1740,926,125,27 [EventView] LIVE
+     DYNAMIC        [1120, 1024, 32, 32]   seen=1.00  widget source=session.CurrentService render=Label convert=CineViewMLACPUTemp(Short) @1077,1030,132,28 [EventView] LIVE
+     DYNAMIC-SOURCE [1488, 528, 48, 32]    seen=0.00  widget source=session.Event_Next render=Label convert=EventTime(EndTime)>ClockToText(Format:%H:%M) @1370,535,160,30 [EventView] LIVE
+     DYNAMIC        [1536, 1024, 48, 32]   seen=1.00  widget source=session.CurrentService render=Label convert=CineViewMLABitrate(Mbps) @1538,1030,120,28 [EventView] LIVE
+     DYNAMIC-SOURCE [1568, 176, 224, 320]  seen=0.00  widget source=Event render=CineViewMLAPosterX @1575,180,205,308 [EventView] LIVE
+     DYNAMIC-SOURCE [1680, 960, 64, 32]    seen=0.00  widget source=session.Event_Now render=Label convert=CineViewMLAIMDb(Plain) @1684,969,82,27 [EventView] LIVE
+     DYNAMIC-SOURCE [1696, 848, 48, 32]    seen=0.00  widget source=session.Event_Now render=Label convert=EventTime(StartTime)>ClockToText(Format:%H:%M) @1620,856,110,28 [EventView] LIVE | widget source=session.Event_Now render=Label convert=EventTime(EndTime)>ClockToText(Format:%H:%M) @1740,856,125,28 [EventView] LIVE
+     DYNAMIC-SOURCE [1696, 928, 48, 16]    seen=0.00  widget source=session.Event_Next render=Label convert=EventTime(StartTime)>ClockToText(Format:%H:%M) @1620,926,110,27 [EventView] LIVE | widget source=session.Event_Next render=Label convert=EventTime(EndTime)>ClockToText(Format:%H:%M) @1740,926,125,27 [EventView] LIVE
+     DYNAMIC-SOURCE [1760, 960, 96, 32]    seen=0.00  widget source=session.Event_Now render=Label convert=CineViewMLAIMDb(Plain) @1684,969,82,27 [EventView] LIVE | widget source=session.Event_Now render=Label convert=CineViewMLAIMDb(Stars) @1768,969,100,27 [EventView] LIVE
+     DYNAMIC-SOURCE [1824, 848, 48, 32]    seen=0.00  widget source=session.Event_Now render=Label convert=EventTime(EndTime)>ClockToText(Format:%H:%M) @1740,856,125,28 [EventView] LIVE
+     DYNAMIC-SOURCE [1824, 928, 48, 16]    seen=0.00  widget source=session.Event_Next render=Label convert=EventTime(EndTime)>ClockToText(Format:%H:%M) @1740,926,125,27 [EventView] LIVE
+     DYNAMIC-SOURCE [1840, 1024, 16, 32]   seen=0.00  widget source=session.OAWeather render=Label convert=OAWeather(temperature_current) @1815,1030,66,28 [EventView] LIVE
+f12_plugins_right      diff= 0.0000%  regions= 0  unexplained=0  residual=0  PASS
+f13_plugins_red        diff= 0.0000%  regions= 0  unexplained=0  residual=0  PASS
+f14_blue_down          diff= 0.0000%  regions= 0  unexplained=0  residual=0  PASS
+f15_eventview_right    diff= 8.8410%  regions=25  unexplained=0  residual=0  PASS-IF-CROPS-CONFIRMED
+     DYNAMIC-SOURCE [32, 848, 128, 160]    seen=0.00  widget source=Event render=CineViewMLAPosterX @40,850,105,158 [EventView] LIVE
+     DYNAMIC-SOURCE [80, 160, 288, 48]     seen=0.00  widget source=session.Event_Now render=RunningText convert=EventName(Name) @95,165,480,42 [EventView] LIVE
+     DYNAMIC-SOURCE [96, 240, 480, 128]    seen=0.00  widget source=session.Event_Now render=RunningText convert=EventName(FullDescription) @95,220,480,295 [EventView] LIVE
+     DYNAMIC        [96, 1024, 32, 32]     seen=1.00  widget source=session.FrontendStatus render=Label convert=FrontendInfo(SNR) @94,1030,70,28 [EventView] LIVE
+     DYNAMIC-SOURCE [112, 528, 48, 32]     seen=0.00  widget source=session.Event_Now render=Label convert=EventTime(StartTime)>ClockToText(Format:%H:%M) @95,535,160,30 [EventView] LIVE
+     DYNAMIC        [272, 1024, 16, 32]    seen=1.00  widget source=session.FrontendStatus render=Progress convert=FrontendInfo(SNR) @165,1038,160,10 [EventView] LIVE
+     DYNAMIC        [384, 1024, 32, 32]    seen=1.00  widget source=session.FrontendStatus render=Label convert=FrontendInfo(SNRdB) @377,1030,105,28 [EventView] LIVE
+     DYNAMIC-SOURCE [528, 528, 48, 32]     seen=0.00  widget source=session.Event_Now render=Label convert=EventTime(EndTime)>ClockToText(Format:%H:%M) @415,535,160,30 [EventView] LIVE
+     DYNAMIC-SOURCE [608, 176, 224, 320]   seen=0.00  widget source=Event render=CineViewMLAPosterX @612,180,205,308 [EventView] LIVE
+     DYNAMIC-SOURCE [944, 160, 464, 48]    seen=0.00  widget source=session.Event_Next render=RunningText convert=EventName(Name) @950,165,580,42 [EventView] LIVE
+     DYNAMIC-SOURCE [944, 224, 592, 144]   seen=0.00  widget source=session.Event_Next render=RunningText convert=EventName(FullDescription) @950,220,580,295 [EventView] LIVE
+     DYNAMIC-SOURCE [960, 528, 48, 32]     seen=0.00  widget source=session.Event_Next render=Label convert=EventTime(StartTime)>ClockToText(Format:%H:%M) @950,535,160,30 [EventView] LIVE
+     DYNAMIC-SOURCE [1088, 848, 240, 48]   seen=0.00  widget source=session.Event_Now render=RunningText convert=EventName(Name) @1090,854,520,38 [EventView] LIVE
+     DYNAMIC-SOURCE [1088, 912, 352, 48]   seen=0.00  widget source=session.Event_Next render=RunningText convert=EventName(Name) @1090,924,520,34 [EventView] LIVE
+     DYNAMIC        [1120, 1024, 32, 32]   seen=1.00  widget source=session.CurrentService render=Label convert=CineViewMLACPUTemp(Short) @1077,1030,132,28 [EventView] LIVE
+     DYNAMIC-SOURCE [1488, 528, 48, 32]    seen=0.00  widget source=session.Event_Next render=Label convert=EventTime(EndTime)>ClockToText(Format:%H:%M) @1370,535,160,30 [EventView] LIVE
+     DYNAMIC        [1536, 1024, 48, 32]   seen=1.00  widget source=session.CurrentService render=Label convert=CineViewMLABitrate(Mbps) @1538,1030,120,28 [EventView] LIVE
+     DYNAMIC-SOURCE [1568, 176, 224, 320]  seen=0.00  widget source=Event render=CineViewMLAPosterX @1575,180,205,308 [EventView] LIVE
+     DYNAMIC-SOURCE [1680, 960, 64, 32]    seen=0.00  widget source=session.Event_Now render=Label convert=CineViewMLAIMDb(Plain) @1684,969,82,27 [EventView] LIVE
+     DYNAMIC-SOURCE [1696, 848, 48, 32]    seen=0.00  widget source=session.Event_Now render=Label convert=EventTime(StartTime)>ClockToText(Format:%H:%M) @1620,856,110,28 [EventView] LIVE | widget source=session.Event_Now render=Label convert=EventTime(EndTime)>ClockToText(Format:%H:%M) @1740,856,125,28 [EventView] LIVE
+     DYNAMIC-SOURCE [1696, 928, 48, 16]    seen=0.00  widget source=session.Event_Next render=Label convert=EventTime(StartTime)>ClockToText(Format:%H:%M) @1620,926,110,27 [EventView] LIVE | widget source=session.Event_Next render=Label convert=EventTime(EndTime)>ClockToText(Format:%H:%M) @1740,926,125,27 [EventView] LIVE
+     DYNAMIC-SOURCE [1760, 960, 96, 32]    seen=0.00  widget source=session.Event_Now render=Label convert=CineViewMLAIMDb(Plain) @1684,969,82,27 [EventView] LIVE | widget source=session.Event_Now render=Label convert=CineViewMLAIMDb(Stars) @1768,969,100,27 [EventView] LIVE
+     DYNAMIC-SOURCE [1824, 848, 48, 32]    seen=0.00  widget source=session.Event_Now render=Label convert=EventTime(EndTime)>ClockToText(Format:%H:%M) @1740,856,125,28 [EventView] LIVE
+     DYNAMIC-SOURCE [1824, 928, 48, 16]    seen=0.00  widget source=session.Event_Next render=Label convert=EventTime(EndTime)>ClockToText(Format:%H:%M) @1740,926,125,27 [EventView] LIVE
+     DYNAMIC-SOURCE [1840, 1024, 16, 32]   seen=0.00  widget source=session.OAWeather render=Label convert=OAWeather(temperature_current) @1815,1030,66,28 [EventView] LIVE
+f16_audio_down         diff= 0.0266%  regions= 1  unexplained=0  residual=0  PASS
+     DYNAMIC        [1840, 0, 64, 48]      seen=1.00  widget source=global.CurrentTime render=Label convert=ClockToText(Format:%H:%M) @1665,5,225,40 [AudioSelection] LIVE | widget source=global.CurrentTime render=Label convert=ClockToText(Date) @1440,45,450,37 [AudioSelection] LIVE
+f17_emc_list           diff= 5.6688%  regions= 8  unexplained=2  residual=14289  REVIEW
+     DYNAMIC        [64, 480, 176, 32]     seen=1.00  -
+     UNEXPLAINED    [64, 592, 560, 112]    seen=0.90  -
+     DYNAMIC        [256, 480, 160, 32]    seen=1.00  -
+     UNEXPLAINED    [400, 128, 240, 80]    seen=0.00  -
+     DYNAMIC        [560, 480, 80, 32]     seen=1.00  -
+     DYNAMIC        [656, 224, 1200, 64]   seen=1.00  -
+     DYNAMIC        [656, 320, 1200, 48]   seen=1.00  -
+     DYNAMIC        [1792, 160, 48, 32]    seen=1.00  -
+f18_emc_select         diff= 5.6792%  regions= 7  unexplained=6  residual=117372  REVIEW
+     UNEXPLAINED    [64, 480, 176, 32]     seen=0.00  -
+     UNEXPLAINED    [64, 592, 560, 112]    seen=0.28  -
+     UNEXPLAINED    [256, 480, 160, 32]    seen=0.00  -
+     UNEXPLAINED    [400, 128, 240, 80]    seen=0.00  -
+     UNEXPLAINED    [560, 480, 80, 32]     seen=0.00  -
+     UNEXPLAINED    [656, 272, 1200, 96]   seen=0.74  -
+     DYNAMIC        [1792, 160, 48, 32]    seen=1.00  -
+f19_emc_play           diff= 0.9079%  regions= 6  unexplained=5  residual=18416  REVIEW
+     UNEXPLAINED    [400, 80, 464, 128]    seen=0.45  -
+     UNEXPLAINED    [656, 272, 48, 48]     seen=0.95  -
+     UNEXPLAINED    [720, 272, 320, 48]    seen=0.79  -
+     UNEXPLAINED    [1424, 272, 128, 48]   seen=0.00  -
+     UNEXPLAINED    [1616, 288, 160, 32]   seen=0.00  -
+     DYNAMIC        [1792, 160, 48, 32]    seen=1.00  -
+f20_emc_after_end      diff= 0.9082%  regions= 6  unexplained=5  residual=18416  REVIEW
+     UNEXPLAINED    [400, 80, 464, 128]    seen=0.45  -
+     UNEXPLAINED    [656, 272, 48, 48]     seen=0.95  -
+     UNEXPLAINED    [720, 272, 320, 48]    seen=0.79  -
+     UNEXPLAINED    [1424, 272, 128, 48]   seen=0.00  -
+     UNEXPLAINED    [1616, 288, 160, 32]   seen=0.00  -
+     DYNAMIC        [1792, 160, 48, 32]    seen=1.00  -
