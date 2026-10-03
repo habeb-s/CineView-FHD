@@ -26,6 +26,7 @@ SKIN_DIR = "/usr/share/enigma2/CineView_FHD_MLA"
 STATE = "/etc/enigma2/cineview_mla"
 RUNTIME = os.path.join(STATE, "runtime.json")
 PREVIEW_NONE = os.path.join(SKIN_DIR, "mla_assets", "preview_none.png")
+PROFILES = os.path.join(STATE, "profiles")
 POSTER_SECTIONS = ("infobar", "secondinfobar", "channelselection", "epg", "eventview")
 HEALTHY_AFTER_MS = 60000
 TRIAL_CONFIRM_SECONDS = 20
@@ -270,9 +271,10 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 		self["key_green"] = StaticText(_("Apply (trial)"))
 		self["key_yellow"] = StaticText(_("Preview"))
 		self["key_blue"] = StaticText(_("Factory design"))
-		self["mlaActions"] = ActionMap(["OkCancelActions", "ColorActions"], {
+		self["mlaActions"] = ActionMap(["OkCancelActions", "ColorActions", "MenuActions"], {
 			"cancel": self.keyCancel, "red": self.keyCancel, "green": self.keyApply,
 			"yellow": self.keyPreview, "blue": self.keyFactory, "ok": self.keyPreview,
+			"menu": self.keyProfiles,
 		}, -2)
 		self["config"].onSelectionChanged.append(self.updatePreview)
 		self.onLayoutFinish.append(self.updatePreview)
@@ -357,6 +359,100 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 			except Exception:
 				pass
 		self.close()
+
+	# ---------------------------------------------------------------- profiles (Blueprint 2.7: JSON export/import)
+	def _profile_names(self):
+		try:
+			return sorted(f[:-5] for f in os.listdir(PROFILES) if f.endswith(".json"))
+		except OSError:
+			return []
+
+	def keyProfiles(self):
+		from Screens.ChoiceBox import ChoiceBox
+		choices = [(_("Save current settings as a profile"), "save")]
+		if self._profile_names():
+			choices += [(_("Load a profile"), "load"), (_("Delete a profile"), "delete")]
+		self.session.openWithCallback(self._profileAction, ChoiceBox, text=_("CineView profiles"), choiceList=choices)
+
+	def _profileAction(self, choice):
+		from Screens.ChoiceBox import ChoiceBox
+		if not choice:
+			return
+		if choice[1] == "save":
+			from Screens.VirtualKeyBoard import VirtualKeyBoard
+			self.session.openWithCallback(self._profileSave, VirtualKeyBoard, title=_("Profile name"), text=_("My CineView"))
+		else:
+			names = [(n, n) for n in self._profile_names()]
+			cb = self._profileLoad if choice[1] == "load" else self._profileDelete
+			self.session.openWithCallback(cb, ChoiceBox, text=_("Select a profile"), choiceList=names)
+
+	def _profile_data(self):
+		return {"schema": 1, "theme": self.cfgTheme.value, "layouts": {s: c.value for s, c in self.cfgLayouts.items()},
+			"posters": {s: bool(c.value) for s, c in self.cfgPosters.items()}, "servermode": self.mla.servermode.value,
+			"show_second_infobar": config.usage.show_second_infobar.value, "second_infobar_timeout": config.usage.second_infobar_timeout.value}
+
+	def _profileSave(self, name):
+		import re as _re
+		name = _re.sub(r"[^A-Za-z0-9 _.-]+", "", (name or "")).strip()[:40]
+		if not name:
+			return
+		try:
+			os.makedirs(PROFILES, exist_ok=True)
+			path = os.path.join(PROFILES, name + ".json")
+			with open(path + ".tmp", "w") as f:
+				json.dump(self._profile_data(), f, indent=1, sort_keys=True)
+				f.flush()
+				os.fsync(f.fileno())
+			os.replace(path + ".tmp", path)
+			self.session.open(MessageBox, _("Profile '%s' saved.") % name, MessageBox.TYPE_INFO, timeout=4)
+		except Exception as err:
+			self.session.open(MessageBox, _("The profile could not be saved:\n%s") % err, MessageBox.TYPE_ERROR)
+
+	def _profileLoad(self, choice):
+		if not choice:
+			return
+		try:
+			data = json.load(open(os.path.join(PROFILES, choice[1] + ".json")))
+		except Exception as err:
+			self.session.open(MessageBox, _("The profile could not be read:\n%s") % err, MessageBox.TYPE_ERROR)
+			return
+		skipped = []
+		def setc(cfg, value, what):
+			if value is None:
+				return
+			if hasattr(cfg, "choices") and value not in list(cfg.choices):  # choicesList iterates its keys (57b7a51)
+				skipped.append(what)  # e.g. a design pack that is not installed: keep the current value
+				return
+			cfg.value = value
+		setc(self.cfgTheme, data.get("theme"), "theme")
+		for sec, lid in (data.get("layouts") or {}).items():
+			if sec in self.cfgLayouts:
+				setc(self.cfgLayouts[sec], lid, sec)
+		for sec, v in (data.get("posters") or {}).items():
+			if sec in self.cfgPosters:
+				self.cfgPosters[sec].value = bool(v)
+		setc(self.mla.servermode, data.get("servermode"), "servermode")
+		setc(config.usage.show_second_infobar, data.get("show_second_infobar"), "second infobar mode")
+		setc(config.usage.second_infobar_timeout, data.get("second_infobar_timeout"), "second infobar timeout")
+		self["config"].l.invalidate()
+		self.updatePreview()
+		msg = _("Profile '%s' loaded. Press GREEN to apply it.") % choice[1]
+		if skipped:
+			msg += "\n" + _("Not available here (kept as is): %s") % ", ".join(skipped)
+		self.session.open(MessageBox, msg, MessageBox.TYPE_INFO, timeout=6)
+
+	def _profileDelete(self, choice):
+		if not choice:
+			return
+		self._to_delete = choice[1]
+		self.session.openWithCallback(self._profileDeleteConfirmed, MessageBox, _("Delete the profile '%s'?") % choice[1], MessageBox.TYPE_YESNO, default=False)
+
+	def _profileDeleteConfirmed(self, answer):
+		if answer:
+			try:
+				os.remove(os.path.join(PROFILES, self._to_delete + ".json"))
+			except OSError as err:
+				self.session.open(MessageBox, _("The profile could not be deleted:\n%s") % err, MessageBox.TYPE_ERROR)
 
 	def keyPreview(self):
 		p = self._preview_path()
