@@ -150,6 +150,7 @@ def itunes_candidates(data, media):
 		url = row.get("artworkUrl100") or row.get("artworkUrl60")
 		if not url:
 			continue
+		url = re.sub(r"/\d+x\d+bb\.", "/600x900bb.", url)  # Apple CDN serves the requested size
 		y0, _ = _range(row.get("releaseDate"))
 		title = row.get("trackName") or row.get("collectionName") or ""
 		if media != "movie":
