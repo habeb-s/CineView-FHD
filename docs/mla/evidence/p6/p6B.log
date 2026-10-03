@@ -1,0 +1,41 @@
+new e2 pid=28431 @19:22:29
+webif up @19:22:53
+STATE active=g000003 lkg=g000000 journal=TRIAL_RUNNING theme=purple gens=['g000000', 'g000001', 'g000002', 'g000003']
+boot.count=1 e2pid=28431 crashlogs=1
+2026-10-03 19:20:48 trial: revert (declined by user / prompt timeout)
+2026-10-03 19:20:48 rollback: active -> g000000
+2026-10-03 19:22:15 apply: g000000 -> g000003 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "purple"}
+2026-10-03 19:22:51 trial: session started on g000003, awaiting confirmation
+cap B01_prompt @19:23:56
+cap B02_yes_selected @19:23:59
+cap B03_after_yes @19:24:04
+STATE active=g000003 lkg=g000003 journal=COMMITTED theme=purple gens=['g000000', 'g000001', 'g000002', 'g000003']
+boot.count=0 e2pid=28431 crashlogs=1
+2026-10-03 19:20:48 rollback: active -> g000000
+2026-10-03 19:22:15 apply: g000000 -> g000003 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "purple"}
+2026-10-03 19:22:51 trial: session started on g000003, awaiting confirmation
+2026-10-03 19:23:59 commit: lkg=g000003
+19:23:51.8995 [CineViewMLA] session healthy; guardian counter reset
+19:23:59.0733 [CineViewMLA] trial committed
+new e2 pid=30510 @19:24:10
+webif up @19:24:36
+cap B04_after_restart_infobar @19:25:06
+STATE active=g000003 lkg=g000003 journal=COMMITTED theme=purple gens=['g000000', 'g000001', 'g000002', 'g000003']
+boot.count=1 e2pid=30510 crashlogs=1
+2026-10-03 19:20:48 rollback: active -> g000000
+2026-10-03 19:22:15 apply: g000000 -> g000003 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "purple"}
+2026-10-03 19:22:51 trial: session started on g000003, awaiting confirmation
+2026-10-03 19:23:59 commit: lkg=g000003
+DONE-B
+cap C01_ui @19:25:25
+cap C02_factory_q @19:25:28
+new e2 pid=32499 @19:25:36
+webif up @19:26:01
+cap C03_after_factory_infobar @19:26:31
+STATE active=g000000 lkg=g000000 journal=ROLLED_BACK theme=navy gens=['g000000', 'g000001', 'g000002', 'g000003']
+boot.count=1 e2pid=32499 crashlogs=1
+2026-10-03 19:22:15 apply: g000000 -> g000003 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "purple"}
+2026-10-03 19:22:51 trial: session started on g000003, awaiting confirmation
+2026-10-03 19:23:59 commit: lkg=g000003
+2026-10-03 19:25:30 rollback: active -> g000000
+DONE-C

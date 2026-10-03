@@ -1,0 +1,20 @@
+2026-10-03 19:14:41 apply: g000000 -> g000001 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "purple"}
+2026-10-03 19:15:17 trial: session started on g000001, awaiting confirmation
+2026-10-03 19:16:37 trial: revert (declined by user / prompt timeout)
+2026-10-03 19:16:37 rollback: active -> g000000
+2026-10-03 19:18:53 apply: g000000 -> g000002 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "purple"}
+2026-10-03 19:19:28 trial: session started on g000002, awaiting confirmation
+2026-10-03 19:20:48 trial: revert (declined by user / prompt timeout)
+2026-10-03 19:20:48 rollback: active -> g000000
+2026-10-03 19:22:15 apply: g000000 -> g000003 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "purple"}
+2026-10-03 19:22:51 trial: session started on g000003, awaiting confirmation
+2026-10-03 19:23:59 commit: lkg=g000003
+2026-10-03 19:25:30 rollback: active -> g000000
+2026-10-03 19:30:56 apply: g000000 -> g000004 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "purple"}
+2026-10-03 19:31:25 trial: session started on g000004, awaiting confirmation
+2026-10-03 19:31:58 trial: revert (crash during trial: 20261003-193147-enigma2-crash.log)
+2026-10-03 19:31:58 rollback: active -> g000000
+2026-10-03 19:34:07 apply: g000000 -> g000005 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "purple"}
+2026-10-03 19:34:36 trial: session started on g000005, awaiting confirmation
+2026-10-03 19:34:56 rollback: active -> g000000
+2026-10-03 19:34:56 recover: unconfirmed trial g000005 from the previous session -> g000000

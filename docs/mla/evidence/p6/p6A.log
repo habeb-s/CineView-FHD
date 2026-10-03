@@ -1,0 +1,36 @@
+STATE active=g000000 lkg=g000000 journal=None theme=navy gens=['g000000']
+boot.count=0 e2pid=17150 crashlogs=1
+cap A01_ui @19:14:38
+cap A02_theme_purple @19:14:41
+cap A03_restart_question @19:14:48
+STATE active=g000001 lkg=g000000 journal=TRIAL theme=purple gens=['g000000', 'g000001']
+boot.count=0 e2pid=17150 crashlogs=1
+2026-10-03 19:14:41 apply: g000000 -> g000001 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "purple"}
+new e2 pid=19386 @19:14:54
+webif up @19:15:19
+cap A04_trial_up @19:15:20
+STATE active=g000001 lkg=g000000 journal=TRIAL_RUNNING theme=purple gens=['g000000', 'g000001']
+boot.count=1 e2pid=19386 crashlogs=1
+2026-10-03 19:14:41 apply: g000000 -> g000001 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "purple"}
+2026-10-03 19:15:17 trial: session started on g000001, awaiting confirmation
+19:15:17.8387 [CineViewMLA] trial watch started
+cap A05_01 @19:15:30
+cap A05_02 @19:15:39
+cap A05_03 @19:15:48
+cap A05_04 @19:15:57
+cap A05_05 @19:16:05
+cap A05_06 @19:16:14
+cap A05_07 @19:16:23
+cap A05_08 @19:16:32
+cap A05_09 @19:16:41
+e2 restarted (revert) at k=09
+new e2 pid=21466 @19:16:42
+webif up @19:17:08
+cap A06_after_revert @19:17:24
+STATE active=g000000 lkg=g000000 journal=ROLLED_BACK theme=navy gens=['g000000', 'g000001']
+boot.count=1 e2pid=21466 crashlogs=1
+2026-10-03 19:14:41 apply: g000000 -> g000001 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "purple"}
+2026-10-03 19:15:17 trial: session started on g000001, awaiting confirmation
+2026-10-03 19:16:37 trial: revert (declined by user / prompt timeout)
+2026-10-03 19:16:37 rollback: active -> g000000
+DONE-A

@@ -1,0 +1,23 @@
+g000005
+new e2 pid=9630 @19:34:13
+webif up @19:34:38
+cap E01_trial_infobar @19:34:53
+STATE active=g000005 lkg=g000000 journal=TRIAL_RUNNING theme=purple gens=['g000000', 'g000001', 'g000002', 'g000003', 'g000004', 'g000005']
+boot.count=1 e2pid=9630 crashlogs=2
+2026-10-03 19:31:58 trial: revert (crash during trial: 20261003-193147-enigma2-crash.log)
+2026-10-03 19:31:58 rollback: active -> g000000
+2026-10-03 19:34:07 apply: g000000 -> g000005 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "purple"}
+2026-10-03 19:34:36 trial: session started on g000005, awaiting confirmation
+killed 9630
+new e2 pid=10806 @19:34:57
+webif up @19:35:22
+cap E02_after_respawn_infobar @19:35:52
+STATE active=g000000 lkg=g000000 journal=ROLLED_BACK theme=navy gens=['g000000', 'g000001', 'g000002', 'g000003', 'g000004', 'g000005']
+boot.count=2 e2pid=10806 crashlogs=2
+2026-10-03 19:34:07 apply: g000000 -> g000005 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "purple"}
+2026-10-03 19:34:36 trial: session started on g000005, awaiting confirmation
+2026-10-03 19:34:56 rollback: active -> g000000
+2026-10-03 19:34:56 recover: unconfirmed trial g000005 from the previous session -> g000000
+DONE-E
+p6E rc=0
+post active=generations/g000000

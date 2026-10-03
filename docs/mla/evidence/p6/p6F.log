@@ -1,0 +1,42 @@
+classic
+zz_brokentest
+zz_xmlerror
+STATE active=g000000 lkg=g000000 journal=ROLLED_BACK theme=navy gens=['g000000', 'g000001', 'g000002', 'g000003', 'g000004', 'g000005']
+boot.count=2 e2pid=10806 crashlogs=2
+2026-10-03 19:34:07 apply: g000000 -> g000005 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "purple"}
+2026-10-03 19:34:36 trial: session started on g000005, awaiting confirmation
+2026-10-03 19:34:56 rollback: active -> g000000
+2026-10-03 19:34:56 recover: unconfirmed trial g000005 from the previous session -> g000000
+cap F01_broken_selected @19:36:38
+cap F02_apply_refused @19:36:44
+STATE active=g000000 lkg=g000000 journal=ROLLED_BACK theme=navy gens=['g000000', 'g000001', 'g000002', 'g000003', 'g000004', 'g000005']
+boot.count=0 e2pid=10806 crashlogs=2
+2026-10-03 19:34:07 apply: g000000 -> g000005 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "purple"}
+2026-10-03 19:34:36 trial: session started on g000005, awaiting confirmation
+2026-10-03 19:34:56 rollback: active -> g000000
+2026-10-03 19:34:56 recover: unconfirmed trial g000005 from the previous session -> g000000
+cap F03_xmlerror_selected @19:36:50
+cap F04_apply_refused2 @19:36:55
+STATE active=g000000 lkg=g000000 journal=ROLLED_BACK theme=navy gens=['g000000', 'g000001', 'g000002', 'g000003', 'g000004', 'g000005']
+boot.count=0 e2pid=10806 crashlogs=2
+2026-10-03 19:34:07 apply: g000000 -> g000005 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "purple"}
+2026-10-03 19:34:36 trial: session started on g000005, awaiting confirmation
+2026-10-03 19:34:56 rollback: active -> g000000
+2026-10-03 19:34:56 recover: unconfirmed trial g000005 from the previous session -> g000000
+classic
+19:36:20.4541 [CineViewMLA] session healthy; guardian counter reset
+cap G01_posters_epg_row @19:37:32
+cap G02_posters_epg_no @19:37:35
+cap G03_saved_msg @19:37:39
+config.plugins.cineviewmla.poster_epg=False
+cap G04_restore_yes @19:38:22
+poster_epg default (True)
+STATE active=g000000 lkg=g000000 journal=ROLLED_BACK theme=navy gens=['g000000', 'g000001', 'g000002', 'g000003', 'g000004', 'g000005']
+boot.count=0 e2pid=10806 crashlogs=2
+2026-10-03 19:34:07 apply: g000000 -> g000005 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "purple"}
+2026-10-03 19:34:36 trial: session started on g000005, awaiting confirmation
+2026-10-03 19:34:56 rollback: active -> g000000
+2026-10-03 19:34:56 recover: unconfirmed trial g000005 from the previous session -> g000000
+19:36:20.4541 [CineViewMLA] session healthy; guardian counter reset
+DONE-FG
+p6F rc=0

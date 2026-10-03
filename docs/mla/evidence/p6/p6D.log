@@ -1,0 +1,32 @@
+g000004
+new e2 pid=6157 @19:31:04
+webif up @19:31:27
+cap D01_trial_up @19:31:33
+STATE active=g000004 lkg=g000000 journal=TRIAL_RUNNING theme=purple gens=['g000000', 'g000001', 'g000002', 'g000003', 'g000004']
+boot.count=1 e2pid=6157 crashlogs=1
+2026-10-03 19:23:59 commit: lkg=g000003
+2026-10-03 19:25:30 rollback: active -> g000000
+2026-10-03 19:30:56 apply: g000000 -> g000004 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "purple"}
+2026-10-03 19:31:25 trial: session started on g000004, awaiting confirmation
+cap D02_ui_crash @19:32:00
+STATE active=g000000 lkg=g000000 journal=ROLLED_BACK theme=navy gens=['g000000', 'g000001', 'g000002', 'g000003', 'g000004']
+boot.count=1 e2pid= crashlogs=2
+2026-10-03 19:30:56 apply: g000000 -> g000004 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "purple"}
+2026-10-03 19:31:25 trial: session started on g000004, awaiting confirmation
+2026-10-03 19:31:58 trial: revert (crash during trial: 20261003-193147-enigma2-crash.log)
+2026-10-03 19:31:58 rollback: active -> g000000
+cap D03_01 @19:32:03
+e2 restarted by trial watch at k=01
+ad5faa2c184d64e0fbb58cb488a2090b  /usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/plugin.py
+new e2 pid=7358 @19:32:05
+webif up @19:32:31
+cap D04_after_infobar @19:32:56
+STATE active=g000000 lkg=g000000 journal=ROLLED_BACK theme=navy gens=['g000000', 'g000001', 'g000002', 'g000003', 'g000004']
+boot.count=1 e2pid=7358 crashlogs=2
+2026-10-03 19:30:56 apply: g000000 -> g000004 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "purple"}
+2026-10-03 19:31:25 trial: session started on g000004, awaiting confirmation
+2026-10-03 19:31:58 trial: revert (crash during trial: 20261003-193147-enigma2-crash.log)
+2026-10-03 19:31:58 rollback: active -> g000000
+DONE-D
+p6D rc=0
+post active=generations/g000000 plugin=ad5faa2c184d64e0fbb58cb488a2090b

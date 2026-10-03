@@ -1,0 +1,18 @@
+805:19:31:47.2504 [InfoBarGenerics] Key 'KEY_OK' (0x160 - 352) Make.
+806:19:31:47.2662 [Skin] Processing screen 'CineViewMLASetup', from list 'CineViewMLASetup, Setup', position=(0,0), size=(1920,1080) for module 'CineViewMLASetup'.
+807:19:31:47.2747 [Screen] Warning: Skin is missing element 'HelpWindow' in <class 'Plugins.Extensions.CineViewMLA.plugin.CineViewMLASetup'> item <Components.Pixmap.Pixmap object at 0xabfd81f8>.
+808:19:31:47.2845 Traceback (most recent call last):
+810:19:31:47.2863   File "/usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/plugin.py", line 318, in updatePreview
+813:19:31:47.2865 TypeError: 'str' object is not callable
+861:19:31:57.3186 [StackTrace] File: "/usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/plugin.py", line 388, in main
+862:19:31:57.3186 [StackTrace]   session.open(CineViewMLASetup)
+874:19:31:57.3292 Traceback (most recent call last):
+878:19:31:57.3344   File "/usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/plugin.py", line 388, in main
+892:19:31:57.3348   File "/usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/plugin.py", line 318, in updatePreview
+895:19:31:57.3350 TypeError: 'str' object is not callable
+897:19:31:58.3359 [InfoBarGenerics] Key 'KEY_OK' (0x160 - 352) Break.
+901:19:31:58.3652 [CineViewMLA] trial reverted: crash during trial: 20261003-193147-enigma2-crash.log
+918:19:31:58.4882 [Skin] Processing screen 'QuitMainloopScreen' position=(0,0), size=(1920,1080) for module 'QuitMainloopScreen'.
+920:19:31:58.4907 [Skin] Parsing embedded skin '<embedded-in-TryQuitMainloop>'.
+921:19:31:58.4913 [Skin] Processing screen '<embedded-in-TryQuitMainloop>' position=(1310,0), size=(0,0) for module 'TryQuitMainloop'.
+922:19:31:58.4923 [Skin] Processing screen 'ScreenSummary', from list 'TryQuitMainloopSummary, TryQuitMainloop_summary, ScreenSummary', position=(0,0), size=(480,320) for module 'ScreenSummary'.
