@@ -355,6 +355,16 @@ def make_preview_none(path):
 	im.save(path, "PNG")
 
 
+def _p7_preview(pack_dir, skin):
+	"""Selector preview of a P7 pack: the spec mockup (posters on), real font, 720x405."""
+	import tempfile
+	from PIL import Image
+	sec = os.path.basename(os.path.dirname(pack_dir))
+	with tempfile.TemporaryDirectory() as t:
+		subprocess.check_call([sys.executable, os.path.join(HERE, "p7", "render_p7.py"), os.path.join(skin, "fonts"), t], stdout=subprocess.DEVNULL)
+		Image.open(os.path.join(t, "details_%s_posters_on.png" % sec)).convert("RGB").resize((720, 405)).save(os.path.join(pack_dir, "preview.png"))
+
+
 def run(*a):
 	subprocess.check_call(list(a))
 
@@ -450,6 +460,12 @@ def main(golden, comps, control, out):
 		print("M5 %-16s %-22s %s" % (sec, scr, what))
 	for scr, source, kind in apply_sib_textfit(skin):
 		print("SIB-TEXTFIT %-20s %-18s %s (narrow+wide)" % (scr, source, kind))
+	# P7: Details family (user-approved direction 2026-10-03; Classic packs untouched).
+	sys.path.insert(0, os.path.join(HERE, "p7"))
+	import gen_details
+	for d in gen_details.generate(skin):
+		print("P7 DETAILS pack:", os.path.relpath(d, skin))
+		_p7_preview(d, skin)
 
 	# Themes: the original CineView palette() applied to the golden <colors>; navy == golden (verified).
 	theme = load_theme_module(control)

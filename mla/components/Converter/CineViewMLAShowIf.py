@@ -8,7 +8,7 @@
 #
 # usage:  <convert type="EventName">Name</convert>
 #         <convert type="CineViewMLAShowIf">config.plugins.cineviewmla.poster_secondinfobar,True</convert>
-# args:   <config key>,<value>[,Invert][,dir=rtl|dir=ltr]
+# args:   <config key>|always,<value>[,Invert][,dir=rtl|dir=ltr]
 #         The key is resolved live (configfile.getResolvedKey); a missing key resolves to the
 #         converter's default "True", so posters-on layouts are shown when nothing is configured.
 #         dir=: additionally require the direction of the source text (first strong character:
@@ -24,18 +24,19 @@ class CineViewMLAShowIf(Converter):
 		Converter.__init__(self, args)
 		parts = [x.strip() for x in (args or "").split(",")]
 		self._key = parts[0] if parts and parts[0].startswith("config.") else None
+		self._always = bool(parts) and parts[0] == "always"  # "always,True,dir=rtl": direction-only switch
 		self._value = parts[1] if len(parts) > 1 else "True"
 		self._invert = "Invert" in parts[2:]
 		self._dir = None
 		for p in parts[2:]:
 			if p in ("dir=rtl", "dir=ltr"):
 				self._dir = p[4:]
-		if self._key is None:
+		if self._key is None and not self._always:
 			print("[CineViewMLAShowIf] invalid arguments '%s' (shown)" % args)
 
 	def __getattr__(self, name):
 		# Transparent like ConditionalShowHide; never recurse while the object is being built.
-		if name.startswith("__") or name in ("source", "_key", "_value", "_invert", "_dir"):
+		if name.startswith("__") or name in ("source", "_key", "_value", "_invert", "_dir", "_always"):
 			raise AttributeError(name)
 		return getattr(self.source, name)
 
