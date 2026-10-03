@@ -19,7 +19,7 @@ Maintainer scripts:
              re-applied with the new packs (new sealed generation); if that fails, factory is activated.
   prerm    : 'remove' is refused while CineView MLA is the selected skin (select another skin first), so the
              receiver never boots into a missing skin.
-  postrm   : 'remove'/'purge' deletes the runtime generations/links and bytecode caches of MLA only;
+  postrm   : 'remove'/'purge' deletes the MLA skin directory (runtime generations, links) and MLA bytecode only;
              /etc/enigma2/cineview_mla (profiles, journal) is kept on 'remove' and deleted on 'purge'.
 """
 import io
@@ -102,13 +102,12 @@ POSTRM = r"""#!/bin/sh
 # CineView MLA postrm: remove MLA runtime state only.
 [ -n "$D" ] && exit 0
 if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
-  S=/usr/share/enigma2/CineView_FHD_MLA
-  rm -rf "$S/generations" "$S/active" "$S/active.tmp" "$S/lkg" 2>/dev/null
-  rm -rf /usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA 2>/dev/null
+  # The whole skin directory is MLA's own namespace (runtime generations, links and the .pyc files OpenATV
+  # compiles next to the sources).  Leftover sourceless .pyc converters would stay importable (T8 00:33).
+  rm -rf /usr/share/enigma2/CineView_FHD_MLA /usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA 2>/dev/null
   P=/usr/lib/enigma2/python/Components
+  rm -f $P/CineViewMLA*.pyc $P/Renderer/CineViewMLA*.pyc $P/Converter/CineViewMLA*.pyc 2>/dev/null
   rm -f $P/__pycache__/CineViewMLA* $P/Renderer/__pycache__/CineViewMLA* $P/Converter/__pycache__/CineViewMLA* 2>/dev/null
-  find "$S" -depth -type d -empty -exec rmdir {} \; 2>/dev/null
-  rmdir "$S" 2>/dev/null
   [ "$1" = "purge" ] && rm -rf /etc/enigma2/cineview_mla
   echo "CineView MLA removed (/etc/enigma2/cineview_mla kept unless purged)."
 fi
