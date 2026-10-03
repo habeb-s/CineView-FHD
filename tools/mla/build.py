@@ -184,15 +184,15 @@ def _kill_orphan_readers():
 SIB_TEXTFIT = {
 	# (source, position) of the approved RunningText widgets -> narrow (posters on) / wide (posters off)
 	# geometry.  Panels: left 55..860 (poster frame from x=609), right 925..1865 (frame from x=1572).
-	("session.Event_Now", "95,165"): ("title", (95, 165, 480, 70), (95, 165, 725, 70)),
-	("session.Event_Now", "95,220"): ("desc", (95, 245, 480, 270), (95, 245, 725, 270)),
-	("session.Event_Next", "950,165"): ("title", (950, 165, 580, 70), (950, 165, 890, 70)),
-	("session.Event_Next", "950,220"): ("desc", (950, 245, 580, 270), (950, 245, 890, 270)),
+	("session.Event_Now", "95,165"): ("title", (95, 165, 480, 64), (95, 165, 725, 64)),
+	("session.Event_Now", "95,220"): ("desc", (95, 245, 480, 261), (95, 245, 725, 261)),
+	("session.Event_Next", "950,165"): ("title", (950, 165, 580, 64), (950, 165, 890, 64)),
+	("session.Event_Next", "950,220"): ("desc", (950, 245, 580, 261), (950, 245, 890, 261)),
 }
 SIB_OPTS = {
 	# title: two wrapped lines, scrolls vertically only when a title needs more than two lines
 	"title": ('font="Regular;27"', "movetype=swimming,direction=top,step=1,steptime=70,startdelay=3000,pause=3000,repeat=0,always=0,wrap=1"),
-	# description: unchanged font; box = 9 whole lines; 'swimming' (native RunningText) starts with the
+	# description: unchanged font; box = 9 whole lines (line height 29 px for Regular;25, measured on device); 'swimming' (native RunningText) starts with the
 	# first lines visible and moves up to the last line and back, never outside the box
 	"desc": ('font="Regular;25"', "movetype=swimming,direction=top,step=1,steptime=60,startdelay=4000,pause=3000,repeat=0,always=0,wrap=1"),
 }
