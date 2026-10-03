@@ -42,13 +42,13 @@ CAPMAP = {
 	"08_plugins": ["PluginBrowser"],
 	"09_blue": ["QuickMenu", "ChoiceBox", "PluginBrowser"],
 	"10_osdsettings": ["Setup"],
-	"11_hotkey": ["HotkeySetup"],
-	"12_language": ["LanguageSelection", "LocaleSelection"],
+	"11_hotkey": ["HotkeySetup", "Setup"],
+	"12_language": ["LanguageSelection", "LocaleSelection", "Setup"],
 	"13_about": ["About", "Information", "AboutInformation", "ImageInformation"],
 	"14_multiboot": ["MultiBootSelection", "MultiBootSelector", "MultiBoot"],
 	"15_timers": ["TimerEditList", "RecordTimerOverview", "TimerOverview"],
-	"16_audio": ["AudioSelection"],
-	"17_subtitle": ["SubtitleSelection", "AudioSelection"],
+	"16_audio": ["AudioSelection", "Setup"],
+	"17_subtitle": ["SubtitleSelection", "AudioSelection", "Setup"],
 	"18_usagegui": ["Menu", "MenuHorizontal"],
 }
 
