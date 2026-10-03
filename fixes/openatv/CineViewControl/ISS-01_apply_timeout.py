@@ -9,7 +9,8 @@ Root cause (proven on OpenATV 8.0.1 Slot 8, see docs/mla/ISS-01_ISS-02_evidence.
   ("0" switches the Second InfoBar off).
 
 Fix: write the timeout to the native timeout setting config.usage.second_infobar_timeout
-(choices "0".."20" on OpenATV 8.0.1) and never touch the mode setting.
+(choices "0".."20" on OpenATV 8.0.1), keep its saved value in step (v2), and never touch
+the mode setting.
 
 usage: ISS-01_apply_timeout.py <plugin.py>   (rewrites the file in place, keeps a .orig copy)
 """
@@ -29,7 +30,11 @@ FIXED = '''def apply_timeout(save=False):
                 numeric = sorted(int(v) for v in valid if v.isdigit() and int(v) > 0)
                 value = str(numeric[-1]) if numeric and value.isdigit() and int(value) > numeric[-1] else target.default
             target.value = value
-            if save:
+            # v2: also keep the SAVED value in step.  A live-only value is reverted to the
+            # saved one (default 5 s) by ConfigList.cancelConfirm -> item.cancel() as soon as
+            # any Setup screen that lists it (OSD Settings, setup key "UserInterface") is left
+            # with EXIT/Cancel (proven on 57b7a51, docs/mla/ISS-01_ISS-02_evidence.md).
+            if save or target.saved_value != target.value:
                 target.save()
     except Exception:
         pass
