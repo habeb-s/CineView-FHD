@@ -65,6 +65,9 @@ def text_variants(src, conv, eon, eoff, font, color, opts, key, render="RunningT
 		for d in ("ltr", "rtl"):
 			ha = ' halign="right"' if d == "rtl" else halign
 			o = ' options="%s"' % opts if render == "RunningText" else ""
+			if render == "RunningText" and opts == T_OPTS and not one_line:
+				# multi-line title boxes: page by one line pitch (whole lines on every pause, device 23:20 HRT1)
+				o = ' options="%s"' % (RTL_PAGE_OPTS % S.line_height(font))
 			if one_line and render == "RunningText":
 				if d == "ltr":
 					# one-line box, left-to-right: horizontal swimming, the start of the text first, never wraps
