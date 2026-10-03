@@ -528,11 +528,11 @@ def main(golden, comps, control, out):
 			shutil.copytree(os.path.join(src_theme_assets, key), os.path.join(skin, "themes", key, "assets"), dirs_exist_ok=True)
 
 	# G-1: per-theme bitmaps.  The original engine swapped 3 hand-made bitmaps per theme; the scan of the skin
-	# for navy-tinted bitmaps in use found 3 more (progress bar, PVR position pointer, and the GraphicalEPG
+	# for navy-tinted bitmaps in use found 4 more (event progress bar infobar/pbar.png [P7 purple test], progress bar, PVR position pointer, and the GraphicalEPG
 	# "now" cell, which 57b7a51 loads natively by fixed path).  Every theme bitmap lives in the generation
 	# (active/assets/<rel>) and the skin path is a symlink to it, so the XML is untouched (Classic parity) and
 	# bitmaps switch atomically with the colours.  navy = the original files.
-	theme_assets = ("infobar/hd.png", "infobar/bl80.png", "extensions/transblack.png",
+	theme_assets = ("infobar/hd.png", "infobar/bl80.png", "extensions/transblack.png", "infobar/pbar.png",
 		"window/progress.png", "dvr/position_pointer1.png", "epg/CurrentEvent.png")
 	for rel in theme_assets:
 		orig = os.path.join(skin, rel)

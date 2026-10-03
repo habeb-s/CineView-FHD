@@ -26,7 +26,7 @@ SKIN_DIR = os.environ.get("MLA_SKIN_DIR", "/usr/share/enigma2/CineView_FHD_MLA")
 STATE_DIR = os.environ.get("MLA_STATE_DIR", "/etc/enigma2/cineview_mla")
 FACTORY = "g000000"
 # Bitmaps that differ per colour theme (the original CineView theme engine swapped exactly these).
-THEME_ASSETS = ("infobar/hd.png", "infobar/bl80.png", "extensions/transblack.png",
+THEME_ASSETS = ("infobar/hd.png", "infobar/bl80.png", "extensions/transblack.png", "infobar/pbar.png",
 	"window/progress.png", "dvr/position_pointer1.png", "epg/CurrentEvent.png")  # skin paths are symlinks to active/assets
 KEEP = 3
 BUILTIN_COLORS = {"key_back", "key_blue", "key_green", "key_red", "key_text", "key_yellow", "transparent", "black", "white",
