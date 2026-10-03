@@ -58,6 +58,12 @@ CACHE_ROOT = _mla_cache_root()
 '''
 
 
+IMDB_PATCHES = [
+	("        self.mode = (type or 'plain').lower()\n",
+	 "        args = [a.strip() for a in (type or 'plain').lower().split(',')]\n        self.mode = args[0] or 'plain'\n        self.empty = '' if 'hide' in args[1:] else '--'\n"),
+	("        if not title:\n            return '--'\n", "        if not title:\n            return self.empty\n"),
+	("        if rating is None:\n            return '--'\n", "        if rating is None:\n            return self.empty\n"),
+]
 RENDERER_PATCHES = [
 	# Next-event posters (nexts>0) are chained from the END of the event the source currently holds.
 	# The original takes row[nexts] of lookupEvent(now-list); at an event boundary that list can still
@@ -597,6 +603,12 @@ def main(golden, comps, control, out):
 			if base == "CineViewBitrate":
 				for old, new in BITRATE_PATCHES:
 					assert src.count(old) == 1, "bitrate patch anchor not unique: %r" % old[:50]
+					src = src.replace(old, new)
+			if base == "CineViewIMDb":
+				# P7: ",hide" argument (new families only): no rating -> empty text instead of the "--" placeholder
+				# (rule: never show unavailable information). Classic keeps its approved behaviour (no ",hide").
+				for old, new in IMDB_PATCHES:
+					assert src.count(old) == 1, "imdb patch anchor not unique: %r" % old[:50]
 					src = src.replace(old, new)
 			if base == "CineViewPosterX":
 				assert src.count(POSTER_PATCH_OLD) == 1

@@ -28,6 +28,7 @@ FRAME_DIR = "mla_assets"
 T_OPTS = "movetype=swimming,direction=top,step=1,steptime=70,startdelay=3000,pause=3000,repeat=0,always=0,wrap=1"
 D_OPTS = "movetype=swimming,direction=top,step=1,steptime=60,startdelay=4000,pause=3000,repeat=0,always=0,wrap=1"
 RUN_OPTS = "movetype=running,direction=left,step=2,steptime=55,startdelay=1600,pause=1000,repeat=0,always=0"
+H_OPTS = "movetype=swimming,direction=left,step=2,steptime=50,startdelay=3000,pause=2500,repeat=0,always=0"
 SWIM_SHORT = "movetype=swimming,direction=top,step=1,steptime=70,startdelay=2200,pause=1400,repeat=0,always=0"
 
 
@@ -53,12 +54,18 @@ def static(text, e, font, color="grey", extra=""):
 def text_variants(src, conv, eon, eoff, font, color, opts, key, render="RunningText", halign=""):
 	"""Poster on/off (if the geometry differs) x ltr/rtl variants of one EPG text widget."""
 	out = []
-	geos = [(eon, "True", "")] if (eoff is None or (eon["x"], eon["w"]) == (eoff["x"], eoff["w"])) else [(eon, "True", ""), (eoff, "True", ",Invert")]
+	geo = lambda e: (e["x"], e["y"], e["w"], e["h"])
+	geos = [(eon, "True", "")] if (eoff is None or geo(eon) == geo(eoff)) else [(eon, "True", ""), (eoff, "True", ",Invert")]
+	one_line = eon["h"] < 2 * S.line_height(font)
+	if one_line and render == "RunningText":
+		opts = H_OPTS  # a single-line box: horizontal swimming (start of the text first, ltr and rtl), never wraps
 	for g, val, inv in geos:
 		k = key if len(geos) > 1 else "always"
 		for d in ("ltr", "rtl"):
 			ha = ' halign="right"' if d == "rtl" else halign
 			o = ' options="%s"' % opts if render == "RunningText" else ""
+			if one_line and render == "RunningText":
+				o += ' noWrap="1"'
 			c = "".join("\n\t\t\t<convert type=\"%s\">%s</convert>" % (t, a) for t, a in conv)
 			out.append('\t\t<widget source="%s" render="%s" %s transparent="1" zPosition="20" foregroundColor="%s" font="Regular;%d"%s%s>%s\n\t\t\t<convert type="CineViewMLAShowIf">%s,%s%s,dir=%s</convert>\n\t\t</widget>'
 				% (src, render, pos(g), color, font, ha, o, c, k, val, inv, d))
@@ -67,7 +74,7 @@ def text_variants(src, conv, eon, eoff, font, color, opts, key, render="RunningT
 
 def progress(src, conv, eon, eoff, key, pixmap="infobar/pbar.png"):
 	out = []
-	geos = [(eon, "")] if (eoff is None or (eon["x"], eon["w"]) == (eoff["x"], eoff["w"])) else [(eon, ""), (eoff, ",Invert")]
+	geos = [(eon, "")] if (eoff is None or (eon["x"], eon["y"], eon["w"], eon["h"]) == (eoff["x"], eoff["y"], eoff["w"], eoff["h"])) else [(eon, ""), (eoff, ",Invert")]
 	for g, inv in geos:
 		c = "".join("\n\t\t\t<convert type=\"%s\">%s</convert>" % (t, a) for t, a in conv)
 		sh = "\n\t\t\t<convert type=\"CineViewMLAShowIf\">%s,True%s</convert>" % (key, inv) if len(geos) > 1 else ""
@@ -76,17 +83,31 @@ def progress(src, conv, eon, eoff, key, pixmap="infobar/pbar.png"):
 
 
 def poster(skin, src, e, key, nexts=None):
-	"""Poster + 3 px #505050 frame (Classic style), both hidden when posters are off."""
+	"""Poster with a 3 px #505050 border (Classic style).  Under the poster widget sits the neutral CineView
+	default image, so when no reliable poster exists the slot shows the default image, never an empty grey box.
+	Border + default image follow the poster switch (ConfigEntryTest chain); the poster renderer its toggle."""
 	from PIL import Image
 	fw, fh = e["w"] + 6, e["h"] + 6
-	fname = "frame_505050_%dx%d.png" % (fw, fh)
+	fname = "frame_border_505050_%dx%d.png" % (fw, fh)
 	fpath = os.path.join(skin, FRAME_DIR, fname)
 	if not os.path.isfile(fpath):
 		os.makedirs(os.path.dirname(fpath), exist_ok=True)
-		Image.new("RGB", (fw, fh), (0x50, 0x50, 0x50)).save(fpath)
+		im = Image.new("RGBA", (fw, fh), (0, 0, 0, 0))
+		im.paste((0x50, 0x50, 0x50, 255), (0, 0, fw, 3))
+		im.paste((0x50, 0x50, 0x50, 255), (0, fh - 3, fw, fh))
+		im.paste((0x50, 0x50, 0x50, 255), (0, 0, 3, fh))
+		im.paste((0x50, 0x50, 0x50, 255), (fw - 3, 0, fw, fh))
+		im.save(fpath)
+	dname = "poster_default_%dx%d.png" % (e["w"], e["h"])
+	dpath = os.path.join(skin, FRAME_DIR, dname)
+	if not os.path.isfile(dpath):
+		src_def = os.path.join(skin, FRAME_DIR, "poster_default.jpg")
+		Image.open(src_def).convert("RGB").resize((e["w"], e["h"]), Image.LANCZOS).save(dpath)
 	n = ' nexts="%d"' % nexts if nexts is not None else ""
-	return ['\t\t<widget source="session.CurrentService" render="Pixmap" pixmap="%s/%s" position="%d,%d" size="%d,%d" zPosition="19"><convert type="ConfigEntryTest">%s,False,Invert</convert><convert type="ConditionalShowHide" /></widget>' % (FRAME_DIR, fname, e["x"] - 3, e["y"] - 3, fw, fh, key),
-		'\t\t<widget source="%s" render="CineViewMLAPosterX" %s zPosition="20"%s toggle="%s" />' % (src, pos(e), n, key)]
+	gate = '<convert type="ConfigEntryTest">%s,False,Invert</convert><convert type="ConditionalShowHide" />' % key
+	return ['\t\t<widget source="session.CurrentService" render="Pixmap" pixmap="%s/%s" %s zPosition="19">%s</widget>' % (FRAME_DIR, dname, pos(e), gate),
+		'\t\t<widget source="%s" render="CineViewMLAPosterX" %s zPosition="20"%s toggle="%s" />' % (src, pos(e), n, key),
+		'\t\t<widget source="session.CurrentService" render="Pixmap" pixmap="%s/%s" position="%d,%d" size="%d,%d" zPosition="21" alphatest="blend">%s</widget>' % (FRAME_DIR, fname, e["x"] - 3, e["y"] - 3, fw, fh, gate)]
 
 
 def box(e, color, z=5):
@@ -98,7 +119,8 @@ def times(src, e, font, color):
 	x, y, w, h = e["x"], e["y"], e["w"], e["h"]
 	ew = int(font * 2.9)
 	return [label(src, dict(e, x=x + w - ew, w=ew), [("EventTime", "EndTime"), ("ClockToText", "Format:%H:%M")], font, color, ' halign="right"'),
-		static("–", dict(e, x=x + w - ew - int(font * 0.9), w=int(font * 0.9)), font, color, ' halign="center"'),
+		# the dash comes from the event too (strftime of a literal), so a slot without an event shows nothing
+		label(src, dict(e, x=x + w - ew - int(font * 0.9), w=int(font * 0.9)), [("EventTime", "StartTime"), ("ClockToText", "Format:–")], font, color, ' halign="center"'),
 		label(src, dict(e, x=x + w - 2 * ew - int(font * 0.9), w=ew), [("EventTime", "StartTime"), ("ClockToText", "Format:%H:%M")], font, color, ' halign="right"')]
 
 
@@ -127,8 +149,8 @@ def details_strip(skin, key, on, off):
 		x0 = g["x"]
 		x.append(label("session.Event_Now", dict(g, x=x0, w=130), [("EventTime", "Duration"), ("ClockToText", "InMinutes")], 22, "grey", "", 20).replace("</widget>", "\t<convert type=\"CineViewMLAShowIf\">%s,True%s</convert>\n\t\t</widget>" % (key, inv)))
 		x.append(label("session.Event_Now", dict(g, x=x0 + 140, w=g["w"] - 140 - 230), [("EventName", "Genre")], 22, "grey", ' noWrap="1"', 20).replace("</widget>", "\t<convert type=\"CineViewMLAShowIf\">%s,True%s</convert>\n\t\t</widget>" % (key, inv)))
-		x.append(label("session.Event_Now", dict(g, x=g["x"] + g["w"] - 220, w=120), [("CineViewMLAIMDb", "Plain")], 22, "foreground", ' halign="right"', 20).replace("</widget>", "\t<convert type=\"CineViewMLAShowIf\">%s,True%s</convert>\n\t\t</widget>" % (key, inv)))
-		x.append(label("session.Event_Now", dict(g, x=g["x"] + g["w"] - 95, w=95), [("CineViewMLAIMDb", "Stars")], 20, "secondFG", ' halign="right"', 20).replace("</widget>", "\t<convert type=\"CineViewMLAShowIf\">%s,True%s</convert>\n\t\t</widget>" % (key, inv)))
+		x.append(label("session.Event_Now", dict(g, x=g["x"] + g["w"] - 220, w=120), [("CineViewMLAIMDb", "Plain,hide")], 22, "foreground", ' halign="right"', 20).replace("</widget>", "\t<convert type=\"CineViewMLAShowIf\">%s,True%s</convert>\n\t\t</widget>" % (key, inv)))
+		x.append(label("session.Event_Now", dict(g, x=g["x"] + g["w"] - 95, w=95), [("CineViewMLAIMDb", "Stars,hide")], 20, "secondFG", ' halign="right"', 20).replace("</widget>", "\t<convert type=\"CineViewMLAShowIf\">%s,True%s</convert>\n\t\t</widget>" % (key, inv)))
 	x += text_variants("session.Event_Now", [("EventName", "ShortDescription")], on["now_short"], off["now_short"], 22, "foreground", D_OPTS, key)
 	x.append(static("NEXT", on["next_label"], 22, "secondFG"))
 	x += text_variants("session.Event_Next", [("EventName", "Name")], on["next_title"], off["next_title"], 28, "foreground", T_OPTS, key)
@@ -178,8 +200,8 @@ def details_sib(skin, key, on, off, ib_on, ib_off):
 		sh = "\t<convert type=\"CineViewMLAShowIf\">%s,True%s</convert>\n\t\t</widget>" % (key, inv)
 		x.append(label("session.Event_Now", dict(g, w=120), [("EventTime", "Duration"), ("ClockToText", "InMinutes")], 23, "grey").replace("</widget>", sh))
 		x.append(label("session.Event_Now", dict(g, x=g["x"] + 130, w=g["w"] - 130 - 230), [("EventName", "Genre")], 23, "grey", ' noWrap="1"').replace("</widget>", sh))
-		x.append(label("session.Event_Now", dict(g, x=g["x"] + g["w"] - 220, w=120), [("CineViewMLAIMDb", "Plain")], 23, "foreground", ' halign="right"').replace("</widget>", sh))
-		x.append(label("session.Event_Now", dict(g, x=g["x"] + g["w"] - 95, w=95), [("CineViewMLAIMDb", "Stars")], 20, "secondFG", ' halign="right"').replace("</widget>", sh))
+		x.append(label("session.Event_Now", dict(g, x=g["x"] + g["w"] - 220, w=120), [("CineViewMLAIMDb", "Plain,hide")], 23, "foreground", ' halign="right"').replace("</widget>", sh))
+		x.append(label("session.Event_Now", dict(g, x=g["x"] + g["w"] - 95, w=95), [("CineViewMLAIMDb", "Stars,hide")], 20, "secondFG", ' halign="right"').replace("</widget>", sh))
 	x += progress("session.Event_Now", [("EventTime", "Progress")], on["progress"], off["progress"], key)
 	x += text_variants("session.Event_Now", [("EventName", "FullDescription")], on["now_desc"], off["now_desc"], 24, "foreground", D_OPTS, key)
 	x.append(static("NEXT", on["next_label"], 23, "secondFG"))

@@ -19,8 +19,11 @@ W, H = 1920, 1080
 
 
 def line_height(size):
-	"""Enigma2 line pitch of LiberationSans at <size> (device-measured: 25 -> 29 px)."""
-	return int(size * 1.16 + 0.5)
+	"""Enigma2 line pitch of LiberationSans at <size>: hinted ascent (round) + descent (ceil) of the 2048-unit
+	face (asc 1854, desc 434).  Device-measured 2026-10-03 on 57b7a51: 21->24, 22->25, 23->26, 24->28, 25->29.
+	(The earlier linear fit int(size*1.16+0.5) was wrong for 22 and 23: a 10-line 23-px box showed half an 11th line.)"""
+	import math
+	return int(round(size * 1854 / 2048.0)) + int(math.ceil(size * 434 / 2048.0))
 
 # Theme role -> navy value (for the mockups only; the skin uses the role names)
 ROLES = {
@@ -80,7 +83,7 @@ CINEMA_SIB = [
 	E("now_title", "text", 500, 152, 1330, 65, text="21 Jump Street", size=56, role="text", src="Event_Now EventName Name (RunningText, RTL variant)", status=TECH_CLASSIC),
 	E("now_meta", "text", 500, 228, 1330, 36, text="19:10 – 21:01   ·   111 min   ·   IMDb 7.2/10", size=27, role="muted", src="EventTime StartTime/EndTime + EventTime Duration (EventInfo token) + CineViewMLAIMDb", status=VERIFY),
 	E("progress", "progress", 500, 276, 1330, 6, value=0.42, src="EventTime Progress", status=TECH_CLASSIC),
-	E("now_desc", "text", 500, 300, 1330, 341, text="(SAD, 2012, film) Kad se policajci Schmidt i Jenko pridruže tajnoj jedinici Jump Street, iskoriste svoj mladenački izgled kako bi otišli na tajni zadatak prerušeni u srednjoškolce. Pištolje i značke zamijene ruksacima te krenu uništiti opasan lanac droge. Uloge: Jonah Hill, Channing Tatum, Brie Larson, Dave Franco, Rob Riggle.", size=27, role="text", lines=11, src="Event_Now EventName FullDescription (RunningText swimming, 11×31 px lines, RTL variant)", status=TECH_CLASSIC),
+	E("now_desc", "text", 500, 300, 1330, 330, text="(SAD, 2012, film) Kad se policajci Schmidt i Jenko pridruže tajnoj jedinici Jump Street, iskoriste svoj mladenački izgled kako bi otišli na tajni zadatak prerušeni u srednjoškolce. Pištolje i značke zamijene ruksacima te krenu uništiti opasan lanac droge. Uloge: Jonah Hill, Channing Tatum, Brie Larson, Dave Franco, Rob Riggle.", size=27, role="text", lines=11, src="Event_Now EventName FullDescription (RunningText swimming, 11×30 px lines (pitch formula, device-check in the Cinema test), RTL variant)", status=TECH_CLASSIC),
 	E("next_panel", "panel", 60, 690, 1800, 220, role="panel", src="eLabel steThemePanel", status=TECH_CLASSIC),
 	E("poster_next", "poster", 90, 705, 127, 190, src="CineViewMLAPosterX nexts=1 (event-chained, 83adaa3)", status=TECH_CLASSIC, poster=True),
 	E("next_label", "text", 250, 712, 200, 32, text="NEXT", size=24, role="accent", src="static", status=TECH_CLASSIC),
@@ -106,7 +109,7 @@ DETAILS_INFOBAR = [
 	E("ch_number", "text", 276, 790, 150, 40, text="146", size=34, role="accent", src="ChannelNumber", status=TECH_CLASSIC),
 	E("ch_name", "text", 276, 836, 150, 30, text="HBO HD", size=25, role="text", src="ServiceName NameOnly", status=TECH_CLASSIC),
 	E("provider", "text", 276, 870, 150, 28, text="A1 HR", size=22, role="muted", src="ServiceName Provider", status=TECH_CLASSIC),
-	E("tp", "text", 44, 930, 380, 52, text="DVB-S2 11636 H 30000\n5/6 8PSK · 16.0°E", size=22, role="muted", lines=2, src="CineViewMLATransponderInfo", status=TECH_CLASSIC),
+	E("tp", "text", 44, 930, 380, 50, text="DVB-S2 11636 H 30000\n5/6 8PSK · 16.0°E", size=22, role="muted", lines=2, src="CineViewMLATransponderInfo", status=TECH_CLASSIC),
 	E("cam", "text", 44, 1000, 380, 48, text="ncam-15.8 · Reader: cccam", size=21, role="green", src="CineViewMLACamInfo Info", status=TECH_CLASSIC),
 	# column B: now / next
 	E("poster_now", "poster", 462, 790, 105, 158, src="Event_Now CineViewMLAPosterX (toggle poster_infobar)", status=TECH_CLASSIC, poster=True),
@@ -114,7 +117,7 @@ DETAILS_INFOBAR = [
 	E("now_time", "text", 1190, 790, 240, 36, text="19:10 – 21:01", size=27, role="accent", align="right", src="EventTime + ClockToText", status=TECH_CLASSIC),
 	E("progress", "progress", 585, 836, 845, 6, value=0.42, src="EventTime Progress", status=TECH_CLASSIC),
 	E("now_info", "text", 585, 850, 845, 30, text="111 min  ·  +64 min left  ·  Film  ·  IMDb 7.2", size=22, role="muted", src="EventTime Duration / Remaining + EventName Genre (EventInfo tokens), CineViewMLAIMDb", status=VERIFY),
-	E("now_short", "text", 585, 884, 845, 52, text="Smušeni policijski dvojac dobije zadatak da se infiltrira među srednjoškolce kako bi otkrili tko stoji iza prodaje…", size=22, role="text", lines=2, src="EventName ShortDescription (2 lines)", status=VERIFY),
+	E("now_short", "text", 585, 884, 845, 50, text="Smušeni policijski dvojac dobije zadatak da se infiltrira među srednjoškolce kako bi otkrili tko stoji iza prodaje…", size=22, role="text", lines=2, src="EventName ShortDescription (2 lines)", status=VERIFY),
 	E("sep_next", "sep", 462, 958, 968, 2),
 	E("next_label", "text", 462, 972, 110, 32, text="NEXT", size=22, role="accent", src="static", status=TECH_CLASSIC),
 	E("next_title", "text", 585, 970, 600, 32, text="22 Jump Street", size=28, role="text", src="Event_Next EventName Name", status=TECH_CLASSIC),
@@ -143,15 +146,15 @@ DETAILS_SIB = [
 	E("now_label", "text", 50, 126, 200, 30, text="NOW", size=23, role="accent", src="static", status=TECH_CLASSIC),
 	E("now_time", "text", 600, 126, 300, 30, text="19:10 – 21:01", size=24, role="accent", align="right", src="EventTime + ClockToText", status=TECH_CLASSIC),
 	E("poster_now", "poster", 50, 166, 205, 308, src="CineViewMLAPosterX (toggle poster_secondinfobar)", status=TECH_CLASSIC, poster=True),
-	E("now_title", "text", 275, 166, 625, 84, text="21 Jump Street", size=36, role="text", lines=2, src="EventName Name (2 lines, RTL variant)", status=TECH_CLASSIC),
+	E("now_title", "text", 275, 166, 625, 82, text="21 Jump Street", size=36, role="text", lines=2, src="EventName Name (2 lines, RTL variant)", status=TECH_CLASSIC),
 	E("now_meta", "text", 275, 266, 625, 30, text="111 min · Film · IMDb 7.2/10", size=23, role="muted", src="EventTime Duration + EventName Genre (EventInfo tokens), CineViewMLAIMDb", status=VERIFY),
 	E("progress", "progress", 275, 306, 625, 6, value=0.42, src="EventTime Progress", status=TECH_CLASSIC),
 	E("now_desc", "text", 275, 326, 625, 336, text="(SAD, 2012, film) Kad se policajci Schmidt i Jenko pridruže tajnoj jedinici Jump Street, iskoriste svoj mladenački izgled kako bi otišli na tajni zadatak prerušeni u srednjoškolce. Pištolje i značke zamijene ruksacima te krenu uništiti opasan lanac droge. Uloge: Jonah Hill, Channing Tatum, Brie Larson, Dave Franco, Rob Riggle.", size=24, role="text", lines=12, src="EventName FullDescription (12×28 px, swimming, RTL variant)", status=TECH_CLASSIC),
 	E("next_label", "text", 966, 126, 200, 30, text="NEXT", size=23, role="accent", src="static", status=TECH_CLASSIC),
 	E("next_time", "text", 1230, 126, 300, 30, text="21:01 – 22:51", size=24, role="muted", align="right", src="Event_Next EventTime", status=TECH_CLASSIC),
 	E("poster_next", "poster", 966, 166, 140, 210, src="CineViewMLAPosterX nexts=1", status=TECH_CLASSIC, poster=True),
-	E("next_title", "text", 1124, 166, 406, 74, text="22 Jump Street", size=32, role="text", lines=2, src="Event_Next EventName Name", status=TECH_CLASSIC),
-	E("next_desc", "text", 966, 392, 564, 270, text="Nakon što su dvaput prošli kroz srednju školu, velike promjene čekaju policajce na tajnom zadatku Schmidta i Jenka kada moraju glumiti studente i razotkriti neuhvatljivoga dilera droge na kampusu.", size=23, role="muted", lines=10, src="Event_Next FullDescription (10×27 px, swimming)", status=TECH_CLASSIC),
+	E("next_title", "text", 1124, 166, 406, 72, text="22 Jump Street", size=32, role="text", lines=2, src="Event_Next EventName Name", status=TECH_CLASSIC),
+	E("next_desc", "text", 966, 392, 564, 260, text="Nakon što su dvaput prošli kroz srednju školu, velike promjene čekaju policajce na tajnom zadatku Schmidta i Jenka kada moraju glumiti studente i razotkriti neuhvatljivoga dilera droge na kampusu.", size=23, role="muted", lines=10, src="Event_Next FullDescription (10×26 px, swimming)", status=TECH_CLASSIC),
 	E("tech_label", "text", 1586, 126, 290, 30, text="SIGNAL & SERVICE", size=21, role="accent", src="static", status=TECH_CLASSIC),
 	E("tech_snr", "text", 1586, 170, 290, 28, text="SNR 76%  ·  12.3 dB", size=21, role="text", src="FrontendInfo SNR/SNRdB", status=TECH_CLASSIC),
 	E("tech_bar", "progress", 1586, 204, 290, 8, value=0.76, src="FrontendInfo SNR", status=TECH_CLASSIC),
@@ -165,7 +168,9 @@ DETAILS_SIB = [
 ]
 # SecondInfoBar Details keeps the Details InfoBar strip at the bottom (same as Classic keeps its InfoBar).
 DETAILS_SIB_BOTTOM = True
-DETAILS_SIB_OFF = {"hide": ["poster_now", "poster_next"], "grow_left": {"now_title": 225, "now_meta": 225, "progress": 225, "now_desc": 225, "next_title": 158}}
+DETAILS_SIB_OFF = {"hide": ["poster_now", "poster_next"], "grow_left": {"now_title": 225, "now_meta": 225, "progress": 225, "now_desc": 225, "next_title": 158},
+	# posters off: the next description moves up under the (2-line) next title: 15 lines x 26 px
+	"set": {"next_desc": {"y": 256, "h": 390}}}
 
 DESIGNS = {
 	"cinema": {"label": "Cinema", "infobar": (CINEMA_INFOBAR, CINEMA_INFOBAR_OFF), "secondinfobar": (CINEMA_SIB, CINEMA_SIB_OFF)},
@@ -184,6 +189,7 @@ def variant(elements, off_rules, posters_on):
 		e = dict(e)
 		if e["id"] in off_rules.get("shift", {}):
 			e["x"] += off_rules["shift"][e["id"]]
+		e.update(off_rules.get("set", {}).get(e["id"], {}))
 		if e["id"] in off_rules.get("grow_left", {}):
 			d = off_rules["grow_left"][e["id"]]
 			e["x"] -= d
