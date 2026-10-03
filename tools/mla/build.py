@@ -59,6 +59,25 @@ CACHE_ROOT = _mla_cache_root()
 
 
 RENDERER_PATCHES = [
+	# Next-event posters (nexts>0) are chained from the END of the event the source currently holds.
+	# The original takes row[nexts] of lookupEvent(now-list); at an event boundary that list can still
+	# start with the event that just ended, so the "next" widget showed the NEW current event's poster
+	# until the next refresh (device-observed on HRT1 18:10, Brigitte Bardot shown as next).
+	("""        return _lookup_event(_source_ref(self.source), self.nexts)""", """        if ev is not None and self.nexts > 0:
+            try:
+                ref = _source_ref(self.source)
+                t = ev.getBeginTime() + ev.getDuration()
+                nxt = None
+                for _ in range(self.nexts):
+                    nxt = _epg.lookupEventTime(ref, t) if ref is not None else None
+                    if nxt is None:
+                        break
+                    t = nxt.getBeginTime() + nxt.getDuration()
+                if nxt is not None and nxt.getEventName():
+                    return nxt.getEventName()
+            except Exception:
+                pass
+        return _lookup_event(_source_ref(self.source), self.nexts)"""),
 	# (old, new) — exact, each must occur once in the golden CineViewPosterX.py
 	('''            if key == "nexts":''', '''            if key == "toggle":
                 self.toggle = value
