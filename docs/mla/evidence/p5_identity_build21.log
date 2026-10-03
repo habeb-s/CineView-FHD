@@ -1,0 +1,50 @@
+top - 00:13:45 up  7:04,  0 users,  load average: 0.45, 0.30, 0.42
+Tasks: 164 total, 1 running, 142 sleep, 0 d-sleep, 0 stopped, 21 zombie
+%Cpu(s):  1.1 us,  2.2 sy,  0.0 ni, 95.7 id,  1.1 wa,  0.0 hi,  0.0 si,  0.0 st 
+MiB Mem :   1581.2 total,   1218.0 free,    268.9 used,    141.7 buff/cache     
+MiB Swap:      0.0 total,      0.0 free,      0.0 used.   1312.3 avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+23505 root      20   0    4240   3532   1716 R   9.3   0.2   0:00.03 top
+    1 root      20   0    1832   1388   1292 S   0.0   0.1   0:02.50 init
+    2 root      20   0       0      0      0 S   0.0   0.0   0:00.05 kthreadd
+    3 root      20   0       0      0      0 S   0.0   0.0   0:04.91 ksoftirqd+
+    5 root       0 -20       0      0      0 S   0.0   0.0   0:00.00 kworker/0+
+engine=identity (runtime.json)
+identity key=dah u tami~movie~2021 title=Dah u tami kind=movie year=2021 candidates=5 -> no-reliable-match best=imdb/Dead Ringers/1988 0.00 sim=0.36,kind=movie,year 2021!=1988
+identity key=2012~movie~2009 title=2012 kind=movie year=2009 candidates=7 -> match imdb/2012/2009/movie 1.00 sim=1.00,kind=movie,year=2009
+identity key=ledena cesta osveta~movie~2025 title=Ledena cesta: Osveta kind=movie year=2025 candidates=1 -> no-reliable-match best=imdb/The Ice Road/2021 0.00 sim=0.22,kind=movie,year 2025!=2021
+identity key=22 jump street~movie~2014 title=22 Jump Street kind=movie year=2014 candidates=5 -> match imdb/22 Jump Street/2014/movie 1.00 sim=1.00,kind=movie,year=2014
+identity key=bourneov identitet~movie~2002 title=Bourneov identitet kind=movie year=2002 candidates=5 -> match imdb/The Bourne Identity/2002/movie 1.00 sim=0.85,kind=movie,year=2002
+identity key=nitko~movie~2021 title=Nitko kind=movie year=2021 candidates=8 -> match imdb/No One Gets Out Alive/2021/movie 0.95 sim=0.15,kind=movie,year=2021
+identity key=na rubu~movie~2025 title=Na rubu kind=movie year=2025 candidates=8 -> no-reliable-match best=imdb/Na rubu pameti/2022 0.00 sim=0.67,kind movie!=series
+identity key=dva tuzitelja~movie~2025 title=Dva tužitelja kind=movie year=2025 candidates=2 -> match imdb/Two Prosecutors/2025/movie 0.95 sim=0.14,kind=movie,year=2025
+identity key=indijski zacin na francuski nacin americko francuski film 2014 12 r~~ title=Indijski začin na francuski način, američko-francuski film (2014.) (12) (R) kind=None year=None candidates=0 -> no-reliable-match
+identity key=francuska s evom longorijom dokumentarna serija~series~ title=Francuska s Evom Longorijom, dokumentarna serija ( ) kind=series year=None candidates=0 -> no-reliable-match
+identity key=michael palin u venezueli dokumentarna serija~series~ title=Michael Palin u Venezueli, dokumentarna serija ( ) kind=series year=None candidates=0 -> no-reliable-match
+identity key=clarksonova farma 3 buđenje dokumentarna serija~series~ title=Clarksonova farma (3): Buđenje, dokumentarna serija ( ) kind=series year=None candidates=0 -> no-reliable-match
+identity key=love island adria reality show~series~ title=Love Island Adria, . reality show kind=series year=None candidates=3 -> no-reliable-match best=imdb/Love Island Adria/2025 0.77 sim=0.72,kind=series
+identity key=oni koji mi zele smrt~movie~2021 title=Oni koji mi žele smrt kind=movie year=2021 candidates=1 -> match imdb/Those Who Wish Me Dead/2021/movie 0.95 sim=0.28,kind=movie,year=2021
+identity key=chicago u plamenu 10 serija~series~2012 title=Chicago u plamenu 10, . serija kind=series year=2012 candidates=1 -> no-reliable-match best=imdb/Chicago Fire/2012 0.66 sim=0.46,kind=series,year 2012 in 2012-
+identity key=prijatelji 7 serija~series~ title=Prijatelji 7, . serija kind=series year=None candidates=2 -> no-reliable-match best=imdb/The American Friend/1977 0.00 sim=0.29,kind series!=movie
+identity key=zlocinacki umovi 10 serija~series~ title=Zločinački umovi 10, . serija kind=series year=None candidates=0 -> no-reliable-match
+identity key=skener 7~~ title=Skener 7 kind=None year=None candidates=2 -> no-reliable-match best=imdb/The Awakener/2018 0.53 sim=0.62,rank=7
+identity key=najbolje iz hrvatske~~ title=Najbolje iz Hrvatske kind=None year=None candidates=0 -> no-reliable-match
+identity key=dw euromaxx~~ title=DW Euromaxx kind=None year=None candidates=1 -> match imdb/Euromaxx/2003/series 0.84 sim=0.84
+identity key=veliki slavoluk~movie~2025 title=Veliki slavoluk kind=movie year=2025 candidates=0 -> no-reliable-match
+engine=identity (runtime.json)
+identity key=znam sto si radila proslog ljeta~movie~2025 title=Znam što si radila prošlog ljeta kind=movie year=2025 candidates=3 -> no-reliable-match best=imdb/I Know What You Did Last Summer/1997 0.00 sim=0.16,kind=movie,year 2025!=1997
+identity key=ad astra~movie~2019 title=Ad Astra kind=movie year=2019 candidates=8 -> match imdb/Ad Astra/2019/movie 1.00 sim=1.00,kind=movie,year=2019,cast
+identity key=bilo jednom u gazi~movie~2025 title=Bilo jednom u Gazi kind=movie year=2025 candidates=8 -> match imdb/Bilo jednom u Trubaru/2026/movie 0.82 sim=0.77,kind=movie,year~2025/2026,rank=7
+identity key=oko za oko~movie~1981 title=Oko za oko kind=movie year=1981 candidates=7 -> no-reliable-match best=imdb/Eye for an Eye/1996 0.00 sim=0.19,kind=movie,year 1981!=1996
+identity key=licorice pizza~movie~2021 title=Licorice Pizza kind=movie year=2021 candidates=2 -> match imdb/Licorice Pizza/2021/movie 1.00 sim=1.00,kind=movie,year=2021,cast
+identity key=veci od zivota vladavina boy bendova~movie~ title=Veći od života: Vladavina boy bendova kind=movie year=None candidates=0 -> no-reliable-match
+identity key=grantchester serija~series~ title=Grantchester, serija ( ) kind=series year=None candidates=0 -> no-reliable-match
+identity key=dvostruka opasnost~movie~1999 title=Dvostruka opasnost kind=movie year=1999 candidates=1 -> match imdb/Double Jeopardy/1999/movie 0.95 sim=0.42,kind=movie,year=1999,cast
+identity key=love island adria~series~ title=Love Island Adria kind=series year=None candidates=4 -> match imdb/Love Island Adria/2025/series 1.00 sim=1.00,kind=series
+identity key=prijatelji~series~ title=Prijatelji kind=series year=None candidates=8 -> no-reliable-match best=imdb/Friends/1994 0.40 sim=0.35,kind=series
+identity key=teorija velikog praska~series~2013 title=Teorija velikog praska kind=series year=2013 candidates=2 -> no-reliable-match best=imdb/The Big Bang Theory/2007 0.42 sim=0.22,kind=series,year 2013 in 2007-2019
+identity key=moderna obitelj~series~ title=Moderna obitelj kind=series year=None candidates=1 -> no-reliable-match best=imdb/Modern Family/2009 0.69 sim=0.64,kind=series
+identity key=indiana jones i kraljevstvo kristalne lubanje~movie~2008 title=Indiana Jones i Kraljevstvo kristalne lubanje kind=movie year=2008 candidates=1 -> match imdb/Indiana Jones and the Kingdom of the Crystal Skull/2008/movie 0.95 sim=0.53,kind=movie,year=2008,cast
+identity key=sport klub info~~ title=Sport Klub Info kind=None year=None candidates=0 -> no-reliable-match
+identity key=omiljena odredista bogatih i slavnih hamptons dokumentarna serija~series~ title=Omiljena odredišta bogatih i slavnih: Hamptons, dokumentarna serija ( ) kind=series year=None candidates=0 -> no-reliable-match
