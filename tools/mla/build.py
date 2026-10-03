@@ -357,6 +357,8 @@ def load_theme_module(control_dir):
 def main(golden, comps, control, out):
 	sys.dont_write_bytecode = True  # the engine is imported from the output tree below
 	skin = os.path.join(out, SKIN)
+	# Static guard (found on device 18:41): never ship code that binds "_" and calls gettext _().
+	run(sys.executable, os.path.join(HERE, "check_gettext_shadow.py"), os.path.join(REPO, "mla"), os.path.join(HERE, "devtools"))
 	if os.path.exists(out):
 		shutil.rmtree(out)
 	run(sys.executable, os.path.join(HERE, "migrate_classic.py"), golden, os.path.join(REPO, "mla", "sections.json"), skin)

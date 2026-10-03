@@ -195,7 +195,7 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 		return cur if cur and len(cur) >= 4 else (None, None, None, None)
 
 	def _preview_path(self):
-		_, cfg, kind, sec = self._current()
+		cfg, kind, sec = self._current()[1:]  # never bind "_": it is gettext here
 		if kind == "layout":
 			p = os.path.join(SKIN_DIR, "layouts", sec, cfg.value, "preview.png")
 		elif kind == "theme":
@@ -207,7 +207,7 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 		return p if p and os.path.isfile(p) else None
 
 	def updatePreview(self):
-		_, cfg, kind, sec = self._current()
+		cfg, kind, sec = self._current()[1:]  # never bind "_": it is gettext here
 		p = self._preview_path()
 		if p and self["preview"].instance:
 			self["preview"].instance.setPixmap(LoadPixmap(p))
