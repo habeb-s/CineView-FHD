@@ -30,3 +30,16 @@ spec (`tools/mla/p7/spec_p7.py`) by `gen_details.py` / `gen_cinema.py`. Classic 
 
 Passed in run 1: live data on all 5 channels (SNR/AGC/BER equal to webif), independence (Classic IB + Details SIB),
 Deep Purple (navy residue 0.44 % IB / 0.35 % SIB), Arabic right-aligned descriptions, 0 tracebacks, factory restore.
+
+## Details — run 2 (build20, 23:13–23:29)
+- Tour, 5 channels: SecondInfoBar opened every time (opener fixed in the test script: OK, OK within 1 s).
+  Live values differ per channel and match webif (e.g. SNR 74/73/68/67 %, TP 11636 H / 11636 V / 11678 H / 11553 H,
+  bitrate 4.75 / 1.60 / 3.14 / 3.08 Mbps).
+- D-1…D-8 verified fixed on screen: no half lines, NEXT description under the title with posters off, default image
+  in empty poster slots, no `--` without IMDb data, no lone dash, purple progress bar, service names start visible.
+- D-9 (Arabic one-line title): `rtltest.sh` showed that 57b7a51 RunningText mis-measures RTL text in horizontal
+  modes (A/B/C/D/G: the box starts in the middle or at the end of the title).  Fix: RTL variant of one-line boxes
+  pages vertically by exactly one line pitch (row H): the first line is shown first, whole lines only.  Verified
+  in rtltest; on the InfoBar the first line of the Arabic title is shown at +2 s.
+- Posters off, independence (Classic IB + Details SIB), Deep Purple: pass; tracebacks 0; factory restored.
+- Open: D-10 (legacy poster engine) — in this run also "Movie top ten" -> *Top 10 Hamsters*.
