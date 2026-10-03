@@ -93,6 +93,12 @@ m.mark_trial_running(); m.commit()
 rc, out = cli("recover")
 check("confirmed trial survives the next start", active() == trial, out)
 
+fresh(); m = engine()
+for t in ["purple", "green", "black", "burgundy", "graphite", "purple"]:
+	cli("apply", "--theme", t, "--trial"); cli("rollback")
+gens = sorted(os.listdir(os.path.join(SKIN, "generations")))
+check("reverted trials are bounded by retention", len(gens) <= 1 + m.KEEP and "g000000" in gens and active() == "g000000", str(gens))
+
 # 2. validation refuses bad selections and leaves active untouched
 fresh(); before = active()
 rc, out = cli("apply", "--set", "infobar=doesnotexist")

@@ -358,6 +358,7 @@ def rollback(to="lkg"):
 		# the user has left.
 		_atomic_write(_s("lkg"), FACTORY)
 	_journal("ROLLED_BACK", gid=target)
+	_cleanup(keep={target, FACTORY, _lkg()})  # reverted trials must not accumulate (device: 6 generations after P6)
 	_log(f"rollback: active -> {target}")
 	return target
 
