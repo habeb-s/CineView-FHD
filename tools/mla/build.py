@@ -181,6 +181,63 @@ def _kill_orphan_readers():
 ]
 
 
+SIB_TEXTFIT = {
+	# (source, position) of the approved RunningText widgets -> narrow (posters on) / wide (posters off)
+	# geometry.  Panels: left 55..860 (poster frame from x=609), right 925..1865 (frame from x=1572).
+	("session.Event_Now", "95,165"): ("title", (95, 165, 480, 70), (95, 165, 725, 70)),
+	("session.Event_Now", "95,220"): ("desc", (95, 245, 480, 270), (95, 245, 725, 270)),
+	("session.Event_Next", "950,165"): ("title", (950, 165, 580, 70), (950, 165, 890, 70)),
+	("session.Event_Next", "950,220"): ("desc", (950, 245, 580, 270), (950, 245, 890, 270)),
+}
+SIB_OPTS = {
+	# title: two wrapped lines, scrolls vertically only when a title needs more than two lines
+	"title": ('font="Regular;27"', "movetype=running,direction=top,step=1,steptime=70,startdelay=3000,pause=2500,repeat=0,always=0,wrap=1"),
+	# description: unchanged font; box = 9 whole lines, same vertical scrolling as approved
+	"desc": ('font="Regular;25"', "movetype=running,direction=top,step=2,steptime=65,startdelay=2200,pause=1700,repeat=0,always=0,wrap=1"),
+}
+
+
+def apply_sib_textfit(skin):
+	"""SecondInfoBar fix (approved by the user for Slot 8 / MLA classic): full event title and
+	description inside their panels; when posters are off the texts use the poster area instead of
+	leaving it empty.  Uses CineViewMLAShowIf (text pass-through + native-style visibility)."""
+	path = os.path.join(skin, "layouts", "secondinfobar", "classic", "screens.openatv.xml")
+	src = open(path, encoding="utf-8").read()
+	key = POSTER_TOGGLE % "secondinfobar"
+	changes = []
+
+	def screen_fix(m):
+		body = m.group(0)
+		name = _attrs(body[:body.index(">")]).get("name", "?")
+		if name not in ("SecondInfoBar", "SecondInfoBarSimple"):
+			return body
+
+		def widget_fix(wm):
+			tag, conv = wm.group(1), wm.group(2)
+			a = _attrs(tag)
+			spec = SIB_TEXTFIT.get((a.get("source"), a.get("position")))
+			if not spec:
+				return wm.group(0)
+			kind, narrow, wide = spec
+			font, opts = SIB_OPTS[kind]
+			out = []
+			for geo, value, inv in ((narrow, "True", ""), (wide, "True", ",Invert")):
+				t = re.sub(r'position="[^"]*"', 'position="%d,%d"' % geo[:2], tag)
+				t = re.sub(r'size="[^"]*"', 'size="%d,%d"' % geo[2:], t)
+				t = re.sub(r'font="[^"]*"', font, t)
+				t = re.sub(r'options="[^"]*"', 'options="%s"' % opts, t)
+				t = re.sub(r'\s*noWrap="1"', "", t)
+				out.append('%s\n\t\t\t%s\n\t\t\t<convert type="CineViewMLAShowIf">%s,%s%s</convert>\n\t\t</widget>' % (t, conv, key, value, inv))
+			changes.append((name, a.get("source"), kind))
+			return "\n\t\t".join(out)
+
+		return re.sub(r'(<widget\b[^>]*render="RunningText"[^>]*>)\s*(<convert type="EventName">(?:Name|FullDescription)</convert>)\s*</widget>', widget_fix, body)
+
+	new = re.sub(r"<screen\b.*?</screen>", screen_fix, src, flags=re.S)
+	open(path, "w", encoding="utf-8").write(new)
+	return changes
+
+
 def run(*a):
 	subprocess.check_call(list(a))
 
@@ -272,6 +329,8 @@ def main(golden, comps, control, out):
 	run(sys.executable, os.path.join(HERE, "migrate_classic.py"), golden, os.path.join(REPO, "mla", "sections.json"), skin)
 	for sec, scr, what in apply_poster_toggles(skin):
 		print("M5 %-16s %-22s %s" % (sec, scr, what))
+	for scr, source, kind in apply_sib_textfit(skin):
+		print("SIB-TEXTFIT %-20s %-18s %s (narrow+wide)" % (scr, source, kind))
 
 	# Themes: the original CineView palette() applied to the golden <colors>; navy == golden (verified).
 	theme = load_theme_module(control)
@@ -355,6 +414,13 @@ def main(golden, comps, control, out):
 					src = src.replace(old, new)
 				src = src.replace(POSTER_PATCH_OLD, POSTER_PATCH_NEW).replace('"/tmp/CINEVIEW"', '"/tmp/CINEVIEW-MLA"').replace("/tmp/CINEVIEW/poster.log", "/tmp/CINEVIEW-MLA/poster.log")
 			open(os.path.join(out, PY, kind, COMPONENT_RENAMES[base] + ".py"), "w", encoding="utf-8").write(src)
+
+	# MLA's own components (not derived from the golden set).
+	own = os.path.join(REPO, "mla", "components")
+	for kind in sorted(os.listdir(own)) if os.path.isdir(own) else []:
+		for f in sorted(os.listdir(os.path.join(own, kind))):
+			if f.endswith(".py"):
+				shutil.copy2(os.path.join(own, kind, f), os.path.join(out, PY, kind, f))
 
 	# Runtime plugin + native pre-start hook (installed by the deploy step, not by the build).
 	shutil.copytree(os.path.join(REPO, "mla", "plugin", "CineViewMLA"), os.path.join(out, "usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA"), ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
