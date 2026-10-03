@@ -352,14 +352,35 @@ def rollback(to="lkg"):
 		_atomic_write(_s("selection.json"), json.dumps(sel, sort_keys=True))
 	except (OSError, ValueError):
 		pass
+	if target == FACTORY:
+		# Factory is chosen explicitly (user "Factory design", guardian level 2) or forced (lkg invalid):
+		# it becomes the last-known-good, so a later crash-loop rollback can never bring back a design
+		# the user has left.
+		_atomic_write(_s("lkg"), FACTORY)
 	_journal("ROLLED_BACK", gid=target)
 	_log(f"rollback: active -> {target}")
 	return target
 
 
+def mark_trial_running():
+	"""Called by the runtime plugin when a GUI session starts on a TRIAL generation.  From now on the trial
+	must be confirmed in THIS session: any later start that still finds TRIAL_RUNNING (crash, manual
+	restart, power loss, prompt never answered) is reverted to last-known-good by recover()."""
+	j = _read_journal()
+	if j and j.get("state") == "TRIAL" and j.get("gid") == _active_target():
+		_journal("TRIAL_RUNNING", gid=j.get("gid"), prev=j.get("prev"), since=int(time.time()))
+		_log(f"trial: session started on {j.get('gid')}, awaiting confirmation")
+		return True
+	return bool(j and j.get("state") == "TRIAL_RUNNING")
+
+
 def recover():
 	"""Repair any interrupted transaction; always leaves `active` on a sealed, verified generation."""
 	actions = []
+	j0 = _read_journal()
+	if j0 and j0.get("state") == "TRIAL_RUNNING":
+		target = rollback("lkg")
+		actions.append(f"unconfirmed trial {j0.get('gid')} from the previous session -> {target}")
 	if os.path.lexists(_p("active.tmp")):
 		os.remove(_p("active.tmp"))
 		actions.append("removed stale active.tmp")

@@ -28,6 +28,7 @@ RUNTIME = os.path.join(STATE, "runtime.json")
 POSTER_SECTIONS = ("infobar", "secondinfobar", "channelselection", "epg", "eventview")
 HEALTHY_AFTER_MS = 60000
 TRIAL_CONFIRM_SECONDS = 20
+TRIAL_GRACE_SECONDS = 40  # deadline = healthy (60 s) + prompt (20 s) + grace
 _timer = None
 _session = None
 
@@ -93,29 +94,114 @@ def _healthy():
 	_write("healthy", str(int(time.time())))
 	print("[CineViewMLA] session healthy; guardian counter reset")
 	_dump_live_config()
-	try:
-		j = json.load(open(os.path.join(STATE, "txn.json")))
-	except Exception:
-		j = {}
-	if j.get("state") == "TRIAL" and _session is not None and mla_active():
-		_session.openWithCallback(_trialAnswer, MessageBox,
+	if _trial.running and _session is not None and mla_active():
+		_trial.prompt = _session.openWithCallback(_trialAnswer, MessageBox,
 			_("CineView: keep the new design?\nIt will be reverted automatically if you do not confirm."),
 			MessageBox.TYPE_YESNO, timeout=TRIAL_CONFIRM_SECONDS, default=False)
 
 
-def _trialAnswer(answer):
-	try:
-		eng = engine()
-		if answer:
-			eng.commit()
-			print("[CineViewMLA] trial committed")
-		else:
+class _TrialWatch:
+	"""Trial safety that does NOT depend on the guardian (which only sees process restarts) nor on the
+	confirmation dialog: while a trial design is unconfirmed, a Python crash handled in-process by
+	OpenATV's bsod (Enigma2 keeps running), or a missing answer by the deadline, reverts to the
+	last-known-good design and restarts the GUI.  If even this fails (process crash, power loss),
+	composer.recover() reverts at the next start because the journal still says TRIAL_RUNNING."""
+
+	def __init__(self):
+		self.running = False
+		self.since = 0
+		self.done = False
+		self.prompt = None
+		self.timer = None
+
+	def start(self):
+		try:
+			self.running = engine().mark_trial_running()
+		except Exception as err:
+			print("[CineViewMLA] trial state unavailable: %s" % err)
+			self.running = False
+		if not self.running:
+			return
+		self.since = time.time()
+		self.timer = eTimer()
+		self.timer.callback.append(self.check)
+		self.timer.start(2000, False)
+		print("[CineViewMLA] trial watch started")
+
+	def crash_logs(self):
+		dirs = {"/home/root/logs/"}
+		try:
+			path = config.crash.debug_path.value
+			if path:
+				dirs.add(path)
+		except Exception:
+			pass
+		found = []
+		for d in dirs:
+			try:
+				for f in os.listdir(d):
+					if f.endswith("-enigma2-crash.log") and os.path.getmtime(os.path.join(d, f)) >= self.since - 1:
+						found.append(f)
+			except OSError:
+				pass
+		return found
+
+	def check(self):
+		if self.done or not self.running:
+			return
+		crashes = self.crash_logs()
+		if crashes:
+			self.revert("crash during trial: %s" % ", ".join(sorted(crashes)))
+		elif time.time() - self.since > (HEALTHY_AFTER_MS / 1000.0) + TRIAL_CONFIRM_SECONDS + TRIAL_GRACE_SECONDS:
+			self.revert("trial not confirmed in time")
+
+	def commit(self):
+		crashes = self.crash_logs()
+		if crashes:
+			self.revert("crash during trial: %s" % ", ".join(sorted(crashes)))
+			return
+		self.done = True
+		self.timer and self.timer.stop()
+		engine().commit()
+		print("[CineViewMLA] trial committed")
+
+	def revert(self, reason):
+		if self.done:
+			return
+		self.done = True
+		self.timer and self.timer.stop()
+		print("[CineViewMLA] trial reverted: %s" % reason)
+		try:
+			eng = engine()
+			eng._log("trial: revert (%s)" % reason)
 			eng.rollback()
-			print("[CineViewMLA] trial reverted")
+		except Exception as err:
+			print("[CineViewMLA] rollback failed: %s (guardian/recover will retry at next start)" % err)
+		try:
+			if self.prompt is not None:
+				self.prompt.close(False)
+		except Exception:
+			pass
+		try:
 			from Screens.Standby import TryQuitMainloop
 			_session.open(TryQuitMainloop, 3)
+		except Exception as err:
+			print("[CineViewMLA] GUI restart failed: %s" % err)
+
+
+_trial = _TrialWatch()
+
+
+def _trialAnswer(answer):
+	_trial.prompt = None
+	try:
+		if answer:
+			_trial.commit()
+		else:
+			_trial.revert("declined by user / prompt timeout")
 	except Exception as err:
 		print("[CineViewMLA] trial handling failed: %s" % err)
+		_trial.revert("trial handling failed: %s" % err)
 
 
 def _clean_exit():
@@ -315,6 +401,8 @@ def sessionstart(reason, session=None, **kwargs):
 	_timer = eTimer()
 	_timer.callback.append(_healthy)
 	_timer.start(HEALTHY_AFTER_MS, True)
+	if mla_active():
+		_trial.start()
 
 
 def Plugins(**kwargs):

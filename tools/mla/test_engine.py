@@ -75,6 +75,24 @@ check("rollback returns to lkg", rc == 0 and active() == g1, out)
 rc, out = cli("rollback", "--to", "factory")
 check("rollback --to factory", rc == 0 and active() == "g000000", out)
 
+check("factory rollback makes factory the last-known-good", open(os.path.join(STATE, "lkg")).read().strip() == "g000000")
+
+# 1b. trial lifecycle across sessions (P6): a trial that got a GUI session but was never confirmed is
+#     reverted at the next start, even when the process never crashed (guardian counter not involved).
+fresh(); m = engine()
+cli("apply", "--theme", "graphite"); good = active()
+rc, out = cli("apply", "--theme", "purple", "--trial"); trial = active()
+rc, out = cli("recover")
+check("first start of a trial keeps it (state TRIAL)", active() == trial, out)
+check("session start marks TRIAL_RUNNING", m.mark_trial_running() and json.load(open(os.path.join(STATE, "txn.json")))["state"] == "TRIAL_RUNNING")
+rc, out = cli("recover")
+check("next start with unconfirmed trial -> last-known-good", active() == good, out)
+fresh(); m = engine()
+cli("apply", "--theme", "graphite"); cli("apply", "--theme", "purple", "--trial"); trial = active()
+m.mark_trial_running(); m.commit()
+rc, out = cli("recover")
+check("confirmed trial survives the next start", active() == trial, out)
+
 # 2. validation refuses bad selections and leaves active untouched
 fresh(); before = active()
 rc, out = cli("apply", "--set", "infobar=doesnotexist")
