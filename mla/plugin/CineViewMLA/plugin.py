@@ -71,10 +71,27 @@ def mla_active():
 
 
 # ------------------------------------------------------------------ guardian signals + trial confirm
+def _dump_live_config():
+	"""Diagnostics (tmpfs only): live values of settings other plugins may change at runtime."""
+	try:
+		live = {"time": int(time.time()), "primary_skin": config.skin.primary_skin.value}
+		for key in ("show_second_infobar", "second_infobar_timeout", "infobar_timeout"):
+			item = getattr(config.usage, key, None)
+			if item is not None:
+				live["usage." + key] = {"live": str(item.value), "saved": str(item.saved_value)}
+		if not os.path.isdir("/tmp/CINEVIEW-MLA"):
+			os.makedirs("/tmp/CINEVIEW-MLA")
+		with open("/tmp/CINEVIEW-MLA/live_config.json", "w") as f:
+			json.dump(live, f, indent=1, sort_keys=True)
+	except Exception as err:
+		print("[CineViewMLA] live config dump failed: %s" % err)
+
+
 def _healthy():
 	_write("boot.count", "0")
 	_write("healthy", str(int(time.time())))
 	print("[CineViewMLA] session healthy; guardian counter reset")
+	_dump_live_config()
 	try:
 		j = json.load(open(os.path.join(STATE, "txn.json")))
 	except Exception:
