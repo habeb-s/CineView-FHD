@@ -138,10 +138,19 @@ def _mla_event_texts(ev):
         return "", "", "", 0
 
 
+def _mla_engine_enabled():
+    # Not merged as the default until it is device-tested (user decision 18:51): opt-in per receiver via
+    # /etc/enigma2/cineview_mla/runtime.json {"poster_engine": "identity"}; anything else = legacy engine.
+    try:
+        return _mla_json.load(open("/etc/enigma2/cineview_mla/runtime.json")).get("poster_engine") == "identity"
+    except Exception:
+        return False
+
+
 _CineViewMLAPosterXBase = CineViewMLAPosterX
 
 
-class CineViewMLAPosterX(_CineViewMLAPosterXBase):
+class _CineViewMLAPosterXIdentity(_CineViewMLAPosterXBase):
     def _resolve_event(self):
         ev = _source_event(self.source)
         ref = _source_ref(self.source)
@@ -226,3 +235,8 @@ class CineViewMLAPosterX(_CineViewMLAPosterXBase):
             pending = self._title in _pending
         if pending and self._polls < 180:
             self._timer.start(500, True)
+
+
+if _mla_engine_enabled():
+    CineViewMLAPosterX = _CineViewMLAPosterXIdentity
+    _log("engine=identity (runtime.json)")
