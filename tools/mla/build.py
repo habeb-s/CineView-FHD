@@ -252,12 +252,16 @@ def _textfit_section(skin, section, screen_names, changes):
 			font, opts = SIB_OPTS[kind]
 			out = []
 			for geo, value, inv in ((narrow, "True", ""), (wide, "True", ",Invert")):
-				t = re.sub(r'position="[^"]*"', 'position="%d,%d"' % geo[:2], tag)
-				t = re.sub(r'size="[^"]*"', 'size="%d,%d"' % geo[2:], t)
-				t = re.sub(r'font="[^"]*"', font, t)
-				t = re.sub(r'options="[^"]*"', 'options="%s"' % opts, t)
-				t = re.sub(r'\s*noWrap="1"', "", t)
-				out.append('%s\n\t\t\t%s\n\t\t\t<convert type="CineViewMLAShowIf">%s,%s%s</convert>\n\t\t</widget>' % (t, conv, key, value, inv))
+				for direction in ("ltr", "rtl"):
+					t = re.sub(r'position="[^"]*"', 'position="%d,%d"' % geo[:2], tag)
+					t = re.sub(r'size="[^"]*"', 'size="%d,%d"' % geo[2:], t)
+					t = re.sub(r'font="[^"]*"', font, t)
+					t = re.sub(r'options="[^"]*"', 'options="%s"' % opts, t)
+					t = re.sub(r'\s*noWrap="1"', "", t)
+					if direction == "rtl":  # right-to-left text: right aligned (see CineViewMLAShowIf)
+						t = re.sub(r'\s*halign="[^"]*"', "", t)
+						t = t[:-1].rstrip() + ' halign="right">'
+					out.append('%s\n\t\t\t%s\n\t\t\t<convert type="CineViewMLAShowIf">%s,%s%s,dir=%s</convert>\n\t\t</widget>' % (t, conv, key, value, inv, direction))
 			changes.append((name, a.get("source"), kind))
 			return "\n\t\t".join(out)
 

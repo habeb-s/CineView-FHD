@@ -42,11 +42,14 @@ def build_skin(mode):
 			show = [c.text for c in convs if c.get("type") == "CineViewMLAShowIf"]
 			if not key or not show:
 				continue
-			is_wide = show[0].strip().endswith(",Invert")
+			args = [a.strip() for a in show[0].split(",")]
+			is_wide = "Invert" in args
 			if is_wide != (mode == "wide"):
 				continue
+			dirs = [a for a in args if a.startswith("dir=")]
 			attrs = " ".join('%s="%s"' % (k, v.replace('"', "&quot;")) for k, v in el.attrib.items() if k != "source")
-			out.append('<widget source="%s" %s />' % (key, attrs))
+			conv = ('<convert type="CineViewMLAShowIf">config.plugins.cineviewmla._devtest,True,%s</convert>' % dirs[0]) if dirs else ""
+			out.append('<widget source="%s" %s>%s</widget>' % (key, attrs, conv))
 	out.append("</screen>")
 	return "\n".join(out)
 
