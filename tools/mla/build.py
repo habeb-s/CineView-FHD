@@ -61,9 +61,20 @@ CACHE_ROOT = _mla_cache_root()
 IMDB_PATCHES = [
 	("        self.mode = (type or 'plain').lower()\n",
 	 "        args = [a.strip() for a in (type or 'plain').lower().split(',')]\n        self.mode = args[0] or 'plain'\n        self.empty = '' if 'hide' in args[1:] else '--'\n"),
-	("        if not title:\n            return '--'\n", "        if not title:\n            return self.empty\n"),
+	("        if not title:\n            return '--'\n", "        if not title:\n            return self.empty\n        if self.empty == '' and _cv_generic(title):\n            return ''  # news/weather/magazines: a title search would return some other work's rating\n"),
 	("        if rating is None:\n            return '--'\n", "        if rating is None:\n            return self.empty\n"),
 ]
+IMDB_GENERIC_HELPER = """
+
+def _cv_generic(title):
+    # P7 device test 23:35: 'Dnevnik 3' (news) got IMDb 8.5/10.  Same generic-title rules as the poster identity
+    # engine (CineViewMLAPosterMatch.identify): generic programmes never show a rating.
+    try:
+        from Components.CineViewMLAPosterMatch import identify
+        return identify(title).get('generic') is not None
+    except Exception:
+        return False
+"""
 RENDERER_PATCHES = [
 	# Next-event posters (nexts>0) are chained from the END of the event the source currently holds.
 	# The original takes row[nexts] of lookupEvent(now-list); at an event boundary that list can still
@@ -611,6 +622,7 @@ def main(golden, comps, control, out):
 				for old, new in IMDB_PATCHES:
 					assert src.count(old) == 1, "imdb patch anchor not unique: %r" % old[:50]
 					src = src.replace(old, new)
+				src += IMDB_GENERIC_HELPER
 			if base == "CineViewPosterX":
 				assert src.count(POSTER_PATCH_OLD) == 1
 				for old, new in RENDERER_PATCHES:
