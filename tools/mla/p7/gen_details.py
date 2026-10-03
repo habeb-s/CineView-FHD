@@ -31,6 +31,7 @@ D_OPTS = "movetype=swimming,direction=top,step=1,steptime=60,startdelay=4000,pau
 # "running" mode slides the text in from the right edge, so a long name is half-missing for a while)
 RUN_OPTS = "movetype=swimming,direction=left,step=2,steptime=55,startdelay=2500,pause=2500,repeat=0,always=0"
 H_OPTS = "movetype=swimming,direction=left,step=2,steptime=50,startdelay=3000,pause=2500,repeat=0,always=0"
+RTL_PAGE_OPTS = "movetype=swimming,direction=top,step=1,steptime=25,startdelay=3000,pagelength=%d,pagedelay=2500,pause=3000,repeat=0,always=0,wrap=1"
 SWIM_SHORT = "movetype=swimming,direction=top,step=1,steptime=70,startdelay=2200,pause=1400,repeat=0,always=0"
 
 
@@ -59,15 +60,20 @@ def text_variants(src, conv, eon, eoff, font, color, opts, key, render="RunningT
 	geo = lambda e: (e["x"], e["y"], e["w"], e["h"])
 	geos = [(eon, "True", "")] if (eoff is None or geo(eon) == geo(eoff)) else [(eon, "True", ""), (eoff, "True", ",Invert")]
 	one_line = eon["h"] < 2 * S.line_height(font)
-	if one_line and render == "RunningText":
-		opts = H_OPTS  # a single-line box: horizontal swimming (start of the text first, ltr and rtl), never wraps
 	for g, val, inv in geos:
 		k = key if len(geos) > 1 else "always"
 		for d in ("ltr", "rtl"):
 			ha = ' halign="right"' if d == "rtl" else halign
 			o = ' options="%s"' % opts if render == "RunningText" else ""
 			if one_line and render == "RunningText":
-				o += ' noWrap="1"'
+				if d == "ltr":
+					# one-line box, left-to-right: horizontal swimming, the start of the text first, never wraps
+					o = ' options="%s" noWrap="1"' % H_OPTS
+				else:
+					# one-line box, right-to-left: 57b7a51 RunningText measures RTL widths wrongly in horizontal
+					# mode (device rtltest 23:10: the box first shows the MIDDLE of an Arabic title).  Vertical
+					# swimming shows the first line first; paging by exactly one line pitch -> whole lines only.
+					o = ' options="%s"' % (RTL_PAGE_OPTS % S.line_height(font))
 			c = "".join("\n\t\t\t<convert type=\"%s\">%s</convert>" % (t, a) for t, a in conv)
 			out.append('\t\t<widget source="%s" render="%s" %s transparent="1" zPosition="20" foregroundColor="%s" font="Regular;%d"%s%s>%s\n\t\t\t<convert type="CineViewMLAShowIf">%s,%s%s,dir=%s</convert>\n\t\t</widget>'
 				% (src, render, pos(g), color, font, ha, o, c, k, val, inv, d))

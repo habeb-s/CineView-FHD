@@ -80,13 +80,15 @@ def cinema_infobar(skin, key, on, off):
 	# technical row (live sources; moved left together when posters are off)
 	def tech(g, a, xml):
 		return _with_showif(xml % pos(g), a)
-	x += _shown(on["tech_snr"], off["tech_snr"], key, lambda g, a: tech(g, a, '\t\t<widget source="session.FrontendStatus" render="Label" %s transparent="1" zPosition="20" foregroundColor="grey" font="Regular;23">\n\t\t\t<convert type="FrontendInfo">SNR</convert>\n\t\t</widget>'))
+	# "SNR" caption + live value (the spec reads "SNR 76%"; a bare percentage is ambiguous)
+	x += caption("SNR", dict(on["tech_snr"], w=56), dict(off["tech_snr"], w=56), key, 23, "grey")
+	x += _shown(dict(on["tech_snr"], x=on["tech_snr"]["x"] + 58, w=on["tech_snr"]["w"] - 58), dict(off["tech_snr"], x=off["tech_snr"]["x"] + 58, w=off["tech_snr"]["w"] - 58), key, lambda g, a: tech(g, a, '\t\t<widget source="session.FrontendStatus" render="Label" %s transparent="1" zPosition="20" foregroundColor="foreground" font="Regular;23">\n\t\t\t<convert type="FrontendInfo">SNR</convert>\n\t\t</widget>'))
 	x += _shown(on["tech_res"], off["tech_res"], key, lambda g, a: tech(g, a, '\t\t<widget render="VideoSize" source="session.CurrentService" %s font="Regular;23" foregroundColor="grey" transparent="1" zPosition="20" />'))
 	for eid, pm, cond, z in (("tech_hd", "infobar/ico_format_hd.png", "IsHD", 22), ("tech_hd", "infobar/ico_format_4k.png", "Is4K", 23), ("tech_169", "infobar/ico_format_16_9.png", "IsWidescreen", 22)):
 		x += icon(pm, cond, on[eid], off[eid], key, z)
 	x += _shown(on["tech_bitrate"], off["tech_bitrate"], key, lambda g, a: tech(g, a, '\t\t<widget source="session.CurrentService" render="Label" %s transparent="1" zPosition="20" foregroundColor="grey" font="Regular;23">\n\t\t\t<convert type="CineViewMLABitrate">Mbps</convert>\n\t\t</widget>'))
 	x += _shown(on["tech_cam"], off["tech_cam"], key, lambda g, a: tech(g, a, '\t\t<widget source="session.CurrentService" render="RunningText" %s transparent="1" zPosition="20" foregroundColor="#0044dd44" font="Regular;23" noWrap="1" options="' + RUN_OPTS + '">\n\t\t\t<convert type="CineViewMLACamInfo">Info</convert>\n\t\t</widget>'))
-	x += _shown(on["tech_imdb"], off["tech_imdb"], key, lambda g, a: tech(g, a, '\t\t<widget source="session.Event_Now" render="Label" %s transparent="1" zPosition="20" foregroundColor="secondFG" font="Regular;23">\n\t\t\t<convert type="CineViewMLAIMDb">Plain,hide</convert>\n\t\t</widget>'))
+	x += _shown(on["tech_imdb"], off["tech_imdb"], key, lambda g, a: tech(g, a, '\t\t<widget source="session.Event_Now" render="Label" %s transparent="1" zPosition="20" foregroundColor="secondFG" font="Regular;23">\n\t\t\t<convert type="CineViewMLAIMDb">Label,hide</convert>\n\t\t</widget>'))
 	we = on["tech_weather"]
 	x.append('\t\t<widget source="session.OAWeather" render="Label" position="%d,%d" size="%d,%d" transparent="1" zPosition="24" foregroundColor="grey" font="Regular;23" halign="right">\n\t\t\t<convert type="OAWeather">temperature_current</convert>\n\t\t</widget>' % (we["x"] + we["w"] - 80, we["y"], 80, we["h"]))
 	x.append('\t\t<widget source="session.OAWeather" render="RunningText" position="%d,%d" size="%d,%d" transparent="1" zPosition="24" foregroundColor="grey" font="Regular;23" noWrap="1" options="%s">\n\t\t\t<convert type="OAWeather">city</convert>\n\t\t</widget>' % (we["x"], we["y"], we["w"] - 86, we["h"], RUN_OPTS))
@@ -97,14 +99,17 @@ def cinema_sib(skin, key, on, off):
 	x = []
 	x.append(box(on["dim"], "steThemeOverlay", 1))
 	x += poster(skin, "session.Event_Now", on["poster_now"], key, 0)
-	x += _shown(on["now_label"], off["now_label"], key, lambda g, a: _with_showif('\t\t<widget source="session.CurrentService" render="Label" %s transparent="1" zPosition="20" foregroundColor="secondFG" font="Regular;24" noWrap="1">\n\t\t\t<convert type="ServiceName">NameOnly</convert>\n\t\t</widget>' % pos(g), a))
+	nl_on, nl_off = on["now_label"], off["now_label"]
+	x += caption("NOW ON", dict(nl_on, w=100), dict(nl_off, w=100), key, 24, "secondFG")
+	x += _shown(dict(nl_on, x=nl_on["x"] + 104, w=nl_on["w"] - 104), dict(nl_off, x=nl_off["x"] + 104, w=nl_off["w"] - 104), key, lambda g, a: _with_showif('\t\t<widget source="session.CurrentService" render="Label" %s transparent="1" zPosition="20" foregroundColor="secondFG" font="Regular;24" noWrap="1">\n\t\t\t<convert type="ServiceName">NameOnly</convert>\n\t\t</widget>' % pos(g), a))
 	x += text_variants("session.Event_Now", [("EventName", "Name")], on["now_title"], off["now_title"], 56, "foreground", T_OPTS, key)
 	for g, inv in ((on["now_meta"], ""), (off["now_meta"], ",Invert")):
 		arg = "%s,True%s" % (key, inv)
 		sh = "\t<convert type=\"CineViewMLAShowIf\">%s</convert>\n\t\t</widget>" % arg
-		x += times_sw("session.Event_Now", dict(g, w=260), 27, "grey", arg)
-		x.append(label("session.Event_Now", dict(g, x=g["x"] + 280, w=140), [("EventTime", "Duration"), ("ClockToText", "InMinutes")], 27, "grey").replace("</widget>", sh))
-		x.append(label("session.Event_Now", dict(g, x=g["x"] + 430, w=g["w"] - 430 - 260), [("EventName", "Genre")], 27, "grey", ' noWrap="1"').replace("</widget>", sh))
+		tw = 2 * int(27 * 2.9) + int(27 * 0.9)  # = times() width at 27 px: no gap before the start time
+		x += times_sw("session.Event_Now", dict(g, w=tw), 27, "grey", arg)
+		x.append(label("session.Event_Now", dict(g, x=g["x"] + tw + 20, w=140), [("EventTime", "Duration"), ("ClockToText", "InMinutes")], 27, "grey").replace("</widget>", sh))
+		x.append(label("session.Event_Now", dict(g, x=g["x"] + tw + 170, w=g["w"] - tw - 170 - 260), [("EventName", "Genre")], 27, "grey", ' noWrap="1"').replace("</widget>", sh))
 		x.append(label("session.Event_Now", dict(g, x=g["x"] + g["w"] - 250, w=130), [("CineViewMLAIMDb", "Plain,hide")], 27, "foreground", ' halign="right"').replace("</widget>", sh))
 		x.append(label("session.Event_Now", dict(g, x=g["x"] + g["w"] - 110, w=110), [("CineViewMLAIMDb", "Stars,hide")], 22, "secondFG", ' halign="right"').replace("</widget>", sh))
 	x += progress("session.Event_Now", [("EventTime", "Progress")], on["progress"], off["progress"], key)
