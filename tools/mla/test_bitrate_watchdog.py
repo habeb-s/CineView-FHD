@@ -66,6 +66,7 @@ class Service:
 
 
 def main(build):
+	sys.dont_write_bytecode = True
 	nav = stub_modules()
 	path = os.path.join(build, "usr/lib/enigma2/python/Components/Converter/CineViewMLABitrate.py")
 	spec = importlib.util.spec_from_file_location("cvb", path)
@@ -83,18 +84,21 @@ def main(build):
 	def set_service(ref, vpid, apid):
 		nav.instance = types.SimpleNamespace(getCurrentService=lambda: Service(vpid, apid), getCurrentlyPlayingServiceReference=lambda: Ref(ref))
 
-	def feed(v, a, n):
+	def feed(v, a, n, stop_on_kill=False):
+		k = eng.container.killed
 		for _ in range(n):
 			eng._data(("%d %d %d %d\n%d %d %d %d\n" % (v, v, v, v, a, a, a, a)).encode())
 			clock[0] += 1
 			eng.ensure()
+			if stop_on_kill and eng.container.killed != k:
+				return
 
 	set_service("svc:A", 2838, 2614)
 	eng.ensure()
 	check("reader started for a video service", len(eng.container.started) == 1 and eng.container.started[-1].endswith("2838 2614"))
 	feed(0, 126, 3)
 	check("no restart before 5 zero-video samples", eng.container.killed == 0)
-	feed(0, 126, 4)
+	feed(0, 126, 4, stop_on_kill=True)
 	check("stuck reader (video 0, audio ok) is killed by the watchdog", eng.container.killed == 1)
 	eng.ensure()
 	check("no new reader within 1 s of the kill", len(eng.container.started) == 1)
