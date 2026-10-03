@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "image": "openatv",
+  "note": "Sections are data. Adding a section = one entry here + a 'classic' pack for it. Screen names verified against OpenATV 8.0.1 (enigma2 57b7a51) contracts/openatv-8.0.1-57b7a51.json.",
+  "sections": {
+    "infobar": {
+      "label": "Main InfoBar",
+      "mode": "compose",
+      "required": ["InfoBar"],
+      "optional": ["InfoBarLite", "RadioInfoBar"]
+    },
+    "secondinfobar": {
+      "label": "Second InfoBar",
+      "mode": "compose",
+      "required": ["SecondInfoBar", "SecondInfoBarECM"],
+      "optional": ["SecondInfoBarSimple"]
+    },
+    "channelselection": {
+      "label": "Channel Selection",
+      "mode": "compose",
+      "required": ["ChannelSelection"],
+      "optional": ["ChannelSelectionRadio", "SimpleChannelSelection", "SlimChannelSelection"],
+      "native_note": "OpenATV also offers base=\"ChannelSelection\" styles; on 57b7a51 their choices are built once at boot (no rebuild in reloadSkins). Compose mode is used for Classic parity."
+    },
+    "epg": {
+      "label": "EPG",
+      "mode": "compose",
+      "required": ["EPGSelection", "EPGSelectionMulti", "QuickEPG", "GraphicalEPG", "GraphicalEPGPIG", "GraphicalInfoBarEPG", "EPGvertical", "EPGverticalPIG"],
+      "optional": ["GraphMultiEPG", "GraphMultiEPGList"]
+    },
+    "pvr": {
+      "label": "PVR / Movies",
+      "mode": "compose",
+      "required": ["MovieSelection", "MoviePlayer", "PVRState", "TimeshiftState"],
+      "optional": ["MovieSelectionSlim", "TimeshiftLive", "MovieContextMenu"]
+    },
+    "eventview": {
+      "label": "Event View",
+      "mode": "compose",
+      "required": ["EventView", "EventViewSimple", "InfoBarEventView"],
+      "optional": ["EventViewEPGSelect", "EventViewContextMenu"]
+    }
+  }
+}
