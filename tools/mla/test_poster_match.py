@@ -89,5 +89,10 @@ for raw, title, kind, year in (
 	e = M.identify(raw)
 	check("clean %r -> %r/%s/%s" % (raw, e["title"], e["kind"], e["year"]), (e["title"], e["kind"], e["year"]) == (title, kind, year))
 
+# 10. Device case 2026-10-04 00:05: similar title + year off by one must not match.
+g = M.identify("Bilo jednom u Gazi", "", "(Palestina/Francuska/Njemačka/Portugal/Saudijska Arabija/Egleska/Jordan/Katar, 2025, film) Gaza, 2007. Yahya...")
+trubar = {"provider": "imdb", "id": "tt2", "title": "Bilo jednom u Trubaru", "year": 2026, "year_end": 2026, "kind": "movie", "url": "t", "rank": 7}
+best, conf, why = M.choose(g, [trubar])
+check("similar title + year+-1 rejected (%s)" % why, best is None)
 print("RESULT: %s" % ("all passed" if FAIL == 0 else "%d failed" % FAIL))
 sys.exit(1 if FAIL else 0)

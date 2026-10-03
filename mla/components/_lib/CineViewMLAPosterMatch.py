@@ -207,6 +207,7 @@ def cast_hit(ident, cand):
 def score(ident, cand):
 	"""-> (confidence 0..1, reasons).  A known kind/year that contradicts the candidate rejects it."""
 	reasons = []
+	strong = False  # exact production year (+ similar title or cast confirmation) identifies a film by itself
 	sim = similarity(ident["title"], cand["title"])
 	conf = sim
 	reasons.append("sim=%.2f" % sim)
@@ -231,6 +232,7 @@ def score(ident, cand):
 				# English IMDb title).  Only trusted for IMDb's top two answers; elsewhere the title must match.
 				cast = cast_hit(ident, cand)
 				if sim >= 0.6 or (cand["provider"] == "imdb" and cand.get("rank", 9) <= 1 and cast):
+					strong = True
 					# A localised title is trusted only when the cast in the EPG description confirms the
 					# work (device case: "Nitko" 2021 = "Nobody", IMDb's top answer "No One Gets Out Alive").
 					conf = max(conf, 0.70) + 0.25
@@ -245,6 +247,11 @@ def score(ident, cand):
 	if cand.get("rank", 0) > 2 and sim < 0.9:
 		conf -= 0.1
 		reasons.append("rank=%d" % cand["rank"])
+	if not strong and sim < 0.90 and conf >= THRESHOLD:
+		# Similar but different titles ("Bilo jednom u Gazi" 2025 vs "Bilo jednom u Trubaru" 2026, device 00:05):
+		# hints (kind, year +-1, rank) never lift a non-identical title over the threshold.
+		conf = THRESHOLD - 0.01
+		reasons.append("similar-title-only")
 	return min(conf, 1.0), reasons
 
 
