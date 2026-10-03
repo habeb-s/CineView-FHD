@@ -102,12 +102,12 @@ check("unknown theme refused, active unchanged", rc != 0 and active() == before,
 
 # 3. injected crashes at each step
 for step in ("stage", "seal", "switch"):
-	fresh(); before = active()
+	fresh(); before = active(); base_gens = sorted(os.listdir(os.path.join(SKIN, "generations")))
 	rc, out = cli("apply", "--theme", "green", fault=step)
 	j = json.load(open(os.path.join(STATE, "txn.json")))
 	gens = sorted(os.listdir(os.path.join(SKIN, "generations")))
 	if step in ("stage", "seal"):
-		check(f"crash at {step}: active unchanged + generation discarded", rc != 0 and active() == before and gens == ["g000000"], f"{gens} {j}")
+		check(f"crash at {step}: active unchanged + generation discarded", rc != 0 and active() == before and j.get("gid") not in gens and gens == base_gens, f"{gens} {j}")
 	else:
 		rc2, out2 = cli("recover")
 		check(f"crash at {step}: active still valid after recover", active() == before and m.verify_generation(active()) and not os.path.lexists(os.path.join(SKIN, "active.tmp")), out + out2)

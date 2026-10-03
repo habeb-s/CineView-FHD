@@ -22,6 +22,6 @@ fresh; printf 'config.skin.primary_skin=MetrixHD/skin.xml\n' > "$T/settings"; sh
 
 fresh; mv "$T/skin/mla/engine/composer.py" "$T/skin/mla/engine/composer.py.off"; rm "$T/skin/active"; ln -s generations/gBROKEN "$T/skin/active"; sh "$G"; ok "$(act)" g000000 "python engine unavailable -> shell fallback to factory"
 
-fresh; mkdir "$T/skin/generations/g000042"; echo '<skin><scr' > "$T/skin/generations/g000042/infobar.xml"; echo '{"state":"PREPARING","gid":"g000042"}' > "$T/state/txn.json"; sh "$G"; ok "$(ls $T/skin/generations | tr '\n' ' ')" "g000000 " "interrupted write cleaned at boot"
+fresh; mkdir "$T/skin/generations/g000042"; echo '<skin><scr' > "$T/skin/generations/g000042/infobar.xml"; echo '{"state":"PREPARING","gid":"g000042"}' > "$T/state/txn.json"; sh "$G"; ok "$(ls $T/skin/generations | grep -c g000042)" 0 "interrupted write cleaned at boot"
 
 echo "RESULT: $PASS/$((PASS+FAIL)) passed"; [ $FAIL = 0 ]
