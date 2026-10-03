@@ -2,7 +2,7 @@
 # Copy selected device screenshots (PNG 1920x1080) as JPG (1280x720, q82) into the repo evidence folder,
 # plus device scripts, then commit + push on dev/mla-openatv.   usage: collect.sh <dest subdir> <src dir> [glob...]
 set -e
-DEST=$1; SRC=$2; shift 2
+DEST=$1; SRC=$(readlink -f $2); shift 2
 cd ~/cineview-mla/repo && git pull -q --rebase
 D=docs/mla/evidence/$DEST; mkdir -p $D
 for pat in "$@"; do
