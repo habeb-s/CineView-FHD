@@ -1,0 +1,17 @@
+STATE active=g000000 lkg=g000000 journal=ROLLED_BACK theme=navy gens=['g000000', 'g000001']
+boot.count=1 e2pid=8422 crashlogs=8
+2026-10-04 00:40:57 rollback: active -> g000000
+2026-10-04 00:42:12 apply: g000000 -> g000001 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "details", "pvr": "classic", "secondinfobar": "cinema"}, "theme": "navy"}
+2026-10-04 00:42:12 commit: lkg=g000001
+2026-10-04 01:03:04 rollback: active -> g000000
+cap R01_infobar
+cap R02_secondinfobar
+cap R03_eventview
+cap R04_epg
+cap R05_channelselection
+cap R06_pvr
+cap R07_menu
+cap R08_plugins
+cap R09_cineview_designs
+tracebacks=0
+P8REG_DONE

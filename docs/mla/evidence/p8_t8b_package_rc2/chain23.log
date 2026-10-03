@@ -1,0 +1,99 @@
+-rw-r--r--    1 root     root          2225 Oct  4 00:38 cineview_mla-state.tgz
+-rw-r--r--    1 root     root          9320 Oct  4 00:35 settings
+e2-stopped
+CineView MLA: image openatv 8.0.1 on vuduo4kse
+CineView MLA installed. Select it in Menu > Setup > User Interface > Skin, then restart the GUI.
+Upgrading enigma2-plugin-skins-cineview-fhd-mla (1.0.0~rc1) to enigma2-plugin-skins-cineview-fhd-mla (1.0.0~rc2) on root
+Configuring enigma2-plugin-skins-cineview-fhd-mla.
+Version: 1.0.0~rc2
+Status: install ok installed
+new e2 pid=17563 @00:38:40
+webif up @00:39:05
+STATE active=g000000 lkg=g000000 journal=ROLLED_BACK theme=navy gens=['g000000']
+boot.count=1 e2pid=17563 crashlogs=8
+2026-10-04 00:32:12 apply: g000001 -> g000002 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "details", "pvr": "classic", "secondinfobar": "details"}, "theme": "navy"}
+2026-10-04 00:32:12 commit: lkg=g000002
+2026-10-04 00:34:34 rollback: active -> g000000
+2026-10-04 00:34:35 rollback: active -> g000000
+cap T8b_1_upgraded_ib @00:39:42
+e2-stopped
+CineView MLA removed (/etc/enigma2/cineview_mla kept unless purged).
+Removing enigma2-plugin-skins-cineview-fhd-mla (1.0.0~rc2) from root...
+leftovers:
+kept state:
+boot.count clean_exit healthy history.log lkg previous_skin profiles runtime.json selection.json txn.json 
+new e2 pid=19147 @00:39:58
+webif up @00:40:23
+cap T8b_2_removed_default_skin @00:40:50
+tracebacks=0
+e2-stopped
+CineView MLA installed. Select it in Menu > Setup > User Interface > Skin, then restart the GUI.
+Installing enigma2-plugin-skins-cineview-fhd-mla (1.0.0~rc2) on root
+Configuring enigma2-plugin-skins-cineview-fhd-mla.
+config.skin.primary_skin=CineView_FHD_MLA/skin.xml
+new e2 pid=20729 @00:41:01
+webif up @00:41:27
+STATE active=g000000 lkg=g000000 journal=ROLLED_BACK theme=navy gens=['g000000']
+boot.count=1 e2pid=20729 crashlogs=8
+2026-10-04 00:32:12 commit: lkg=g000002
+2026-10-04 00:34:34 rollback: active -> g000000
+2026-10-04 00:34:35 rollback: active -> g000000
+2026-10-04 00:40:57 rollback: active -> g000000
+cap T8b_3_reinstalled_ib @00:42:04
+Version: 1.0.0~rc2
+Status: install ok installed
+T8B_DONE
+id-cache-cleared
+g000001
+{"poster_cache": "/media/usb/cineview-mla/dev-cache/reference/poster", "poster_engine": "identity"}new e2 pid=22318 @00:42:18
+webif up @00:42:43
+engine=identity (runtime.json)
+engine=identity (runtime.json)
+pass1 HBO webif=0.010640s
+pass1 Cinemax webif=0.009957s
+pass1 Cinemax2 webif=0.009453s
+pass1 EpicDrama webif=0.009888s
+pass1 HRT1 webif=0.010084s
+pass1 HRT2 webif=0.009685s
+pass1 RTL webif=0.009751s
+pass1 RTL2 webif=0.009685s
+pass1 Doma webif=0.009644s
+pass1 N1 webif=0.010050s
+pass1 PinkMovies webif=0.009383s
+pass1 PinkAction webif=0.009812s
+pass2 HBO webif=0.009822s
+pass2 Cinemax webif=0.010150s
+pass2 Cinemax2 webif=0.009734s
+pass2 EpicDrama webif=0.008947s
+pass2 HRT1 webif=0.010639s
+pass2 HRT2 webif=0.010260s
+pass2 RTL webif=0.009854s
+pass2 RTL2 webif=0.010048s
+pass2 Doma webif=0.009834s
+pass2 N1 webif=0.010219s
+pass2 PinkMovies webif=0.009463s
+pass2 PinkAction webif=0.009432s
+P5_DONE
+{"poster_cache": "/media/usb/cineview-mla/dev-cache/reference/poster"}
+new e2 pid=7311 @01:02:13
+webif up @01:02:38
+STATE active=g000001 lkg=g000001 journal=COMMITTED theme=navy gens=['g000000', 'g000001']
+boot.count=1 e2pid=7311 crashlogs=8
+2026-10-04 00:34:35 rollback: active -> g000000
+2026-10-04 00:40:57 rollback: active -> g000000
+2026-10-04 00:42:12 apply: g000000 -> g000001 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "details", "pvr": "classic", "secondinfobar": "cinema"}, "theme": "navy"}
+2026-10-04 00:42:12 commit: lkg=g000001
+engine=identity (runtime.json)
+RESTORE_DONE
+2026-10-04 01:03:04 rollback: active -> g000000
+g000000
+new e2 pid=8422 @01:03:10
+webif up @01:03:36
+STATE active=g000000 lkg=g000000 journal=ROLLED_BACK theme=navy gens=['g000000', 'g000001']
+boot.count=1 e2pid=8422 crashlogs=8
+2026-10-04 00:40:57 rollback: active -> g000000
+2026-10-04 00:42:12 apply: g000000 -> g000001 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "details", "pvr": "classic", "secondinfobar": "cinema"}, "theme": "navy"}
+2026-10-04 00:42:12 commit: lkg=g000001
+2026-10-04 01:03:04 rollback: active -> g000000
+P5ONLY_DONE
+CHAIN23_DONE
