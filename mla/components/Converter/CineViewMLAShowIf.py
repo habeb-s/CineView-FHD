@@ -8,7 +8,7 @@
 #
 # usage:  <convert type="EventName">Name</convert>
 #         <convert type="CineViewMLAShowIf">config.plugins.cineviewmla.poster_secondinfobar,True</convert>
-# args:   <config key>|always,<value>[,Invert][,dir=rtl|dir=ltr]
+# args:   <config key>|always,<value>[,Invert][,dir=rtl|dir=ltr][,bool][,text=<literal>]
 #         The key is resolved live (configfile.getResolvedKey); a missing key resolves to the
 #         converter's default "True", so posters-on layouts are shown when nothing is configured.
 #         dir=: additionally require the direction of the source text (first strong character:
@@ -28,21 +28,31 @@ class CineViewMLAShowIf(Converter):
 		self._value = parts[1] if len(parts) > 1 else "True"
 		self._invert = "Invert" in parts[2:]
 		self._dir = None
+		self._bool = "bool" in parts[2:]  # AND the source's boolean (e.g. ServiceInfo IsHD) -> icons that move
+		self._literal = None  # text=<literal>: a static caption that follows the switch (e.g. "NEXT")
 		for p in parts[2:]:
 			if p in ("dir=rtl", "dir=ltr"):
 				self._dir = p[4:]
+			elif p.startswith("text="):
+				self._literal = p[5:]
 		if self._key is None and not self._always:
 			print("[CineViewMLAShowIf] invalid arguments '%s' (shown)" % args)
 
 	def __getattr__(self, name):
 		# Transparent like ConditionalShowHide; never recurse while the object is being built.
-		if name.startswith("__") or name in ("source", "_key", "_value", "_invert", "_dir", "_always"):
+		if name.startswith("__") or name in ("source", "_key", "_value", "_invert", "_dir", "_always", "_bool", "_literal"):
 			raise AttributeError(name)
 		return getattr(self.source, name)
 
 	def _visible(self):
 		if self._dir is not None and _direction(self._text()) != self._dir:
 			return False
+		if self._bool:
+			try:
+				if not self.source.boolean:
+					return False
+			except Exception:
+				return False
 		if self._key is None:
 			return True
 		value = configfile.getResolvedKey(self._key, silent=True)
@@ -56,7 +66,9 @@ class CineViewMLAShowIf(Converter):
 		# the 3 hidden variants of every SecondInfoBar/EventView text kept swimming (moving their labels)
 		# behind the visible one; device-observed as an intermittent blank band above the visible
 		# description when the swim started (EventView fast-zap test 2026-10-03 21:4x).
-		return self._text() if self._visible() else ""
+		if not self._visible():
+			return ""
+		return self._literal if self._literal is not None else self._text()
 
 	def _text(self):
 		try:
