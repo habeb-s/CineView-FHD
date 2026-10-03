@@ -98,6 +98,7 @@ def main(golden, comps, control, out):
 	# Engine + section definitions.
 	shutil.copytree(os.path.join(REPO, "mla", "engine"), os.path.join(skin, "mla", "engine"))
 	shutil.copy2(os.path.join(REPO, "mla", "sections.json"), os.path.join(skin, "mla", "sections.json"))
+	shutil.copytree(os.path.join(REPO, "mla", "guardian"), os.path.join(skin, "mla", "guardian"))
 
 	# Python components: renamed copies, isolated config + isolated poster cache.
 	sys.path.insert(0, HERE)
@@ -116,6 +117,10 @@ def main(golden, comps, control, out):
 				assert src.count(POSTER_PATCH_OLD) == 1
 				src = src.replace(POSTER_PATCH_OLD, POSTER_PATCH_NEW).replace('"/tmp/CINEVIEW"', '"/tmp/CINEVIEW-MLA"').replace("/tmp/CINEVIEW/poster.log", "/tmp/CINEVIEW-MLA/poster.log")
 			open(os.path.join(out, PY, kind, COMPONENT_RENAMES[base] + ".py"), "w", encoding="utf-8").write(src)
+
+	# Runtime plugin + native pre-start hook (installed by the deploy step, not by the build).
+	shutil.copytree(os.path.join(REPO, "mla", "plugin", "CineViewMLA"), os.path.join(out, "usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA"))
+	open(os.path.join(out, "usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA", "__init__.py"), "w").close()
 
 	# Factory generation g000000 (= classic everywhere, navy) built by the real engine.
 	os.makedirs(os.path.join(skin, "generations"), exist_ok=True)

@@ -131,9 +131,12 @@ def _screens(path):
 	return {s.get("name"): s for s in ET.parse(path).getroot().iter("screen") if s.get("name")}
 
 
-def validate(selection, components=None):
-	"""Static checks of a selection. Returns list of problems (empty = OK)."""
+def validate(selection, components=None, warnings=None):
+	"""Static checks of a selection. Returns blocking problems (empty = OK).
+	Problems found in core/common screens (often plugin screens whose components ship with
+	the plugin) are appended to `warnings` instead of blocking."""
 	problems = []
+	section_files = set()
 	secs, lays = sections(), layouts()
 	if selection["theme"] not in themes():
 		problems.append(f"unknown theme {selection['theme']}")
@@ -149,6 +152,7 @@ def validate(selection, components=None):
 			if req not in names:
 				problems.append(f"{sec}/{lid}: missing required screen {req}")
 		files.append(f)
+		section_files.add(f)
 	seen, colors = {}, set(BUILTIN_COLORS)
 	theme_file = _p("themes", selection["theme"], "theme.xml")
 	if os.path.isfile(theme_file):
@@ -166,22 +170,26 @@ def validate(selection, components=None):
 			seen[n] = f
 		all_screens.update(scr)
 	for n, el in all_screens.items():
+		sink = problems if seen.get(n) in section_files else (warnings if warnings is not None else [])
 		for node in el.iter():
 			if node.tag == "panel" and node.get("name") and node.get("name") not in all_screens:
-				problems.append(f"{n}: panel '{node.get('name')}' not defined")
+				sink.append(f"{n}: panel '{node.get('name')}' not defined")
 			for k, v in node.attrib.items():
 				if k.lower().endswith("color") and v and not v.startswith("#") and v not in colors and "," not in v:
-					problems.append(f"{n}: color '{v}' not defined")
+					sink.append(f"{n}: color '{v}' not defined")
 			if components is not None:
 				r = node.get("render")
 				if r and r not in components["Renderer"]:
-					problems.append(f"{n}: renderer {r} not installed")
+					sink.append(f"{n}: renderer {r} not installed")
 				if node.tag == "convert" and node.get("type") not in components["Converter"]:
-					problems.append(f"{n}: converter {node.get('type')} not installed")
+					sink.append(f"{n}: converter {node.get('type')} not installed")
 	return sorted(set(problems))
 
 
-def installed_components(root="/usr/lib/enigma2/python/Components"):
+def installed_components(root=None):
+	root = root or os.environ.get("MLA_COMPONENTS_ROOT", "/usr/lib/enigma2/python/Components")
+	if not os.path.isdir(root):
+		return None  # not on a receiver: skip component checks
 	out = {"Renderer": {"Label", "Pixmap", "Listbox", "FixedLabel", "Progress", "Canvas", "Pig"}, "Converter": set()}
 	for kind in ("Renderer", "Converter"):
 		d = os.path.join(root, kind)
@@ -413,8 +421,12 @@ def main(argv):
 		if cmd == "status":
 			print(json.dumps(status(), indent=1))
 		elif cmd == "validate":
-			p = validate(sel, installed_components())
+			w = []
+			p = validate(sel, installed_components(), w)
 			print("\n".join(p) if p else "VALID")
+			print(f"warnings (core/plugin screens, non-blocking): {len(sorted(set(w)))}")
+			if "-v" in rest:
+				print("\n".join("  W " + x for x in sorted(set(w))))
 			return 1 if p else 0
 		elif cmd == "apply":
 			print(apply(sel, trial=trial, components=installed_components()))
