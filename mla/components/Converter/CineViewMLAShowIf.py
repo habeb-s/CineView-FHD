@@ -40,7 +40,7 @@ class CineViewMLAShowIf(Converter):
 
 	def __getattr__(self, name):
 		# Transparent like ConditionalShowHide; never recurse while the object is being built.
-		if name.startswith("__") or name in ("source", "_key", "_value", "_invert", "_dir", "_always", "_bool", "_literal"):
+		if name.startswith("__") or name in ("source", "_key", "_value", "_invert", "_dir", "_always", "_bool", "_literal", "_up_visible"):
 			raise AttributeError(name)
 		return getattr(self.source, name)
 
@@ -76,15 +76,30 @@ class CineViewMLAShowIf(Converter):
 		except Exception:
 			return ""
 
+	# Upstream converters may drive the visibility of their first downstream element themselves
+	# (57b7a51 EventInfo Progress: downstream_elements[0].visible = bool(event)).  Behind ShowIf that
+	# element is this converter: keep the upstream wish and AND it with our own condition.
+	# (device crash 2026-10-03 21:51: AttributeError 'EventTime' object has no attribute 'visible')
+	@property
+	def visible(self):
+		return getattr(self, "_up_visible", True)
+
+	@visible.setter
+	def visible(self, value):
+		self._up_visible = bool(value)
+		v = self._up_visible and self._visible()
+		for element in self.downstream_elements:
+			element.visible = v
+
 	def changed(self, what):
-		visible = self._visible()
+		visible = self._visible() and getattr(self, "_up_visible", True)
 		for element in self.downstream_elements:
 			element.visible = visible
 		Converter.changed(self, what)
 
 	def connectDownstream(self, downstream):
 		Converter.connectDownstream(self, downstream)
-		downstream.visible = self._visible()
+		downstream.visible = self._visible() and getattr(self, "_up_visible", True)
 
 
 _RTL_RANGES = ((0x0590, 0x08FF), (0xFB1D, 0xFDFF), (0xFE70, 0xFEFF), (0x10800, 0x10FFF), (0x1E800, 0x1EFFF))
