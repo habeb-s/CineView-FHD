@@ -10,5 +10,5 @@ print(json.dumps({"file":"/tmp/cvmla/rtltest.xml","screen":"RTLTest","seconds":4
 PY
 X; cat /tmp/rt.json | $R 'cat > /tmp/cvmla/texttest2.json.tmp && mv /tmp/cvmla/texttest2.json.tmp /tmp/cvmla/texttest2.json'
 sleep 2.5; g0() { curl -s -m 20 -o $S/$1.png "http://192.168.1.250/grab?format=png&mode=osd&r=1920"; echo "cap $1"; }
-g0 t01; sleep 3; g0 t04; sleep 3; g0 t07; sleep 4; g0 t11; sleep 6; g0 t17; sleep 8; g0 t25
+for k in 01 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18; do g0 t$k; sleep 0.6; done
 X; echo RTL_DONE
