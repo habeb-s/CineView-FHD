@@ -50,6 +50,14 @@ class CineViewMLAShowIf(Converter):
 			value = "True"
 		return (value == self._value) ^ self._invert
 
+	@property
+	def text(self):
+		# Hidden variants get NO text: a hidden RunningText then has nothing to animate.  Without this,
+		# the 3 hidden variants of every SecondInfoBar/EventView text kept swimming (moving their labels)
+		# behind the visible one; device-observed as an intermittent blank band above the visible
+		# description when the swim started (EventView fast-zap test 2026-10-03 21:4x).
+		return self._text() if self._visible() else ""
+
 	def _text(self):
 		try:
 			return self.source.text or ""
