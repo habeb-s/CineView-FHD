@@ -58,8 +58,113 @@ CACHE_ROOT = _mla_cache_root()
 '''
 
 
+RENDERER_PATCHES = [
+	# (old, new) — exact, each must occur once in the golden CineViewPosterX.py
+	('''            if key == "nexts":''', '''            if key == "toggle":
+                self.toggle = value
+            elif key == "nexts":'''),
+	('''        self.nexts = 0
+        self._title = ""''', '''        self.nexts = 0
+        self.toggle = None
+        self._title = ""'''),
+	('''        title = _clean_title(self._resolve_title())''', '''        if not self._enabled():
+            self.instance.hide()
+            self._timer.stop()
+            return
+        title = _clean_title(self._resolve_title())'''),
+	('''    def _show(self, path):
+        try:''', '''    def _enabled(self):
+        # CineView MLA live switch (config.plugins.cineviewmla.poster_<section>); unknown => shown.
+        if not self.toggle:
+            return True
+        try:
+            from Components.config import configfile
+            return configfile.getResolvedKey(self.toggle, silent=True) != "False"
+        except Exception:
+            return True
+
+    def _show(self, path):
+        if not self._enabled():
+            self.instance.hide()
+            return
+        try:'''),
+]
+
+
 def run(*a):
 	subprocess.check_call(list(a))
+
+
+POSTER_TOGGLE = "config.plugins.cineviewmla.poster_%s"
+FRAME_DIR = "mla_assets"
+
+
+def _attrs(tag):
+	return dict(re.findall(r'(\w+)="([^"]*)"', tag))
+
+
+def apply_poster_toggles(skin):
+	"""M5 — live poster switches per section, without changing the enabled-state pixels.
+
+	* every CineViewMLAPosterX widget gets toggle="config.plugins.cineviewmla.poster_<section>"
+	  (the renderer hides itself when that setting is False);
+	* every static frame eLabel around a poster (no text, 1..6 px larger on each side) becomes a
+	  Pixmap widget of the same rectangle/z-order, filled with the same colour, shown through the
+	  native ConfigEntryTest(<key>,False,Invert) + ConditionalShowHide chain (OpenATV 57b7a51:
+	  a missing key resolves to None, so the frame stays visible unless the switch is False).
+	Returns a list of (section, screen, what) changes for the build log."""
+	from PIL import Image
+	changes = []
+	for sec in sorted(os.listdir(os.path.join(skin, "layouts"))):
+		path = os.path.join(skin, "layouts", sec, "classic", "screens.openatv.xml")
+		if not os.path.isfile(path):
+			continue
+		key = POSTER_TOGGLE % sec
+		src = open(path, encoding="utf-8").read()
+
+		def screen_fix(m):
+			body = m.group(0)
+			name = _attrs(body[:body.index(">")]).get("name", "?")
+			posters = []
+
+			def tag_poster(pm):
+				tag = pm.group(0)
+				a = _attrs(tag)
+				posters.append(tuple(map(int, a["position"].split(","))) + tuple(map(int, a["size"].split(","))))
+				changes.append((sec, name, "poster toggle"))
+				return tag[:-2].rstrip() + ' toggle="%s" />' % key
+
+			body = re.sub(r'<widget\b[^>]*render="CineViewMLAPosterX"[^>]*/>', tag_poster, body)
+
+			def frame_fix(lm):
+				tag = lm.group(0)
+				a = _attrs(tag)
+				if "text" in a or "position" not in a or "size" not in a or not re.fullmatch(r"#[0-9A-Fa-f]{8}", a.get("backgroundColor", "")):
+					return tag
+				x, y = map(int, a["position"].split(","))
+				w, h = map(int, a["size"].split(","))
+				for px, py, pw, ph in posters:
+					if 0 < px - x <= 6 and 0 < py - y <= 6 and 0 < x + w - px - pw <= 6 and 0 < y + h - py - ph <= 6:
+						col = a["backgroundColor"]
+						if col[1:3].lower() != "00":
+							return tag  # translucent frame: not reproducible as an opaque pixmap — leave as is
+						fname = "frame_%s_%dx%d.png" % (col[3:].lower(), w, h)
+						fpath = os.path.join(skin, FRAME_DIR, fname)
+						if not os.path.isfile(fpath):
+							os.makedirs(os.path.dirname(fpath), exist_ok=True)
+							Image.new("RGB", (w, h), tuple(int(col[i:i + 2], 16) for i in (3, 5, 7))).save(fpath)
+						changes.append((sec, name, "frame %dx%d" % (w, h)))
+						return ('<widget source="session.CurrentService" render="Pixmap" pixmap="%s/%s" position="%d,%d" size="%d,%d" zPosition="%s">'
+							'<convert type="ConfigEntryTest">%s,False,Invert</convert><convert type="ConditionalShowHide" /></widget>'
+							% (FRAME_DIR, fname, x, y, w, h, a.get("zPosition", "0"), key))
+				return tag
+
+			return re.sub(r"<eLabel\b[^>]*/>", frame_fix, body)
+
+		new = re.sub(r"<screen\b.*?</screen>", screen_fix, src, flags=re.S)
+		if new != src:
+			open(path, "w", encoding="utf-8").write(new)
+	return changes
 
 
 def load_theme_module(control_dir):
@@ -74,6 +179,8 @@ def main(golden, comps, control, out):
 	if os.path.exists(out):
 		shutil.rmtree(out)
 	run(sys.executable, os.path.join(HERE, "migrate_classic.py"), golden, os.path.join(REPO, "mla", "sections.json"), skin)
+	for sec, scr, what in apply_poster_toggles(skin):
+		print("M5 %-16s %-22s %s" % (sec, scr, what))
 
 	# Themes: the original CineView palette() applied to the golden <colors>; navy == golden (verified).
 	theme = load_theme_module(control)
@@ -148,6 +255,9 @@ def main(golden, comps, control, out):
 			src = src.replace("config.plugins.cineview.", "config.plugins.cineviewmla.").replace('hasattr(config.plugins, "cineview")', 'hasattr(config.plugins, "cineviewmla")').replace("config.plugins.cineview =", "config.plugins.cineviewmla =").replace('hasattr(config.plugins.cineview,', 'hasattr(config.plugins.cineviewmla,')
 			if base == "CineViewPosterX":
 				assert src.count(POSTER_PATCH_OLD) == 1
+				for old, new in RENDERER_PATCHES:
+					assert src.count(old) == 1, "renderer patch anchor not unique: %r" % old[:40]
+					src = src.replace(old, new)
 				src = src.replace(POSTER_PATCH_OLD, POSTER_PATCH_NEW).replace('"/tmp/CINEVIEW"', '"/tmp/CINEVIEW-MLA"').replace("/tmp/CINEVIEW/poster.log", "/tmp/CINEVIEW-MLA/poster.log")
 			open(os.path.join(out, PY, kind, COMPONENT_RENAMES[base] + ".py"), "w", encoding="utf-8").write(src)
 

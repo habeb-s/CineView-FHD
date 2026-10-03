@@ -25,6 +25,7 @@ from Tools.LoadPixmap import LoadPixmap
 SKIN_DIR = "/usr/share/enigma2/CineView_FHD_MLA"
 STATE = "/etc/enigma2/cineview_mla"
 RUNTIME = os.path.join(STATE, "runtime.json")
+POSTER_SECTIONS = ("infobar", "secondinfobar", "channelselection", "epg", "eventview")
 HEALTHY_AFTER_MS = 60000
 TRIAL_CONFIRM_SECONDS = 20
 _timer = None
@@ -128,7 +129,17 @@ def _build_config():
 	c = config.plugins.cineviewmla
 	if not hasattr(c, "servermode"):
 		c.servermode = ConfigSelection(default="profile", choices=[("full", _("Full server details")), ("profile", _("EMU + subscription only")), ("hide", _("Hide server information"))])
+	# Live poster switches, read by the skin (ConfigEntryTest on the poster frames) and by the
+	# CineViewMLAPosterX renderer (toggle="config.plugins.cineviewmla.poster_<section>").
+	for sec in POSTER_SECTIONS:
+		if not hasattr(c, "poster_" + sec):
+			setattr(c, "poster_" + sec, ConfigYesNo(default=True))
 	return c
+
+
+# Defined at import: plugins are read (StartEnigma.runScreenTest -> readPluginList) before the
+# InfoBar and the other skinned screens exist, so the skin sees the saved values from the start.
+_build_config()
 
 
 class CineViewMLASetup(Screen, ConfigListScreen):
@@ -140,8 +151,6 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 		self.sel = self.eng.current_selection()
 		self.layouts = self.eng.layouts()
 		self.secs = self.eng.sections()
-		rt = runtime()
-		posters = rt.get("posters", {})
 		themes = self.eng.themes()
 		theme_labels = []
 		for t in themes:
@@ -154,10 +163,8 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 		for sec, spec in self.secs.items():
 			choices = [(lid, m.get("name", lid)) for lid, m in sorted(self.layouts.get(sec, {}).items())]
 			self.cfgLayouts[sec] = ConfigSelection(default=self.sel["layouts"].get(sec, "classic"), choices=choices)
-		self.cfgPosters = {}
-		for sec in ("infobar", "secondinfobar", "channelselection", "epg", "eventview"):
-			self.cfgPosters[sec] = ConfigYesNo(default=posters.get(sec, True))
 		self.mla = _build_config()
+		self.cfgPosters = {sec: getattr(self.mla, "poster_" + sec) for sec in POSTER_SECTIONS}
 		entries = [getConfigListEntry(_("Color theme"), self.cfgTheme, "theme", "")]
 		for sec, spec in self.secs.items():
 			entries.append(getConfigListEntry(_("Design") + " - " + _(spec.get("label", sec)), self.cfgLayouts[sec], "layout", sec))
@@ -212,7 +219,7 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 			m = self.layouts.get(sec, {}).get(cfg.value, {})
 			desc = "%s\n%s %s" % (m.get("name", cfg.value), _("Version"), m.get("version", ""))
 		elif kind == "poster":
-			desc = _("Shown live without a restart.")
+			desc = _("Applied without a restart, from the next channel or event change.")
 		self["description"].setText(desc)
 		st = self.eng.status()
 		self["status"].setText(_("Active generation: %s   Last known good: %s") % (st.get("active"), st.get("lkg")))
@@ -221,8 +228,7 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 		return {"theme": self.cfgTheme.value, "layouts": {s: c.value for s, c in self.cfgLayouts.items()}}
 
 	def _save_runtime_and_native(self):
-		save_runtime({"posters": {s: c.value for s, c in self.cfgPosters.items()}})
-		for cfg in (self.mla.servermode, config.usage.show_second_infobar, config.usage.second_infobar_timeout):
+		for cfg in [self.mla.servermode, config.usage.show_second_infobar, config.usage.second_infobar_timeout] + list(self.cfgPosters.values()):
 			cfg.save()
 		configfile.save()
 
@@ -266,7 +272,7 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 			self._restart(True)
 
 	def keyCancel(self):
-		for c in [self.mla.servermode, config.usage.show_second_infobar, config.usage.second_infobar_timeout]:
+		for c in [self.mla.servermode, config.usage.show_second_infobar, config.usage.second_infobar_timeout] + list(self.cfgPosters.values()):
 			c.cancel()
 		self.close()
 
