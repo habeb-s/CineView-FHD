@@ -59,11 +59,45 @@ def check(path):
 	return bad
 
 
+def poster_overlaps(path):
+	"""Text widgets that are visible while the poster is shown and overlap the poster box.
+	A widget is 'visible with posters on' unless it carries CineViewMLAShowIf <toggle>,True,Invert (posters-off twin)
+	or CineViewMLAShowIf with another always-false condition for that toggle."""
+	bad = []
+	root = ET.parse(path).getroot()
+	for scr in root.iter("screen"):
+		try:
+			ss = tuple(int(v) for v in scr.get("size", "1920,1080").split(","))
+		except ValueError:
+			ss = (1920, 1080)
+		posters = [w for w in scr.iter("widget") if w.get("render") == "CineViewMLAPosterX"]
+		for pw in posters:
+			toggle = pw.get("toggle", "")
+			rp = rect(pw, ss)
+			for w in scr.iter("widget"):
+				if w is pw or w.get("render") not in ("Label", "RunningText", "FixedLabel", None) or (w.get("render") is None and w.get("source")):
+					continue
+				conv = [c.text or "" for c in w.findall("convert") if c.get("type") == "CineViewMLAShowIf"]
+				if any(toggle and c.startswith(toggle) and "Invert" in c for c in conv):
+					continue
+				if z(w) < z(pw) and overlap(rp, rect(w, ss)):
+					bad.append((scr.get("name"), pw.get("position"), pw.get("size"), w.get("name") or w.get("source"), w.get("position"), w.get("size")))
+	return bad
+
+
 if __name__ == "__main__":
 	total = 0
-	for p in sys.argv[1:]:
+	files = [a for a in sys.argv[1:] if not a.startswith("--")]
+	for p in files:
 		for b in check(p):
 			total += 1
 			print("%s: screen=%s %s@%s %s z=%d covers widget %s@%s z=%d" % ((p,) + b))
-	print("ZORDER_SUMMARY covered=%d files=%d" % (total, len(sys.argv) - 1))
-	sys.exit(1 if total else 0)
+	print("ZORDER_SUMMARY covered=%d files=%d" % (total, len(files)))
+	po = 0
+	if "--posters" in sys.argv:
+		for p in files:
+			for b in poster_overlaps(p):
+				po += 1
+				print("%s: screen=%s poster@%s %s overlaps text %s@%s %s" % ((p,) + b))
+		print("POSTER_OVERLAP_SUMMARY overlaps=%d" % po)
+	sys.exit(1 if total or po else 0)
