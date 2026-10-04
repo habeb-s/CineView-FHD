@@ -22,7 +22,7 @@ t_grab = os.path.getmtime(video)
 nb, ne = n["begin_timestamp"], n["begin_timestamp"] + n["duration_sec"]
 clean = lambda s: (s or "").replace(" ", " ").strip()
 now = {"title": clean(n["title"]), "times": "%s – %s  ·  %d min" % (hm(nb), hm(ne), n["duration_sec"] // 60), "times_short": "%s – %s" % (hm(nb), hm(ne)),
-	"progress": max(0.0, min(1.0, (t_grab - nb) / float(n["duration_sec"]))), "genre": "Film",
+	"progress": max(0.0, min(1.0, (t_grab - nb) / float(n["duration_sec"]))), "genre": clean(n.get("genre")) or None, "rating": None,
 	"desc": clean(n.get("longdesc")) or clean(n.get("shortdesc")), "poster": poster}
 xb = x["begin_timestamp"]
 nxt = {"title": clean(x["title"]), "start": hm(xb), "times": "%s – %s" % (hm(xb), hm(xb + x["duration_sec"])),

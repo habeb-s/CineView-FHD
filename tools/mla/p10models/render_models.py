@@ -136,6 +136,10 @@ def video():
 
 S = D["sel"]
 N, X = S["now"], S["next"]
+# genre / rating only from the data: a rating is shown only when the identity engine resolved the programme
+# (never a placeholder number); the duration comes from the EPG times
+META = [x for x in (N.get("genre"), ("★ %.1f IMDb" % N["rating"]) if N.get("rating") else None) if x]
+DUR = (N.get("times", "").split("·")[-1].strip() if "min" in N.get("times", "") else "")
 TECH_CHIPS = S.get("chips") or ["HD", "1920×1080", "16:9", "SNR 75 %", "12.1 dB"]
 
 
@@ -161,7 +165,7 @@ def modern_infobar(on):
 	pill(d, 1836 - font(24).getlength(N["times_short"]) - 28, 890, N["times_short"], 24)
 	bar(d, (x0, 950, 1836 - x0, 6), N["progress"])
 	tbox(d, x0, 978, 1100, 34, 26, "Next  %s   %s" % (X["start"], X["title"]), MUTED, lines=1)
-	tbox(d, 1836 - 400, 980, 400, 34, 24, "%s  ·  ★ 7.5" % (N.get("genre") or "Film"), ACCENT, align="right", lines=1)
+	tbox(d, 1836 - 400, 980, 400, 34, 24, "  ·  ".join(META), ACCENT, align="right", lines=1)
 	return im
 
 
@@ -324,7 +328,7 @@ def modern_eventview(on):
 	tbox(d, tx + 170, 124, 600, 40, 28, S["name"], MUTED, lines=1)
 	h = tbox(d, tx, 200, tw, 120, 52, N["title"], TEXT, True, lines=2)
 	cx = tx
-	for c in (N["times_short"], "%d min" % 160, N.get("genre") or "Film", "★ 7.5 IMDb"):
+	for c in [N["times_short"]] + ([DUR] if DUR else []) + META:
 		cx = pill(d, cx, 220 + h, c, 22) + 12
 	tbox(d, tx, 290 + h, tw, 26 * (14 if on else 15), 24, N["desc"] + " " + N["desc"], TEXT)
 	ny = 760 if on else 800

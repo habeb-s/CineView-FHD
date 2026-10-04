@@ -20,6 +20,10 @@ echo "poster: $pc"
 python3 ~/cineview-mla/repo/tools/mla/devtools/device/probe_modern.py "$pc" | $R 'cat > /tmp/cvmla/probe.json.tmp && mv /tmp/cvmla/probe.json.tmp /tmp/cvmla/probe.json'
 sleep 7; g probe_all all; g probe_osd osd; g probe_video video
 X; sleep 2; errs
+# HRT1 video-only candidates for the model mockups (pick one without subtitles), with matching EPG and signal values
+for i in 1 2 3 4 5 6 7 8; do g video_hrt1_$i video >/dev/null; sleep 4; done; echo "video candidates $(ls $S | grep -c video_hrt1_)"
+curl -s -m 8 -o $S/hrt1_now.json "http://192.168.1.250/api/epgservicenow?sRef=$HRT1"; curl -s -m 8 -o $S/hrt1_next.json "http://192.168.1.250/api/epgservicenext?sRef=$HRT1"
+curl -s -m 8 -o $S/signal.json "http://192.168.1.250/api/signal"; echo "signal $(cat $S/signal.json | head -c 200)"
 python3 - $S <<'PY'
 import sys
 from PIL import Image
