@@ -74,6 +74,16 @@ def main():
     print("reference rows: %s" % rows)
     distinct = [k for k in rows if all(diff(last[k][0], last[j][0]) + diff(last[k][1], last[j][1]) > 12 for j in rows if j != k)]
     print("rows with distinct posters (others share the neutral frame): %s" % distinct)
+    # The neutral placeholder (CineView default image), per slot: the crop that several reference rows share.
+    # Showing it is never "a previous channel's poster" — it is what a row shows while its poster loads or when no
+    # reliable poster exists (device t44/t49 cold cache: placeholder -> poster within the same row).
+    def shared(slot):
+        for k in rows:
+            if sum(1 for j in rows if diff(last[k][slot], last[j][slot]) < 6) >= 2:
+                return last[k][slot]
+        return None
+    ph = (shared(0), shared(1))
+    is_ph = lambda img, slot: ph[slot] is not None and diff(img, ph[slot]) < 8
 
     # Second method, independent of the slow pass (posters may finish downloading between passes):
     # split the fast recording into segments with a constant cursor row; a frame >= HOLD into a segment is STALE
@@ -114,7 +124,8 @@ def main():
             held = (t - fr[0][0]) / 1e9
             dp = diff(c[0], prev[0]) + diff(c[1], prev[1])
             do = diff(c[0], own[0]) + diff(c[1], own[1])
-            if dp < 8 and do > 20:
+            real_prev = not (is_ph(prev[0], 0) and is_ph(prev[1], 1))  # a real poster of the other channel
+            if dp < 8 and do > 20 and real_prev:
                 if held >= HOLD:
                     stale += 1
                     events.append("%.2fs row %d held %.2fs still shows row %d posters" % ((t - t0) / 1e9, r, held, segs[i - 1][0]))
