@@ -70,6 +70,8 @@ def poster_overlaps(path):
 			ss = tuple(int(v) for v in scr.get("size", "1920,1080").split(","))
 		except ValueError:
 			ss = (1920, 1080)
+		if scr.get("name", "").endswith("_CVPosterOff"):
+			continue  # only used while posters are off (the plugin selects it then); its poster stays hidden
 		posters = [w for w in scr.iter("widget") if w.get("render") == "CineViewMLAPosterX"]
 		for pw in posters:
 			toggle = pw.get("toggle", "")
