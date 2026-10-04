@@ -9,6 +9,8 @@
 import json as _mla_json
 import time as _mla_time
 
+from enigma import ePicLoad as _mla_ePicLoad
+
 from Components.CineViewMLAPosterMatch import identify as _mla_identify, choose as _mla_choose, \
     imdb_candidates as _mla_imdb, tvmaze_candidates as _mla_tvmaze, itunes_candidates as _mla_itunes
 
@@ -181,6 +183,35 @@ class _CineViewMLAPosterXIdentity(_CineViewMLAPosterXBase):
             self._show(_MLA_DEFAULT)
         else:
             self.instance.hide()
+
+    def _show(self, path):
+        """Decode the poster at the size of this widget (device study 2026-10-04 t34: loadJPG kept the full
+        600x900 picture, 2.1 MB per poster, so the 5400 kB accel pool of this receiver held two posters and
+        every further one fell back to RAM — '[gSurface] ERROR: accelAlloc failed' — and was scaled again on
+        every repaint).  ePicLoad (native, synchronous here) returns the picture already fitted to the widget;
+        setScale(1) then only covers a 1-2 px rounding difference, so the look is unchanged.  Any failure
+        falls back to the previous loadJPG path."""
+        if not self._enabled():
+            self.instance.hide()
+            return
+        try:
+            size = self.instance.size()
+            w, h = size.width(), size.height()
+            if w > 0 and h > 0:
+                pl = getattr(self, "_mla_picload", None)
+                if pl is None:
+                    pl = self._mla_picload = _mla_ePicLoad()
+                pl.setPara((w, h, 1, 1, False, 1, "#00000000"))
+                if pl.startDecode(path, 0, 0, False) == 0:
+                    pix = pl.getData()
+                    if pix:
+                        self.instance.setPixmap(pix)
+                        self.instance.setScale(1)
+                        self.instance.show()
+                        return
+        except Exception as err:
+            _log("picload fallback: %s" % err)
+        _CineViewMLAPosterXBase._show(self, path)
 
     def changed(self, what):
         if not self.instance:
