@@ -63,8 +63,18 @@ received 403 from IMDb. The values come from the exact tt id.
   - **Regression found:** the InfoBar's INFO opens the same class (`EventViewEPGSelect`), so live INFO lost the
     approved Classic dashboard.
 - **build42.** The dashboard stays when the event is the playing service's CURRENT event; every other event
-  (another channel, or a later event of the playing channel) gets the simple screen. t50 checks all of these
-  cases.
+  (another channel, or a later event of the playing channel) gets the simple screen.
+- **t50.**
+
+  | Case | Screen used |
+  |---|---|
+  | vertical EPG, other channel | `EventViewSimple` |
+  | Graphical EPG, other channel | `EventViewSimple` |
+  | live INFO | Classic `EventView` dashboard (unchanged) |
+  | Graphical EPG, later event on the playing channel ("Nasljednik Green Lanterna" 04:03–05:05) | `EventViewSimple` |
+  | posters OFF | `EventViewSimple_CVPosterOff` |
+
+  0 tracebacks. **RUNTIME TESTED.**
 - **EPG text.** Some descriptions show garbled letters ("Ïzivio", "kÂcer"). OpenWebif shows exactly the same
   text, so this is the broadcast's encoding as decoded by Enigma2, not CineView.
 - **Open, not changed.** Neither Classic screen shows the coloured-key captions (Add Timer / Single EPG /
@@ -90,7 +100,11 @@ received 403 from IMDb. The values come from the exact tt id.
     desktop is not buffered), so the fault is in the paint itself, inside enigma2 graphics or the driver. The
     cause is not proven.
 - **build43 mitigation.** One more full repaint of the label 150 ms after every line move, so a wrong paint
-  lasts at most one frame. t51 runs 4 rounds × AR/EN.
+  lasts at most one frame.
+- **t51 (build43), 4 rounds × AR/EN.** 8 runs, 290 moves, **0 bad**, 21 pixel-exact restarts-to-top. No
+  "repaint unavailable" message, so `invalidate()` works from Python. **RUNTIME TESTED.**
+  - Limit of the measurement: jumpcheck ignores single-frame states. A wrong paint corrected within 150 ms would
+    not be counted. The requirement, no lasting duplicated or overlapping lines, is what is measured.
 - **Measurement.** jumpcheck now also tries 3–4 line shifts: a 4.8-s gap in a recording had hidden several
   steps. Re-scored: t39 (native) 2 bad of 112; t46 rounds 1–2 0 bad of 135.
 
@@ -194,9 +208,7 @@ review.
     tuner values.
   - Ratings, genre and duration come only from data; there are no placeholder numbers.
 
-## Remaining device runs (queued on ai-agent)
-- t44: uncached posters.
-- t45: accel debug.
-- t46: line-by-line restart, AR/EN × 3.
-- t47: EventView from EPG.
-- t48: HD/16:9 indicators.
+## Test-harness slips (corrected, no effect on the receiver)
+- **Done markers.** Three scripts derived by renaming kept the old done marker, which stalled the queue for
+  about 25 min. The markers were appended by hand; the scripts are fixed in the repo.
+- **t48.** The loop variable was overwritten by a p6lib helper. t48b repeats the run.
