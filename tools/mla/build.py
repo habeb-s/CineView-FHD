@@ -843,7 +843,9 @@ def make_classic_lines_pack(skin):
 	* one whole line (29 px = pitch of size 25) every 1740 ms instead of 1 px every 60 ms (same reading speed);
 	* transparent="0" backgroundColor="steSecondInfoBG": the label paints the panel colour it sits on (the same ARGB
 	  value), so every repaint overwrites its whole box — a stale line can no longer stay behind (device 17:0x:
-	  one doubled Arabic line for 1.7 s in a transparent label)."""
+	  one doubled Arabic line for 1.7 s in a transparent label);
+	* render CineViewMLALineText (RunningText subclass): at the end of a long text it restarts from the first line
+	  instead of swimming back line by line (device t39 2026-10-05: the backward 29-px moves left overlapping lines)."""
 	src = os.path.join(skin, "layouts", "eventview", "classic")
 	dst = os.path.join(skin, "layouts", "eventview", "classic-lines")
 	if os.path.exists(dst):
@@ -862,6 +864,9 @@ def make_classic_lines_pack(skin):
 			n += 1
 			t = t.replace("step=1,steptime=60,startdelay=4000", "step=%d,steptime=1740,startdelay=4000" % _pitch(25))
 			t = t.replace('transparent="1"', 'transparent="0" backgroundColor="steSecondInfoBG"', 1)
+			# end of a long text: restart from the first line instead of the native reverse swim (device t39:
+			# downward line moves left overlapping lines) -> CineView's own RunningText subclass
+			t = t.replace('render="RunningText"', 'render="CineViewMLALineText"', 1)
 		return t
 
 	body2 = re.sub(r'<widget\b[^>]*render="RunningText".*?</widget>', fix, body, flags=re.S)
