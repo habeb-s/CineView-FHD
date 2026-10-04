@@ -545,6 +545,78 @@ def _install_poster_off_names():
 		print("[CineViewMLA] posters-off names installed for %s" % cls.__name__)
 
 
+NAME_CLIP_LAYOUTS = ("posterlist", "videofirst", "videofirst-right")  # narrow channel lists (D1)
+
+
+def _active_layout(section):
+	try:
+		return json.load(open(os.path.join(SKIN_DIR, "active", "selection.json")))["layouts"].get(section)
+	except Exception:
+		return None
+
+
+def _clip_service_name_cell(lst, mode):
+	"""enigma2 57b7a51 eListboxServiceContent (lib/service/listboxservice.cpp): the service-name text is laid out
+	with the width of its cell and THEN moved right by the picon (xoffs += iconWidth + itemsDistances), so a long
+	name runs that far past its cell — onto the progress bar on the right.  The cell itself is set from Python
+	(ServiceListLegacy.setMode); here it is narrowed by exactly that offset so the name ends where the cell was
+	meant to end.  Only the D1 channel-list designs, single-line rows, bar on the right, column mode 'Disable'
+	(the defaults on this receiver).  The event text that follows the name ends the same amount earlier."""
+	from enigma import eRect
+	from Components.ServiceList import ServiceListLegacy
+	cu = config.usage
+	if getattr(lst, "instance", None) is None:
+		return None  # setMode before the widget exists; postWidgetCreate calls it again
+	if not mla_active() or _active_layout("channelselection") not in NAME_CLIP_LAYOUTS:
+		return None
+	if cu.servicelist_twolines.value or cu.servicelist_column.value != "-1" or not cu.service_icon_enable.value:
+		return None
+	view = cu.show_event_progress_in_servicelist.value
+	if view != "barright":
+		return None
+	if mode != ServiceListLegacy.MODE_BOUQUETS or not cu.show_channel_numbers_in_servicelist.value:
+		num_w, num_space = 0, lst.listMarginLeft
+	else:
+		from enigma import getTextBoundarySize
+		size = lst.instance.size()
+		num_w = cu.alternative_number_mode.value and getTextBoundarySize(lst.instance, lst.ServiceNumberFont, size, "0" * cu.numberZapDigits.value).width() or getTextBoundarySize(lst.instance, lst.ServiceNumberFont, size, "00000").width()
+		num_space = lst.fieldMargins + lst.listMarginLeft
+	row_w = lst.instance.size().width() - lst.listMarginRight
+	width = row_w - (num_w + num_space + lst.progressBarWidth + lst.fieldMargins)  # = ServiceListLegacy.setMode
+	icon_w = int((lst.ItemHeight + int(cu.servicelist_picon_downsize.value) * 2) * (int(cu.servicelist_picon_ratio.value) * 0.01))
+	shift = icon_w + lst.itemsDistances
+	for mode_cfg, pic in ((cu.servicetype_icon_mode, lst.picDVB_S), (cu.crypto_icon_mode, lst.picCrypto)):
+		if mode_cfg.value == "1" and pic:  # further icons left of the name move the text the same way
+			shift += pic.size().width() + lst.itemsDistances
+	if width - shift < 100:
+		return None
+	lst.l.setElementPosition(lst.l.celServiceName, eRect(num_w + num_space, 0, width - shift, lst.ItemHeight))
+	return width, shift
+
+
+def _install_service_name_clip():
+	try:
+		from Components.ServiceList import ServiceListLegacy
+	except Exception as err:
+		print("[CineViewMLA] name clip: ServiceListLegacy unavailable: %s" % err)
+		return
+	orig = ServiceListLegacy.setMode
+	if getattr(orig, "_cvmla_name_clip", False):
+		return
+
+	def setMode(self, mode, _orig=orig):
+		_orig(self, mode)
+		try:
+			r = _clip_service_name_cell(self, mode)
+			if r:
+				print("[CineViewMLA] name clip: name cell %d -> %d px (picon offset %d)" % (r[0], r[0] - r[1], r[1]))
+		except Exception as err:
+			print("[CineViewMLA] name clip: %s" % err)
+	setMode._cvmla_name_clip = True
+	ServiceListLegacy.setMode = setMode
+	print("[CineViewMLA] name clip installed")
+
+
 def sessionstart(reason, session=None, **kwargs):
 	global _timer, _session
 	if reason != 0 or session is None:
@@ -561,6 +633,7 @@ def sessionstart(reason, session=None, **kwargs):
 	if mla_active():
 		_trial.start()
 		_install_poster_off_names()
+		_install_service_name_clip()
 
 
 def Plugins(**kwargs):

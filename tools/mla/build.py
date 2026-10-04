@@ -767,6 +767,9 @@ def make_classic_lines_pack(skin):
 	return n
 
 
+ZORDER_CORE_SCREENS = ("PluginBrowser", "PluginBrowserList", "PluginBrowserGrid", "QuickMenu", "PackageAction", "PackageActionLog")
+
+
 def apply_zorder_backgrounds(skin):
 	"""Z-order fix (device 2026-10-04 18:0x, t30): in 57b7a51 Screen.createGUIScreen() creates the plain skin
 	<eLabel> elements AFTER all widgets, and eWidget::insertIntoParent() puts a child after every sibling with
@@ -778,8 +781,13 @@ def apply_zorder_backgrounds(skin):
 	sys.path.insert(0, HERE)
 	import zorder_check
 	out = []
-	for p in sorted(glob.glob(os.path.join(skin, "layouts", "*", "*", "screens*.xml"))):
+	files = sorted(glob.glob(os.path.join(skin, "layouts", "*", "*", "screens*.xml")))
+	# Core screens (approved designs): only the ones the user approved on 2026-10-04 20:12.
+	core = sorted(glob.glob(os.path.join(skin, "core", "*.xml")))
+	for p in files + core:
 		covered = zorder_check.check(p)
+		if p in core:
+			covered = [c for c in covered if c[0] in ZORDER_CORE_SCREENS]
 		if not covered:
 			continue
 		bad = {(c[0], c[2], c[3]) for c in covered if c[1] == "eLabel"}
@@ -799,7 +807,8 @@ def apply_zorder_backgrounds(skin):
 			return body
 		x = re.sub(r'<screen name="[^"]+".*?</screen>', fix_screen, x, flags=re.S)
 		open(p, "w", encoding="utf-8").write(x)
-		assert not zorder_check.check(p), "z-order still covered after fix: %s" % p
+		left = [c for c in zorder_check.check(p) if p not in core or c[0] in ZORDER_CORE_SCREENS]
+		assert not left, "z-order still covered after fix: %s %s" % (p, left[:3])
 	return out
 
 

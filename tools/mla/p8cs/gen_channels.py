@@ -85,8 +85,10 @@ def posterlist(skin):
 	off = {k: E(v) for k, v in s["posters_off"].items()}
 	fs = {k: v[4] for k, v in s["posters_on"].items() if len(v) > 4}
 	x = ['\t\t<eLabel position="0,0" size="1920,1080" backgroundColor="#40000000" zPosition="0" />']
-	x.append(G.box(b["list_panel"], "steThemeOverlay", 1))
-	x.append(G.box(b["detail_panel"], "steThemeOverlay", 1))
+	# User 2026-10-04 20:12: the video behind must not hurt reading -> both Poster List panels are OPAQUE
+	# (steThemePanel = the same hue as steThemeOverlay without its 0x2D alpha, in every theme).
+	x.append(G.box(b["list_panel"], "steThemePanel", 1))
+	x.append(G.box(b["detail_panel"], "steThemePanel", 1))
 	h = b["header"]
 	x.append('\t\t<widget source="Title" render="Label" position="%d,%d" size="1000,48" transparent="1" zPosition="12" foregroundColor="foreground" font="Regular;34" noWrap="1" />' % (h["x"] + 16, h["y"] + 6))
 	x += clock(dict(x=h["x"] + h["w"] - 216, y=h["y"], w=200, h=58), dict(x=h["x"] + h["w"] - 560, y=h["y"] + 20, w=320, h=30), 46, 21)

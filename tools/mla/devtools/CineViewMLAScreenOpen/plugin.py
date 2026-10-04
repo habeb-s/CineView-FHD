@@ -13,6 +13,13 @@
 #   evsimple   -> session.open(EventViewSimple, event, ServiceReference)  -- the same call MovieSelection.showEventInformation
 #                 makes, with the current event of the playing service
 #   ibeventview-> getEventViewInstance(..., skinName="InfoBarEventView") shown for 20 s (same call as EpgSelection.infoKeyPressed)
+#   pluginbrowser -> session.open(PluginBrowser)            (PluginBrowserList / PluginBrowserGrid by the user's layout setting)
+#   quickmenu  -> session.open(QuickMenu)
+#   pkgremove  -> session.open(PackageAction, MODE_REMOVE)  (only lists installed plugins; nothing is removed unless confirmed)
+#   pkglog     -> session.open(PackageActionLog, <fixed sample text>)  (display only; no opkg command runs)
+#   accel_on / accel_off -> enigma.setACCELDebug(1/0): gAccel logs every accel allocation and the pool map
+#                 (native SWIG function of 57b7a51, logging only).  /tmp/cvmla/acceldebug present at session start
+#                 switches it on from the start.
 import os
 
 from enigma import eTimer, eEPGCache
@@ -69,6 +76,21 @@ def _open(what):
 			t.callback.append(done)
 			t.start(20000, True)
 			_keep[:] = [dlg, t]
+	elif what == "pluginbrowser":
+		from Screens.PluginBrowser import PluginBrowser
+		_session.open(PluginBrowser)
+	elif what == "quickmenu":
+		from Screens.QuickMenu import QuickMenu
+		_session.open(QuickMenu)
+	elif what == "pkgremove":
+		from Screens.PluginBrowser import PackageAction
+		_session.open(PackageAction, PackageAction.MODE_REMOVE)
+	elif what == "pkglog":
+		from Screens.PluginBrowser import PackageActionLog
+		_session.open(PackageActionLog, "\n".join(["CineView MLA display test (no opkg command was run)"] + ["Line %02d: Removing package enigma2-plugin-example-%02d from root..." % (i, i) for i in range(1, 31)]))
+	elif what in ("accel_on", "accel_off"):
+		from enigma import setACCELDebug
+		setACCELDebug(1 if what == "accel_on" else 0)
 	print("[CineViewMLAScreenOpen] opened %s" % what)
 
 
@@ -87,6 +109,10 @@ def sessionstart(reason, session=None, **kwargs):
 	global _session, _timer
 	if reason == 0 and session is not None:
 		_session = session
+		if os.path.isfile("/tmp/cvmla/acceldebug"):
+			from enigma import setACCELDebug
+			setACCELDebug(1)
+			print("[CineViewMLAScreenOpen] accel debug on from session start")
 		_timer = eTimer()
 		_timer.callback.append(_poll)
 		_timer.start(5000, True)
