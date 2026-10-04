@@ -715,9 +715,9 @@ def main(golden, comps, control, out):
 		print("M5 %-16s %-22s %s" % (sec, scr, what))
 	for scr, source, kind in apply_sib_textfit(skin):
 		print("SIB-TEXTFIT %-20s %-18s %s (narrow+wide)" % (scr, source, kind))
-	if os.environ.get("MLA_CLASSIC_POFF") == "1":  # Phase B, experimental until visually approved
+	if os.environ.get("MLA_CLASSIC_POFF", "1") == "1":  # Phase B, user-approved 2026-10-04 17:01 (MLA_CLASSIC_POFF=0 = rc4 layout)
 		for sec, scr, mv, hd in apply_classic_posters_off(skin):
-			print("POSTERS-OFF (Classic, experimental) %-16s %-22s %d moved, %d hidden" % (sec, scr, mv, hd))
+			print("POSTERS-OFF (Classic) %-16s %-22s %d moved, %d hidden" % (sec, scr, mv, hd))
 	# P7: Details family (user-approved direction 2026-10-03; Classic packs untouched).
 	make_default_poster(os.path.join(skin, "mla_assets", "poster_default.jpg"))  # the P7 poster slots embed it
 	sys.path.insert(0, os.path.join(HERE, "p7"))
