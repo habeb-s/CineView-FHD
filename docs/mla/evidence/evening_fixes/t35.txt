@@ -1,0 +1,95 @@
+-rw-r--r--    1 root     root          3572 Oct  4 21:03 cineview_mla-state.pre-p6.tgz
+-rw-r--r--    1 root     root       4820327 Oct  4 21:03 mla-files.pre-build34.tgz
+-rw-r--r--    1 root     root          9646 Oct  4 21:02 settings.pre-p6
+paths-ok
+deployed
+new e2 pid=15756 @21:03:18
+webif up @21:03:44
+STATE active=g000000 lkg=g000035 journal=COMMITTED theme=navy gens=['g000000', 'g000032', 'g000033', 'g000034', 'g000035']
+boot.count=1 e2pid=15756 crashlogs=0
+2026-10-04 20:49:01 apply: g000033 -> g000034 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic-lines", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-04 20:49:01 commit: lkg=g000034
+2026-10-04 21:02:02 apply: g000034 -> g000035 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic-lines", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-04 21:02:02 commit: lkg=g000035
+21:03:22.2899 [InputDevice] Error: device='mice' getInputDevices <ERROR: ioctl(EVIOCGNAME): '[Errno 25] Inappropriate ioctl for device'>
+21:03:22.2901 [InputDevice] Error: device='mouse0' getInputDevices <ERROR: ioctl(EVIOCGNAME): '[Errno 25] Inappropriate ioctl for device'>
+21:03:42.1571 [CineViewMLA] posters-off names installed for SecondInfoBar
+21:03:42.1573 [CineViewMLA] posters-off names installed for EventViewSimple
+21:03:42.1573 [CineViewMLA] name clip installed
+g000036
+new e2 pid=17089 @21:04:14
+webif up @21:04:38
+   tracebacks=0 skin_errors_new=0 e2pid=17089 crashlogs=0
+21:04:36.7403 [CineViewMLA] name clip installed
+21:04:37.9523 [CineViewMLA] name clip: name cell 413 -> 337 px (picon offset 76)
+21:04:38.5986 [CineViewMLA] name clip: name cell 900 -> 827 px (picon offset 73)
+cap d1_videofirst @21:05:29 png-ok
+cap d1_videofirst_down1 @21:05:35 png-ok
+g000037
+new e2 pid=19073 @21:05:48
+webif up @21:06:13
+   tracebacks=0 skin_errors_new=0 e2pid=19073 crashlogs=0
+21:06:11.4780 [CineViewMLA] name clip installed
+21:06:12.7140 [CineViewMLA] name clip: name cell 413 -> 337 px (picon offset 76)
+21:06:13.3693 [CineViewMLA] name clip: name cell 900 -> 827 px (picon offset 73)
+cap d1_videofirst-right @21:07:03 png-ok
+cap d1_videofirst-right_down1 @21:07:09 png-ok
+g000038
+new e2 pid=21037 @21:07:22
+webif up @21:07:47
+   tracebacks=0 skin_errors_new=0 e2pid=21037 crashlogs=0
+21:07:45.5749 [CineViewMLA] name clip installed
+21:07:46.8011 [CineViewMLA] name clip: name cell 702 -> 624 px (picon offset 78)
+21:07:47.4615 [CineViewMLA] name clip: name cell 900 -> 827 px (picon offset 73)
+cap d1_posterlist @21:08:36 png-ok
+cap d1_posterlist_down1 @21:08:41 png-ok
+g000039
+new e2 pid=23016 @21:08:58
+webif up @21:09:23
+   tracebacks=0 skin_errors_new=0 e2pid=23016 crashlogs=0
+21:09:21.7429 [CineViewMLA] name clip installed
+cap epg_vertical @21:10:15 png-ok
+cap epg_vertical_right @21:10:19 png-ok
+cap epg_vertical_down @21:10:24 png-ok
+cap epg_graph @21:10:39 png-ok
+   tracebacks=0 skin_errors_new=0 e2pid=23016 crashlogs=0
+21:10:07.3992 [Skin] Processing screen 'EPGvertical' position=(50,100), size=(1820,880) for module 'EPGSelection'.
+21:10:07.4466 [Skin] Processing screen 'EPGverticalSummary', from list 'EPGverticalSummary, EPGvertical_summary, ScreenSummary', position=(0,0), size=(480,320) for module 'ScreenSummary'.
+21:10:07.4662 [CineViewMLAScreenOpen] opened vertical
+21:10:31.2937 [Skin] Processing screen 'GraphicalEPG' position=(0,0), size=(1920,1080) for module 'EPGSelection'.
+21:10:31.4095 [Skin] Processing screen 'GraphicalEPGSummary', from list 'GraphicalEPGSummary, GraphicalEPG_summary, ScreenSummary', position=(0,0), size=(480,320) for module 'ScreenSummary'.
+21:10:31.4334 [CineViewMLAScreenOpen] opened graph
+== posters at widget size: accelAlloc and CPU (same sequences as t34)
+new e2 pid=25619 @21:10:52
+webif up @21:11:17
+   tracebacks=0 skin_errors_new=0 e2pid=25619 crashlogs=0
+21:11:15.3852 [CineViewMLAScreenOpen] accel debug on from session start
+21:11:15.3969 [CineViewMLA] name clip installed
+   accel fails (Classic, posters on, zap+IB+EV+CS) = 1
+g000040
+new e2 pid=27756 @21:12:42
+webif up @21:13:07
+   tracebacks=0 skin_errors_new=0 e2pid=27756 crashlogs=0
+21:13:05.5553 [CineViewMLA] name clip installed
+21:13:06.7857 [CineViewMLA] name clip: name cell 702 -> 624 px (picon offset 78)
+21:13:07.4129 [CineViewMLA] name clip: name cell 900 -> 827 px (picon offset 73)
+   posters ON (Poster List, 5 rounds): cpu_ms 15260->24390 rss_kB 149756->149788 accel_fails=2
+g000041
+new e2 pid=32072 @21:16:49
+webif up @21:17:14
+STATE active=g000041 lkg=g000041 journal=COMMITTED theme=navy gens=['g000000', 'g000038', 'g000039', 'g000040', 'g000041']
+boot.count=1 e2pid=32072 crashlogs=0
+2026-10-04 21:12:36 apply: g000039 -> g000040 trial=False selection={"layouts": {"channelselection": "posterlist", "epg": "classic", "eventview": "classic-lines", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-04 21:12:36 commit: lkg=g000040
+2026-10-04 21:16:43 apply: g000040 -> g000041 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic-lines", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-04 21:16:43 commit: lkg=g000041
+   tracebacks=0 skin_errors_new=0 e2pid=32072 crashlogs=0
+21:17:12.8704 [CineViewMLA] name clip installed
+config.plugins.cineviewmla.poster_channelselection=True
+config.plugins.cineviewmla.poster_epg=True
+config.plugins.cineviewmla.poster_eventview=True
+config.plugins.cineviewmla.poster_infobar=True
+config.plugins.cineviewmla.poster_secondinfobar=True
+config.usage.show_second_infobar=2
+0
+T35_DONE

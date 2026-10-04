@@ -1,0 +1,166 @@
+== 0. setup
+config.plugins.cineviewmla.poster_channelselection=True
+config.plugins.cineviewmla.poster_epg=True
+config.plugins.cineviewmla.poster_eventview=True
+config.plugins.cineviewmla.poster_infobar=True
+config.plugins.cineviewmla.poster_secondinfobar=True
+config.usage.show_second_infobar=2
+== A. core screens BEFORE (installed build)
+new e2 pid=4051 @20:27:20
+webif up @20:27:46
+   tracebacks=0 skin_errors_new=0 accelAlloc=21 e2pid=4051 crashlogs=0
+cap before_pluginbrowser @20:28:36 png-ok
+cap before_quickmenu @20:28:49 png-ok
+cap before_pkgremove @20:29:08 png-ok
+cap before_pkglog @20:29:22 png-ok
+   tracebacks=0 skin_errors_new=0 accelAlloc=21 e2pid=4051 crashlogs=0
+== B. deploy build33, core screens AFTER + regression
+-rw-r--r--    1 root     root          3477 Oct  4 20:29 cineview_mla-state.pre-p6.tgz
+-rw-r--r--    1 root     root       4814944 Oct  4 20:29 mla-files.pre-build33.tgz
+-rw-r--r--    1 root     root          9646 Oct  4 20:27 settings.pre-p6
+paths-ok
+deployed
+new e2 pid=6983 @20:29:42
+webif up @20:30:07
+STATE active=g000000 lkg=g000029 journal=COMMITTED theme=navy gens=['g000000', 'g000026', 'g000027', 'g000028', 'g000029']
+boot.count=1 e2pid=6983 crashlogs=0
+2026-10-04 19:00:41 apply: g000000 -> g000028 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic-lines", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-04 19:00:41 commit: lkg=g000028
+2026-10-04 19:09:22 apply: g000000 -> g000029 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic-lines", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-04 19:09:22 commit: lkg=g000029
+20:29:45.6822 [InputDevice] Error: device='mice' getInputDevices <ERROR: ioctl(EVIOCGNAME): '[Errno 25] Inappropriate ioctl for device'>
+20:29:45.6824 [InputDevice] Error: device='mouse0' getInputDevices <ERROR: ioctl(EVIOCGNAME): '[Errno 25] Inappropriate ioctl for device'>
+20:30:05.2392 [CineViewMLA] posters-off names installed for SecondInfoBar
+20:30:05.2394 [CineViewMLA] posters-off names installed for EventViewSimple
+20:30:05.2395 [CineViewMLA] name clip installed
+g000030
+new e2 pid=8222 @20:30:34
+webif up @20:31:00
+STATE active=g000030 lkg=g000030 journal=COMMITTED theme=navy gens=['g000000', 'g000027', 'g000028', 'g000029', 'g000030']
+boot.count=1 e2pid=8222 crashlogs=0
+2026-10-04 19:09:22 apply: g000000 -> g000029 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic-lines", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-04 19:09:22 commit: lkg=g000029
+2026-10-04 20:30:29 apply: g000000 -> g000030 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic-lines", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-04 20:30:29 commit: lkg=g000030
+   tracebacks=0 skin_errors_new=0 accelAlloc=21 e2pid=8222 crashlogs=0
+20:30:58.3213 [CineViewMLA] name clip installed
+cap after_pluginbrowser @20:31:50 png-ok
+cap after_quickmenu @20:32:04 png-ok
+cap after_pkgremove @20:32:23 png-ok
+cap after_pkglog @20:32:36 png-ok
+   tracebacks=0 skin_errors_new=0 accelAlloc=21 e2pid=8222 crashlogs=0
+20:30:58.3213 [CineViewMLA] name clip installed
+cap reg_infobar @20:33:03 png-ok
+cap reg_sib @20:33:08 png-ok
+cap reg_eventview @20:33:23 png-ok
+cap reg_chsel @20:33:37 png-ok
+cap reg_epg_default @20:33:52 png-ok
+cap reg_epg_multi @20:34:06 png-ok
+cap reg_quickepg @20:34:22 png-ok
+cap reg_infobarepg @20:34:38 png-ok
+cap reg_infobareventview @20:34:45 png-ok
+cap reg_eventviewsimple @20:34:59 png-ok
+   tracebacks=0 skin_errors_new=0 accelAlloc=45 e2pid=8222 crashlogs=0
+20:30:58.3213 [CineViewMLA] name clip installed
+== C. D1 designs (name clip, opaque Poster List, stale-poster test)
+g000031
+new e2 pid=13933 @20:35:12
+webif up @20:35:38
+   tracebacks=0 skin_errors_new=0 accelAlloc=21 e2pid=13933 crashlogs=0
+20:35:36.4744 [CineViewMLA] name clip installed
+20:35:37.6859 [CineViewMLA] name clip: cannot import name 'getTextBoundarySize' from 'enigma' (/usr/lib/enigma2/python/enigma.pyc)
+20:35:38.3450 [CineViewMLA] name clip: cannot import name 'getTextBoundarySize' from 'enigma' (/usr/lib/enigma2/python/enigma.pyc)
+cap d1_videofirst @20:36:28 png-ok
+cap d1_videofirst_down1 @20:36:34 png-ok
+g000032
+new e2 pid=15956 @20:36:47
+webif up @20:37:12
+   tracebacks=0 skin_errors_new=0 accelAlloc=21 e2pid=15956 crashlogs=0
+20:37:10.7920 [CineViewMLA] name clip installed
+20:37:12.0440 [CineViewMLA] name clip: cannot import name 'getTextBoundarySize' from 'enigma' (/usr/lib/enigma2/python/enigma.pyc)
+20:37:12.6927 [CineViewMLA] name clip: cannot import name 'getTextBoundarySize' from 'enigma' (/usr/lib/enigma2/python/enigma.pyc)
+cap d1_videofirst-right @20:38:03 png-ok
+cap d1_videofirst-right_down1 @20:38:09 png-ok
+g000033
+new e2 pid=17833 @20:38:24
+webif up @20:38:47
+   tracebacks=0 skin_errors_new=0 accelAlloc=27 e2pid=17833 crashlogs=0
+20:38:45.7403 [CineViewMLA] name clip installed
+20:38:46.9836 [CineViewMLA] name clip: cannot import name 'getTextBoundarySize' from 'enigma' (/usr/lib/enigma2/python/enigma.pyc)
+20:38:47.6952 [CineViewMLA] name clip: cannot import name 'getTextBoundarySize' from 'enigma' (/usr/lib/enigma2/python/enigma.pyc)
+cap d1_posterlist @20:39:37 png-ok
+cap d1_posterlist_down1 @20:39:41 png-ok
+-- warm-up (fills the poster cache for rows 146..154)
+-- slow reference
+   pl_slow recorded 314 frames
+-- fast (0.35 s per step) down 8, hold, up 8, hold
+   pl_fast recorded 215 frames
+-- very fast (key repeat, 0.15 s per step) down 8, hold
+   pl_vfast recorded 143 frames
+   pl_fast POSTER_SUMMARY frames_ok=196 transition(<0.5s after a move)=12 stale=0 no_cursor=7
+   pl_vfast POSTER_SUMMARY frames_ok=122 transition(<0.5s after a move)=9 stale=0 no_cursor=12
+   tracebacks=0 skin_errors_new=0 accelAlloc=134 e2pid=17833 crashlogs=0
+20:38:45.7403 [CineViewMLA] name clip installed
+20:38:46.9836 [CineViewMLA] name clip: cannot import name 'getTextBoundarySize' from 'enigma' (/usr/lib/enigma2/python/enigma.pyc)
+20:38:47.6952 [CineViewMLA] name clip: cannot import name 'getTextBoundarySize' from 'enigma' (/usr/lib/enigma2/python/enigma.pyc)
+== D. accelAlloc study
+-- D1 CPU / memory, posters ON (Poster List, navigation 5 rounds), no debug
+   posters ON : cpu_ms 43340->52020 rss_kB 168260->168348
+set {'config.plugins.cineviewmla.poster_channelselection': 'False'}
+new e2 pid=29587 @20:46:04
+webif up @20:46:27
+   tracebacks=0 skin_errors_new=0 accelAlloc=27 e2pid=29587 crashlogs=0
+20:46:25.4979 [CineViewMLA] name clip installed
+20:46:26.7596 [CineViewMLA] name clip: cannot import name 'getTextBoundarySize' from 'enigma' (/usr/lib/enigma2/python/enigma.pyc)
+20:46:27.4701 [CineViewMLA] name clip: cannot import name 'getTextBoundarySize' from 'enigma' (/usr/lib/enigma2/python/enigma.pyc)
+   posters OFF: cpu_ms 12620->18140 rss_kB 157980->158656
+-- accel debug from session start, posters ON (Classic)
+g000034
+set {'config.plugins.cineviewmla.poster_infobar': 'True', 'config.plugins.cineviewmla.poster_secondinfobar': 'True', 'config.plugins.cineviewmla.poster_channelselection': 'True', 'config.plugins.cineviewmla.poster_epg': 'True', 'config.plugins.cineviewmla.poster_eventview': 'True'}
+new e2 pid=508 @20:49:07
+webif up @20:49:32
+   tracebacks=0 skin_errors_new=0 accelAlloc=21 e2pid=508 crashlogs=0
+20:49:30.1818 [CineViewMLA] name clip installed
+-- accel debug, posters OFF
+set {'config.plugins.cineviewmla.poster_infobar': 'False', 'config.plugins.cineviewmla.poster_secondinfobar': 'False', 'config.plugins.cineviewmla.poster_channelselection': 'False', 'config.plugins.cineviewmla.poster_epg': 'False', 'config.plugins.cineviewmla.poster_eventview': 'False'}
+new e2 pid=2725 @20:50:55
+webif up @20:51:21
+   tracebacks=0 skin_errors_new=0 accelAlloc=1 e2pid=2725 crashlogs=0
+20:51:19.0347 [CineViewMLA] name clip installed
+-- memory over 10 minutes of use, posters ON, no debug
+set {'config.plugins.cineviewmla.poster_infobar': 'True', 'config.plugins.cineviewmla.poster_secondinfobar': 'True', 'config.plugins.cineviewmla.poster_channelselection': 'True', 'config.plugins.cineviewmla.poster_epg': 'True', 'config.plugins.cineviewmla.poster_eventview': 'True'}
+new e2 pid=5023 @20:52:49
+webif up @20:53:14
+   tracebacks=0 skin_errors_new=0 accelAlloc=21 e2pid=5023 crashlogs=0
+20:53:12.3693 [CineViewMLA] name clip installed
+   round 1: rss_kB 155592 cpu_ms 12790
+   round 2: rss_kB 166412 cpu_ms 23150
+   round 3: rss_kB 166476 cpu_ms 31120
+   round 4: rss_kB 166808 cpu_ms 39230
+   round 5: rss_kB 166860 cpu_ms 47310
+   end: rss_kB 168740 cpu_ms 56160
+               total        used        free      shared  buff/cache   available
+Mem:         1619192      303864     1216836       29016      166740     1315328
+Swap:              0           0           0
+accel fails this run: 833
+== E. restore
+g000035
+set {'config.plugins.cineviewmla.poster_infobar': 'True', 'config.plugins.cineviewmla.poster_secondinfobar': 'True', 'config.plugins.cineviewmla.poster_channelselection': 'True', 'config.plugins.cineviewmla.poster_epg': 'True', 'config.plugins.cineviewmla.poster_eventview': 'True', 'config.usage.show_second_infobar': '2'}
+new e2 pid=14093 @21:02:10
+webif up @21:02:34
+STATE active=g000035 lkg=g000035 journal=COMMITTED theme=navy gens=['g000000', 'g000032', 'g000033', 'g000034', 'g000035']
+boot.count=1 e2pid=14093 crashlogs=0
+2026-10-04 20:49:01 apply: g000033 -> g000034 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic-lines", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-04 20:49:01 commit: lkg=g000034
+2026-10-04 21:02:02 apply: g000034 -> g000035 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic-lines", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-04 21:02:02 commit: lkg=g000035
+   tracebacks=0 skin_errors_new=0 accelAlloc=19 e2pid=14093 crashlogs=0
+21:02:31.9494 [CineViewMLA] name clip installed
+config.plugins.cineviewmla.poster_channelselection=True
+config.plugins.cineviewmla.poster_epg=True
+config.plugins.cineviewmla.poster_eventview=True
+config.plugins.cineviewmla.poster_infobar=True
+config.plugins.cineviewmla.poster_secondinfobar=True
+config.usage.show_second_infobar=2
+0
+T34_DONE
