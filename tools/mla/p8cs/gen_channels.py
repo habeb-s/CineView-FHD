@@ -116,7 +116,7 @@ def posterlist(skin):
 		f = fs["next_eyebrow"]
 		x.append(shown(G.label(SRC, dict(g, w=80), [("EventName", "NextName"), ("CineViewMLAShowIf", "always,True,text=NEXT")], f, "secondFG"), inv))
 		x += [shown(l, inv) for l in times_left(SRC, dict(g, x=g["x"] + 86, w=g["w"] - 86), f, "secondFG", "NextStartTime", "NextEndTime")]
-	x += G.text_variants(SRC, [("EventName", "NextName")], on["next_title"], off["next_title"], fs["next_title"], "foreground", G.T_OPTS, KEY)
+	x += G.text_variants(SRC, [("EventName", "NextNameOnly")], on["next_title"], off["next_title"], fs["next_title"], "foreground", G.T_OPTS, KEY)
 	x += G.text_variants(SRC, [("EventName", "NextDescription")], on["next_desc"], off["next_desc"], fs["next_desc"], "grey", G.D_OPTS, KEY)
 	x.append('\t\t<panel name="ButtonTemplate" />')
 	return x
@@ -155,7 +155,7 @@ def videofirst(skin, right=False):
 		f = fs["next_line"]
 		x.append(shown(G.label(SRC, dict(g, w=70), [("EventName", "NextName"), ("CineViewMLAShowIf", "always,True,text=NEXT")], f, "secondFG"), inv))
 		x.append(shown(G.label(SRC, dict(g, x=g["x"] + 76, w=74), [("EventTime", "NextStartTime"), ("ClockToText", "Format:%H:%M")], f, "secondFG"), inv))
-		x.append(shown('\t\t<widget source="%s" render="RunningText" %s transparent="1" zPosition="20" foregroundColor="foreground" font="Regular;%d" noWrap="1" options="%s">\n\t\t\t<convert type="EventName">NextName</convert>\n\t\t</widget>' % (SRC, G.pos(dict(g, x=g["x"] + 156, w=g["w"] - 156)), f, G.H_OPTS), inv))
+		x.append(shown('\t\t<widget source="%s" render="RunningText" %s transparent="1" zPosition="20" foregroundColor="foreground" font="Regular;%d" noWrap="1" options="%s">\n\t\t\t<convert type="EventName">NextNameOnly</convert>\n\t\t</widget>' % (SRC, G.pos(dict(g, x=g["x"] + 156, w=g["w"] - 156)), f, G.H_OPTS), inv))
 	for g, inv in ((on["tech_line"], ""), (off["tech_line"], ",Invert")):
 		f = fs["tech_line"]
 		parts = [(0, 60, None, "LIVE", "secondFG"), (64, 60, ("FrontendInfo", "SNR"), None, "foreground"), (128, 110, ("FrontendInfo", "SNRdB"), None, "secondFG"),
