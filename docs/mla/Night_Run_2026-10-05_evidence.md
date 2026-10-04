@@ -110,16 +110,36 @@ Baselines, same 10-min navigation:
 | Poster List posters OFF | 1 (the zap surface, Enigma2) | ~3.9 s | 150 MB |
 | Classic posters ON | 1 | ~6.2 s | 152.7 MB |
 
-The per-key-press accel failures belong to **CineView Poster List posters**, not to Enigma2. t45 (gAccel debug)
-measures the sizes and the pool state. The failures fall back to RAM: no memory growth, no visible artefact.
+The per-key-press accel failures come with the **CineView Poster List posters**.
+**t45 (gAccel debug, build38, 15 DOWN presses)** shows the mechanism:
+- **Per DOWN press:** exactly two allocations, the now poster 240x360 (338 kB) and the next poster 160x240.
+- **When the list opens:** a burst of 220x132 surfaces. These are the native picon files of the visible rows,
+  and Enigma2's service list keeps them: 23 surfaces, **2.6 MB of the 5.4 MB pool**.
+- **At zap:** the InfoBar / SecondInfoBar posters (105x158, 205x308). They are not re-decoded per key press.
+- **At the failures:** the largest free block was 26–150 kB, so a 338 kB poster or a 118 kB picon finds no
+  contiguous space, and gSurface falls back to RAM by design.
+- **Failures in t45:** 11 picons, 4 now posters, 2 SIB posters, 1 zap surface (1536x1024, Enigma2).
+
+**Verdict.** This is pool pressure: Enigma2's picon cache plus CineView's two posters. It is not a leak. Every
+poster is freed on the next move, and the soak shows no RSS growth. The RAM fallback has no visible artefact,
+and CPU per round is lower than Classic's.
+
+**Decision.** No code change. Shrinking the posters further would change the approved look. Open for the user's
+review.
 
 ## 8. Stale posters
 - The evening result (0 stale at 0.35 s and 0.15 s, valid slow reference) stands.
 - t38's postercheck numbers are **void**. They used a fast recording as the reference, and on the uncached page
   both rows showed the same placeholder. A visual check of the flagged frames shows the panel switching with the
   cursor.
-- t44 (an empty cache via CineView's own runtime.json, slow reference over the same rows) is the valid
-  uncached test.
+- **t44 (build38).** CineView's own runtime.json pointed at a new empty cache directory; slow reference over the
+  same rows; runtime.json restored afterwards.
+  - **Page 1, HBO movie rows, 0.35 s, cold downloads: 0 stale.** 6 frames show the previous poster within
+    0.5 s of a move, which is the allowed transition.
+  - **Page 2 at 0.15 s** turned out to be kids channels: all series without a reliable identity, so every row
+    shows the same placeholder. The 14 flagged frames are the identical-placeholder artefact; visually the panel
+    follows the cursor.
+  - t49 repeats 0.15 s on the movie rows with a fresh empty cache.
 
 ## 9. Other fixes
 - **Poster log.** It was one endless line, because the golden `_log` wrote a literal backslash-n.
