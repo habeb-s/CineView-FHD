@@ -32,6 +32,8 @@ for ch in "$HBO|hbo" "$HBO2|hbo2" "$CINEMAX|cinemax" "$HRT1|hrt1"; do
   zap ${ch%%|*}; X; sleep 6; $RC 352; sleep 2; ga imdb_${ch##*|}_infobar; X; $RC 358; sleep 5; ga imdb_${ch##*|}_eventview; X
   t=$(curl -s -m 8 "http://192.168.1.250/api/epgservicenow?sRef=${ch%%|*}" | python3 -c "import json,sys; e=(json.load(sys.stdin).get('events') or [{}])[0]; print(e.get('title',''))")
   echo "   ${ch##*|}: now='$t'"
+  # clean video-only frame + its EPG/service data (Modern/Minimal mockups use a matching frame and data)
+  [ "${ch##*|}" = hrt1 ] && { curl -s -m 60 -o $S/video_hrt1.png "http://192.168.1.250/grab?format=png&mode=video&r=1920"; curl -s -m 8 -o $S/hrt1_now.json "http://192.168.1.250/api/epgservicenow?sRef=${ch%%|*}"; curl -s -m 8 -o $S/hrt1_next.json "http://192.168.1.250/api/epgservicenext?sRef=${ch%%|*}"; echo "   hrt1 video frame $(ok $S/video_hrt1.png && echo png-ok || echo PNG-BAD)"; }
 done
 $R 'p=$(python3 -c "import json; print(json.load(open(\"/etc/enigma2/cineview_mla/runtime.json\")).get(\"poster_cache\",\"/media/usb/cineview-mla/dev-cache/mla/poster\"))")/id; for f in $(ls -t $p/*.json 2>/dev/null | head -40); do cat $f; echo; done' > $S/identity_meta.jsonl
 $R 'tail -60 /tmp/CINEVIEW-MLA/poster.log' > $S/poster_log.txt
