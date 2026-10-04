@@ -412,6 +412,63 @@ IMDB_BADGE_NEW = ('<widget source="session.Event_Now" render="Pixmap" pixmap="in
 	'<convert type="CineViewMLAIMDb">Shown,hide</convert><convert type="ConditionalShowHide" /></widget>')
 
 
+def _pitch(size):
+	"""Device-measured LiberationSans line pitch (same formula as tools/mla/p7/spec_p7.line_height)."""
+	import math
+	return int(round(size * 1854 / 2048.0)) + int(math.ceil(size * 434 / 2048.0))
+
+
+CLASSIC_RTL_SCREENS = {"infobar": ("InfoBar",), "secondinfobar": ("SecondInfoBar", "SecondInfoBarSimple"), "eventview": ("EventView",)}
+
+
+def apply_classic_rtl_titles(skin):
+	"""User approval 2026-10-04 11:58 (C-1): in Classic the event titles of the Main InfoBar strip ran horizontally,
+	and 57b7a51 RunningText mis-measures right-to-left text in horizontal modes, so an Arabic title started at its
+	END.  Fix = the method proven in Details/Cinema: the original widget stays exactly as it is for left-to-right
+	text (ShowIf dir=ltr) and a right-to-left twin at the same position pages vertically by exactly one line pitch
+	(first line first, whole lines only).  The twin's box is clipped to whole lines (same top, same width) so no part
+	of the next line shows.  The strip is the same in InfoBar, SecondInfoBar(Simple) and EventView."""
+	out = []
+	for sec, screens in CLASSIC_RTL_SCREENS.items():
+		f = os.path.join(skin, "layouts", sec, "classic", "screens.openatv.xml")
+		x = open(f, encoding="utf-8").read()
+		n = 0
+		for scr in screens:
+			m = re.search(r'<screen name="%s".*?</screen>' % scr, x, re.S)
+			body = m.group(0)
+			new = body
+			for w in re.findall(r'[ \t]*<widget source="session\.Event_(?:Now|Next)" render="RunningText"[^>]*options="movetype=running,direction=left[^"]*"[^>]*>\s*<convert type="EventName">Name</convert>\s*</widget>', body):
+				ind = re.match(r'[ \t]*', w).group(0)
+				size = int(re.search(r'font="Regular;(\d+)"', w).group(1))
+				pw, ph = (int(v) for v in re.search(r'size="(\d+),(\d+)"', w).group(1, 2))
+				pt = _pitch(size)
+				ltr = w.replace('</widget>', '\t<convert type="CineViewMLAShowIf">always,True,dir=ltr</convert>\n%s</widget>' % ind)
+				rtl = re.sub(r'options="[^"]*"', 'options="movetype=swimming,direction=top,step=1,steptime=25,startdelay=3000,pagelength=%d,pagedelay=2500,pause=3000,repeat=0,always=0,wrap=1" halign="right"' % pt, w)
+				rtl = rtl.replace(' noWrap="1"', '').replace('size="%d,%d"' % (pw, ph), 'size="%d,%d"' % (pw, max(pt, (ph // pt) * pt)))
+				rtl = rtl.replace('</widget>', '\t<convert type="CineViewMLAShowIf">always,True,dir=rtl</convert>\n%s</widget>' % ind)
+				new = new.replace(w, ltr + "\n" + rtl, 1)
+				n += 1
+			x = x.replace(body, new, 1)
+		open(f, "w", encoding="utf-8").write(x)
+		out.append((sec, n))
+	return out
+
+
+def apply_classic_chlist_description(skin):
+	"""User approval 2026-10-04 11:58 (C-2): the channel-list event description used movetype=running (the text
+	enters from BELOW the box, so the box looks empty for seconds).  Swimming starts with the first line at the
+	top; every other option (step, speed, delays) and the box stay as they were."""
+	f = os.path.join(skin, "layouts", "channelselection", "classic", "screens.openatv.xml")
+	x = open(f, encoding="utf-8").read()
+	m = re.search(r'<screen name="ChannelSelection".*?</screen>', x, re.S)
+	body = m.group(0)
+	ws = re.findall(r'<widget source="ServiceEvent" render="RunningText"[^>]*options="movetype=running,direction=top[^"]*"[^>]*>\s*<convert type="EventName">FullDescription</convert>', body)
+	assert len(ws) == 1, "channel-list description widget not found exactly once (%d)" % len(ws)
+	new = body.replace(ws[0], ws[0].replace('movetype=running,direction=top', 'movetype=swimming,direction=top'), 1)
+	open(f, "w", encoding="utf-8").write(x.replace(body, new, 1))
+	return 1
+
+
 def apply_classic_imdb_rule(skin):
 	"""User decision 2026-10-04: Classic follows the rating rule of the new families - a rating (and its badge)
 	only for an event identified as a film or series from its EPG text; never '--'.  Same positions/sizes:
@@ -513,6 +570,9 @@ def main(golden, comps, control, out):
 	if os.path.exists(out):
 		shutil.rmtree(out)
 	run(sys.executable, os.path.join(HERE, "migrate_classic.py"), golden, os.path.join(REPO, "mla", "sections.json"), skin)
+	for sec, n in apply_classic_rtl_titles(skin):
+		print("RTL titles (Classic) %-14s %d event-title widgets got a right-to-left twin" % (sec, n))
+	print("Channel-list description (Classic): swimming from the top (%d widget)" % apply_classic_chlist_description(skin))
 	for sec, n, b in apply_classic_imdb_rule(skin):
 		print("IMDb rule (Classic) %-14s %d rating widgets, %d badges" % (sec, n, b))
 	for sec, scr, what in apply_poster_toggles(skin):
