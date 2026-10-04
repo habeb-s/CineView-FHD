@@ -568,10 +568,30 @@ def _install_epg_eventview_name():
 	if getattr(orig, "_cvmla_epg_ev", False):
 		return
 
-	def wrapped(self, *args, **kw):
-		orig(self, *args, **kw)
+	def _not_live_now(session, args, kw):
+		# EventViewEPGSelect(session, event, serviceRef, ...): the InfoBar also opens it for the playing service's
+		# CURRENT event (device t47: live INFO); only there do the Classic dashboard's session sources (now / next
+		# of the playing service) describe the shown event.  Any other service or any other event -> True.
 		try:
-			if mla_active() and self.skinName == ["EventView"]:
+			event = args[0] if args else kw.get("event")
+			ref = args[1] if len(args) > 1 else kw.get("serviceRef")
+			ref = getattr(ref, "ref", ref)
+			playing = session.nav.getCurrentlyPlayingServiceOrGroup()
+			if ref is None or playing is None or event is None:
+				return False
+			if ref.toCompareString() != playing.toCompareString():
+				return True
+			service = session.nav.getCurrentService()
+			info = service and service.info()
+			now = info and info.getEvent(0)
+			return now is None or now.getEventId() != event.getEventId()
+		except Exception:
+			return False
+
+	def wrapped(self, session, *args, **kw):
+		orig(self, session, *args, **kw)
+		try:
+			if mla_active() and self.skinName == ["EventView"] and _not_live_now(session, args, kw):
 				names = ["EventViewSimple", "EventView"]
 				if configfile.getResolvedKey("config.plugins.cineviewmla.poster_eventview", silent=True) == "False":
 					names = ["EventViewSimple" + POSTER_OFF_SUFFIX] + names
