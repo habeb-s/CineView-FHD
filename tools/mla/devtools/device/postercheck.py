@@ -13,7 +13,8 @@ fast_dir: fast navigation over the same rows.  Every frame: cursor row (highligh
 import os, sys
 from PIL import Image, ImageChops, ImageStat
 
-BOXES = {"posterlist": {"list": (300, 560, 70, 560), "now": (691, 180, 835, 404), "next": (689, 450, 783, 598)}}
+BOXES = {"posterlist": {"list": (300, 560, 70, 560), "now": (691, 180, 835, 404), "next": (689, 450, 783, 598),
+	"row0": 90, "row_h": 40}}  # 1280x720: list rows are 40 px (60 px at 1920); row k centre = 90 + 40 k
 BAR = (48, 50, 63)
 HOLD = 0.5
 
