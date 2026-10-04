@@ -13,6 +13,8 @@
 #   evsimple   -> session.open(EventViewSimple, event, ServiceReference)  -- the same call MovieSelection.showEventInformation
 #                 makes, with the current event of the playing service
 #   ibeventview-> getEventViewInstance(..., skinName="InfoBarEventView") shown for 20 s (same call as EpgSelection.infoKeyPressed)
+#   vertical   -> InfoBar.openVerticalEPG()   (EPGvertical — contract check for the Columns proposal)
+#   graph      -> InfoBar.openGraphEPG()      (GraphicalEPG)
 #   pluginbrowser -> session.open(PluginBrowser)            (PluginBrowserList / PluginBrowserGrid by the user's layout setting)
 #   quickmenu  -> session.open(QuickMenu)
 #   pkgremove  -> session.open(PackageAction, MODE_REMOVE)  (only lists installed plugins; nothing is removed unless confirmed)
@@ -76,6 +78,10 @@ def _open(what):
 			t.callback.append(done)
 			t.start(20000, True)
 			_keep[:] = [dlg, t]
+	elif what == "vertical":
+		ib.openVerticalEPG()
+	elif what == "graph":
+		ib.openGraphEPG()
 	elif what == "pluginbrowser":
 		from Screens.PluginBrowser import PluginBrowser
 		_session.open(PluginBrowser)
