@@ -577,7 +577,7 @@ def _clip_service_name_cell(lst, mode):
 	if mode != ServiceListLegacy.MODE_BOUQUETS or not cu.show_channel_numbers_in_servicelist.value:
 		num_w, num_space = 0, lst.listMarginLeft
 	else:
-		from enigma import getTextBoundarySize
+		from Tools.TextBoundary import getTextBoundarySize  # same import as Components/ServiceList.py
 		size = lst.instance.size()
 		num_w = cu.alternative_number_mode.value and getTextBoundarySize(lst.instance, lst.ServiceNumberFont, size, "0" * cu.numberZapDigits.value).width() or getTextBoundarySize(lst.instance, lst.ServiceNumberFont, size, "00000").width()
 		num_space = lst.fieldMargins + lst.listMarginLeft
