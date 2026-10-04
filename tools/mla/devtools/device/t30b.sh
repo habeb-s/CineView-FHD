@@ -9,9 +9,9 @@
 #  3. Channel Selection Poster List / Video First / Video First (list right): navigation recordings (video+OSD),
 #     posters ON and OFF, plus stills.
 #  4. EventView real use: line by line vs classic continuous.
-exec 9>~/cineview-mla/t30.lock; flock -n 9 || { echo "t30 already running"; exit 1; }
+exec 9>~/cineview-mla/t30b.lock; flock -n 9 || { echo "t30 already running"; exit 1; }
 . ~/cineview-mla/p6lib.sh
-S=~/cineview-mla/shots/t30; rm -rf $S; mkdir -p $S
+S=~/cineview-mla/shots/t30; mkdir -p $S; rm -rf $S/rec_* $S/cs_*
 E='python3 /usr/share/enigma2/CineView_FHD_MLA/mla/engine/composer.py'
 U=/media/usb/cineview-mla/tmp
 P=/usr/lib/enigma2/python/Plugins/Extensions/CineViewMLAScreenOpen
@@ -52,28 +52,7 @@ while [ $(date +%s) -lt $end ]; do grab -q -j 75 -r 1280 $2/$(date +%s%N).jpg; d
 touch $2.done
 SH
 cat ~/cineview-mla/devtools/CineViewMLAScreenOpen/plugin.py | $R "mkdir -p $P && cat > $P/plugin.py && touch $P/__init__.py && ls $P"
-$R "$E apply --theme navy --set infobar=classic --set secondinfobar=classic --set channelselection=classic --set epg=classic --set eventview=classic-lines --set pvr=classic 2>&1 | tail -1"
-
-echo "== 1. Phase B screens, posters OFF"
-restart "python3 /tmp/cvmla/setcfg.py $(cfg False);"; errs
-screens off; errs
-sib_ecm off
-echo "== 1b. posters ON"
-restart "python3 /tmp/cvmla/setcfg.py $(cfg True);"; errs
-screens on; errs
-sib_ecm on
-
-echo "== 2. EventView classic-lines on real events"
-for ch in "$CINEMAX|Cinemax" "$HBO|HBO" "1:0:19:785:C6D4:16E:A00000:0:0:0:|HBO2" "1:0:19:D49:C738:16E:A00000:0:0:0:|HRT1"; do
-  ref=${ch%%|*}; n=${ch##*|}
-  zap $ref; X; $RC 358; sleep 4.3
-  $R "python3 /tmp/cvmla/fbrec2.py 95 245 480 261 5 25 $U/rec.bin"; $R "cat $U/rec.bin" > $S/ev_${n}_now.bin; $R "rm -f $U/rec.bin"
-  ga ev_${n}
-  $R "python3 /tmp/cvmla/fbrec2.py 950 245 580 261 5 20 $U/rec.bin"; $R "cat $U/rec.bin" > $S/ev_${n}_next.bin; $R "rm -f $U/rec.bin"
-  X
-  for b in now next; do echo "   $n $b $(python3 ~/cineview-mla/jumpcheck.py $S/ev_${n}_$b.bin | tail -1)"; done
-done
-errs
+$R "rm -rf /tmp/cvmla/rec /tmp/cvmla/rec.done"; $R "$E apply --theme navy --set infobar=classic --set secondinfobar=classic --set channelselection=classic --set epg=classic --set eventview=classic-lines --set pvr=classic 2>&1 | tail -1"
 
 echo "== 3. Channel Selection designs: navigation recordings, posters ON then OFF"
 for pw in True False; do
