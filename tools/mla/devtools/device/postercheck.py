@@ -55,62 +55,54 @@ def crops(im, b):
 def main():
     slow, fast = sys.argv[1], sys.argv[2]
     b = BOXES["posterlist"]
-    # references: settled frame (last before the cursor moves) per cursor position
-    refs = []  # (cursor_y, now_crop, next_crop)
-    prev = None
-    fs = frames(slow)
-    for i, (t, p) in enumerate(fs):
-        im = Image.open(p).convert("RGB")
+
+    def row(im):
         c = cursor(im, b["list"])
         if c is None:
-            continue
-        if prev is not None and abs(c - prev[0]) > 8:
-            refs.append((prev[0],) + prev[1])
-        prev = (c, crops(im, b))
-    if prev:
-        refs.append((prev[0],) + prev[1])
-    # one reference per row (keep the last settled one)
-    by_y = {}
-    for y, n, x in refs:
-        key = int(round(y / 10.0))
-        by_y[key] = (y, n, x)
-    refs = sorted(by_y.values())
-    print("references: %d rows at y=%s" % (len(refs), [r[0] for r in refs]))
-    for i, (y, n, x) in enumerate(refs):
-        others = [diff(n, r[1]) for j, r in enumerate(refs) if j != i]
-        print("  row y=%d: min distance to another row's now-poster %.1f" % (y, min(others) if others else -1))
+            return None
+        k = int(round((c - b["row0"]) / float(b["row_h"])))
+        return k if abs(b["row0"] + k * b["row_h"] - c) <= b["row_h"] // 2 else None
 
-    def row_of(c):
-        return min(range(len(refs)), key=lambda i: abs(refs[i][0] - c)) if c is not None else None
+    # references: in the slow pass the cursor rests >= 3 s on every row; the last frame on a row is its reference
+    last = {}
+    for t, p in frames(slow):
+        im = Image.open(p).convert("RGB")
+        k = row(im)
+        if k is not None:
+            last[k] = crops(im, b)
+    rows = sorted(last)
+    print("reference rows: %s" % rows)
+    distinct = [k for k in rows if all(diff(last[k][0], last[j][0]) + diff(last[k][1], last[j][1]) > 12 for j in rows if j != k)]
+    print("rows with distinct posters (others share the neutral frame): %s" % distinct)
 
-    stale = trans = ok = unknown = 0
-    since = None; cur = None; t0 = None; events = []
+    stale = trans = ok = unknown = other_row = 0
+    since = None; cur = None; t0 = None; events = []; longest = 0.0; tstart = None
     for t, p in frames(fast):
         t0 = t0 or t
         im = Image.open(p).convert("RGB")
-        r = row_of(cursor(im, b["list"]))
-        if r is None:
+        r = row(im)
+        if r is None or r not in last:
             unknown += 1
             continue
         if r != cur:
             cur, since = r, t
         n, x = crops(im, b)
-        dn = [diff(n, ref[1]) for ref in refs]
-        dx = [diff(x, ref[2]) for ref in refs]
-        own = dn[r] + dx[r]
-        best = min(range(len(refs)), key=lambda i: dn[i] + dx[i])
-        wrong = best != r and (dn[best] + dx[best]) + 6.0 < own
+        d = {k: diff(n, last[k][0]) + diff(x, last[k][1]) for k in rows}
+        best = min(d, key=d.get)
+        wrong = best != r and best in distinct and d[best] + 6.0 < d[r]
         held = (t - since) / 1e9
+        if wrong:
+            longest = max(longest, held)
         if wrong and held >= HOLD:
             stale += 1
-            events.append("%.2fs cursor row %d (held %.2fs) shows row %d posters (own %.1f, other %.1f)" % ((t - t0) / 1e9, r, held, best, own, dn[best] + dx[best]))
+            events.append("%.2fs cursor row %d (held %.2fs) shows row %d posters (own %.1f, other %.1f)" % ((t - t0) / 1e9, r, held, best, d[r], d[best]))
         elif wrong:
             trans += 1
         else:
             ok += 1
     for e in events[:20]:
         print("  STALE " + e)
-    print("POSTER_SUMMARY frames_ok=%d transition(<%.1fs after a move)=%d stale=%d no_cursor=%d" % (ok, HOLD, trans, stale, unknown))
+    print("POSTER_SUMMARY rows=%d distinct=%d frames_ok=%d transition(<%.1fs after a move)=%d stale=%d no_cursor=%d longest_previous_poster=%.2fs" % (len(rows), len(distinct), ok, HOLD, trans, stale, unknown, longest))
 
 
 if __name__ == "__main__":
