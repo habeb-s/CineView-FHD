@@ -1,0 +1,294 @@
+-rw-r--r--    1 root     root          2283 Oct  4 04:53 cineview_mla-state.tgz
+-rw-r--r--    1 root     root       3462364 Oct  4 04:53 mla-files.tgz
+-rw-r--r--    1 root     root          9398 Oct  4 04:51 settings
+CineView MLA: image openatv 8.0.1 on vuduo4kse
+CineView MLA installed. Select it in Menu > Setup > User Interface > Skin, then restart the GUI.
+Upgrading enigma2-plugin-skins-cineview-fhd-mla (1.0.0~rc2) to enigma2-plugin-skins-cineview-fhd-mla (1.0.0~rc3) on root
+Configuring enigma2-plugin-skins-cineview-fhd-mla.
+Version: 1.0.0~rc3
+Status: install ok installed
+new e2 pid=12246 @04:53:56
+webif up @04:54:22
+STATE active=g000000 lkg=g000000 journal=ROLLED_BACK theme=navy gens=['g000000', 'g000001', 'g000002']
+boot.count=1 e2pid=12246 crashlogs=7
+2026-10-04 04:25:17 apply: g000000 -> g000002 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "black"}
+2026-10-04 04:25:53 trial: session started on g000002, awaiting confirmation
+2026-10-04 04:26:57 trial: revert (declined by user / prompt timeout)
+2026-10-04 04:26:57 rollback: active -> g000000
+tracebacks=0
+{"poster_cache": "/media/usb/cineview-mla/dev-cache/reference/poster"}
+UPRC3_DONE
+STATE active=g000000 lkg=g000000 journal=ROLLED_BACK theme=navy gens=['g000000', 'g000001', 'g000002']
+boot.count=1 e2pid=12246 crashlogs=7
+2026-10-04 04:25:17 apply: g000000 -> g000002 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "black"}
+2026-10-04 04:25:53 trial: session started on g000002, awaiting confirmation
+2026-10-04 04:26:57 trial: revert (declined by user / prompt timeout)
+2026-10-04 04:26:57 rollback: active -> g000000
+g000003
+new e2 pid=13527 @04:55:02
+webif up @04:55:25
+tracebacks=0 skin_errors_new=0 engine=
+cap themes/navy/A_ib @04:56:12
+cap themes/navy/A_sib @04:56:26
+g000004
+new e2 pid=15327 @04:56:39
+webif up @04:57:04
+tracebacks=0 skin_errors_new=0 engine=
+cap themes/navy/B_ib @04:57:52
+cap themes/navy/B_sib @04:58:05
+g000005
+new e2 pid=17125 @04:58:18
+webif up @04:58:44
+tracebacks=0 skin_errors_new=0 engine=
+cap themes/navy/C_ib @04:59:32
+cap themes/navy/C_sib @04:59:45
+cap themes/navy/C_eventview @05:00:04
+cap themes/navy/C_epg @05:00:18
+cap themes/navy/C_channels @05:00:30
+cap themes/navy/C_pvr @05:00:44
+cap themes/navy/C_menu @05:00:55
+cap themes/navy/C_designs @05:01:20
+g000006
+new e2 pid=20495 @05:01:33
+webif up @05:01:58
+tracebacks=0 skin_errors_new=0 engine=
+cap themes/black/A_ib @05:02:46
+cap themes/black/A_sib @05:02:59
+g000007
+new e2 pid=22332 @05:03:14
+webif up @05:03:38
+tracebacks=0 skin_errors_new=0 engine=
+cap themes/black/B_ib @05:04:25
+cap themes/black/B_sib @05:04:39
+g000008
+new e2 pid=24190 @05:04:52
+webif up @05:05:17
+tracebacks=0 skin_errors_new=0 engine=
+cap themes/black/C_ib @05:06:04
+cap themes/black/C_sib @05:06:18
+cap themes/black/C_eventview @05:06:37
+cap themes/black/C_epg @05:06:51
+cap themes/black/C_channels @05:07:03
+cap themes/black/C_pvr @05:07:17
+cap themes/black/C_menu @05:07:28
+cap themes/black/C_designs @05:07:53
+g000009
+new e2 pid=27625 @05:08:05
+webif up @05:08:31
+tracebacks=0 skin_errors_new=0 engine=
+cap themes/graphite/A_ib @05:09:19
+cap themes/graphite/A_sib @05:09:33
+g000010
+new e2 pid=29875 @05:09:50
+webif up @05:10:15
+tracebacks=0 skin_errors_new=0 engine=
+cap themes/graphite/B_ib @05:11:03
+cap themes/graphite/B_sib @05:11:17
+g000011
+new e2 pid=31597 @05:11:31
+webif up @05:11:56
+tracebacks=0 skin_errors_new=0 engine=
+cap themes/graphite/C_ib @05:12:44
+cap themes/graphite/C_sib @05:12:58
+cap themes/graphite/C_eventview @05:13:18
+cap themes/graphite/C_epg @05:13:31
+cap themes/graphite/C_channels @05:13:44
+cap themes/graphite/C_pvr @05:13:58
+cap themes/graphite/C_menu @05:14:08
+cap themes/graphite/C_designs @05:14:33
+g000012
+new e2 pid=2451 @05:14:46
+webif up @05:15:12
+tracebacks=0 skin_errors_new=0 engine=
+cap themes/burgundy/A_ib @05:16:00
+cap themes/burgundy/A_sib @05:16:14
+g000013
+new e2 pid=4228 @05:16:27
+webif up @05:16:53
+tracebacks=0 skin_errors_new=0 engine=
+cap themes/burgundy/B_ib @05:17:41
+cap themes/burgundy/B_sib @05:17:54
+g000014
+new e2 pid=6072 @05:18:07
+webif up @05:18:33
+tracebacks=0 skin_errors_new=0 engine=
+cap themes/burgundy/C_ib @05:19:21
+cap themes/burgundy/C_sib @05:19:36
+cap themes/burgundy/C_eventview @05:19:56
+cap themes/burgundy/C_epg @05:20:10
+cap themes/burgundy/C_channels @05:20:22
+cap themes/burgundy/C_pvr @05:20:36
+cap themes/burgundy/C_menu @05:20:46
+cap themes/burgundy/C_designs @05:21:11
+g000015
+new e2 pid=9348 @05:21:28
+webif up @05:21:53
+tracebacks=0 skin_errors_new=0 engine=
+cap themes/green/A_ib @05:22:41
+cap themes/green/A_sib @05:22:54
+g000016
+new e2 pid=11266 @05:23:07
+webif up @05:23:33
+tracebacks=0 skin_errors_new=0 engine=
+cap themes/green/B_ib @05:24:21
+cap themes/green/B_sib @05:24:35
+g000017
+new e2 pid=13148 @05:24:48
+webif up @05:25:13
+tracebacks=0 skin_errors_new=0 engine=
+cap themes/green/C_ib @05:26:00
+cap themes/green/C_sib @05:26:15
+cap themes/green/C_eventview @05:26:35
+cap themes/green/C_epg @05:26:49
+cap themes/green/C_channels @05:27:01
+cap themes/green/C_pvr @05:27:15
+cap themes/green/C_menu @05:27:26
+cap themes/green/C_designs @05:27:51
+g000018
+new e2 pid=16401 @05:28:06
+webif up @05:28:29
+tracebacks=0 skin_errors_new=0 engine=
+cap themes/purple/A_ib @05:29:17
+cap themes/purple/A_sib @05:29:30
+g000019
+new e2 pid=18389 @05:29:45
+webif up @05:30:09
+tracebacks=0 skin_errors_new=0 engine=
+cap themes/purple/B_ib @05:30:56
+cap themes/purple/B_sib @05:31:10
+g000020
+new e2 pid=20273 @05:31:28
+webif up @05:31:53
+tracebacks=0 skin_errors_new=0 engine=
+cap themes/purple/C_ib @05:32:41
+cap themes/purple/C_sib @05:32:55
+cap themes/purple/C_eventview @05:33:14
+cap themes/purple/C_epg @05:33:27
+cap themes/purple/C_channels @05:33:40
+cap themes/purple/C_pvr @05:33:54
+cap themes/purple/C_menu @05:34:04
+cap themes/purple/C_designs @05:34:29
+g000021
+set {'config.plugins.cineviewmla.poster_infobar': 'False', 'config.plugins.cineviewmla.poster_secondinfobar': 'False', 'config.plugins.cineviewmla.poster_channelselection': 'False', 'config.plugins.cineviewmla.poster_epg': 'False', 'config.plugins.cineviewmla.poster_eventview': 'False'}
+new e2 pid=23448 @05:34:42
+webif up @05:35:09
+tracebacks=0 skin_errors_new=0 engine=
+cap postersoff/A_ib @05:35:56
+cap postersoff/A_sib @05:36:11
+g000022
+set {'config.plugins.cineviewmla.poster_infobar': 'False', 'config.plugins.cineviewmla.poster_secondinfobar': 'False', 'config.plugins.cineviewmla.poster_channelselection': 'False', 'config.plugins.cineviewmla.poster_epg': 'False', 'config.plugins.cineviewmla.poster_eventview': 'False'}
+new e2 pid=25406 @05:36:28
+webif up @05:36:53
+tracebacks=0 skin_errors_new=0 engine=
+cap postersoff/B_ib @05:37:41
+cap postersoff/B_sib @05:37:55
+g000023
+set {'config.plugins.cineviewmla.poster_infobar': 'False', 'config.plugins.cineviewmla.poster_secondinfobar': 'False', 'config.plugins.cineviewmla.poster_channelselection': 'False', 'config.plugins.cineviewmla.poster_epg': 'False', 'config.plugins.cineviewmla.poster_eventview': 'False'}
+new e2 pid=27252 @05:38:10
+webif up @05:38:33
+tracebacks=0 skin_errors_new=0 engine=
+cap postersoff/C_ib @05:39:21
+cap postersoff/C_sib @05:39:36
+cap postersoff/C_eventview @05:39:54
+cap postersoff/C_epg @05:40:08
+cap postersoff/C_channels @05:40:20
+cap postersoff/C_pvr @05:40:34
+cap postersoff/C_menu @05:40:45
+cap postersoff/C_designs @05:41:10
+set {'config.plugins.cineviewmla.poster_infobar': 'True', 'config.plugins.cineviewmla.poster_secondinfobar': 'True', 'config.plugins.cineviewmla.poster_channelselection': 'True', 'config.plugins.cineviewmla.poster_epg': 'True', 'config.plugins.cineviewmla.poster_eventview': 'True'}
+new e2 pid=30372 @05:41:22
+webif up @05:41:48
+g000024
+new e2 pid=31584 @05:42:22
+webif up @05:42:48
+tracebacks=0 skin_errors_new=0 engine=
+cap tour/A/HBO_ib @05:43:37
+   webif A HBO snr=70 db=11.27 agc=75 ber=0
+cap tour/A/HBO_sib @05:43:51
+cap tour/A/HRT1_ib @05:44:18
+   webif A HRT1 snr=73 db=11.78 agc=70 ber=0
+cap tour/A/HRT1_sib @05:44:32
+cap tour/A/N1_ib @05:44:59
+   webif A N1 snr=68 db=10.98 agc=76 ber=0
+cap tour/A/N1_sib @05:45:14
+cap tour/A/RTL_ib @05:45:40
+   webif A RTL snr=68 db=11.00 agc=73 ber=0
+cap tour/A/RTL_sib @05:45:54
+cap tour/A/Cinemax_ib @05:46:22
+   webif A Cinemax snr=70 db=11.26 agc=75 ber=0
+cap tour/A/Cinemax_sib @05:46:36
+g000025
+new e2 pid=3609 @05:46:51
+webif up @05:47:14
+tracebacks=0 skin_errors_new=0 engine=
+cap tour/B/HBO_ib @05:48:05
+   webif B HBO snr=69 db=11.10 agc=75 ber=0
+cap tour/B/HBO_sib @05:48:19
+cap tour/B/HRT1_ib @05:48:47
+   webif B HRT1 snr=73 db=11.76 agc=70 ber=0
+cap tour/B/HRT1_sib @05:49:01
+cap tour/B/N1_ib @05:49:28
+   webif B N1 snr=68 db=10.95 agc=76 ber=0
+cap tour/B/N1_sib @05:49:42
+cap tour/B/RTL_ib @05:50:10
+   webif B RTL snr=68 db=10.98 agc=73 ber=0
+cap tour/B/RTL_sib @05:50:24
+cap tour/B/Cinemax_ib @05:50:51
+   webif B Cinemax snr=70 db=11.22 agc=75 ber=0
+cap tour/B/Cinemax_sib @05:51:05
+g000026
+new e2 pid=7809 @05:51:18
+webif up @05:51:44
+tracebacks=0 skin_errors_new=0 engine=
+cap tour/C/HBO_ib @05:52:34
+   webif C HBO snr=69 db=11.19 agc=75 ber=0
+cap tour/C/HBO_sib @05:52:49
+cap tour/C/HRT1_ib @05:53:16
+   webif C HRT1 snr=73 db=11.74 agc=70 ber=0
+cap tour/C/HRT1_sib @05:53:30
+cap tour/C/N1_ib @05:53:59
+   webif C N1 snr=68 db=10.96 agc=76 ber=0
+cap tour/C/N1_sib @05:54:15
+cap tour/C/RTL_ib @05:54:42
+   webif C RTL snr=68 db=11.03 agc=73 ber=0
+cap tour/C/RTL_sib @05:54:56
+cap tour/C/Cinemax_ib @05:55:24
+   webif C Cinemax snr=70 db=11.23 agc=75 ber=0
+cap tour/C/Cinemax_sib @05:55:38
+g000027
+new e2 pid=12098 @05:55:55
+webif up @05:56:20
+tracebacks=0 skin_errors_new=0 engine=
+cap arabic/A/ib_t2 @05:57:00
+cap arabic/A/ib_t11 @05:57:10
+cap arabic/A/sib_t2 @05:57:28
+cap arabic/A/sib_t11 @05:57:38
+g000028
+new e2 pid=14156 @05:57:51
+webif up @05:58:17
+tracebacks=0 skin_errors_new=0 engine=
+cap arabic/B/ib_t2 @05:58:56
+cap arabic/B/ib_t11 @05:59:06
+cap arabic/B/sib_t2 @05:59:24
+cap arabic/B/sib_t11 @05:59:34
+g000029
+new e2 pid=16323 @05:59:49
+webif up @06:00:14
+tracebacks=0 skin_errors_new=0 engine=
+cap arabic/C/ib_t2 @06:00:54
+cap arabic/C/ib_t11 @06:01:04
+cap arabic/C/sib_t2 @06:01:22
+cap arabic/C/sib_t11 @06:01:32
+cap arabic/C/eventview_t2 @06:01:51
+cap arabic/C/eventview_t11 @06:02:02
+g000000
+new e2 pid=18890 @06:02:17
+webif up @06:02:40
+STATE active=g000000 lkg=g000000 journal=ROLLED_BACK theme=navy gens=['g000000', 'g000027', 'g000028', 'g000029']
+boot.count=1 e2pid=18890 crashlogs=6
+2026-10-04 05:57:45 commit: lkg=g000028
+2026-10-04 05:59:41 apply: g000028 -> g000029 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-04 05:59:41 commit: lkg=g000029
+2026-10-04 06:02:09 rollback: active -> g000000
+tracebacks=0 skin_errors_new=0 engine=
+MATRIX_DONE
