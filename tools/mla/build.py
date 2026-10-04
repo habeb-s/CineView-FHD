@@ -729,6 +729,43 @@ def apply_classic_posters_off_named(skin):
 	return out
 
 
+def make_classic_lines_pack(skin):
+	"""EventView 'Classic — line by line' (user approval in principle 2026-10-04 17:01; Classic with continuous
+	scrolling stays the factory choice).  Same pack as Classic EventView, only the 8 EventView description widgets:
+	* one whole line (29 px = pitch of size 25) every 1740 ms instead of 1 px every 60 ms (same reading speed);
+	* transparent="0" backgroundColor="steSecondInfoBG": the label paints the panel colour it sits on (the same ARGB
+	  value), so every repaint overwrites its whole box — a stale line can no longer stay behind (device 17:0x:
+	  one doubled Arabic line for 1.7 s in a transparent label)."""
+	src = os.path.join(skin, "layouts", "eventview", "classic")
+	dst = os.path.join(skin, "layouts", "eventview", "classic-lines")
+	if os.path.exists(dst):
+		shutil.rmtree(dst)
+	shutil.copytree(src, dst)
+	p = os.path.join(dst, "screens.openatv.xml")
+	x = open(p, encoding="utf-8").read()
+	m = re.search(r'<screen name="EventView".*?</screen>', x, re.S)
+	body = m.group(0)
+	n = 0
+
+	def fix(wm):
+		nonlocal n
+		t = wm.group(0)
+		if 'EventName">FullDescription' in t and "step=1,steptime=60,startdelay=4000" in t:
+			n += 1
+			t = t.replace("step=1,steptime=60,startdelay=4000", "step=%d,steptime=1740,startdelay=4000" % _pitch(25))
+			t = t.replace('transparent="1"', 'transparent="0" backgroundColor="steSecondInfoBG"', 1)
+		return t
+
+	body2 = re.sub(r'<widget\b[^>]*render="RunningText".*?</widget>', fix, body, flags=re.S)
+	assert n == 8, "EventView description widgets: %d" % n
+	open(p, "w", encoding="utf-8").write(x.replace(body, body2, 1))
+	mf = os.path.join(dst, "manifest.json")
+	d = json.load(open(mf))
+	d.update({"id": "classic-lines", "name": "CineView Classic (line by line)"})
+	json.dump(d, open(mf, "w"), indent=1)
+	return n
+
+
 def load_theme_module(control_dir):
 	spec = importlib.util.spec_from_file_location("cv_theme", os.path.join(control_dir, "theme.py"))
 	m = importlib.util.module_from_spec(spec)
@@ -758,6 +795,7 @@ def main(golden, comps, control, out):
 			print("POSTERS-OFF (Classic) %-16s %-22s %d moved, %d hidden" % (sec, scr, mv, hd))
 		for sec, scr, n in apply_classic_posters_off_named(skin):
 			print("POSTERS-OFF (Classic, named widgets) %-16s %s_CVPosterOff: %d widgets widened" % (sec, scr, n))
+	print("EventView pack classic-lines: %d description widgets (line by line, opaque label)" % make_classic_lines_pack(skin))
 	# P7: Details family (user-approved direction 2026-10-03; Classic packs untouched).
 	make_default_poster(os.path.join(skin, "mla_assets", "poster_default.jpg"))  # the P7 poster slots embed it
 	sys.path.insert(0, os.path.join(HERE, "p7"))
