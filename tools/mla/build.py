@@ -943,6 +943,28 @@ def apply_multiepg_description(skin):
 	return 2
 
 
+def apply_vertical_epg_index(skin):
+	"""Vertical EPG (EPGvertical / EPGverticalPIG): self["list"] is a MenuList used only as the channel PAGE INDEX
+	(EpgSelection.py 57b7a51: getChannels / pageDown by Fields-1, the visible content is list1..list5).  The
+	inherited CineView skin drew it 1730x700 at z=19 over the five columns, so the screen showed a bare numbered
+	channel list and never the columns (device t37 22:39, pre-existing in the golden skin).  Native contract
+	(receiver skin_default.xml "DO NOT CHANGE THIS LINE", MetrixHD): zero width, z=-10, height = itemHeight x
+	(Fields-1) -> 5 rows for EPGvertical (Fields 6), 3 for EPGverticalPIG (Fields 4).  Nothing visible moves."""
+	p = os.path.join(skin, "layouts", "epg", "classic", "screens.openatv.xml")
+	x = open(p, encoding="utf-8").read()
+	n = 0
+	for scr, rows in (("EPGvertical", 5), ("EPGverticalPIG", 3)):
+		m = re.search(r'<screen name="%s".*?</screen>' % scr, x, re.S)
+		body = m.group(0)
+		w = re.findall(r'<widget name="list" [^>]*/>', body)
+		assert len(w) == 1, (scr, "list widget anchor")
+		new = '<widget name="list" position="0,0" size="0,%d" itemHeight="30" font="Regular;0" enableWrapAround="0" zPosition="-10" />' % (30 * rows)
+		x = x.replace(body, body.replace(w[0], new), 1)
+		n += 1
+	open(p, "w", encoding="utf-8").write(x)
+	return n
+
+
 def load_theme_module(control_dir):
 	spec = importlib.util.spec_from_file_location("cv_theme", os.path.join(control_dir, "theme.py"))
 	m = importlib.util.module_from_spec(spec)
@@ -973,6 +995,7 @@ def main(golden, comps, control, out):
 		for sec, scr, n in apply_classic_posters_off_named(skin):
 			print("POSTERS-OFF (Classic, named widgets) %-16s %s_CVPosterOff: %d widgets widened" % (sec, scr, n))
 	print("Multi EPG description: %d posters on/off variants (no overlap with the poster)" % apply_multiepg_description(skin))
+	print("Vertical EPG: channel page index hidden per the native contract (%d screens)" % apply_vertical_epg_index(skin))
 	print("EventView pack classic-lines: %d description widgets (line by line, opaque label)" % make_classic_lines_pack(skin))
 	# P7: Details family (user-approved direction 2026-10-03; Classic packs untouched).
 	make_default_poster(os.path.join(skin, "mla_assets", "poster_default.jpg"))  # the P7 poster slots embed it
