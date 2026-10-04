@@ -51,6 +51,7 @@ def clock(e_time, e_date, tfont, dfont):
 
 
 def shown(line, inv=""):
+	assert line.rstrip().endswith("</widget>"), line
 	return line.replace("</widget>", "\t<convert type=\"CineViewMLAShowIf\">%s,True%s</convert>\n\t\t</widget>" % (KEY, inv))
 
 
@@ -166,7 +167,7 @@ def videofirst(skin, right=False):
 				x.append(shown(G.label("session.FrontendStatus", gg, [conv], f, col), inv))
 			else:
 				x.append(shown(G.label("session.CurrentService", gg, [("CineViewMLAShowIf", "always,True,text=%s" % txt)], f, col), inv))
-		x.append(shown('\t\t<widget render="VideoSize" source="session.CurrentService" %s font="Regular;%d" foregroundColor="grey" transparent="1" zPosition="20" />' % (G.pos(dict(g, x=g["x"] + 372, w=150)), f), inv))
+		x.append(shown('\t\t<widget render="VideoSize" source="session.CurrentService" %s font="Regular;%d" foregroundColor="grey" transparent="1" zPosition="20"></widget>' % (G.pos(dict(g, x=g["x"] + 372, w=150)), f), inv))
 		x.append(shown(G.label("session.CurrentService", dict(g, x=g["x"] + 530, w=170), [("CineViewMLABitrate", "Mbps")], f, "grey"), inv))
 	return x
 
