@@ -14,19 +14,20 @@ look; **pending** = the user still has to approve it.
 
 | Section | Classic | Details | Cinema | Modern | Minimal |
 |---|---|---|---|---|---|
-| InfoBar | tested, approved | tested (P7), pending | tested (P7), pending | mockup, pending | mockup, pending |
+| InfoBar | tested, approved | tested (P7), pending | tested (P7), pending | **device-tested build38 (t43)**, look pending | mockup, pending |
 | SecondInfoBar | tested, approved | tested (P7), pending | tested (P7), pending | mockup, pending | mockup, pending |
 | Channel Selection | tested, approved | Poster List: tested, look approved in direction | Video First L/R: tested, look approved in direction | mockup, pending | mockup, pending |
 | EPG — Graphical | tested, approved | Graphical Plus: device-tested build36 (ON/OFF, 6 themes, cursor follow), look pending | — (proposal: Graphical Plus with the Cinema palette) | mockup, pending | mockup, pending |
 | EPG — Single / Multi / Quick / InfoBar | tested, approved (Classic only) | uses Classic | uses Classic | not started | not started |
 | PVR | Classic, tested | Cover Library: planned | — | not started | not started |
-| EventView | Classic + "line by line" option, tested | — | Feature: planned | mockup, pending | mockup, pending |
+| EventView | Classic + "line by line" option, tested; from an EPG now shows the selected event (build42, t50) | — | Feature: planned | mockup, pending | mockup, pending |
 
 **Approved-and-tested section count per model** (out of the 6 sections IB, SIB, CS, EPG, PVR, EV):
 - Classic 6/6.
 - Details 0/6 approved. IB, SIB and CS are tested but the final look is not yet approved; Graphical Plus is in test.
 - Cinema 0/6 approved. IB, SIB and CS are tested, look pending.
-- Modern 0/6 (mockups).
+- Modern 0/6 approved. The InfoBar runs on the receiver (t43); the other 5 sections are mockups. The skin
+  features Modern needs are confirmed on the receiver (t41).
 - Minimal 0/6 (mockups).
 
 ## Mapping proposal (pending approval)
@@ -86,9 +87,14 @@ EventView → Minimal → PVR Cover Library → EventView Feature.
   CineView screen draws `self["list"]` (a MenuList used only as the page index by EpgSelection.py) at 1730x700,
   z=19, over the five columns. This defect already exists in the golden skin. Fix (build37): the native
   contract (receiver `skin_default.xml`, "DO NOT CHANGE THIS LINE"): zero width, z=-10, 5 rows (3 for PIG).
-  Device check t42 is queued. The Columns design decision waits for that run.
-- **Modern skin features**: the probe `CineViewMLAFeatureProbe` and t41 are queued (cornerRadius all/top,
-  border, 80 % card, gradient with alpha blending, rounded Label background, rounded ePixmap).
+  Device check t42: five columns visible, navigation works. **Columns is feasible on the native vertical EPG**
+  (list1..list5, piconCh/currCh/Active), with no new widgets. Its look is to be proposed after the Modern
+  decision.
+- **Modern skin features (t41, OSD alpha measured).** These work: cornerRadius all/top on eLabel, Label and
+  ePixmap; the 80 % card; the gradient with alpha blending. `borderWidth` on a rounded translucent eLabel is not
+  drawn.
+- **Modern InfoBar (t43).** Runs on the receiver: posters ON/OFF, six themes, AR/EN, live values equal to
+  OpenWebif. The look is pending.
 
 ## Order of work (autonomous run 2026-10-04 night)
 1. Fixes from the user's video review: name clip scope, Video First dimming, poster tests, EventView AR/EN.
