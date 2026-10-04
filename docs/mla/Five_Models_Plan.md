@@ -53,8 +53,8 @@ class, which is forbidden ("no invented target widgets"). Plan:
 - Device tests needed: real recordings on USB in Slot 8 only. HDD recordings may only be read: no writing,
   no deleting.
 
-**EventView — Feature (Cinema).** Native `EventViewSimple` / `EventViewEPGSelect` sources: Event, Service,
-`epg_description` (ScrollLabel), key_*. Plan:
+**EventView — Feature (Cinema).** Native `EventView*` widgets (EventView.py, verified): Event, Service,
+`epg_description`, `FullDescription`, `datetime`, `duration`, `channel`, key_* (skinName list `[<skin>, "EventView"]`). Plan:
 - A big poster (400x600) on the left. Title, times, genre and IMDb (reliable only) in a column, and the
   description in the native ScrollLabel (paging stays native).
 - Both description motions (`classic` / `classic-lines`) remain options. Neither is forced.
