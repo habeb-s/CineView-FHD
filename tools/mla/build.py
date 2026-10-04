@@ -196,6 +196,8 @@ CineViewMLAIMDb.getText = _cv_getText
 CineViewMLAIMDb.text = property(_cv_getText)
 """
 RENDERER_PATCHES = [
+	# poster.log: the golden _log wrote a literal backslash-n (the log was one endless line, device 2026-10-05).
+	('f.write(msg.replace("\\\\n", " ")[:900] + "\\\\n")', 'f.write(msg.replace("\\n", " ")[:900] + "\\n")'),
 	# Next-event posters (nexts>0) are chained from the END of the event the source currently holds.
 	# The original takes row[nexts] of lookupEvent(now-list); at an event boundary that list can still
 	# start with the event that just ended, so the "next" widget showed the NEW current event's poster
