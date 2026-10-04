@@ -87,6 +87,19 @@ def main():
         if not segs or segs[-1][0] != r:
             segs.append([r, []])
         segs[-1][1].append((t, crops(im, b)))
+    # A single frame read as another row between two segments of the SAME row is a cursor-detection glitch (device
+    # t49: rows 9/10/9 within 0.14 s while the cursor rested on row 9): merge it back, otherwise the row is split
+    # and its own earlier frames become the "previous channel".
+    merged = []
+    for seg in segs:
+        if len(merged) >= 2 and len(merged[-1][1]) == 1 and merged[-2][0] == seg[0]:
+            glitch = merged.pop()
+            merged[-1][1].extend(glitch[1] + seg[1])
+        elif merged and merged[-1][0] == seg[0]:
+            merged[-1][1].extend(seg[1])
+        else:
+            merged.append(seg)
+    segs = merged
     t0 = segs[0][1][0][0] if segs else 0
     stale = trans = ok = 0
     events = []
