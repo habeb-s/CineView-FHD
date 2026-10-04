@@ -1,6 +1,6 @@
 # CineView MLA — لوحة متابعة المشروع (OpenATV 8.0.1، Slot 8)
 
-**آخر تحديث:** 2026-10-04 12:45 (توقيت الرياض) · **آخر commit:** انظر سجل التحديثات · **الفرع:** `dev/mla-openatv` · `main` دون تغيير (729ab1a)
+**آخر تحديث:** 2026-10-04 16:55 (توقيت الرياض) · **آخر commit:** انظر سجل التحديثات · **الفرع:** `dev/mla-openatv` · `main` دون تغيير (729ab1a)
 **الجهاز:** Vu+ Duo 4K SE · OpenATV 8.0.1 build 20261003 · enigma2 57b7a51 · Python 3.14.7 · Slot 8 على USB (`/dev/sdb1`)
 
 ## طريقة حساب النسب
@@ -23,6 +23,14 @@
 | P7 تصاميم جديدة | 2/7 عائلات | جزئي | Details وCinema لـ InfoBar وSecondInfoBar فقط (مختبرة). ChannelSelection وEPG وPVR وEventView: Classic فقط — انظر `Blueprint_MultiDesign_Status.md` و`Design_Library_Inventory_and_Plan.md` |
 | P8 التغليف والانحدار | 4/4 | 100% | IPK؛ T8 (تثبيت، ترقيتان، رفض الإزالة أثناء الاختيار، إزالة نظيفة، إعادة تثبيت)؛ انحدار Classic 9 شاشات؛ رابط التثبيت مُختبر من الرسيفر |
 | P9 مرشح إصدار | جاهز | — | `1.0.0~rc2` + تقرير QA + مقارنة مصورة. **غير منشور كنهائي** |
+
+## تقرير الاستئناف — 2026-10-04 16:55 (قراراتك 16:04)
+- **صفحة المراجعة:** https://claude.ai/artifact/RzVEqz8afyeC7H1kLgbErf (قائمة القنوات، وClassic عند إيقاف البوستر، وEventView سطرًا سطرًا).
+- **EventView سطرًا سطرًا:** حزمة الاختبار `classic-lines` **مفعّلة الآن على Slot 8** للمشاهدة على التلفاز، والرجوع من CineView Designs ← EventView ← CineView Classic. القياس: السرعة نفسها (16.6 px/s)، والقفزة سطر كامل (29 px) كل 1.7 ث، و0 إطارات بثلث علوي فارغ (Classic: 21 و7 من 141). القرار لك.
+- **المرحلة B (Classic عند إيقاف البوستر):** build26 تجريبي، ولقطات On/Off حقيقية لـ 6 شاشات، و0 tracebacks. وضع On مطابق تمامًا (تحقق آلي). ثلاث شاشات بعناصر Python مسماة لم تُعالج، ولها حل وقت التشغيل يحتاج موافقتك.
+- **D1 قائمة القنوات:** نماذج Poster List وVideo First جاهزة، ولا تنفيذ قبل اعتمادك.
+- **الرسيفر الآن:** ملفات rc4 كما هي (opkg --force-reinstall)، وClassic مع حزمة اختبار EventView، والبوسترات مفعّلة، و0 tracebacks. النسخ الاحتياطية: `/media/usb/cineview-mla/state/backup-evlines` و`backup-build26`.
+- **آخر commit:** انظر `git log` على `dev/mla-openatv`.
 
 ## تقرير الاستئناف — 2026-10-04 12:45
 - **rc4 (مرشح للتطوير، غير نهائي):** rc3 + إصلاحا Classic C-1 (العنوان العربي من أوله) وC-2 (وصف قائمة القنوات من الأعلى)، والاثنان DEVICE VERIFIED. مثبتة على Slot 8 عبر opkg. الحالة: Factory (Classic + Navy)، 0 tracebacks، أداة TextTest2 أُزيلت.
