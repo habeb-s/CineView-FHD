@@ -555,6 +555,142 @@ def apply_poster_toggles(skin):
 	return changes
 
 
+# ---------------------------------------------------------------------------------------------------------
+# Phase B (user approval 2026-10-04 16:04, EXPERIMENTAL until visually approved): Classic posters OFF.
+# Posters ON keeps every Classic element exactly as it is (same position, size, colour, z-order); each element
+# that has to move when the section's poster switch is OFF gets an "ON" copy (shown unless the switch is False)
+# and an "OFF" copy at its new place (shown only when the switch is False).  Elements that only make sense next
+# to the poster (the separator right of it, a divider above the poster row) get the ON copy only.
+# Mechanics (all OpenATV-native or our own tested converter):
+#   widgets      : CineViewMLAShowIf <key>,True[,Invert][,dir=..] appended (an existing "always,True,dir=x"
+#                  direction switch becomes "<key>,True[,Invert],dir=x");
+#   static boxes : eLabel -> Label widget on session.CurrentService with the same backgroundColor (theme
+#                  colour names keep working) and CineViewMLAShowIf <key>,True[,Invert],text=  (empty caption);
+#   untouched    : widgets driven by ConditionalShowHide (IMDb badge) and every element that does not move.
+POFF_STRIP = {"hide_x": 156, "shift_from": 156, "shift_to": 1072, "shift": -130, "event_x": 1090, "ymin": 842, "ymax": 1015}
+POFF_RULES = {
+	# section: {screen: [(match(tag, x, y, w, h) -> bool, action)]}; action = "hide" | (dx, dy, dw, dh)
+	"channelselection": {"ChannelSelection": [
+		(lambda t, x, y, w, h: t == "widget" and (x, y, w, h) == (1205, 305, 340, 383), (0, 0, 295, 233)),  # description: full width, 22 lines
+		(lambda t, x, y, w, h: t == "eLabel" and (x, y, w, h) == (1205, 716, 635, 2), "hide"),             # divider above the poster row
+	]},
+	"epg": {
+		"EPGSelection": [(lambda t, x, y, w, h: t == "widget" and (x, y, w, h) == (1205, 246, 340, 360), (0, 0, 265, 0))],
+		"EPGSelectionMulti": [(lambda t, x, y, w, h: t == "widget" and (x, y, w, h) == (1210, 120, 250, 120), (0, 0, 305, 0))],
+		"QuickEPG": [(lambda t, x, y, w, h: t == "widget" and (x, y, w, h) == (920, 45, 600, 300), (0, 0, 275, 0))],
+		"GraphicalEPG": [
+			(lambda t, x, y, w, h: t == "widget" and (x, y, w, h) in ((230, 72, 1625, 48), (230, 168, 1625, 138)), (-185, 0, 185, 0)),
+			(lambda t, x, y, w, h: t == "widget" and (x, y) in ((230, 126), (350, 126)), (-185, 0, 0, 0)),
+		],
+		"GraphMultiEPG": [
+			(lambda t, x, y, w, h: t == "widget" and (x, y, w, h) in ((70, 90, 1490, 46), (70, 188, 1490, 135), (202, 157, 1180, 8)), (0, 0, 285, 0)),
+			(lambda t, x, y, w, h: t == "widget" and (x, y) == (1394, 145), (285, 0, 0, 0)),
+		],
+	},
+}
+
+
+def _poff_strip_rule(t, x, y, w, h):
+	"""The InfoBar strip shared by InfoBar, SecondInfoBar* and EventView: the poster block (16..156) is
+	removed, every column right of it moves 130 px left, the event column keeps its right edge and grows."""
+	s = POFF_STRIP
+	if not (s["ymin"] <= y <= s["ymax"]):
+		return None
+	if x == s["hide_x"] and w == 2:
+		return "hide"
+	if s["shift_from"] < x <= s["shift_to"]:
+		return (s["shift"], 0, 0, 0)
+	if x == s["event_x"]:
+		return (s["shift"], 0, -s["shift"], 0)
+	return None
+
+
+def _poff_variant(el, key, off, pos=None, size=None):
+	tag = el.lstrip()[1:].split(None, 1)[0]
+	ind = re.match(r"[ \t]*", el).group(0)
+	a = _attrs(el[:el.index(">") + 1])
+	if pos:
+		el = re.sub(r'position="[^"]*"', 'position="%d,%d"' % pos, el, count=1)
+	if size:
+		el = re.sub(r'size="[^"]*"', 'size="%d,%d"' % size, el, count=1)
+	inv = ",Invert" if off else ""
+	if tag == "eLabel":
+		keep = " ".join('%s="%s"' % (k, v) for k, v in a.items() if k not in ("position", "size", "text"))
+		p = pos or tuple(map(int, a["position"].split(",")))
+		s = size or tuple(map(int, a["size"].split(",")))
+		return ('%s<widget source="session.CurrentService" render="Label" position="%d,%d" size="%d,%d" %s>'
+			'<convert type="CineViewMLAShowIf">%s,True%s,text=</convert></widget>' % (ind, p[0], p[1], s[0], s[1], keep, key, inv))
+	m = re.search(r'<convert type="CineViewMLAShowIf">always,True(,dir=(?:ltr|rtl))</convert>', el)
+	if m:
+		return el.replace(m.group(0), '<convert type="CineViewMLAShowIf">%s,True%s%s</convert>' % (key, inv, m.group(1)), 1)
+	conv = '<convert type="CineViewMLAShowIf">%s,True%s</convert>' % (key, inv)
+	if el.rstrip().endswith("/>"):
+		return el.rstrip()[:-2].rstrip() + ">" + conv + "</widget>"
+	i = el.rindex("</widget>")
+	return el[:i].rstrip() + "\n" + ind + "\t" + conv + "\n" + ind + el[i:]
+
+
+def apply_classic_posters_off(skin):
+	"""Returns [(section, screen, moved, hidden)].  Only screens that contain a CineViewMLAPosterX are touched."""
+	out = []
+	elre = re.compile(r'[ \t]*<(?:eLabel|widget|ePixmap)\b[^>]*?(?:/>|>.*?</widget>)', re.S)
+	for sec in ("infobar", "secondinfobar", "eventview", "channelselection", "epg"):
+		path = os.path.join(skin, "layouts", sec, "classic", "screens.openatv.xml")
+		src = open(path, encoding="utf-8").read()
+		key = POSTER_TOGGLE % sec
+
+		def screen_fix(m):
+			body = m.group(0)
+			name = _attrs(body[:body.index(">")]).get("name", "?")
+			if 'render="CineViewMLAPosterX"' not in body:
+				return body
+			rules = POFF_RULES.get(sec, {}).get(name, [])
+			strip = sec in ("infobar", "secondinfobar", "eventview") and any(
+				_attrs(p).get("position") == "40,850" and _attrs(p).get("size") == "105,158"
+				for p in re.findall(r'<widget\b[^>]*render="CineViewMLAPosterX"[^>]*>', body))
+			moved = hidden = 0
+
+			def el_fix(em):
+				nonlocal moved, hidden
+				el = em.group(0)
+				head = el[:el.index(">") + 1]
+				if "ConditionalShowHide" in el or 'render="CineViewMLAPosterX"' in head:
+					return el
+				a = _attrs(head)
+				if "position" not in a or "size" not in a:
+					return el
+				t = el.lstrip()[1:].split(None, 1)[0]
+				try:
+					x, y = map(int, a["position"].split(","))
+					w, h = map(int, a["size"].split(","))
+				except ValueError:
+					return el
+				act = None
+				for match, action in rules:
+					if match(t, x, y, w, h):
+						act = action
+						break
+				if act is None and strip:
+					act = _poff_strip_rule(t, x, y, w, h)
+				if act is None:
+					return el
+				on = _poff_variant(el, key, False)
+				if act == "hide":
+					hidden += 1
+					return on
+				dx, dy, dw, dh = act
+				moved += 1
+				return on + "\n" + _poff_variant(el, key, True, (x + dx, y + dy), (w + dw, h + dh))
+
+			body = elre.sub(el_fix, body)
+			out.append((sec, name, moved, hidden))
+			return body
+
+		new = re.sub(r"<screen\b.*?</screen>", screen_fix, src, flags=re.S)
+		open(path, "w", encoding="utf-8").write(new)
+	return out
+
+
 def load_theme_module(control_dir):
 	spec = importlib.util.spec_from_file_location("cv_theme", os.path.join(control_dir, "theme.py"))
 	m = importlib.util.module_from_spec(spec)
@@ -579,6 +715,9 @@ def main(golden, comps, control, out):
 		print("M5 %-16s %-22s %s" % (sec, scr, what))
 	for scr, source, kind in apply_sib_textfit(skin):
 		print("SIB-TEXTFIT %-20s %-18s %s (narrow+wide)" % (scr, source, kind))
+	if os.environ.get("MLA_CLASSIC_POFF") == "1":  # Phase B, experimental until visually approved
+		for sec, scr, mv, hd in apply_classic_posters_off(skin):
+			print("POSTERS-OFF (Classic, experimental) %-16s %-22s %d moved, %d hidden" % (sec, scr, mv, hd))
 	# P7: Details family (user-approved direction 2026-10-03; Classic packs untouched).
 	make_default_poster(os.path.join(skin, "mla_assets", "poster_default.jpg"))  # the P7 poster slots embed it
 	sys.path.insert(0, os.path.join(HERE, "p7"))
