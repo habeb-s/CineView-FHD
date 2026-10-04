@@ -75,34 +75,43 @@ def main():
     distinct = [k for k in rows if all(diff(last[k][0], last[j][0]) + diff(last[k][1], last[j][1]) > 12 for j in rows if j != k)]
     print("rows with distinct posters (others share the neutral frame): %s" % distinct)
 
-    stale = trans = ok = unknown = other_row = 0
-    since = None; cur = None; t0 = None; events = []; longest = 0.0; tstart = None
+    # Second method, independent of the slow pass (posters may finish downloading between passes):
+    # split the fast recording into segments with a constant cursor row; a frame >= HOLD into a segment is STALE
+    # when its posters equal the FINAL posters of the PREVIOUS segment (another channel) but not its own final ones.
+    segs = []
     for t, p in frames(fast):
-        t0 = t0 or t
         im = Image.open(p).convert("RGB")
         r = row(im)
-        if r is None or r not in last:
-            unknown += 1
+        if r is None:
             continue
-        if r != cur:
-            cur, since = r, t
-        n, x = crops(im, b)
-        d = {k: diff(n, last[k][0]) + diff(x, last[k][1]) for k in rows}
-        best = min(d, key=d.get)
-        wrong = best != r and best in distinct and d[best] + 6.0 < d[r]
-        held = (t - since) / 1e9
-        if wrong:
-            longest = max(longest, held)
-        if wrong and held >= HOLD:
-            stale += 1
-            events.append("%.2fs cursor row %d (held %.2fs) shows row %d posters (own %.1f, other %.1f)" % ((t - t0) / 1e9, r, held, best, d[r], d[best]))
-        elif wrong:
-            trans += 1
-        else:
-            ok += 1
+        if not segs or segs[-1][0] != r:
+            segs.append([r, []])
+        segs[-1][1].append((t, crops(im, b)))
+    t0 = segs[0][1][0][0] if segs else 0
+    stale = trans = ok = 0
+    events = []
+    for i in range(1, len(segs)):
+        r, fr = segs[i]
+        own = fr[-1][1]
+        prev = segs[i - 1][1][-1][1]
+        if diff(own[0], prev[0]) + diff(own[1], prev[1]) < 12:
+            ok += len(fr)  # both channels show the same posters (e.g. the neutral frame): nothing to tell apart
+            continue
+        for t, c in fr:
+            held = (t - fr[0][0]) / 1e9
+            dp = diff(c[0], prev[0]) + diff(c[1], prev[1])
+            do = diff(c[0], own[0]) + diff(c[1], own[1])
+            if dp < 8 and do > 20:
+                if held >= HOLD:
+                    stale += 1
+                    events.append("%.2fs row %d held %.2fs still shows row %d posters" % ((t - t0) / 1e9, r, held, segs[i - 1][0]))
+                else:
+                    trans += 1
+            else:
+                ok += 1
     for e in events[:20]:
         print("  STALE " + e)
-    print("POSTER_SUMMARY rows=%d distinct=%d frames_ok=%d transition(<%.1fs after a move)=%d stale=%d no_cursor=%d longest_previous_poster=%.2fs" % (len(rows), len(distinct), ok, HOLD, trans, stale, unknown, longest))
+    print("POSTER_SUMMARY segments=%d frames_ok=%d previous_channel_posters_within_%.1fs=%d stale=%d" % (len(segs), ok, HOLD, trans, stale))
 
 
 if __name__ == "__main__":
