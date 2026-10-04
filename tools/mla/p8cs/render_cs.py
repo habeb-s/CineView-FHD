@@ -102,12 +102,15 @@ def list_rows(im, d, box, row_h, th, compact=False):
 		cy = ry + (row_h - S.pitch(nsize)) // 2
 		d.text((x + 10, cy), str(r["num"]), font=font(nsize), fill=MUTED)
 		px = x + 80
+		pw_box, ph_box = (78, row_h - 14) if compact else (100, row_h - 18)
 		if r.get("picon") and os.path.isfile(r["picon"]):
 			pc = Image.open(r["picon"]).convert("RGBA")
-			ph = row_h - 14
-			pc = pc.resize((int(pc.width * ph / pc.height), ph))
-			im.paste(pc, (px, ry + 7), pc)
-		nx = px + (78 if compact else 100)
+			pc.thumbnail((pw_box, ph_box))
+			im.paste(pc, (px + (pw_box - pc.width) // 2, ry + (row_h - pc.height) // 2), pc)
+		nx = px + pw_box + 14
+		if r.get("marker"):
+			d.text((nx, cy), r["name"], font=font(nsize), fill=MUTED)
+			continue
 		name = r["name"]
 		d.text((nx, cy), name, font=font(nsize), fill=TEXT)
 		ex = nx + font(nsize).getlength(name) + 14
