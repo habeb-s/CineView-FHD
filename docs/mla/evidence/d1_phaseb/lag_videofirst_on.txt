@@ -1,0 +1,66 @@
+move @6.76s cursor y 202->220
+  move @6.76s: superseded by next move before the panel changed
+move @7.01s cursor y 220->232
+   panel @7.17s lag 0.16s
+move @10.09s cursor y 232->280
+  move @10.09s: superseded by next move before the panel changed
+move @10.36s cursor y 280->260, panel same frame
+move @11.06s cursor y 260->280
+  move @11.06s: superseded by next move before the panel changed
+move @11.20s cursor y 280->260
+  move @11.20s: superseded by next move before the panel changed
+move @11.94s cursor y 260->280
+  move @11.94s: superseded by next move before the panel changed
+move @12.08s cursor y 280->260
+  move @12.08s: superseded by next move before the panel changed
+move @12.22s cursor y 260->280
+  move @12.22s: superseded by next move before the panel changed
+move @13.18s cursor y 280->290
+   panel @13.33s lag 0.15s
+move @13.48s cursor y 290->310
+  move @13.48s: superseded by next move before the panel changed
+move @13.93s cursor y 308->290
+  move @13.93s: superseded by next move before the panel changed
+move @14.49s cursor y 292->308
+  move @14.49s: superseded by next move before the panel changed
+move @14.63s cursor y 308->290, panel same frame
+move @15.09s cursor y 290->308
+  move @15.09s: superseded by next move before the panel changed
+move @15.26s cursor y 308->292, panel same frame
+move @15.39s cursor y 292->308, panel same frame
+move @15.67s cursor y 308->292
+  move @15.67s: superseded by next move before the panel changed
+move @16.06s cursor y 290->308
+   panel @16.53s lag 0.46s
+move @19.33s cursor y 308->320, panel same frame
+move @19.47s cursor y 320->350, panel same frame
+move @22.26s cursor y 350->370
+  move @22.26s: superseded by next move before the panel changed
+move @22.40s cursor y 370->350
+  move @22.40s: superseded by next move before the panel changed
+move @22.94s cursor y 350->320, panel same frame
+move @24.16s cursor y 320->290
+   panel @24.35s lag 0.19s
+move @24.48s cursor y 290->310
+  move @24.48s: superseded by next move before the panel changed
+move @25.13s cursor y 310->290
+  move @25.13s: superseded by next move before the panel changed
+move @25.41s cursor y 290->310
+  move @25.41s: superseded by next move before the panel changed
+move @25.68s cursor y 310->280, panel same frame
+move @25.86s cursor y 280->260
+  move @25.86s: superseded by next move before the panel changed
+move @26.00s cursor y 260->280, panel same frame
+move @27.09s cursor y 280->232, panel same frame
+move @30.71s cursor y 232->248
+  move @30.71s: superseded by next move before the panel changed
+move @30.86s cursor y 248->230
+  move @30.86s: superseded by next move before the panel changed
+move @31.60s cursor y 230->250, panel same frame
+move @31.76s cursor y 250->232, panel same frame
+move @35.12s cursor y 232->280, panel same frame
+move @35.53s cursor y 274->264, panel same frame
+move @36.64s cursor y 256->246, panel same frame
+move @37.20s cursor y 246->236, panel same frame
+frames=243 span=37.2s fps=6.5 frame_step=0.15s
+LAG_SUMMARY measured_moves=20 median=0.00s p90=0.16s max=0.46s

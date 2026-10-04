@@ -1,0 +1,106 @@
+== 0. deploy build30 + dev trigger plugin
+-rw-r--r--    1 root     root          3433 Oct  4 18:41 cineview_mla-state.pre-p6.tgz
+-rw-r--r--    1 root     root       4814882 Oct  4 18:41 mla-files.pre-build30.tgz
+-rw-r--r--    1 root     root          9645 Oct  4 18:40 settings.pre-p6
+paths-ok
+deployed
+new e2 pid=25593 @18:41:13
+webif up @18:41:38
+STATE active=g000000 lkg=g000026 journal=COMMITTED theme=navy gens=['g000000', 'g000023', 'g000024', 'g000025', 'g000026']
+boot.count=1 e2pid=25593 crashlogs=0
+2026-10-04 18:38:06 apply: g000024 -> g000025 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-04 18:38:06 commit: lkg=g000025
+2026-10-04 18:40:00 apply: g000025 -> g000026 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic-lines", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-04 18:40:00 commit: lkg=g000026
+18:41:17.2411 [InputDevice] Error: device='mice' getInputDevices <ERROR: ioctl(EVIOCGNAME): '[Errno 25] Inappropriate ioctl for device'>
+18:41:17.2413 [InputDevice] Error: device='mouse0' getInputDevices <ERROR: ioctl(EVIOCGNAME): '[Errno 25] Inappropriate ioctl for device'>
+18:41:36.6734 [CineViewMLA] posters-off names installed for SecondInfoBar
+18:41:36.6735 [CineViewMLA] posters-off names installed for EventViewSimple
+18:41:37.5048 [Skin] Error: Attribute 'progressPercentWidth' with value '70' in object of type 'eListbox' ('AttributeParser' object has no attribute 'progressPercentWidth')!
+18:41:37.5049 [Skin] Error: Attribute 'piconMargin' with value '3' in object of type 'eListbox' ('AttributeParser' object has no attribute 'piconMargin')!
+18:41:37.5316 [Skin] Error: Attribute 'progressPercentWidth' with value '78' in object of type 'eListbox' ('AttributeParser' object has no attribute 'progressPercentWidth')!
+18:41:37.5318 [Skin] Error: Attribute 'piconMargin' with value '3' in object of type 'eListbox' ('AttributeParser' object has no attribute 'piconMargin')!
+__init__.py
+plugin.py
+g000027
+== posters off
+set {'config.plugins.cineviewmla.poster_infobar': 'False', 'config.plugins.cineviewmla.poster_secondinfobar': 'False', 'config.plugins.cineviewmla.poster_channelselection': 'False', 'config.plugins.cineviewmla.poster_epg': 'False', 'config.plugins.cineviewmla.poster_eventview': 'False'}
+new e2 pid=26875 @18:42:06
+webif up @18:42:32
+   tracebacks=0 skin_errors_new=0 accelAlloc=1 e2pid=26875 crashlogs=0
+18:42:30.9309 [Skin] Processing screen 'SecondInfoBar', from list 'SecondInfoBar_CVPosterOff, SecondInfoBar', position=(0,0), size=(1920,1080) for module 'SecondInfoBar'.
+cap off_epg_multi @18:43:23 png-ok
+cap off_quickepg @18:43:38 png-ok
+cap off_infobarepg @18:43:52 png-ok
+cap off_infobareventview @18:43:59 png-ok
+cap off_eventviewsimple @18:44:12 png-ok
+   tracebacks=0 skin_errors_new=0 accelAlloc=1 e2pid=26875 crashlogs=0
+18:42:30.9309 [Skin] Processing screen 'SecondInfoBar', from list 'SecondInfoBar_CVPosterOff, SecondInfoBar', position=(0,0), size=(1920,1080) for module 'SecondInfoBar'.
+18:43:16.3391 [CineViewMLAScreenOpen] opened multi
+18:43:31.1018 [CineViewMLAScreenOpen] opened quick
+18:43:45.1798 [CineViewMLAScreenOpen] opened infobarepg
+18:43:52.7322 [Skin] Processing screen 'InfoBarEventView_CVPosterOff', from list 'InfoBarEventView_CVPosterOff, EventView_CVPosterOff, InfoBarEventView, EventView', position=(0,0), size=(1920,360) for module 'EventViewSimple'.
+18:44:06.1871 [Skin] Processing screen 'EventViewSimple_CVPosterOff', from list 'EventViewSimple_CVPosterOff, EventView_CVPosterOff, EventViewSimple, EventView', position=(50,160), size=(1820,760) for module 'EventViewSimple'.
+18:44:06.2026 [Skin] Processing screen 'EventViewSimpleSummary', from list 'EventViewSimple_CVPosterOffSummary, EventView_CVPosterOffSummary, EventViewSimpleSummary, EventViewSummary, EventViewSimple_CVPosterOff_summary, EventView_CVPosterOff_summary, EventViewSimple_summary, EventView_summary, ScreenSummary', position=(0,0), size=(480,320) for module 'ScreenSummary'.
+18:44:06.2146 [CineViewMLAScreenOpen] opened evsimple
+cap off_infobar @18:44:37 png-ok
+cap off_sib @18:44:41 png-ok
+cap off_eventview @18:44:54 png-ok
+cap off_chsel @18:45:07 png-ok
+set {'config.usage.show_second_infobar': '3'}
+new e2 pid=30498 @18:45:22
+webif up @18:45:45
+   tracebacks=0 skin_errors_new=0 accelAlloc=1 e2pid=30498 crashlogs=0
+18:45:43.8457 [Skin] Processing screen 'SecondInfoBarECM_CVPosterOff', from list 'SecondInfoBarECM_CVPosterOff, SecondInfoBarECM', position=(0,560), size=(1920,520) for module 'SecondInfoBar'.
+cap off_sib_ecm @18:46:34 png-ok
+set {'config.usage.show_second_infobar': '2'}
+new e2 pid=32574 @18:46:46
+webif up @18:47:11
+   tracebacks=0 skin_errors_new=0 accelAlloc=1 e2pid=32574 crashlogs=0
+18:47:10.2328 [Skin] Processing screen 'SecondInfoBar', from list 'SecondInfoBar_CVPosterOff, SecondInfoBar', position=(0,0), size=(1920,1080) for module 'SecondInfoBar'.
+== posters on
+set {'config.plugins.cineviewmla.poster_infobar': 'True', 'config.plugins.cineviewmla.poster_secondinfobar': 'True', 'config.plugins.cineviewmla.poster_channelselection': 'True', 'config.plugins.cineviewmla.poster_epg': 'True', 'config.plugins.cineviewmla.poster_eventview': 'True'}
+new e2 pid=1538 @18:47:47
+webif up @18:48:12
+   tracebacks=0 skin_errors_new=0 accelAlloc=21 e2pid=1538 crashlogs=0
+cap on_epg_multi @18:49:02 png-ok
+cap on_quickepg @18:49:17 png-ok
+cap on_infobarepg @18:49:31 png-ok
+cap on_infobareventview @18:49:38 png-ok
+cap on_eventviewsimple @18:49:52 png-ok
+   tracebacks=0 skin_errors_new=0 accelAlloc=25 e2pid=1538 crashlogs=0
+18:48:55.6143 [CineViewMLAScreenOpen] opened multi
+18:49:09.7313 [CineViewMLAScreenOpen] opened quick
+18:49:24.5113 [CineViewMLAScreenOpen] opened infobarepg
+18:49:45.5644 [CineViewMLAScreenOpen] opened evsimple
+cap on_infobar @18:50:17 png-ok
+cap on_sib @18:50:23 png-ok
+cap on_eventview @18:50:36 png-ok
+cap on_chsel @18:50:49 png-ok
+set {'config.usage.show_second_infobar': '3'}
+new e2 pid=5207 @18:51:04
+webif up @18:51:29
+   tracebacks=0 skin_errors_new=0 accelAlloc=6 e2pid=5207 crashlogs=0
+cap on_sib_ecm @18:52:18 png-ok
+set {'config.usage.show_second_infobar': '2'}
+new e2 pid=7058 @18:52:30
+webif up @18:52:56
+   tracebacks=0 skin_errors_new=0 accelAlloc=21 e2pid=7058 crashlogs=0
+== restore: remove trigger plugin
+0
+new e2 pid=8342 @18:53:32
+webif up @18:53:56
+STATE active=g000027 lkg=g000027 journal=COMMITTED theme=navy gens=['g000000', 'g000024', 'g000025', 'g000026', 'g000027']
+boot.count=1 e2pid=8342 crashlogs=0
+2026-10-04 18:40:00 apply: g000025 -> g000026 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic-lines", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-04 18:40:00 commit: lkg=g000026
+2026-10-04 18:42:01 apply: g000000 -> g000027 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic-lines", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-04 18:42:01 commit: lkg=g000027
+   tracebacks=0 skin_errors_new=0 accelAlloc=21 e2pid=8342 crashlogs=0
+config.plugins.cineviewmla.poster_channelselection=True
+config.plugins.cineviewmla.poster_epg=True
+config.plugins.cineviewmla.poster_eventview=True
+config.plugins.cineviewmla.poster_infobar=True
+config.plugins.cineviewmla.poster_secondinfobar=True
+config.usage.show_second_infobar=2
+T31_DONE

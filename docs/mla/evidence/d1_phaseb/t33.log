@@ -1,0 +1,55 @@
+-rw-r--r--    1 root     root          3460 Oct  4 19:08 cineview_mla-state.pre-p6.tgz
+-rw-r--r--    1 root     root       4814905 Oct  4 19:08 mla-files.pre-build32.tgz
+-rw-r--r--    1 root     root          9648 Oct  4 19:05 settings.pre-p6
+paths-ok
+deployed
+new e2 pid=24876 @19:08:34
+webif up @19:09:00
+STATE active=g000000 lkg=g000028 journal=COMMITTED theme=navy gens=['g000000', 'g000025', 'g000026', 'g000027', 'g000028']
+boot.count=1 e2pid=24876 crashlogs=0
+2026-10-04 18:42:01 apply: g000000 -> g000027 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic-lines", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-04 18:42:01 commit: lkg=g000027
+2026-10-04 19:00:41 apply: g000000 -> g000028 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic-lines", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-04 19:00:41 commit: lkg=g000028
+19:08:38.7466 [InputDevice] Error: device='mice' getInputDevices <ERROR: ioctl(EVIOCGNAME): '[Errno 25] Inappropriate ioctl for device'>
+19:08:38.7467 [InputDevice] Error: device='mouse0' getInputDevices <ERROR: ioctl(EVIOCGNAME): '[Errno 25] Inappropriate ioctl for device'>
+19:08:58.2596 [CineViewMLA] posters-off names installed for SecondInfoBar
+19:08:58.2597 [CineViewMLA] posters-off names installed for EventViewSimple
+19:08:59.0810 [Skin] Error: Attribute 'progressPercentWidth' with value '70' in object of type 'eListbox' ('AttributeParser' object has no attribute 'progressPercentWidth')!
+19:08:59.0813 [Skin] Error: Attribute 'piconMargin' with value '3' in object of type 'eListbox' ('AttributeParser' object has no attribute 'piconMargin')!
+19:08:59.1158 [Skin] Error: Attribute 'progressPercentWidth' with value '78' in object of type 'eListbox' ('AttributeParser' object has no attribute 'progressPercentWidth')!
+19:08:59.1160 [Skin] Error: Attribute 'piconMargin' with value '3' in object of type 'eListbox' ('AttributeParser' object has no attribute 'piconMargin')!
+g000029
+set {'config.plugins.cineviewmla.poster_epg': 'True', 'config.plugins.cineviewmla.poster_eventview': 'True'}
+new e2 pid=26146 @19:09:30
+webif up @19:09:54
+   tracebacks=0 skin_errors_new=0 e2pid=26146 crashlogs=0
+cap on_epg_multi @19:10:44 png-ok
+cap on_epg_multi_down1 @19:10:49 png-ok
+cap on_quickepg @19:11:03 png-ok
+cap on_eventviewsimple @19:11:17 png-ok
+set {'config.plugins.cineviewmla.poster_epg': 'False', 'config.plugins.cineviewmla.poster_eventview': 'False'}
+new e2 pid=28511 @19:11:29
+webif up @19:11:54
+   tracebacks=0 skin_errors_new=0 e2pid=28511 crashlogs=0
+cap off_epg_multi @19:12:45 png-ok
+cap off_epg_multi_down1 @19:12:50 png-ok
+cap off_quickepg @19:13:04 png-ok
+cap off_eventviewsimple @19:13:18 png-ok
+set {'config.plugins.cineviewmla.poster_epg': 'True', 'config.plugins.cineviewmla.poster_eventview': 'True'}
+new e2 pid=30968 @19:13:32
+webif up @19:13:56
+STATE active=g000029 lkg=g000029 journal=COMMITTED theme=navy gens=['g000000', 'g000026', 'g000027', 'g000028', 'g000029']
+boot.count=1 e2pid=30968 crashlogs=0
+2026-10-04 19:00:41 apply: g000000 -> g000028 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic-lines", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-04 19:00:41 commit: lkg=g000028
+2026-10-04 19:09:22 apply: g000000 -> g000029 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic-lines", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-04 19:09:22 commit: lkg=g000029
+   tracebacks=0 skin_errors_new=0 e2pid=30968 crashlogs=0
+config.plugins.cineviewmla.poster_channelselection=True
+config.plugins.cineviewmla.poster_epg=True
+config.plugins.cineviewmla.poster_eventview=True
+config.plugins.cineviewmla.poster_infobar=True
+config.plugins.cineviewmla.poster_secondinfobar=True
+config.usage.show_second_infobar=2
+T33_DONE

@@ -1,0 +1,29 @@
+move @1.03s cursor y 386->214, panel same frame
+move @4.79s cursor y 212->224
+   panel @6.04s lag 1.25s
+move @6.75s cursor y 220->252
+   panel @6.92s lag 0.18s
+move @9.86s cursor y 252->282
+   panel @10.01s lag 0.16s
+move @12.98s cursor y 282->318
+   panel @13.13s lag 0.15s
+move @16.09s cursor y 312->334
+   panel @16.24s lag 0.15s
+move @19.24s cursor y 334->374
+   panel @19.42s lag 0.18s
+move @22.40s cursor y 374->334
+   panel @22.57s lag 0.17s
+move @23.78s cursor y 334->312
+   panel @23.94s lag 0.16s
+move @25.20s cursor y 312->282
+   panel @25.38s lag 0.18s
+move @26.64s cursor y 282->252
+   panel @26.79s lag 0.15s
+move @30.41s cursor y 256->244, panel same frame
+move @30.54s cursor y 244->256
+   panel @31.51s lag 0.97s
+move @32.33s cursor y 256->528, panel same frame
+move @32.46s cursor y 528->512
+   panel @32.59s lag 0.13s
+frames=259 span=37.9s fps=6.8 frame_step=0.15s
+LAG_SUMMARY measured_moves=15 median=0.16s p90=0.18s max=1.25s

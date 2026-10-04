@@ -1,0 +1,87 @@
+== 0. state + dev trigger plugin (Slot 8, removed at the end)
+__init__.py
+__init__.pyc
+plugin.py
+plugin.pyc
+g000017
+== 3. Channel Selection designs: navigation recordings, posters ON then OFF
+g000018
+new e2 pid=20303 @18:19:08
+webif up @18:19:34
+   tracebacks=0 skin_errors_new=0 accelAlloc=27 e2pid=20303 crashlogs=0
+   posterlist_on recorded 259 frames
+cap cs_posterlist_on_open @18:21:20 png-ok
+cap cs_posterlist_on_down1 @18:21:26 png-ok
+g000019
+new e2 pid=25773 @18:21:39
+webif up @18:22:04
+   tracebacks=0 skin_errors_new=0 accelAlloc=21 e2pid=25773 crashlogs=0
+   videofirst_on recorded 243 frames
+cap cs_videofirst_on_open @18:23:51 png-ok
+cap cs_videofirst_on_down1 @18:23:57 png-ok
+g000020
+new e2 pid=30008 @18:24:12
+webif up @18:24:36
+   tracebacks=0 skin_errors_new=0 accelAlloc=21 e2pid=30008 crashlogs=0
+   videofirst-right_on recorded 248 frames
+cap cs_videofirst-right_on_open @18:26:22 png-ok
+cap cs_videofirst-right_on_down1 @18:26:27 png-ok
+set {'config.plugins.cineviewmla.poster_channelselection': 'False'}
+new e2 pid=1939 @18:26:39
+webif up @18:27:05
+   tracebacks=0 skin_errors_new=0 accelAlloc=21 e2pid=1939 crashlogs=0
+g000021
+new e2 pid=3320 @18:27:42
+webif up @18:28:06
+   tracebacks=0 skin_errors_new=0 accelAlloc=27 e2pid=3320 crashlogs=0
+   posterlist_off recorded 259 frames
+cap cs_posterlist_off_open @18:29:53 png-ok
+cap cs_posterlist_off_down1 @18:29:58 png-ok
+g000022
+new e2 pid=7673 @18:30:15
+webif up @18:30:39
+   tracebacks=0 skin_errors_new=0 accelAlloc=21 e2pid=7673 crashlogs=0
+   videofirst_off recorded 240 frames
+cap cs_videofirst_off_open @18:32:26 png-ok
+cap cs_videofirst_off_down1 @18:32:32 png-ok
+g000023
+new e2 pid=11792 @18:32:47
+webif up @18:33:10
+   tracebacks=0 skin_errors_new=0 accelAlloc=21 e2pid=11792 crashlogs=0
+   videofirst-right_off recorded 239 frames
+cap cs_videofirst-right_off_open @18:34:58 png-ok
+cap cs_videofirst-right_off_down1 @18:35:03 png-ok
+set {'config.plugins.cineviewmla.poster_channelselection': 'True'}
+new e2 pid=16037 @18:35:17
+webif up @18:35:41
+   tracebacks=0 skin_errors_new=0 accelAlloc=21 e2pid=16037 crashlogs=0
+== 4. EventView real use: line by line vs classic
+g000024
+new e2 pid=17399 @18:36:15
+webif up @18:36:41
+   tracebacks=0 skin_errors_new=0 accelAlloc=21 e2pid=17399 crashlogs=0
+   eventview_lines recorded 191 frames
+g000025
+new e2 pid=20711 @18:38:14
+webif up @18:38:37
+   tracebacks=0 skin_errors_new=0 accelAlloc=22 e2pid=20711 crashlogs=0
+   eventview_classic recorded 178 frames
+== 5. restore dev state, remove trigger plugin
+g000026
+0
+new e2 pid=24035 @18:40:08
+webif up @18:40:32
+STATE active=g000026 lkg=g000026 journal=COMMITTED theme=navy gens=['g000000', 'g000023', 'g000024', 'g000025', 'g000026']
+boot.count=1 e2pid=24035 crashlogs=0
+2026-10-04 18:38:06 apply: g000024 -> g000025 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-04 18:38:06 commit: lkg=g000025
+2026-10-04 18:40:00 apply: g000025 -> g000026 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic-lines", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-04 18:40:00 commit: lkg=g000026
+   tracebacks=0 skin_errors_new=0 accelAlloc=22 e2pid=24035 crashlogs=0
+config.plugins.cineviewmla.poster_channelselection=True
+config.plugins.cineviewmla.poster_epg=True
+config.plugins.cineviewmla.poster_eventview=True
+config.plugins.cineviewmla.poster_infobar=True
+config.plugins.cineviewmla.poster_secondinfobar=True
+config.usage.show_second_infobar=2
+T30_DONE
