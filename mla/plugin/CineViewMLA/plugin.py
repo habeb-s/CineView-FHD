@@ -550,6 +550,39 @@ def _install_poster_off_names():
 		print("[CineViewMLA] posters-off names installed for %s" % cls.__name__)
 
 
+def _install_epg_eventview_name():
+	"""EventView opened from an EPG (EventViewEPGSelect, skinName ["EventView"]) shows the SELECTED event, but the
+	Classic 'EventView' screen is a live-channel layout: its texts come from session.Event_Now / Event_Next /
+	CurrentService and only its poster from 'Event' (device t42 2026-10-05: vertical EPG, INFO on HBO 2
+	'Nevjesta!' -> titles/times of HBO HD 'Holland' with the poster of 'The Bride!').  The Classic
+	'EventViewSimple' screen is built on the screen's own Event / Service sources and native widgets, so
+	EventViewEPGSelect gets it in front of 'EventView' ('_CVPosterOff' first while EventView posters are off).
+	Only the default name list is changed (a caller-supplied skinName is kept); nothing is changed while
+	another skin is active; no enigma2 file is touched."""
+	try:
+		from Screens.EventView import EventViewEPGSelect
+	except Exception as err:
+		print("[CineViewMLA] EPG event view name: unavailable: %s" % err)
+		return
+	orig = EventViewEPGSelect.__init__
+	if getattr(orig, "_cvmla_epg_ev", False):
+		return
+
+	def wrapped(self, *args, **kw):
+		orig(self, *args, **kw)
+		try:
+			if mla_active() and self.skinName == ["EventView"]:
+				names = ["EventViewSimple", "EventView"]
+				if configfile.getResolvedKey("config.plugins.cineviewmla.poster_eventview", silent=True) == "False":
+					names = ["EventViewSimple" + POSTER_OFF_SUFFIX] + names
+				self.skinName = names
+		except Exception as err:
+			print("[CineViewMLA] EPG event view name: %s" % err)
+	wrapped._cvmla_epg_ev = True
+	EventViewEPGSelect.__init__ = wrapped
+	print("[CineViewMLA] EPG event view name installed")
+
+
 NAME_CLIP_LAYOUTS = ("posterlist", "videofirst", "videofirst-right")  # narrow channel lists (D1)
 
 
@@ -644,6 +677,7 @@ def sessionstart(reason, session=None, **kwargs):
 		_trial.start()
 		_install_poster_off_names()
 		_install_service_name_clip()
+		_install_epg_eventview_name()
 
 
 def Plugins(**kwargs):
