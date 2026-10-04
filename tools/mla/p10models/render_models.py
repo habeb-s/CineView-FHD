@@ -115,7 +115,7 @@ def picon(im, box, path):
 	return im
 
 
-def pill(d, x, y, text, size=22, fg=TEXT, bg=(255, 255, 255, 38), pad=14, h=None):
+def pill(d, x, y, text, size=22, fg=TEXT, bg=(52, 70, 94, 255), pad=14, h=None):
 	f = font(size)
 	tw = f.getlength(text)
 	h = h or pitch(size) + 10
@@ -124,14 +124,14 @@ def pill(d, x, y, text, size=22, fg=TEXT, bg=(255, 255, 255, 38), pad=14, h=None
 	return x + tw + 2 * pad
 
 
-def bar(d, box, frac, r=3, track=(255, 255, 255, 46), fill=BLUE + (255,)):
+def bar(d, box, frac, r=3, track=(52, 70, 94, 255), fill=BLUE + (255,)):
 	x, y, w, h = box
 	d.rounded_rectangle([x, y, x + w, y + h], r, fill=track)
 	d.rounded_rectangle([x, y, x + max(h, int(w * frac)), y + h], r, fill=fill)
 
 
 def video():
-	return Image.open(D["video"]).convert("RGBA").resize((W, H))
+	return Image.open(os.environ.get("MODEL_VIDEO", D["video"])).convert("RGBA").resize((W, H))
 
 
 S = D["sel"]
@@ -158,7 +158,7 @@ def modern_infobar(on):
 		cx -= font(20).getlength(c) + 28 + 10
 		pill(d, cx, 818, c, 20, MUTED)
 	tbox(d, x0, 884, 1300, 52, 40, N["title"], TEXT, True, lines=1)
-	pill(d, 1836 - font(24).getlength(N["times_short"]) - 28, 890, N["times_short"], 24, TEXT, (255, 255, 255, 46))
+	pill(d, 1836 - font(24).getlength(N["times_short"]) - 28, 890, N["times_short"], 24)
 	bar(d, (x0, 950, 1836 - x0, 6), N["progress"])
 	tbox(d, x0, 978, 1100, 34, 26, "Next  %s   %s" % (X["start"], X["title"]), MUTED, lines=1)
 	tbox(d, 1836 - 400, 980, 400, 34, 24, "%s  ·  ★ 7.5" % (N.get("genre") or "Film"), ACCENT, align="right", lines=1)
@@ -222,7 +222,7 @@ def modern_cs(on):
 	bar(d, (x0, 436, w, 6), N["progress"])
 	tbox(d, x0, 462, w, 26 * (3 if on else 6), 22, N["desc"], MUTED)
 	ny = 570 if on else 650
-	d.line([952, ny, 1828, ny], fill=(255, 255, 255, 40), width=2)
+	d.line([952, ny, 1828, ny], fill=(40, 58, 80, 255), width=2)
 	nx = 952
 	if on:
 		im = poster(im, (952, ny + 24, 160, 240), X.get("poster"), 16)
@@ -328,7 +328,7 @@ def modern_eventview(on):
 		cx = pill(d, cx, 220 + h, c, 22) + 12
 	tbox(d, tx, 290 + h, tw, 26 * (14 if on else 15), 24, N["desc"] + " " + N["desc"], TEXT)
 	ny = 760 if on else 800
-	d.line([100, ny, 1820, ny], fill=(255, 255, 255, 40), width=2)
+	d.line([100, ny, 1820, ny], fill=(40, 58, 80, 255), width=2)
 	nx = 100
 	if on:
 		im = poster(im, (100, ny + 20, 110, 165), X.get("poster"), 12)
@@ -371,7 +371,7 @@ def minimal_sib(on):
 	d.text((x0, 640), "NOW   " + N["times_short"], font=font(22), fill=ACCENT)
 	h = tbox(d, x0, 674, w, 90, 40, N["title"], TEXT, lines=2)
 	tbox(d, x0, 690 + h, w, 26 * 5, 23, N["desc"], (210, 214, 222))
-	d.line([x0, 920, 1860, 920], fill=(255, 255, 255, 50), width=1)
+	d.line([x0, 920, 1860, 920], fill=(96, 104, 116, 255), width=1)
 	tbox(d, x0, 936, w, 34, 26, "NEXT   %s   %s" % (X["start"], X["title"]), MUTED, lines=1)
 	tbox(d, x0, 980, w, 52, 21, X["desc"], (150, 158, 170), lines=2)
 	return im
