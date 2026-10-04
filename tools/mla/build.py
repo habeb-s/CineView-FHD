@@ -889,6 +889,18 @@ def main(golden, comps, control, out):
 		else:
 			make_preview_none(os.path.join(d, "preview.png"))
 
+	# D2 (user approval to implement 2026-10-04 22:06): EPG Graphical Plus.
+	sys.path.insert(0, os.path.join(HERE, "p9epg"))
+	import gen_epg
+	emocks = os.environ.get("MLA_EPG_MOCKS", "")
+	for d in gen_epg.generate(skin):
+		print("D2 pack:", os.path.relpath(d, skin))
+		src = os.path.join(emocks, "graphicalplus_on.png")
+		if emocks and os.path.isfile(src):
+			from PIL import Image
+			Image.open(src).convert("RGB").resize((720, 405)).save(os.path.join(d, "preview.png"))
+		else:
+			make_preview_none(os.path.join(d, "preview.png"))
 	for f, scr, pos, size in apply_zorder_backgrounds(skin):
 		print("Z-ORDER %-45s %-28s background eLabel %s %s -> zPosition -1" % (f, scr, pos, size))
 
@@ -916,6 +928,11 @@ def main(golden, comps, control, out):
 		anchor = "</colors>"
 		assert x.count(anchor) == 1
 		x = x.replace(anchor, '\t<color name="steEpgCell" value="%s" />\n\t%s' % (cell, anchor))
+		# steThemeCard (user 2026-10-04 22:06): Video First list/card over bright video -> the theme panel colour
+		# at 0x14 alpha (~92 % opaque) instead of steThemeOverlay (0x2D, ~82 %); the video stays visible around.
+		m = re.search(r'<color\s+name="steThemePanel"\s+value="#[0-9A-Fa-f]{2}([0-9A-Fa-f]{6})"', x)
+		assert m, "steThemePanel missing in %s" % key
+		x = x.replace(anchor, '\t<color name="steThemeCard" value="#14%s" />\n\t%s' % (m.group(1), anchor))
 		open(tx, "w", encoding="utf-8").write(x)
 	n_epg = 0
 	ep = os.path.join(skin, "layouts", "epg", "classic", "screens.openatv.xml")

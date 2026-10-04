@@ -13,6 +13,7 @@
 #   evsimple   -> session.open(EventViewSimple, event, ServiceReference)  -- the same call MovieSelection.showEventInformation
 #                 makes, with the current event of the playing service
 #   ibeventview-> getEventViewInstance(..., skinName="InfoBarEventView") shown for 20 s (same call as EpgSelection.infoKeyPressed)
+#   radio      -> InfoBar.showRadio()          (radio channel list, native RADIO key path)
 #   vertical   -> InfoBar.openVerticalEPG()   (EPGvertical — contract check for the Columns proposal)
 #   graph      -> InfoBar.openGraphEPG()      (GraphicalEPG)
 #   pluginbrowser -> session.open(PluginBrowser)            (PluginBrowserList / PluginBrowserGrid by the user's layout setting)
@@ -78,6 +79,8 @@ def _open(what):
 			t.callback.append(done)
 			t.start(20000, True)
 			_keep[:] = [dlg, t]
+	elif what == "radio":
+		ib.showRadio()  # native RADIO key path (ChannelSelectionRadio, or ChannelSelection in e1-like mode)
 	elif what == "vertical":
 		ib.openVerticalEPG()
 	elif what == "graph":

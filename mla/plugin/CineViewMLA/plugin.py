@@ -526,6 +526,11 @@ def _install_poster_off_names():
 		targets.append((EventViewSimple, "eventview"))
 	except Exception as err:
 		print("[CineViewMLA] posters-off names: EventViewSimple unavailable: %s" % err)
+	try:
+		from Screens.EpgSelection import EPGSelection
+		targets.append((EPGSelection, "epg"))  # GraphicalEPG_CVPosterOff (EPG pack "graphicalplus")
+	except Exception as err:
+		print("[CineViewMLA] posters-off names: EPGSelection unavailable: %s" % err)
 	for cls, section in targets:
 		orig = cls.__init__
 		if getattr(orig, "_cvmla_poster_off", False):
@@ -568,6 +573,11 @@ def _clip_service_name_cell(lst, mode):
 	if getattr(lst, "instance", None) is None:
 		return None  # setMode before the widget exists; postWidgetCreate calls it again
 	if not mla_active() or _active_layout("channelselection") not in NAME_CLIP_LAYOUTS:
+		return None
+	# Only the TV channel list skinned by the D1 designs (screen class ChannelSelection).  The radio list and the
+	# other channel pickers keep the Classic skin and its wide rows (user review 2026-10-04 22:06: the radio list
+	# lost ~73 px of event text when the clip applied to every legacy list).
+	if type(getattr(lst, "serviceList", None)).__name__ != "ChannelSelection":
 		return None
 	if cu.servicelist_twolines.value or cu.servicelist_column.value != "-1" or not cu.service_icon_enable.value:
 		return None

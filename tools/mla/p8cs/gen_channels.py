@@ -137,7 +137,8 @@ def videofirst(skin, right=False):
 		dx = b["card"]["x"] - E(s["boxes"]["card"])["x"]
 		on = {k: dict(v, x=v["x"] + dx) for k, v in on.items()}
 		off = {k: dict(v, x=v["x"] + dx) for k, v in off.items()}
-	x = [G.box(b["list_panel"], "steThemeOverlay", 1), G.box(b["card"], "steThemeOverlay", 1), G.box(b["clock"], "steThemeOverlay", 1)]
+	# steThemeCard: ~92 % opaque theme panel (bright scenes, user 2026-10-04 22:06); the rest of the video stays clear
+	x = [G.box(b["list_panel"], "steThemeCard", 1), G.box(b["card"], "steThemeCard", 1), G.box(b["clock"], "steThemeCard", 1)]
 	x.append('\t\t<widget source="Title" render="Label" %s transparent="1" zPosition="12" foregroundColor="foreground" font="Regular;%d" noWrap="1" />' % (G.pos(b["title"]), fs["title"]))
 	x.append(list_widget(b["list"], s["row_h"], 26, 22, 26))
 	x += colour_keys(b["keys"])
