@@ -43,4 +43,4 @@ round lines1 lines; round lines2 lines; round lines3 lines; round lines4 lines
 echo "== restore"
 $R "$E apply --set eventview=classic-lines 2>&1 | tail -1"
 restart 'rm -rf /usr/lib/enigma2/python/Plugins/Extensions/CineViewMLATextTest2 /tmp/cvmla/texttest2.json;'; st; errs
-echo T46_DONE
+echo T51_DONE

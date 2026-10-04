@@ -24,4 +24,4 @@ for ib in classic modern; do
   errs
 done
 $R "$E apply --theme navy --set infobar=classic 2>&1 | tail -1"; restart ""; st; errs
-echo T48_DONE
+echo T48B_DONE
