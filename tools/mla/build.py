@@ -87,6 +87,113 @@ def _cv_rateable(title, source):
         return i.get('generic') is None and i.get('kind') in ('movie', 'series')
     except Exception:
         return False
+
+
+# ---- Reliable ratings only (user order 2026-10-04 22:06 §5; device t37: 'Bajkeri' (The Bikeriders, 2023) showed
+# 4.7/10 because a bare title search fell back to the FIRST IMDb result).  A rating is shown only for the work the
+# poster identity engine has reliably identified (cached identity + meta json):
+#   * identity provider imdb  -> the rating of exactly that IMDb id (tt...);
+#   * other provider          -> IMDb search by the identified title; only an EXACT title match whose release year
+#                                is within 1 year of the identified year; never the first result as a fallback.
+# No reliable identity -> no rating (the widget shows its empty value).
+def _cv_target(source, title):
+    try:
+        from Components.CineViewMLAPosterMatch import identify
+        from Components.Renderer.CineViewMLAPosterX import _mla_cached
+        ev = getattr(source, 'event', None)
+        short = (ev.getShortDescription() if ev else '') or ''
+        ext = (ev.getExtendedDescription() if ev else '') or ''
+        i = identify(title, short, ext, now_year=time.localtime().tm_year + 1)
+        if i.get('generic') or i.get('kind') not in ('movie', 'series'):
+            return None
+        path = _mla_cached(i)
+        if not path:
+            return None
+        meta = json.load(open(path[:-4] + '.json'))
+        if meta.get('provider') == 'imdb' and str(meta.get('id') or '').startswith('tt'):
+            return ('id', str(meta['id']), None, i['key'])
+        if meta.get('title'):
+            return ('search', meta['title'], meta.get('year'), i['key'])
+    except Exception:
+        pass
+    return None
+
+
+def _cv_pick_strict(payload, wanted, year):
+    edges = (((payload or {}).get('data') or {}).get('mainSearch') or {}).get('edges') or []
+    wn = CineViewMLAIMDb.norm(wanted)
+    for edge in edges:
+        ent = (((edge or {}).get('node') or {}).get('entity') or {})
+        tid = ent.get('id')
+        names = [(ent.get(k) or {}).get('text') for k in ('titleText', 'originalTitleText')]
+        if not tid or not any(n and CineViewMLAIMDb.norm(n) == wn for n in names):
+            continue
+        y = ((ent.get('releaseYear') or {}).get('year'))
+        if year and (not y or abs(int(y) - int(year)) > 1):
+            continue
+        return tid
+    return None
+
+
+def _cv_worker(cls, key, target):
+    rating = None
+    try:
+        tid = target[1] if target[0] == 'id' else None
+        if target[0] == 'search':
+            r = cls.post_graphql(cls.search_query(target[1]))
+            if r.ok:
+                tid = _cv_pick_strict(r.json(), target[1], target[2])
+        if tid:
+            d = cls.post_graphql(cls.rating_query(tid))
+            if d.ok:
+                rs = ((((d.json() or {}).get('data') or {}).get('title') or {}).get('ratingsSummary') or {})
+                v = rs.get('aggregateRating')
+                if v is not None:
+                    rating = float(v)
+    except Exception:
+        rating = None
+    with cls.LOCK:
+        cls.CACHE[key] = (rating, time.time())
+        cls.PENDING.discard(key)
+
+
+def _cv_rating(self, target):
+    key = target[-1]
+    now = time.time()
+    with self.LOCK:
+        item = self.CACHE.get(key)
+        if item and now - item[1] < self.TTL:
+            return item[0]
+        if key not in self.PENDING:
+            self.PENDING.add(key)
+            try:
+                t = threading.Thread(target=_cv_worker, args=(type(self), key, target))
+                t.daemon = True
+                t.start()
+            except Exception:
+                self.PENDING.discard(key)
+        return item[0] if item else None
+
+
+@cached
+def _cv_getText(self):
+    title = self.title().strip()
+    target = _cv_target(self.source, title) if title else None
+    if target is None:
+        return self.empty
+    rating = _cv_rating(self, target)
+    if rating is None:
+        return self.empty
+    if self.mode == 'stars':
+        n = max(0, min(5, int(round(rating / 2.0))))
+        return ('\u2605' * n) + ('\u2606' * (5 - n))
+    if self.mode in ('label', 'imdb'):
+        return 'IMDb %.1f/10' % rating
+    return '%.1f/10' % rating
+
+
+CineViewMLAIMDb.getText = _cv_getText
+CineViewMLAIMDb.text = property(_cv_getText)
 """
 RENDERER_PATCHES = [
 	# Next-event posters (nexts>0) are chained from the END of the event the source currently holds.
