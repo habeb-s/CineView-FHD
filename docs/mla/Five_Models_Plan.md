@@ -37,6 +37,32 @@ look; **pending** = the user still has to approve it.
   yet verified on this receiver, and that check comes first.
 - **Minimal**: low occlusion. Gradient scrims instead of boxes; an InfoBar under 12 % of the picture; small optional posters.
 
+## PVR and EventView plans (§4, contracts checked in 57b7a51 source)
+**PVR — Cover Library (Details).** MovieSelection has no native cover grid. `self["list"]` is `MovieList`, a
+fixed-row eListbox whose row height comes from `itemsperpage`. Drawing a grid would mean writing a new list
+class, which is forbidden ("no invented target widgets"). Plan:
+- Keep the native list, at 6 rows.
+- Add a large cover of the SELECTED recording: `CineViewMLAPosterX` on `source="Service"` (ServiceEvent).
+  `_source_event` already reads a ServiceEvent's event; the device test must confirm that a recording's
+  meta event resolves to an identity.
+- Below the cover: title, recording date, channel, duration and description, plus the native free-space and
+  trash widgets.
+- Keep `PigTemplate` and the coloured keys. EMC stays EMC-native.
+- Posters OFF: the list widens to the full width (named widget → `MovieSelection_CVPosterOff` through the
+  CineView MLA plugin, the same mechanism as EPG).
+- Device tests needed: real recordings on USB in Slot 8 only. HDD recordings may only be read: no writing,
+  no deleting.
+
+**EventView — Feature (Cinema).** Native `EventViewSimple` / `EventViewEPGSelect` sources: Event, Service,
+`epg_description` (ScrollLabel), key_*. Plan:
+- A big poster (400x600) on the left. Title, times, genre and IMDb (reliable only) in a column, and the
+  description in the native ScrollLabel (paging stays native).
+- Both description motions (`classic` / `classic-lines`) remain options. Neither is forced.
+- Posters OFF: the description spans the full width (`_CVPosterOff` screen).
+
+**Order after the user's look decision:** Modern InfoBar (device run t43) → Modern SIB / CS / EPG /
+EventView → Minimal → PVR Cover Library → EventView Feature.
+
 ## Rules for every design
 - **Posters ON / OFF.** OFF reflows the screen: no hole, no reserved frame.
   - Named Python widgets use `<screen>_CVPosterOff` screens through the CineView MLA plugin.
