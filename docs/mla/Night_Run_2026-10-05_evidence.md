@@ -48,7 +48,7 @@ received 403 from IMDb. The values come from the exact tt id.
 - **Columns verdict.** The native vertical EPG works with CineView once the index is hidden. A "Columns" design
   can therefore be built on this native screen (list1..list5, piconCh/currCh/Active) without new widgets.
 
-## 4. EventView opened from an EPG showed two programmes — fixed (build40), test t47
+## 4. EventView opened from an EPG showed two programmes — fixed (build40 → build42), tests t47 / t50
 - **Symptom (t42).** INFO in the vertical EPG on HBO 2 "Nevjesta!" showed HBO HD "Holland" titles and times
   together with the "The Bride!" poster.
 - **Cause.** `EventViewEPGSelect` uses skinName `["EventView"]`. The Classic `EventView` screen is a
@@ -57,6 +57,16 @@ received 403 from IMDb. The values come from the exact tt id.
 - **Fix.** The CineView MLA plugin puts the Classic `EventViewSimple` screen in front of `EventView`, plus
   `_CVPosterOff` when posters are OFF. That screen is built on the screen's own `Event`/`Service` sources and
   native widgets. A caller-supplied skinName is kept, and the hook is inactive under other skins.
+- **t47 (build40).**
+  - Vertical EPG and Graphical EPG on HBO 2 "Opaki Radnik" now show that event: 02:58–04:50, matching
+    OpenWebif, with its own poster (A Working Man). Posters OFF selects `EventViewSimple_CVPosterOff`.
+  - **Regression found:** the InfoBar's INFO opens the same class (`EventViewEPGSelect`), so live INFO lost the
+    approved Classic dashboard.
+- **build42.** The dashboard stays when the event is the playing service's CURRENT event; every other event
+  (another channel, or a later event of the playing channel) gets the simple screen. t50 checks all of these
+  cases.
+- **EPG text.** Some descriptions show garbled letters ("Ïzivio", "kÂcer"). OpenWebif shows exactly the same
+  text, so this is the broadcast's encoding as decoded by Enigma2, not CineView.
 - **Open, not changed.** Neither Classic screen shows the coloured-key captions (Add Timer / Single EPG /
   Multi EPG). The keys still work.
 
@@ -72,6 +82,17 @@ received 403 from IMDb. The values come from the exact tt id.
   other modes behave natively. The continuous Classic motion is unchanged.
 - **Measurement.** jumpcheck now also accepts a pixel-exact "restart-to-top".
 - **Continuous mode (t39).** swim AR/EN shows smooth 1–5 px steps, with no change.
+- **t46 (build39), 3 rounds × AR/EN.**
+  - Rounds 1–2: 135 moves, **0 bad**, 10 pixel-exact restarts-to-top.
+  - Round 3 English: **2 bad moves in the middle of the text**, both forward (upward) moves. One frame is half
+    blank, then two lines stay drawn over each other for 1.6 s.
+  - So the wrong paint is not limited to the reverse. eWidget::move() invalidates the old and the new area (the
+    desktop is not buffered), so the fault is in the paint itself, inside enigma2 graphics or the driver. The
+    cause is not proven.
+- **build43 mitigation.** One more full repaint of the label 150 ms after every line move, so a wrong paint
+  lasts at most one frame. t51 runs 4 rounds × AR/EN.
+- **Measurement.** jumpcheck now also tries 3–4 line shifts: a 4.8-s gap in a recording had hidden several
+  steps. Re-scored: t39 (native) 2 bad of 112; t46 rounds 1–2 0 bad of 135.
 
 ## 6. Modern model — skin features and InfoBar on the receiver
 - **t41 probe** (CineViewMLAFeatureProbe over HRT1, OSD alpha measured):
@@ -88,7 +109,10 @@ received 403 from IMDb. The values come from the exact tt id.
   - Live values vs OpenWebif: HRT1 72 % / 11.5 dB vs 71 / 11.61; HBO 2 73 % / 11.6 dB vs 73 / 11.65.
   - 0 tracebacks, 0 skin errors.
   - **Open:** the HD and 16:9 chips were missing in 2 of 6 theme runs. Those runs restarted on the same
-    channel, so Enigma2 timing is suspected. t48 compares Classic and Modern under the identical sequence.
+    channel, so Enigma2 timing is suspected.
+  - **t48 (identical sequence, Classic vs Modern).** All samples show HD and 16:9 for both designs. The script's
+    loop variable was overwritten by a helper, so only 1 restart sample per design survived. t48b repeats the
+    test with 4 restarts per design.
 
 ## 7. Performance / memory soak — RUNTIME TESTED (build36, t38)
 Poster List, posters ON, 33 navigation rounds (30.6 min, about 33 key presses per round + EventView):
@@ -139,7 +163,28 @@ review.
   - **Page 2 at 0.15 s** turned out to be kids channels: all series without a reliable identity, so every row
     shows the same placeholder. The 14 flagged frames are the identical-placeholder artefact; visually the panel
     follows the cursor.
-  - t49 repeats 0.15 s on the movie rows with a fresh empty cache.
+  - **t49 (build41), movie rows, 0.15 s, fresh empty cache.** 18 identity lookups and 8 posters downloaded
+    during the run.
+- **postercheck corrected, and its sensitivity proven.**
+  - **One-frame cursor misreads** (row 9 → 10 → 9 within 0.14 s) split a row into fake segments. They are now
+    merged.
+  - **The neutral placeholder** shown while a poster loads, or when no reliable poster exists, no longer counts as
+    "the previous channel's poster". Only a real poster of another channel is stale.
+  - **Planted test.** A real previous-channel poster pasted into the t44 recording is detected (stale 0 → 1).
+- **Result, all valid runs: 0 stale.**
+
+  | Run | Cache | Speed | Stale |
+  |---|---|---|---|
+  | t44 | cold | 0.35 s | 0 |
+  | t44 | cold (placeholder page) | 0.15 s | 0 |
+  | t49 | cold, real downloads | 0.15 s | 0 |
+  | t34 | cached | 0.35 s | 0 |
+  | t34 | cached | 0.15 s | 0 |
+
+  The previous poster is visible only during the < 0.5 s transition (3–7 frames per run).
+- **Not testable within the bounds.** A slow network: simulating it would mean changing the receiver's network
+  settings, which is not allowed. Downloads that finished after the cursor had moved on were exercised
+  naturally in t44/t49.
 
 ## 9. Other fixes
 - **Poster log.** It was one endless line, because the golden `_log` wrote a literal backslash-n.
