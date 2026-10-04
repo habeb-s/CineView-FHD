@@ -506,6 +506,45 @@ def main(session, **kwargs):
 	session.open(CineViewMLASetup)
 
 
+POSTER_OFF_SUFFIX = "_CVPosterOff"
+
+
+def _install_poster_off_names():
+	"""Posters OFF for screens whose texts are Python-owned named widgets (SecondInfoBarECM, EventViewSimple,
+	InfoBarEventView).  The skin ships '<name>_CVPosterOff' screens with the wider geometry; here the screen's
+	skinName list gets '<name>_CVPosterOff' in front of each name BEFORE the skin is applied (the session applies
+	the skin after __init__), so the native skinName fallback uses it when it exists and otherwise the normal
+	screen.  Only the in-memory classes are wrapped (no enigma2 file is touched); errors never reach the screen."""
+	targets = []
+	try:
+		from Screens.InfoBarGenerics import SecondInfoBar
+		targets.append((SecondInfoBar, "secondinfobar"))
+	except Exception as err:
+		print("[CineViewMLA] posters-off names: SecondInfoBar unavailable: %s" % err)
+	try:
+		from Screens.EventView import EventViewSimple
+		targets.append((EventViewSimple, "eventview"))
+	except Exception as err:
+		print("[CineViewMLA] posters-off names: EventViewSimple unavailable: %s" % err)
+	for cls, section in targets:
+		orig = cls.__init__
+		if getattr(orig, "_cvmla_poster_off", False):
+			continue
+
+		def wrapped(self, *args, _orig=orig, _section=section, **kw):
+			_orig(self, *args, **kw)
+			try:
+				if mla_active() and configfile.getResolvedKey("config.plugins.cineviewmla.poster_%s" % _section, silent=True) == "False":
+					names = self.skinName if isinstance(self.skinName, list) else [self.skinName]
+					if names and not names[0].endswith(POSTER_OFF_SUFFIX):
+						self.skinName = [n + POSTER_OFF_SUFFIX for n in names] + list(names)
+			except Exception as err:
+				print("[CineViewMLA] posters-off names: %s" % err)
+		wrapped._cvmla_poster_off = True
+		cls.__init__ = wrapped
+		print("[CineViewMLA] posters-off names installed for %s" % cls.__name__)
+
+
 def sessionstart(reason, session=None, **kwargs):
 	global _timer, _session
 	if reason != 0 or session is None:
@@ -521,6 +560,7 @@ def sessionstart(reason, session=None, **kwargs):
 	_timer.start(HEALTHY_AFTER_MS, True)
 	if mla_active():
 		_trial.start()
+		_install_poster_off_names()
 
 
 def Plugins(**kwargs):

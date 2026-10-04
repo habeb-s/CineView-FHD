@@ -691,6 +691,44 @@ def apply_classic_posters_off(skin):
 	return out
 
 
+# Screens whose texts are Python-owned named widgets (self["FullDescription"], self["epg_description"], ...):
+# a skin cannot make a conditional copy of them.  For posters OFF the skin ships a second screen
+# "<name>_CVPosterOff" with the wider geometry, and the CineView MLA plugin (sessionstart, MLA skin active,
+# switch False) puts that name in front of the screen's skinName list before the skin is applied — the native
+# skinName fallback picks it; with the switch ON (or the plugin absent) nothing changes.  No enigma2 file is
+# modified.  (user request 2026-10-04 17:01: "safe runtime solution")
+POFF_NAMED = {
+	("secondinfobar", "SecondInfoBarECM"): {"channel": 1790, "epg_description": 1790, "#PliExtraInfo": 1790},
+	("eventview", "EventViewSimple"): {"channel": 1730, "Title": 1730, "FullDescription": 1730},
+	("eventview", "InfoBarEventView"): {"FullDescription": 1795},
+}
+
+
+def apply_classic_posters_off_named(skin):
+	out = []
+	for (sec, scr), widths in POFF_NAMED.items():
+		path = os.path.join(skin, "layouts", sec, "classic", "screens.openatv.xml")
+		src = open(path, encoding="utf-8").read()
+		m = re.search(r'([ \t]*)<screen name="%s"(.*?)</screen>' % re.escape(scr), src, re.S)
+		assert m, scr
+		body = m.group(0)
+		new = body.replace('<screen name="%s"' % scr, '<screen name="%s_CVPosterOff"' % scr, 1)
+		n = 0
+		for key, w in widths.items():
+			if key.startswith("#"):  # a source widget identified by its converter text
+				pat = r'(<widget\b[^>]*size=")(\d+),(\d+)("[^>]*>\s*<convert type="%s")' % re.escape(key[1:])
+			elif key == "Title":
+				pat = r'(<widget source="Title"[^>]*size=")(\d+),(\d+)(")'
+			else:
+				pat = r'(<widget name="%s"[^>]*size=")(\d+),(\d+)(")' % re.escape(key)
+			new, k = re.subn(pat, lambda mm: "%s%d,%s%s" % (mm.group(1), w, mm.group(3), mm.group(4)), new, count=1)
+			assert k == 1, (scr, key)
+			n += k
+		open(path, "w", encoding="utf-8").write(src.replace(body, body + "\n" + new, 1))
+		out.append((sec, scr, n))
+	return out
+
+
 def load_theme_module(control_dir):
 	spec = importlib.util.spec_from_file_location("cv_theme", os.path.join(control_dir, "theme.py"))
 	m = importlib.util.module_from_spec(spec)
@@ -718,6 +756,8 @@ def main(golden, comps, control, out):
 	if os.environ.get("MLA_CLASSIC_POFF", "1") == "1":  # Phase B, user-approved 2026-10-04 17:01 (MLA_CLASSIC_POFF=0 = rc4 layout)
 		for sec, scr, mv, hd in apply_classic_posters_off(skin):
 			print("POSTERS-OFF (Classic) %-16s %-22s %d moved, %d hidden" % (sec, scr, mv, hd))
+		for sec, scr, n in apply_classic_posters_off_named(skin):
+			print("POSTERS-OFF (Classic, named widgets) %-16s %s_CVPosterOff: %d widgets widened" % (sec, scr, n))
 	# P7: Details family (user-approved direction 2026-10-03; Classic packs untouched).
 	make_default_poster(os.path.join(skin, "mla_assets", "poster_default.jpg"))  # the P7 poster slots embed it
 	sys.path.insert(0, os.path.join(HERE, "p7"))
