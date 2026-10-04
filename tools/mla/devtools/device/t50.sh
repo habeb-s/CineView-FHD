@@ -41,4 +41,4 @@ zap $HBO; X; op vertical 9; $RC 106; sleep 3; $RC 108; sleep 3; $RC 358; sleep 5
 restart "python3 /tmp/cvmla/setcfg.py config.plugins.cineviewmla.poster_eventview=True;"
 $R "rm -rf $P"; restart ""; st; errs
 $R "grep -E 'cineviewmla.poster' /etc/enigma2/settings"
-echo T47_DONE
+echo T50_DONE
