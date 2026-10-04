@@ -811,7 +811,7 @@ def apply_multiepg_description(skin):
 	"""Multi EPG (EPGSelectionMulti, Classic): the description box (1210,260 555x455) lies under the poster
 	(1495,120 270x405, z=12).  It was never visible on the TV before the z-order fix (covered by the background),
 	so the overlap only showed up on the device after it (t31 18:49).  Posters ON: the description starts under the
-	poster (y 540, 175 px = 6 lines of size 23); posters OFF: unchanged full column.  Same CineViewMLAShowIf switch
+	poster (y 540, exactly 6 lines of size 23 = 156 px: no half line at the bottom, device t32); posters OFF: unchanged full column.  Same CineViewMLAShowIf switch
 	as the title next to it."""
 	p = os.path.join(skin, "layouts", "epg", "classic", "screens.openatv.xml")
 	x = open(p, encoding="utf-8").read()
@@ -819,7 +819,7 @@ def apply_multiepg_description(skin):
 	body = m.group(0)
 	assert body.count(MULTIEPG_DESC_OLD) == 1, "Multi EPG description anchor"
 	key = POSTER_TOGGLE % "epg"
-	on = MULTIEPG_DESC_OLD.replace('position="1210,260" size="555,455"', 'position="1210,540" size="555,175"').replace(
+	on = MULTIEPG_DESC_OLD.replace('position="1210,260" size="555,455"', 'position="1210,540" size="555,%d"' % (6 * _pitch(23))).replace(
 		"</convert>\n\t\t</widget>", '</convert>\n\t\t\t<convert type="CineViewMLAShowIf">%s,True</convert>\n\t\t</widget>' % key)
 	off = MULTIEPG_DESC_OLD.replace("</convert>\n\t\t</widget>", '</convert>\n\t\t\t<convert type="CineViewMLAShowIf">%s,True,Invert</convert>\n\t\t</widget>' % key)
 	x = x.replace(body, body.replace(MULTIEPG_DESC_OLD, on + "\n\t\t" + off), 1)
