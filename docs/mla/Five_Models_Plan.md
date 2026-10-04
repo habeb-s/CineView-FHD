@@ -17,7 +17,7 @@ look; **pending** = the user still has to approve it.
 | InfoBar | tested, approved | tested (P7), pending | tested (P7), pending | mockup, pending | mockup, pending |
 | SecondInfoBar | tested, approved | tested (P7), pending | tested (P7), pending | mockup, pending | mockup, pending |
 | Channel Selection | tested, approved | Poster List: tested, look approved in direction | Video First L/R: tested, look approved in direction | mockup, pending | mockup, pending |
-| EPG — Graphical | tested, approved | Graphical Plus: implementation approved, device tests running | — (proposal: Graphical Plus with the Cinema palette) | mockup, pending | mockup, pending |
+| EPG — Graphical | tested, approved | Graphical Plus: device-tested build36 (ON/OFF, 6 themes, cursor follow), look pending | — (proposal: Graphical Plus with the Cinema palette) | mockup, pending | mockup, pending |
 | EPG — Single / Multi / Quick / InfoBar | tested, approved (Classic only) | uses Classic | uses Classic | not started | not started |
 | PVR | Classic, tested | Cover Library: planned | — | not started | not started |
 | EventView | Classic + "line by line" option, tested | — | Feature: planned | mockup, pending | mockup, pending |
@@ -49,6 +49,20 @@ look; **pending** = the user still has to approve it.
 - **Save / restore / automatic revert** through the engine.
 - **No unreliable posters or IMDb ratings.**
 - **Performance**: no growth of RSS, threads or poster cache.
+
+## Device findings, night of 2026-10-04
+- **Graphical Plus** (build35 t37, build36 t40): opens in all six themes. Details follow the highlighted cell
+  (Bajkeri → Holland → Kaskader). Posters OFF selects `GraphicalEPG_CVPosterOff`: the grid widens to 1540 px
+  (~3 h at the default 180-min setting) with no reserved poster space. build35 had a SkinError (`date` widget);
+  fixed in build36, which runs with 0 tracebacks and 0 skin errors. In the OFF panel the title shrank to 2 lines
+  and the description is left-aligned (justified 240 px text had wide gaps).
+- **Vertical EPG (Columns study).** The visible screen was only a numbered channel list. Cause: the inherited
+  CineView screen draws `self["list"]` (a MenuList used only as the page index by EpgSelection.py) at 1730x700,
+  z=19, over the five columns. This defect already exists in the golden skin. Fix (build37): the native
+  contract (receiver `skin_default.xml`, "DO NOT CHANGE THIS LINE"): zero width, z=-10, 5 rows (3 for PIG).
+  Device check t42 is queued. The Columns design decision waits for that run.
+- **Modern skin features**: the probe `CineViewMLAFeatureProbe` and t41 are queued (cornerRadius all/top,
+  border, 80 % card, gradient with alpha blending, rounded Label background, rounded ePixmap).
 
 ## Order of work (autonomous run 2026-10-04 night)
 1. Fixes from the user's video review: name clip scope, Video First dimming, poster tests, EventView AR/EN.
