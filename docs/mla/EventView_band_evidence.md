@@ -1,7 +1,8 @@
 # EventView "blank band" — device evidence (Slot 8, OpenATV 8.0.1 / 57b7a51)
 
-**Status:** ROOT CAUSE IDENTIFIED (for the screenshots) — framebuffer-grab tearing, not a layout/state defect.
-On-screen visibility (what a viewer sees on the TV) is **not verified** — needs a human look or a camera.
+**Status (2026-10-04):** OPEN. The partly cleared box is real in the **displayed** framebuffer (2–6 ms while the
+text swims, measured on the receiver — see the update at the end); it is not created by the grab tool.  Whether a
+viewer perceives it on the TV is not verified.  The 2026-10-03 reading below ("grab tearing") is superseded.
 
 ## Symptom
 In some OpenWebif grabs (`/grab?mode=osd`) of the Classic EventView, the top part of a swimming description box
@@ -14,7 +15,7 @@ In some OpenWebif grabs (`/grab?mode=osd`) of the Classic EventView, the top par
 | evfast (22:19) | build18 (hidden ShowIf variants get empty text) | same | 4/120 frames flagged — the hidden-variant fix did **not** change the rate |
 | evtear (22:2x) | build18 | ONE EventView kept open (Cinemax), 40 back-to-back grabs while the description swims | 8 of 80 boxes flagged |
 
-## Why this is grab tearing
+## 2026-10-03 reading (superseded by the 2026-10-04 measurement)
 - evtear, right box, first visible text row per frame (px below the box top):
   `93, 61, 0, 0, 55, 0, 8, 0, 0, 0, 42, 0, 0, 3, 236, 0, 4, 0, 0, 5, 0, 0, 6, 31, 0, 82, 0, …, 88, …, 146, 0`
   — the box flips between "normal" and "band" from one grab to the next (well under a second) and the band
