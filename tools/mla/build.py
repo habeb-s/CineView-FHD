@@ -726,6 +726,19 @@ def main(golden, comps, control, out):
 	for d in gen_details.generate(skin) + gen_cinema.generate(skin):
 		print("P7 pack:", os.path.relpath(d, skin))
 		_p7_preview(d, skin)
+	# D1 (user-approved 2026-10-04 17:01): Channel Selection families Poster List / Video First (+ list on the right).
+	sys.path.insert(0, os.path.join(HERE, "p8cs"))
+	import gen_channels
+	mocks = os.environ.get("MLA_CS_MOCKS", "")
+	for d in gen_channels.generate(skin):
+		print("D1 pack:", os.path.relpath(d, skin))
+		pid = os.path.basename(d)
+		src = os.path.join(mocks, {"posterlist": "posterlist_on.png", "videofirst": "videofirst_on.png", "videofirst-right": "videofirst_on_right.png"}[pid])
+		if mocks and os.path.isfile(src):
+			from PIL import Image
+			Image.open(src).convert("RGB").resize((720, 405)).save(os.path.join(d, "preview.png"))
+		else:
+			make_preview_none(os.path.join(d, "preview.png"))
 
 	# Themes: the original CineView palette() applied to the golden <colors>; navy == golden (verified).
 	theme = load_theme_module(control)
