@@ -258,7 +258,10 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 			entries.append(getConfigListEntry(_("Design") + " - " + _(spec.get("label", sec)), self.cfgLayouts[sec], "layout", sec))
 		for sec, cfg in self.cfgPosters.items():
 			entries.append(getConfigListEntry(_("Posters") + " - " + _(self.secs.get(sec, {}).get("label", sec)), cfg, "poster", sec))
+		self.cfgEngine = ConfigSelection(default=runtime().get("poster_engine", "identity") if runtime().get("poster_engine", "identity") in ("identity", "legacy") else "identity",
+			choices=[("identity", _("Unified (verified match, default image when unsure)")), ("legacy", _("Legacy (title search only)"))])
 		entries += [
+			getConfigListEntry(_("Poster engine"), self.cfgEngine, "engine", ""),
 			getConfigListEntry(_("Server / CAM information"), self.mla.servermode, "native", ""),
 			getConfigListEntry(_("Second InfoBar mode"), config.usage.show_second_infobar, "native", ""),
 			getConfigListEntry(_("Second InfoBar timeout"), config.usage.second_infobar_timeout, "native", ""),
@@ -319,6 +322,8 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 			desc = "%s\n%s %s" % (m.get("name", cfg.value), _("Version"), m.get("version", ""))
 		elif kind == "poster":
 			desc = _("Applied without a restart, from the next channel or event change.")
+		elif kind == "engine":
+			desc = _("Unified: a poster only when title, type and year are confirmed, otherwise the CineView default image.\nLegacy: the original title search (may show posters of other works).\nTakes effect after the next GUI restart.")
 		if not p:
 			note = _("No preview is available for this item.") if kind in ("layout", "theme") else _("This option has no visual preview.")
 			desc = (desc + "\n\n" + note) if desc else note
@@ -333,12 +338,18 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 		for cfg in [self.mla.servermode, config.usage.show_second_infobar, config.usage.second_infobar_timeout] + list(self.cfgPosters.values()):
 			cfg.save()
 		configfile.save()
+		self._engine_changed = runtime().get("poster_engine", "identity") != self.cfgEngine.value
+		if self._engine_changed:
+			save_runtime({"poster_engine": self.cfgEngine.value})
 
 	def keyApply(self):
 		self._save_runtime_and_native()
 		new = self._selection()
 		if new == {"theme": self.sel.get("theme"), "layouts": self.sel.get("layouts")}:
-			self.session.open(MessageBox, _("Settings saved. The design is unchanged."), MessageBox.TYPE_INFO, timeout=4)
+			msg = _("Settings saved. The design is unchanged.")
+			if getattr(self, "_engine_changed", False):
+				msg += "\n" + _("The poster engine changes after the next GUI restart.")
+			self.session.open(MessageBox, msg, MessageBox.TYPE_INFO, timeout=6)
 			self.close()
 			return
 		try:
@@ -389,7 +400,8 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 	def _profile_data(self):
 		return {"schema": 1, "theme": self.cfgTheme.value, "layouts": {s: c.value for s, c in self.cfgLayouts.items()},
 			"posters": {s: bool(c.value) for s, c in self.cfgPosters.items()}, "servermode": self.mla.servermode.value,
-			"show_second_infobar": config.usage.show_second_infobar.value, "second_infobar_timeout": config.usage.second_infobar_timeout.value}
+			"show_second_infobar": config.usage.show_second_infobar.value, "second_infobar_timeout": config.usage.second_infobar_timeout.value,
+			"poster_engine": self.cfgEngine.value}
 
 	def _profileSave(self, name):
 		import re as _re
@@ -432,6 +444,7 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 			if sec in self.cfgPosters:
 				self.cfgPosters[sec].value = bool(v)
 		setc(self.mla.servermode, data.get("servermode"), "servermode")
+		setc(self.cfgEngine, data.get("poster_engine"), "poster engine")
 		setc(config.usage.show_second_infobar, data.get("show_second_infobar"), "second infobar mode")
 		setc(config.usage.second_infobar_timeout, data.get("second_infobar_timeout"), "second infobar timeout")
 		self["config"].l.invalidate()

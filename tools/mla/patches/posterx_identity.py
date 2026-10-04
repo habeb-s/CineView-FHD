@@ -139,12 +139,12 @@ def _mla_event_texts(ev):
 
 
 def _mla_engine_enabled():
-    # Not merged as the default until it is device-tested (user decision 18:51): opt-in per receiver via
-    # /etc/enigma2/cineview_mla/runtime.json {"poster_engine": "identity"}; anything else = legacy engine.
+    # Default since rc3 (user decision 2026-10-04 after the rc2 device results: 6/6 correct, 0 wrong).
+    # The legacy engine stays available: runtime.json {"poster_engine": "legacy"} (CineView Designs option).
     try:
-        return _mla_json.load(open("/etc/enigma2/cineview_mla/runtime.json")).get("poster_engine") == "identity"
+        return _mla_json.load(open("/etc/enigma2/cineview_mla/runtime.json")).get("poster_engine", "identity") != "legacy"
     except Exception:
-        return False
+        return True
 
 
 _CineViewMLAPosterXBase = CineViewMLAPosterX
@@ -241,4 +241,4 @@ class _CineViewMLAPosterXIdentity(_CineViewMLAPosterXBase):
 
 if _mla_engine_enabled():
     CineViewMLAPosterX = _CineViewMLAPosterXIdentity
-    _log("engine=identity (runtime.json)")
+    _log("engine=identity (default; runtime.json poster_engine=legacy selects the old engine)")

@@ -66,6 +66,13 @@ IMDB_PATCHES = [
 ]
 IMDB_GENERIC_HELPER = """
 
+def _cv_bool(self):
+    # ',hide' badge switch (Pixmap + ConditionalShowHide): True only while a rating is shown.
+    return self.getText() not in ('', '--')
+
+
+CineViewMLAIMDb.boolean = property(_cv_bool)
+
 def _cv_rateable(title, source):
     # P7 device tests: 'Dnevnik 3' (news) got IMDb 8.5/10, 'Skener 7' (sports magazine) 7.9/10 - a bare title
     # search returns some other work.  With ',hide' a rating is shown only when the event is identified as a
@@ -400,6 +407,33 @@ def _attrs(tag):
 	return dict(re.findall(r'(\w+)="([^"]*)"', tag))
 
 
+IMDB_BADGE = '<ePixmap pixmap="infobar/imdb_badge.png" position="1600,968" size="76,28" zPosition="21" alphatest="blend" />'
+IMDB_BADGE_NEW = ('<widget source="session.Event_Now" render="Pixmap" pixmap="infobar/imdb_badge.png" position="1600,968" size="76,28" zPosition="21" alphatest="blend">'
+	'<convert type="CineViewMLAIMDb">Shown,hide</convert><convert type="ConditionalShowHide" /></widget>')
+
+
+def apply_classic_imdb_rule(skin):
+	"""User decision 2026-10-04: Classic follows the rating rule of the new families - a rating (and its badge)
+	only for an event identified as a film or series from its EPG text; never '--'.  Same positions/sizes:
+	the static badge becomes a Pixmap widget that is hidden while no rating is shown."""
+	out = []
+	for sec in sorted(os.listdir(os.path.join(skin, "layouts"))):
+		f = os.path.join(skin, "layouts", sec, "classic", "screens.openatv.xml")
+		if not os.path.isfile(f):
+			continue
+		x = open(f, encoding="utf-8").read()
+		n = x.count('<convert type="CineViewMLAIMDb">Plain</convert>') + x.count('<convert type="CineViewMLAIMDb">Stars</convert>')
+		if not n:
+			continue
+		b = x.count(IMDB_BADGE)
+		x = x.replace('<convert type="CineViewMLAIMDb">Plain</convert>', '<convert type="CineViewMLAIMDb">Plain,hide</convert>')
+		x = x.replace('<convert type="CineViewMLAIMDb">Stars</convert>', '<convert type="CineViewMLAIMDb">Stars,hide</convert>')
+		x = x.replace(IMDB_BADGE, IMDB_BADGE_NEW)
+		open(f, "w", encoding="utf-8").write(x)
+		out.append((sec, n, b))
+	return out
+
+
 def apply_poster_toggles(skin):
 	"""M5 — live poster switches per section, without changing the enabled-state pixels.
 
@@ -479,6 +513,8 @@ def main(golden, comps, control, out):
 	if os.path.exists(out):
 		shutil.rmtree(out)
 	run(sys.executable, os.path.join(HERE, "migrate_classic.py"), golden, os.path.join(REPO, "mla", "sections.json"), skin)
+	for sec, n, b in apply_classic_imdb_rule(skin):
+		print("IMDb rule (Classic) %-14s %d rating widgets, %d badges" % (sec, n, b))
 	for sec, scr, what in apply_poster_toggles(skin):
 		print("M5 %-16s %-22s %s" % (sec, scr, what))
 	for scr, source, kind in apply_sib_textfit(skin):
