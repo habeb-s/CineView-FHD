@@ -98,3 +98,31 @@ displayed framebuffer, top third of the box), enigma2 CPU over 20 s without the 
 as it is in rc4.  Options for you: (a) keep it and accept the rare one-frame flicker; (b) approve V3 line jumps
 for EventView descriptions (and, if you want, the other Classic descriptions); (c) evaluate V3 on the TV first —
 I can install it as a temporary dev pack on Slot 8 so you can see it on the screen.
+
+## Line-by-line trial — doubled Arabic line (user report 2026-10-04 17:01, video 0:29–0:31)
+**Frame-by-frame (recording `evidence/evlines`, lines_ar_now, frames #46–#73, 10 fps of the DISPLAYED framebuffer):**
+- #49 (t=4.9 s): the jump repaint caught half-way (lower half still empty).
+- #50–#66 (t=5.0–6.6 s, 17 identical frames = the whole 1.7 s pause): one text line (box rows 126–138)
+  shows two different lines drawn on top of each other; the line above shows stray marks.  #67 (next jump):
+  clean again.  Identical in 17 consecutive frames → **it was on the screen, not a recording artefact.**
+- Classic continuous scrolling in the same recording: no doubled lines (its known defect is the short blank band).
+- Mechanism: the description label is transparent; after a 29 px move the region is repainted as
+  "panel background, then text".  In this one jump a band of the box got the new text without the background
+  being redrawn first, so the old glyphs stayed under the new ones until the next move.
+
+**Fix (in build28, pack `classic-lines`):** the 8 EventView description labels are no longer transparent; they
+paint `steSecondInfoBG` themselves — the same ARGB value as the panel they sit on, so the look is unchanged
+(TV/OSD composition identical) — and every repaint of the label overwrites its whole box.  A stale line can then
+only survive if the label itself is not repainted, which is not what happens on a move.
+
+**Measurements (pixel-exact check of every move, `jumpcheck.py`: the settled frame must equal the previous settled
+frame shifted by whole lines):**
+| Run (TextTest2, 60 s each, 5 fps) | moves | doubled/stale lines |
+|---|---|---|
+| first recording, transparent, Arabic (the reported case) | 8 | **1** |
+| A transparent: Arabic + English, two runs | 112 | 0 |
+| B opaque: Arabic + English, two runs | 111 | 0 (one 4 s recorder stall flagged and checked by eye: clean) |
+The defect is rare (1 in ~120 moves with the transparent label); 0 in 111 with the opaque label proves nothing
+statistically on its own — the fix is the mechanism above.  A further real-EventView check (live events, posters)
+runs with build28 (`t28.sh`).  Old continuous scrolling stays available: EventView «CineView Classic» (factory)
+and «CineView Classic (line by line)» are two packs in CineView Designs.
