@@ -19,7 +19,7 @@ sample() {  # $1 label
   $R 'p=$(pidof enigma2); set -- $(cut -d" " -f14,15 /proc/$p/stat); cpu=$(( ($1 + $2) * 10 ));
       rss=$(grep VmRSS /proc/$p/status | tr -s " " | cut -d" " -f2); hwm=$(grep VmHWM /proc/$p/status | tr -s " " | cut -d" " -f2);
       thr=$(grep Threads /proc/$p/status | tr -s "\t " " " | cut -d" " -f2); fds=$(ls /proc/$p/fd | wc -l);
-      pc=/media/usb/cineview-mla/dev-cache/mla/poster; files=$(find $pc -type f 2>/dev/null | wc -l); kb=$(du -sk $pc 2>/dev/null | cut -f1);
+      pc=$(python3 -c "import json; print(json.load(open(\"/etc/enigma2/cineview_mla/runtime.json\")).get(\"poster_cache\",\"/media/usb/cineview-mla/dev-cache/mla/poster\"))"); files=$(find $pc -type f 2>/dev/null | wc -l); kb=$(du -sk $pc 2>/dev/null | cut -f1);
       tmp=$(du -sk /tmp/CINEVIEW-MLA 2>/dev/null | cut -f1); f=/home/root/logs/$(ls -t /home/root/logs | grep debug | head -1);
       echo "$(date +%T) cpu_ms=$cpu rss_kB=$rss hwm_kB=$hwm threads=$thr fds=$fds cache_files=$files cache_kB=$kb tmp_kB=$tmp accel_fails=$(grep -a -c "accelAlloc failed" $f) tb=$(grep -a -c Traceback $f)"' | sed "s/^/   [$1] /"
 }
