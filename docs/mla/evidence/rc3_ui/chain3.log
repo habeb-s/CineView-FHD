@@ -1,0 +1,178 @@
+=== p8ui2 03:04:46
+{"poster_cache": "/media/usb/cineview-mla/dev-cache/reference/poster"}
+
+engine=identity (default; runtime.json poster_engine=legacy selects the old engine)
+cap E01_engine_row @06:05:13
+cap E02_legacy_selected @06:05:16
+cap E03_saved_msg @06:05:21
+new e2 pid=22900 21972 @06:05:56
+webif up @06:06:22
+{
+ "poster_cache": "/media/usb/cineview-mla/dev-cache/reference/poster",
+ "poster_engine": "legacy"
+}
+Traceback (most recent call last):
+  File "/tmp/cvmla/plog.py", line 2, in <module>
+    s=open("/tmp/CINEVIEW-MLA/poster.log",encoding="utf-8",errors="replace").read().replace(chr(92)+"n","\n")
+      ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/CINEVIEW-MLA/poster.log'
+cap E05_unified_again @06:07:34
+new e2 pid=24936 @06:07:49
+webif up @06:08:15
+{
+ "poster_cache": "/media/usb/cineview-mla/dev-cache/reference/poster",
+ "poster_engine": "identity"
+}
+engine=identity (default; runtime.json poster_engine=legacy selects the old engine)
+P8UI2_DONE
+=== p8ui 03:08:57
+STATE active=g000000 lkg=g000000 journal=ROLLED_BACK theme=navy gens=['g000000', 'g000027', 'g000028', 'g000029']
+boot.count=1 e2pid=24936 crashlogs=6
+2026-10-04 05:57:45 commit: lkg=g000028
+2026-10-04 05:59:41 apply: g000028 -> g000029 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-04 05:59:41 commit: lkg=g000029
+2026-10-04 06:02:09 rollback: active -> g000000
+drwxr-xr-x    2 root     root          4096 Oct  4 00:20 .
+drwxr-xr-x    3 root     root          4096 Oct  4 06:07 ..
+cap U01_open @06:09:16
+cap U02_values @06:09:25
+cap U03_menu @06:09:29
+cap U04_keyboard @06:09:33
+cap U05_saved_msg @06:09:37
+drwxr-xr-x    2 root     root          4096 Oct  4 06:09 .
+drwxr-xr-x    3 root     root          4096 Oct  4 06:09 ..
+-rw-r--r--    1 root     root           448 Oct  4 06:09 My CineView.json
+{
+ "layouts": {
+  "channelselection": "classic",
+  "epg": "classic",
+  "eventview": "classic",
+  "infobar": "details",
+  "pvr": "classic",
+  "secondinfobar": "cinema"
+ },
+ "poster_engine": "identity",
+ "posters": {
+  "channelselection": true,
+  "epg": true,
+  "eventview": true,
+  "infobar": true,
+  "secondinfobar": true
+ },
+ "schema": 1,
+ "second_infobar_timeout": "20",
+ "servermode": "profile",
+ "show_second_infobar": "2",
+ "theme": "purple"
+}cap U06_after_red @06:09:45
+STATE active=g000000 lkg=g000000 journal=ROLLED_BACK theme=navy gens=['g000000', 'g000027', 'g000028', 'g000029']
+boot.count=0 e2pid=24936 crashlogs=6
+2026-10-04 05:57:45 commit: lkg=g000028
+2026-10-04 05:59:41 apply: g000028 -> g000029 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-04 05:59:41 commit: lkg=g000029
+2026-10-04 06:02:09 rollback: active -> g000000
+cap U07_reopen @06:10:04
+cap U08_menu_load @06:10:09
+cap U09_pick @06:10:12
+cap U10_loaded @06:10:15
+cap U11_restart_q @06:10:28
+new e2 pid=27767 @06:10:34
+webif up @06:10:59
+STATE active=g000030 lkg=g000000 journal=TRIAL_RUNNING theme=purple gens=['g000000', 'g000027', 'g000028', 'g000029', 'g000030']
+boot.count=1 e2pid=27767 crashlogs=6
+2026-10-04 05:59:41 commit: lkg=g000029
+2026-10-04 06:02:09 rollback: active -> g000000
+2026-10-04 06:10:21 apply: g000000 -> g000030 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "details", "pvr": "classic", "secondinfobar": "cinema"}, "theme": "purple"}
+2026-10-04 06:10:57 trial: session started on g000030, awaiting confirmation
+cap U12_keep_prompt @06:12:02
+STATE active=g000030 lkg=g000030 journal=COMMITTED theme=purple gens=['g000000', 'g000027', 'g000028', 'g000029', 'g000030']
+boot.count=0 e2pid=27767 crashlogs=6
+2026-10-04 06:02:09 rollback: active -> g000000
+2026-10-04 06:10:21 apply: g000000 -> g000030 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "details", "pvr": "classic", "secondinfobar": "cinema"}, "theme": "purple"}
+2026-10-04 06:10:57 trial: session started on g000030, awaiting confirmation
+2026-10-04 06:12:03 commit: lkg=g000030
+06:11:57.2261 [CineViewMLA] session healthy; guardian counter reset
+06:12:03.9172 [CineViewMLA] trial committed
+cap U13_ib_details @06:12:19
+cap U14_sib_cinema @06:12:25
+cap U15_menu_delete @06:12:55
+cap U16_confirm @06:13:01
+cap U16b_deleted @06:13:07
+drwxr-xr-x    2 root     root          4096 Oct  4 06:13 .
+drwxr-xr-x    3 root     root          4096 Oct  4 06:12 ..
+cap U17_factory_q @06:13:31
+new e2 pid=30997 @06:13:41
+webif up @06:14:06
+STATE active=g000000 lkg=g000000 journal=ROLLED_BACK theme=navy gens=['g000000', 'g000028', 'g000029', 'g000030']
+boot.count=1 e2pid=30997 crashlogs=6
+2026-10-04 06:10:21 apply: g000000 -> g000030 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "details", "pvr": "classic", "secondinfobar": "cinema"}, "theme": "purple"}
+2026-10-04 06:10:57 trial: session started on g000030, awaiting confirmation
+2026-10-04 06:12:03 commit: lkg=g000030
+2026-10-04 06:13:33 rollback: active -> g000000
+cap U18_final_classic @06:14:37
+P8UI_DONE
+=== p8pkg2 rc3 03:14:43
+-rw-r--r--    1 root     root          2877 Oct  4 06:14 cineview_mla-state.tgz
+-rw-r--r--    1 root     root          9397 Oct  4 06:14 settings
+e2-stopped
+error: opkg_solver_install: No candidates to install /tmp/cvmla/rc2.ipk (null)!
+Refusing to load file '/tmp/cvmla/rc2.ipk' as it matches the installed version of enigma2-plugin-skins-cineview-fhd-mla (1.0.0~rc3).
+Version: 1.0.0~rc3
+Status: install ok installed
+new e2 pid=32521 @06:14:55
+webif up @06:15:19
+STATE active=g000000 lkg=g000000 journal=ROLLED_BACK theme=navy gens=['g000000', 'g000028', 'g000029', 'g000030']
+boot.count=1 e2pid=32521 crashlogs=6
+2026-10-04 06:10:21 apply: g000000 -> g000030 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "details", "pvr": "classic", "secondinfobar": "cinema"}, "theme": "purple"}
+2026-10-04 06:10:57 trial: session started on g000030, awaiting confirmation
+2026-10-04 06:12:03 commit: lkg=g000030
+2026-10-04 06:13:33 rollback: active -> g000000
+cap T8b_1_upgraded_ib @06:15:55
+e2-stopped
+CineView MLA removed (/etc/enigma2/cineview_mla kept unless purged).
+Removing enigma2-plugin-skins-cineview-fhd-mla (1.0.0~rc3) from root...
+leftovers:
+kept state:
+boot.count clean_exit healthy history.log lkg previous_skin profiles runtime.json selection.json txn.json 
+new e2 pid=1594 @06:16:10
+webif up @06:16:35
+cap T8b_2_removed_default_skin @06:17:01
+tracebacks=0
+e2-stopped
+CineView MLA installed. Select it in Menu > Setup > User Interface > Skin, then restart the GUI.
+Installing enigma2-plugin-skins-cineview-fhd-mla (1.0.0~rc3) on root
+Configuring enigma2-plugin-skins-cineview-fhd-mla.
+config.skin.primary_skin=CineView_FHD_MLA/skin.xml
+new e2 pid=2971 @06:17:13
+webif up @06:17:39
+STATE active=g000000 lkg=g000000 journal=ROLLED_BACK theme=navy gens=['g000000']
+boot.count=1 e2pid=2971 crashlogs=6
+2026-10-04 06:10:57 trial: session started on g000030, awaiting confirmation
+2026-10-04 06:12:03 commit: lkg=g000030
+2026-10-04 06:13:33 rollback: active -> g000000
+2026-10-04 06:17:10 rollback: active -> g000000
+cap T8b_3_reinstalled_ib @06:18:16
+Version: 1.0.0~rc3
+Status: install ok installed
+T8B_DONE
+=== remove devtool 03:18:22
+/usr/share/enigma2/CineView_FHD_1001
+/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl
+new e2 pid=4373 @06:18:28
+webif up @06:18:54
+STATE active=g000000 lkg=g000000 journal=ROLLED_BACK theme=navy gens=['g000000']
+boot.count=1 e2pid=4373 crashlogs=6
+2026-10-04 06:10:57 trial: session started on g000030, awaiting confirmation
+2026-10-04 06:12:03 commit: lkg=g000030
+2026-10-04 06:13:33 rollback: active -> g000000
+2026-10-04 06:17:10 rollback: active -> g000000
+Version: 1.0.0~rc3
+Status: install ok installed
+0
+{
+ "poster_cache": "/media/usb/cineview-mla/dev-cache/reference/poster",
+ "poster_engine": "identity"
+}
+tracebacks=0
+engine=identity (default; runtime.json poster_engine=legacy selects the old engine)
+CHAIN3_DONE
