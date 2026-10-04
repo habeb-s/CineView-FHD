@@ -58,7 +58,9 @@ def header():
 	d = E(SP.HEADER["date"])
 	c = E(SP.HEADER["clock"])
 	return ['\t\t<widget source="Title" render="Label" %s font="Regular;%d" foregroundColor="secondFG" transparent="1" zPosition="40" noWrap="1" />' % (G.pos(t), SP.HEADER["title"][4]),
-		'\t\t<widget name="date" %s font="Regular;%d" foregroundColor="grey" halign="right" transparent="1" zPosition="40" />' % (G.pos(d), SP.HEADER["date"][4]),
+		# no named "date" widget: EPGSelection creates self["date"] only for some EPG types (device t37: SkinError
+		# 'date' not found in GraphicalEPG) -> the date comes from the clock source
+		G.label("global.CurrentTime", d, [("ClockToText", "Format:%a %d %b")], SP.HEADER["date"][4], "grey", ' halign="right"', 40),
 		G.label("global.CurrentTime", c, [("ClockToText", "Format:%H:%M")], SP.HEADER["clock"][4], "foreground", ' halign="right"', 40)]
 
 
