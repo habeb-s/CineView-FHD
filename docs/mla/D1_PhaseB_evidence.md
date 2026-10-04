@@ -109,3 +109,21 @@ native C++ list drawing.  Not yet investigated.
 | EventView line by line (classic-lines pack) | RUNTIME TESTED on real events, 0/58 stale lines; old continuous motion stays the factory pack |
 | D1 Poster List / Video First L/R | RUNTIME TESTED, posters on/off, panel follows cursor; open: long-name overlap in narrow list |
 | Core screens with covered labels (PluginBrowser*, QuickMenu, PackageAction*) | ROOT CAUSE IDENTIFIED — not changed |
+
+## 6. Evening fixes (user requests 2026-10-04 20:12) — t34 (build33), t35/t36 (build34)
+Evidence: `evidence/evening_fixes/` (stills, logs, postercheck output, EPG mockups). Review page: "CineView MLA إصلاحات المساء".
+
+| Item | Result | State |
+|---|---|---|
+| Long service names (narrow list) | Root cause in `listboxservice.cpp`: the name is laid out with the cell width and then moved right by the picon (`xoffs += iconWidth + itemsDistances`). The CineView MLA plugin wraps `ServiceListLegacy.setMode` and narrows the name cell by that offset (D1 designs only; no enigma2 file touched). Log: `name cell 413 -> 337 px (picon offset 76)`. The t34 run failed with an ImportError (`getTextBoundarySize` lives in `Tools.TextBoundary`), fixed in build34. | RUNTIME TESTED |
+| Poster List background | Both panels `steThemePanel` (opaque, same hue as the old translucent overlay) | RUNTIME TESTED |
+| Fast navigation posters | `postercheck.py` segment method: 0.35 s steps (215 frames) and 0.15 s steps (143 frames): stale = 0; previous channel's posters only within the first 0.5 s after a move (11 / 6 frames = repaint) | RUNTIME TESTED |
+| Core z-order (approved: PluginBrowser*, QuickMenu, PackageAction, PackageActionLog) | Background eLabel `zPosition=-1`, geometry unchanged; MENU/HELP and the log text visible (PackageActionLog opened with a fixed sample text — no opkg command ran) | RUNTIME TESTED |
+| Regression | InfoBar, SIB, EventView, Classic channel list, default/Multi/Quick/InfoBar EPG, InfoBarEventView, EventViewSimple: 0 tracebacks, 0 new skin errors, 0 crash logs | RUNTIME TESTED |
+| accelAlloc failed | Pool = 5400 kB (`[gFBDC]` at boot). Posters were decoded at full size (600x888/600x900, 2.1 MB) -> pool full after two. Fix: `ePicLoad` (native, synchronous) decodes at widget size; fallback to loadJPG never used (poster.log). Same sequence: 31 -> 1 failures; Enigma2 RSS while browsing Poster List 168.3 -> 149.8 MB; CPU for 5 navigation rounds 8.7 s -> 9.1 s (unchanged within noise). Memory over 10 min (before the fix): +0.4 MB after the first round, no leak. The remaining failure is a 1536x1024 surface at zap (larger than the whole pool; not CineView). | RUNTIME TESTED |
+| EventView motion | Classic continuous = factory pack; "line by line" = separate pack | kept |
+
+**Open:** name clip also applies to the Classic radio list while a D1 design is selected (event text ends ~73 px earlier there); `EPGvertical` opens with a channel picker first — full flow to be checked before Columns; video artefacts in grabs since ~20:36 come from the stream (seen before and after the changes; tuner untouched).
+
+## 7. D2 EPG proposals (not implemented)
+`tools/mla/p9epg/` — spec, real-data builder (OpenWebif read-only), renderer. Graphical Plus (grid full height + side panel; posters off: 3-hour grid + text panel) and Columns (5 channels side by side + event card). Single Cards dropped: Classic Single EPG already has list + event panel + poster.
