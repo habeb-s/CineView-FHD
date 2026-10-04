@@ -75,7 +75,7 @@ def panel_texts(L, poster_on):
 	out.append(G.label(SRC, e("genre"), [("EventName", "Genre")], f("genre"), "grey", ' noWrap="1"', 40))
 	out.append(G.label(SRC, dict(e("rating"), w=120), [("CineViewMLAIMDb", "Plain,hide")], f("rating"), "foreground", "", 40))
 	out.append(G.label(SRC, dict(e("rating"), x=e("rating")["x"] + 124, w=e("rating")["w"] - 124), [("CineViewMLAIMDb", "Stars,hide")], f("rating") - 2, "secondFG", "", 40))
-	out += G.text_variants(SRC, [("EventName", "FullDescription")], e("desc"), None, f("desc"), "foreground", G.D_OPTS, KEY, halign=' halign="block"')
+	out += G.text_variants(SRC, [("EventName", "FullDescription")], e("desc"), None, f("desc"), "foreground", G.D_OPTS, KEY, halign=' halign="block"' if poster_on else "")
 	return out
 
 

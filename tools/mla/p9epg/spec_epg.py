@@ -48,12 +48,12 @@ GRAPHICAL_PLUS = {
 		"grid": (40, 140, 1540, 800),
 		"panel": (1600, 96, 280, 844),
 		"ch_name": (1620, 116, 240, 30, 22),
-		"title": (1620, 156, 240, 117, 30),  # 3 lines x 35
-		"times": (1620, 284, 240, 30, 24),
-		"duration": (1620, 320, 240, 28, 22),
-		"genre": (1620, 356, 240, 28, 21),
-		"rating": (1620, 392, 240, 30, 22),
-		"desc": (1620, 436, 240, 475, 22),  # 19 lines x 25
+		"title": (1620, 156, 240, 70, 30),  # 2 lines x 35 (device t37: 3 lines left a hole under one-line titles)
+		"times": (1620, 236, 240, 30, 24),
+		"duration": (1620, 272, 240, 28, 22),
+		"genre": (1620, 308, 240, 28, 21),
+		"rating": (1620, 344, 240, 30, 22),
+		"desc": (1620, 388, 240, 525, 22),  # 21 lines x 25, left-aligned (justified 240 px = wide word gaps, t37)
 	},
 }
 
