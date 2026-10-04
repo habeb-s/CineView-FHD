@@ -8,6 +8,7 @@ Output layout (relative to <out root>, mirrors the receiver's filesystem):
   usr/share/enigma2/CineView_FHD_MLA/mla/        sections.json + engine/
   usr/lib/enigma2/python/Components/{Renderer,Converter}/CineViewMLA*.py
 """
+import glob
 import importlib.util
 import json
 import os
@@ -766,6 +767,42 @@ def make_classic_lines_pack(skin):
 	return n
 
 
+def apply_zorder_backgrounds(skin):
+	"""Z-order fix (device 2026-10-04 18:0x, t30): in 57b7a51 Screen.createGUIScreen() creates the plain skin
+	<eLabel> elements AFTER all widgets, and eWidget::insertIntoParent() puts a child after every sibling with
+	z <= its own z.  An opaque background <eLabel ... zPosition="0"> therefore covers every widget with
+	zPosition 0 (inherited from the golden CineView FHD: QuickEPG, Multi EPG header/description, InfoBarEventView,
+	EventViewSimple, SecondInfoBarECM bottom row, vertical / PiG EPGs were blank on the TV).
+	Fix = the native pattern of enigma2's own skin_default.xml: the background eLabel goes to zPosition="-1".
+	Only layout packs; only opaque eLabels that cover a widget.  Geometry and colours are unchanged."""
+	sys.path.insert(0, HERE)
+	import zorder_check
+	out = []
+	for p in sorted(glob.glob(os.path.join(skin, "layouts", "*", "*", "screens*.xml"))):
+		covered = zorder_check.check(p)
+		if not covered:
+			continue
+		bad = {(c[0], c[2], c[3]) for c in covered if c[1] == "eLabel"}
+		assert len(bad) == len({(c[0], c[2], c[3]) for c in covered}), "covering element is not an eLabel: %s" % p
+		x = open(p, encoding="utf-8").read()
+
+		def fix_screen(sm):
+			body = sm.group(0)
+			name = re.match(r'<screen name="([^"]+)"', body).group(1)
+			for scr, pos, size in bad:
+				if scr != name:
+					continue
+				pat = r'<eLabel position="%s" size="%s"([^>]*?)zPosition="0"' % (re.escape(pos), re.escape(size))
+				body, k = re.subn(pat, lambda m: '<eLabel position="%s" size="%s"%szPosition="-1"' % (pos, size, m.group(1)), body)
+				assert k == 1, "eLabel %s %s in %s: %d matches" % (pos, size, name, k)
+				out.append((os.path.relpath(p, skin), name, pos, size))
+			return body
+		x = re.sub(r'<screen name="[^"]+".*?</screen>', fix_screen, x, flags=re.S)
+		open(p, "w", encoding="utf-8").write(x)
+		assert not zorder_check.check(p), "z-order still covered after fix: %s" % p
+	return out
+
+
 def load_theme_module(control_dir):
 	spec = importlib.util.spec_from_file_location("cv_theme", os.path.join(control_dir, "theme.py"))
 	m = importlib.util.module_from_spec(spec)
@@ -817,6 +854,9 @@ def main(golden, comps, control, out):
 			Image.open(src).convert("RGB").resize((720, 405)).save(os.path.join(d, "preview.png"))
 		else:
 			make_preview_none(os.path.join(d, "preview.png"))
+
+	for f, scr, pos, size in apply_zorder_backgrounds(skin):
+		print("Z-ORDER %-45s %-28s background eLabel %s %s -> zPosition -1" % (f, scr, pos, size))
 
 	# Themes: the original CineView palette() applied to the golden <colors>; navy == golden (verified).
 	theme = load_theme_module(control)
