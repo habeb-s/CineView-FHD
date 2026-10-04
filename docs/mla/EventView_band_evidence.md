@@ -1,6 +1,10 @@
 # EventView "blank band" — device evidence (Slot 8, OpenATV 8.0.1 / 57b7a51)
 
-**Status (2026-10-04):** OPEN. The partly cleared box is real in the **displayed** framebuffer (2–6 ms while the
+**Status (2026-10-04 12:30):** OPEN — a complete prevention is not possible in the skin on this image; a ~95 %
+reduction exists (line jumps, V3 below) but it changes the approved Classic motion, so it is NOT in any release
+and waits for your decision.  See "Prevention study" at the end.
+
+**Earlier status (2026-10-04 morning):** OPEN. The partly cleared box is real in the **displayed** framebuffer (2–6 ms while the
 text swims, measured on the receiver — see the update at the end); it is not created by the grab tool.  Whether a
 viewer perceives it on the TV is not verified.  The 2026-10-03 reading below ("grab tearing") is superseded.
 
@@ -61,3 +65,36 @@ cannot be decided without watching the TV → **status: OPEN (not resolved)**.  
 more blank moments than an isolated test box with the same text, so the extra repaints come from the EventView
 screen itself (other widgets/poster repaints overlapping the transparent text boxes); not pursued further without a
 visual confirmation, and no change was made to the approved Classic EventView.
+
+## Prevention study 2026-10-04 12:10–12:28 (`evstudy.sh`, build25 / 1.0.0~rc4 dev, nothing shipped)
+**Why the skin cannot remove it completely:** in 57b7a51 the buffered composition mode is disabled in the source
+(`cmImmediate`), so every repaint of a RunningText box first fills the box with its background and then draws the
+text — directly in the displayed page.  The 2–6 ms between the two steps is the blank.  No skin attribute and no
+Python renderer can make that repaint atomic; only fewer repaints (or none) reduce how often it is visible.
+
+**Method:** each variant is a temporary layout pack `layouts/eventview/evexpN` (copy of the installed Classic pack;
+only the `options` of the 8 EventView description widgets changed), applied with the composer, measured, then
+factory restored and the packs deleted.  Per channel: `fbprobe.py` on the right and left description (25 s each,
+displayed framebuffer, top third of the box), enigma2 CPU over 20 s without the probe, tracebacks, crash logs.
+
+| Variant | Description options | Cinemax right dips (avg/max ms) | Cinemax left dips | CPU enigma2, Cinemax (swimming) | HBO (text fits, static) |
+|---|---|---|---|---|---|
+| V0 baseline (Classic) | `step=1,steptime=60` continuous swim | 26 (4.2/5.9) | 42 (2.8/5.9) | 28.3 % | 0 / 2 dips; CPU 8.5 % |
+| V1 posters OFF (EventView) | same | 21 (4.1/6.1) | 29 (2.6/4.5) | 32.5 % | 0 / 0; 11.5 % |
+| V2 half the repaints | `step=1,steptime=120` (half speed) | 16 (4.6/6.0) | 28 (2.5/3.2) | 27.6 % | 0 / 0; 11.8 % |
+| V3 line jumps | `step=29,steptime=1740` (one whole line every 1.74 s = same reading speed 16.7 px/s) | **2** (4.4/5.4) | **1** (8.7/8.7) | 21.1 % | 0 / 0; 11.7 % |
+
+0 tracebacks, no crash, enigma2 PID unchanged within every variant.  Screenshots: `evidence/evstudy/`.
+
+**Findings**
+- V1: switching the EventView posters off does not remove the dips → the poster renderer is not the source.
+- V2: half the repaints removes only about a third of the dips; continuous swimming stays visible.
+- V3: ~95 % fewer blank moments, ~7 points less CPU, whole lines stay aligned (line pitch 29 px for size 25);
+  the remaining dips (1–2 per 25 s) are the repaint at each jump.  It is a **different motion**: the text moves one
+  line at a time instead of gliding.
+- Static text never blanks.  Long descriptions that swim also cost ~20 % of one CPU core (28 % vs 8–12 %).
+
+**Decision (per your instruction):** no experimental change enters a release.  The approved Classic EventView stays
+as it is in rc4.  Options for you: (a) keep it and accept the rare one-frame flicker; (b) approve V3 line jumps
+for EventView descriptions (and, if you want, the other Classic descriptions); (c) evaluate V3 on the TV first —
+I can install it as a temporary dev pack on Slot 8 so you can see it on the screen.
