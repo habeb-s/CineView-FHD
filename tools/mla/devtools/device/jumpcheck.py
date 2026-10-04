@@ -21,7 +21,7 @@ TOP = bright[segs[0][1]] if segs else None
 for (a0, a1), (b0, b1) in zip(segs, segs[1:]):
     A, B = bright[a1], bright[b0]
     res = {}
-    for sh in (P, -P, 2 * P, -2 * P):
+    for sh in (P, -P, 2 * P, -2 * P, 3 * P, -3 * P, 4 * P, -4 * P):  # several steps can fall into one recording gap
         res[sh] = int((A[sh:] != B[:h - sh]).sum()) if sh > 0 else int((A[:h + sh] != B[-sh:]).sum())
     best = min(res, key=res.get)
     ok = res[best] <= 300
