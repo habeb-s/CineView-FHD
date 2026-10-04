@@ -1031,6 +1031,18 @@ def main(golden, comps, control, out):
 			Image.open(src).convert("RGB").resize((720, 405)).save(os.path.join(d, "preview.png"))
 		else:
 			make_preview_none(os.path.join(d, "preview.png"))
+	# Modern model (look pending approval, 2026-10-04 night): InfoBar pack for real-device review; not selected.
+	sys.path.insert(0, os.path.join(HERE, "p10models"))
+	import gen_modern
+	mmocks = os.environ.get("MLA_MODEL_MOCKS", "")
+	for d in gen_modern.generate(skin):
+		print("MODERN pack:", os.path.relpath(d, skin))
+		src = os.path.join(mmocks, "modern_infobar_on.png")
+		if mmocks and os.path.isfile(src):
+			from PIL import Image
+			Image.open(src).convert("RGB").resize((720, 405)).save(os.path.join(d, "preview.png"))
+		else:
+			make_preview_none(os.path.join(d, "preview.png"))
 	for f, scr, pos, size in apply_zorder_backgrounds(skin):
 		print("Z-ORDER %-45s %-28s background eLabel %s %s -> zPosition -1" % (f, scr, pos, size))
 
