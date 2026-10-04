@@ -803,6 +803,30 @@ def apply_zorder_backgrounds(skin):
 	return out
 
 
+MULTIEPG_DESC_OLD = ('<widget source="Event" render="Label" position="1210,260" size="555,455" font="Regular;23" foregroundColor="foreground" transparent="1" valign="top">\n'
+	'\t\t\t<convert type="EventName">FullDescription</convert>\n\t\t</widget>')
+
+
+def apply_multiepg_description(skin):
+	"""Multi EPG (EPGSelectionMulti, Classic): the description box (1210,260 555x455) lies under the poster
+	(1495,120 270x405, z=12).  It was never visible on the TV before the z-order fix (covered by the background),
+	so the overlap only showed up on the device after it (t31 18:49).  Posters ON: the description starts under the
+	poster (y 540, 175 px = 6 lines of size 23); posters OFF: unchanged full column.  Same CineViewMLAShowIf switch
+	as the title next to it."""
+	p = os.path.join(skin, "layouts", "epg", "classic", "screens.openatv.xml")
+	x = open(p, encoding="utf-8").read()
+	m = re.search(r'<screen name="EPGSelectionMulti".*?</screen>', x, re.S)
+	body = m.group(0)
+	assert body.count(MULTIEPG_DESC_OLD) == 1, "Multi EPG description anchor"
+	key = POSTER_TOGGLE % "epg"
+	on = MULTIEPG_DESC_OLD.replace('position="1210,260" size="555,455"', 'position="1210,540" size="555,175"').replace(
+		"</convert>\n\t\t</widget>", '</convert>\n\t\t\t<convert type="CineViewMLAShowIf">%s,True</convert>\n\t\t</widget>' % key)
+	off = MULTIEPG_DESC_OLD.replace("</convert>\n\t\t</widget>", '</convert>\n\t\t\t<convert type="CineViewMLAShowIf">%s,True,Invert</convert>\n\t\t</widget>' % key)
+	x = x.replace(body, body.replace(MULTIEPG_DESC_OLD, on + "\n\t\t" + off), 1)
+	open(p, "w", encoding="utf-8").write(x)
+	return 2
+
+
 def load_theme_module(control_dir):
 	spec = importlib.util.spec_from_file_location("cv_theme", os.path.join(control_dir, "theme.py"))
 	m = importlib.util.module_from_spec(spec)
@@ -832,6 +856,7 @@ def main(golden, comps, control, out):
 			print("POSTERS-OFF (Classic) %-16s %-22s %d moved, %d hidden" % (sec, scr, mv, hd))
 		for sec, scr, n in apply_classic_posters_off_named(skin):
 			print("POSTERS-OFF (Classic, named widgets) %-16s %s_CVPosterOff: %d widgets widened" % (sec, scr, n))
+	print("Multi EPG description: %d posters on/off variants (no overlap with the poster)" % apply_multiepg_description(skin))
 	print("EventView pack classic-lines: %d description widgets (line by line, opaque label)" % make_classic_lines_pack(skin))
 	# P7: Details family (user-approved direction 2026-10-03; Classic packs untouched).
 	make_default_poster(os.path.join(skin, "mla_assets", "poster_default.jpg"))  # the P7 poster slots embed it
