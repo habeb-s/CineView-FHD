@@ -42,4 +42,4 @@ echo "== restore"
 $R "$E apply --set channelselection=classic 2>&1 | tail -1"
 restart "cp /tmp/cvmla/runtime.json.t49bak $RT && rm -rf /media/usb/cineview-mla/dev-cache/t49cold && echo runtime-restored;"
 $R "grep poster_cache $RT"; st; errs
-echo T44_DONE
+echo T49_DONE
