@@ -1149,6 +1149,21 @@ def main(golden, comps, control, out):
 			Image.open(src).convert("RGB").resize((720, 405)).save(os.path.join(d, "preview.png"))
 		else:
 			make_preview_none(os.path.join(d, "preview.png"))
+	# Quality: MovieList attributes that 57b7a51 rejects (15 "[Skin] Error ... AttributeParser has no attribute" lines
+	# each time MovieSelection opens, device t61/t68).  They never had an effect, so removing them changes nothing on
+	# screen; applied to every pack, the approved Classic one included.
+	sys.path.insert(0, os.path.join(HERE, "p7"))
+	import emc_common
+	for sec in sorted(os.listdir(os.path.join(skin, "layouts"))):
+		for pack in sorted(os.listdir(os.path.join(skin, "layouts", sec))):
+			lp = os.path.join(skin, "layouts", sec, pack, "screens.openatv.xml")
+			if not os.path.isfile(lp):
+				continue
+			src = open(lp, encoding="utf-8").read()
+			out = re.sub(r'<widget name="list" [^>]*/>', lambda m: emc_common.clean_movielist(m.group(0)) if "dateWidth=" in m.group(0) else m.group(0), src)
+			if out != src:
+				open(lp, "w", encoding="utf-8").write(out)
+				print("MOVIELIST legacy attributes removed:", os.path.relpath(lp, skin))
 	# Accelerated-pool optimizer for every non-Classic pack (tools/mla/accel_opt.py; device t67-t74)
 	import accel_opt
 	for f, nd, nf in accel_opt.run(skin):
