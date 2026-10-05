@@ -93,4 +93,4 @@ for i in 1 2 3 4 5 6 7 8; do round; done; errs; analyse v3
 ap --theme navy $CLASSIC
 if [ -n "$OLDDIR" ]; then R2="python3 /tmp/cvmla/setcfg.py config.movielist.last_videodir=$OLDDIR;"; else R2="sed -i '/^config.movielist.last_videodir=/d' /etc/enigma2/settings;"; fi
 $R "rm -rf $P"; restart "rm -f /tmp/cvmla/acceldebug; $R2"; st; errs
-echo T69_DONE
+echo T71_DONE

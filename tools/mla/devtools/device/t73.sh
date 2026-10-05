@@ -99,4 +99,4 @@ errs
 ap --theme navy $CLASSIC
 if [ -n "$OLDDIR" ]; then R2="python3 /tmp/cvmla/setcfg.py config.movielist.last_videodir=$OLDDIR;"; else R2="sed -i '/^config.movielist.last_videodir=/d' /etc/enigma2/settings;"; fi
 $R "rm -rf $P"; restart "rm -f /tmp/cvmla/acceldebug; $R2"; st; errs
-echo T69_DONE
+echo T73_DONE
