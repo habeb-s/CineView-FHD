@@ -6,7 +6,7 @@
 # Nothing is played, deleted or moved.  Restore: Classic, navy, posters ON, movielist folder as before.
 exec 9>~/cineview-mla/t68.lock; flock -n 9 || { echo "t68 already running"; exit 1; }
 . ~/cineview-mla/p6lib.sh
-NEW=${1:-build64}
+NEW=${1:-build69}
 S=~/cineview-mla/shots/t68; rm -rf $S; mkdir -p $S
 E='python3 /usr/share/enigma2/CineView_FHD_MLA/mla/engine/composer.py'
 HBO="1:0:19:784:C6D4:16E:A00000:0:0:0:"
