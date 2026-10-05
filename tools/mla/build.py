@@ -914,6 +914,29 @@ def make_classic_lines_pack(skin):
 ZORDER_CORE_SCREENS = ("PluginBrowser", "PluginBrowserList", "PluginBrowserGrid", "QuickMenu", "PackageAction", "PackageActionLog")
 
 
+SERVICEINFO_VIDEO_TOKENS = ("Is1080", "Is480", "Is4K", "Is576", "Is720", "IsHD", "IsHDHDR", "IsHDR", "IsHDR10", "IsHLG",
+	"IsNotWidescreen", "IsSD", "IsSDR", "IsWidescreen", "VideoHeight", "VideoWidth", "Progressive", "FrameRate", "Framerate")
+
+
+def apply_serviceinfo_video(skin):
+	"""HD / 16:9 / resolution icons: native ServiceInfo -> CineViewMLAServiceInfo for the video-geometry tokens only
+	(root cause t53 2026-10-05: no evVideoSizeChanged after the converters connect -> icons stay hidden).  Every
+	skin file of the MLA skin (all designs, core).  Other ServiceInfo tokens are left native."""
+	pat = re.compile(r'<convert type="ServiceInfo">(%s)</convert>' % "|".join(SERVICEINFO_VIDEO_TOKENS))
+	total = 0
+	for root, _dirs, files in os.walk(skin):
+		for f in files:
+			if not f.endswith(".xml"):
+				continue
+			p = os.path.join(root, f)
+			src = open(p, encoding="utf-8").read()
+			new, n = pat.subn(r'<convert type="CineViewMLAServiceInfo">\1</convert>', src)
+			if n:
+				open(p, "w", encoding="utf-8").write(new)
+				total += n
+	return total
+
+
 def apply_zorder_backgrounds(skin):
 	"""Z-order fix (device 2026-10-04 18:0x, t30): in 57b7a51 Screen.createGUIScreen() creates the plain skin
 	<eLabel> elements AFTER all widgets, and eWidget::insertIntoParent() puts a child after every sibling with
@@ -1082,6 +1105,7 @@ def main(golden, comps, control, out):
 			Image.open(src).convert("RGB").resize((720, 405)).save(os.path.join(d, "preview.png"))
 		else:
 			make_preview_none(os.path.join(d, "preview.png"))
+	print("SERVICEINFO video tokens -> CineViewMLAServiceInfo:", apply_serviceinfo_video(skin))
 	for f, scr, pos, size in apply_zorder_backgrounds(skin):
 		print("Z-ORDER %-45s %-28s background eLabel %s %s -> zPosition -1" % (f, scr, pos, size))
 
