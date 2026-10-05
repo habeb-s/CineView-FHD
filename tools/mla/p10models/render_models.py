@@ -349,6 +349,52 @@ def modern_eventview(on):
 	return im
 
 
+def modern_pvr(on):
+	"""MovieSelection, Modern: rounded list card (native MovieList, rounded selection plate) + rounded detail card
+	of the selected recording.  Real recording list and free space (MODEL_PVR, read from the receiver)."""
+	data = json.load(open(os.environ["MODEL_PVR"], encoding="utf-8")) if os.environ.get("MODEL_PVR") else {}
+	pv, free, folder = data.get("items", []), data.get("free", ""), data.get("directory", "")
+	sel = int(data.get("selected", 2))
+	im = Image.new("RGBA", (W, H), NAVY["primary"] + (255,))
+	d = ImageDraw.Draw(im, "RGBA")
+	d.text((60, 32), "Recordings", font=font(32, True), fill=TEXT)
+	tbox(d, 320, 40, 900, 34, 24, folder, MUTED, lines=1)
+	tbox(d, 1600, 26, 260, 54, 40, G["clock"], TEXT, True, align="right", lines=1)
+	im = rrect(im, (60, 100, 1180, 860), NAVY["panel"], 255, 28)
+	im = rrect(im, (1264, 100, 596, 860), NAVY["panel"], 255, 28)
+	d = ImageDraw.Draw(im, "RGBA")
+	for i, r in enumerate(pv[:11]):
+		ry = 124 + i * 74
+		if i == sel:
+			d.rounded_rectangle([76, ry, 1224, ry + 68], 16, fill=NAVY["sel"] + (255,))
+		tbox(d, 100, ry + 8, 760, 34, 27, r["title"], TEXT, i == sel, lines=1)
+		tbox(d, 100, ry + 40, 760, 26, 20, r["channel"], MUTED, lines=1)
+		tbox(d, 880, ry + 12, 320, 28, 21, r["date"], MUTED, align="right", lines=1)
+		tbox(d, 880, ry + 40, 320, 26, 20, r["length"], ACCENT, align="right", lines=1)
+	r = pv[sel] if len(pv) > sel else {"title": "", "channel": "", "date": "", "length": "", "desc": ""}
+	tx, ty = 1292, 128
+	if on:
+		im = poster(im, (1412, 128, 300, 450), r.get("poster"), 22)
+		d = ImageDraw.Draw(im, "RGBA")
+		ty = 600
+	tw = 1832 - tx
+	h = tbox(d, tx, ty, tw, 84, 34, r["title"], TEXT, True, lines=2)
+	cx = tx
+	for c in (r["date"], r["length"]):
+		if c:
+			cx = pill(d, cx, ty + h + 12, c, 20) + 10
+	tbox(d, tx, ty + h + 58, tw, 30, 22, r["channel"], ACCENT, lines=1)
+	tbox(d, tx, ty + h + 96, tw, 940 - (ty + h + 96), 22, r.get("desc", ""), MUTED)
+	if free:
+		d.text((60, 990), free, font=font(22), fill=MUTED)  # receiver's own value (OpenWebif deviceinfo)
+	kx = 820
+	for c, lab in zip(((200, 40, 40), (40, 160, 70), (210, 170, 30), (50, 100, 210)), ("Delete", "Move", "Location", "Sort")):
+		d.rounded_rectangle([kx, 994, kx + 14, 1008], 7, fill=c + (255,))
+		d.text((kx + 22, 987), lab, font=font(22), fill=MUTED)
+		kx += 260
+	return im
+
+
 # ------------------------------------------------------------------------------------------------ MINIMAL
 def minimal_infobar(on):
 	im = video()
@@ -496,7 +542,7 @@ def minimal_eventview(on):
 
 
 MODELS = {
-	"modern": {"infobar": modern_infobar, "secondinfobar": modern_sib, "channelselection": modern_cs, "epg": modern_epg, "eventview": modern_eventview},
+	"modern": {"infobar": modern_infobar, "secondinfobar": modern_sib, "channelselection": modern_cs, "epg": modern_epg, "pvr": modern_pvr, "eventview": modern_eventview},
 	"minimal": {"infobar": minimal_infobar, "secondinfobar": minimal_sib, "channelselection": minimal_cs, "epg": minimal_epg, "pvr": minimal_pvr, "eventview": minimal_eventview},
 }
 for m, screens in MODELS.items():
