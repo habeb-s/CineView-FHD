@@ -25,6 +25,11 @@ _fc = {}
 # navy theme roles (same values as the build)
 NAVY = {"primary": (10, 29, 53), "panel": (8, 24, 43), "panelAlt": (7, 19, 35), "sel": (49, 65, 85)}
 TEXT, MUTED, ACCENT, BLUE = (240, 240, 240), (176, 186, 200), (249, 199, 49), (70, 140, 220)
+# theme primaries (themes/<t>/theme.xml steThemePrimary): Minimal tints its scrims with them (Minimal_Spec.md §2)
+THEMES = {"navy": (10, 29, 53), "black": (0, 0, 0), "burgundy": (80, 28, 44), "graphite": (41, 45, 50), "green": (21, 59, 43), "purple": (56, 32, 79)}
+THEME = os.environ.get("MODEL_THEME", "navy")
+TINT = THEMES.get(THEME, THEMES["navy"])
+SCRIM_A = 219  # alpha 0x24 in enigma2 terms (255 - 0x24)
 
 
 def font(size, bold=False):
@@ -347,7 +352,7 @@ def modern_eventview(on):
 # ------------------------------------------------------------------------------------------------ MINIMAL
 def minimal_infobar(on):
 	im = video()
-	im = vgrad(im, (0, 880, W, 200), (0, 0, 0), 0, 225)
+	im = vgrad(im, (0, 880, W, 200), TINT, 0, SCRIM_A)
 	d = ImageDraw.Draw(im, "RGBA")
 	x0 = 60
 	if on:
@@ -364,7 +369,7 @@ def minimal_infobar(on):
 
 def minimal_sib(on):
 	im = video()
-	im = vgrad(im, (0, 500, W, 580), (0, 0, 0), 0, 230)
+	im = vgrad(im, (0, 500, W, 580), TINT, 0, SCRIM_A)
 	d = ImageDraw.Draw(im, "RGBA")
 	x0 = 60
 	if on:
@@ -378,13 +383,51 @@ def minimal_sib(on):
 	d.line([x0, 920, 1860, 920], fill=(96, 104, 116, 255), width=1)
 	tbox(d, x0, 936, w, 34, 26, "NEXT   %s   %s" % (X["start"], X["title"]), MUTED, lines=1)
 	tbox(d, x0, 980, w, 52, 21, X["desc"], (150, 158, 170), lines=2)
+	tech = S.get("tech", "").replace("  ·  ", " · ").replace("  ", " ")
+	tbox(d, x0, 1040, w, 28, 20, " · ".join([tech] + [c for c in TECH_CHIPS if c not in ("HD",)]), (150, 158, 170), lines=1)
+	return im
+
+
+def minimal_pvr(on):
+	"""MovieSelection (Minimal_Spec.md 3.5): native list + details strip of the selected recording."""
+	data = json.load(open(os.environ["MODEL_PVR"], encoding="utf-8")) if os.environ.get("MODEL_PVR") else {}
+	pv, free, folder = data.get("items", []), data.get("free", ""), data.get("directory", "")
+	im = Image.new("RGBA", (W, H), tuple(max(0, c - 4) for c in TINT) + (255,))
+	d = ImageDraw.Draw(im, "RGBA")
+	d.text((60, 40), "Recordings  ·  %s" % folder, font=font(26), fill=MUTED)
+	tbox(d, 1600, 34, 260, 44, 34, G["clock"], MUTED, align="right", lines=1)
+	sel = 2
+	for i, r in enumerate(pv[:10]):
+		ry = 120 + i * 64
+		if i == sel:
+			d.rectangle([60, ry + 10, 64, ry + 54], fill=ACCENT + (255,))
+		tbox(d, 84, ry + 12, 1180, 40, 30, r["title"], TEXT if i == sel else (205, 210, 218), lines=1)
+		tbox(d, 1280, ry + 18, 360, 30, 22, r["channel"], (150, 158, 170), lines=1)
+		tbox(d, 1650, ry + 18, 210, 30, 22, "%s  ·  %s" % (r["date"], r["length"]), (150, 158, 170), align="right", lines=1)
+	d.line([60, 770, 1860, 770], fill=(96, 104, 116, 255), width=1)
+	r = pv[sel] if len(pv) > sel else {"title": "", "channel": "", "date": "", "length": "", "desc": ""}
+	x0 = 60
+	if on:
+		im = poster(im, (60, 790, 110, 165), r.get("poster"), 6)
+		d = ImageDraw.Draw(im, "RGBA")
+		x0 = 196
+	tbox(d, x0, 790, 1860 - x0, 44, 34, r["title"], TEXT, lines=1)
+	tbox(d, x0, 838, 1860 - x0, 30, 22, "%s   ·   %s   ·   %s" % (r["date"], r["channel"], r["length"]), ACCENT, lines=1)
+	tbox(d, x0, 876, 1860 - x0, 26 * 3, 21, r.get("desc", ""), (205, 210, 218))
+	if free:
+		d.text((60, 1000), free, font=font(20), fill=(130, 138, 150))  # receiver's own value (OpenWebif deviceinfo)
+	kx = 900
+	for c, lab in zip(((200, 40, 40), (40, 160, 70), (210, 170, 30), (50, 100, 210)), ("Delete", "Move", "Location", "Sort")):
+		d.rectangle([kx, 1003, kx + 4, 1023], fill=c + (255,))
+		d.text((kx + 14, 1000), lab, font=font(20), fill=(150, 158, 170))
+		kx += 240
 	return im
 
 
 def minimal_cs(on):
 	im = video()
-	im = vgrad(im, (0, 0, 820, H), (0, 0, 0), 215, 215)
-	im = vgrad(im, (820, 0, 260, H), (0, 0, 0), 120, 120)
+	im = vgrad(im, (0, 0, 820, H), TINT, 215, 215)
+	im = vgrad(im, (820, 0, 260, H), TINT, 120, 120)
 	d = ImageDraw.Draw(im, "RGBA")
 	d.text((60, 40), D["bouquet"], font=font(26), fill=MUTED)
 	rows = D["rows"][:17]
@@ -410,7 +453,7 @@ def minimal_cs(on):
 
 
 def minimal_epg(on):
-	im = Image.new("RGBA", (W, H), (6, 14, 26, 255))
+	im = Image.new("RGBA", (W, H), tuple(max(0, c - 4) for c in TINT) + (255,))
 	d = ImageDraw.Draw(im, "RGBA")
 	s = G["selected"]
 	x0 = 60
@@ -433,7 +476,7 @@ def minimal_epg(on):
 
 def minimal_eventview(on):
 	im = video()
-	im = rrect(im, (0, 0, W, H), (0, 0, 0), 200, 0)
+	im = rrect(im, (0, 0, W, H), TINT, 207, 0)
 	d = ImageDraw.Draw(im, "RGBA")
 	x0, w = 360, 1200
 	if on:
@@ -453,10 +496,13 @@ def minimal_eventview(on):
 
 MODELS = {
 	"modern": {"infobar": modern_infobar, "secondinfobar": modern_sib, "channelselection": modern_cs, "epg": modern_epg, "eventview": modern_eventview},
-	"minimal": {"infobar": minimal_infobar, "secondinfobar": minimal_sib, "channelselection": minimal_cs, "epg": minimal_epg, "eventview": minimal_eventview},
+	"minimal": {"infobar": minimal_infobar, "secondinfobar": minimal_sib, "channelselection": minimal_cs, "epg": minimal_epg, "pvr": minimal_pvr, "eventview": minimal_eventview},
 }
 for m, screens in MODELS.items():
 	for sec, fn in screens.items():
 		for on in (True, False):
-			fn(on).convert("RGB").save(os.path.join(OUT, "%s_%s_%s.png" % (m, sec, "on" if on else "off")))
+			if os.environ.get("MODEL_ONLY") and m != os.environ["MODEL_ONLY"]:
+				continue
+			suffix = "" if THEME == "navy" else "_" + THEME
+			fn(on).convert("RGB").save(os.path.join(OUT, "%s_%s_%s%s.png" % (m, sec, "on" if on else "off", suffix)))
 print("rendered", len(os.listdir(OUT)))
