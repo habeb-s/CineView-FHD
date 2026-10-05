@@ -1,5 +1,5 @@
 #!/bin/bash
-# Details PVR "Cover Library" (build52): MovieSelection with the cover of the SELECTED recording; cursor moves
+# Details PVR "Cover Library" + Cinema EventView "Feature" (build52): MovieSelection with the cover of the SELECTED recording; cursor moves
 # (the cover / title must follow the selection); posters OFF -> MovieSelection_CVPosterOff (Classic geometry);
 # Classic PVR unchanged.  READ-ONLY on the HDD: the list is only opened and navigated, nothing is played, moved,
 # deleted or renamed (no OK / no colour keys).  Restore: Classic PVR, posters ON.
@@ -19,6 +19,11 @@ op() { $R "echo $1 > /tmp/cvmla/open.txt"; sleep ${2:-5}; }
 mov() {  # $1 tag: open the recordings list, move down 3 x 1, up 1; EXIT
   zap $HBO; X; op movies 8; ga pvr_$1_open; for k in 1 2 3; do $RC 108; sleep 4; ga pvr_$1_down$k; done; $RC 103; sleep 4; ga pvr_$1_up1; X; sleep 3
 }
+evs() {  # $1 tag: live INFO (EventView), vertical EPG other event -> INFO (EventViewSimple), InfoBar EPG -> INFO
+  zap $HBO; X; $RC 358; sleep 5; ga ev_$1_live; $RC 109; sleep 3; ga ev_$1_live_pagedown; X; sleep 2
+  op vertical 9; $RC 106; sleep 3; $RC 108; sleep 3; $RC 358; sleep 5; ga ev_$1_simple; X; sleep 2; X; sleep 2; X; sleep 2
+  op infobarepg 7; $RC 358; sleep 5; ga ev_$1_infobar; X; sleep 2; X; sleep 2; X; sleep 2
+}
 ~/cineview-mla/deploy_b.sh $NEW
 cat ~/cineview-mla/devtools/CineViewMLAScreenOpen/plugin.py | $R "mkdir -p $P && cat > $P/plugin.py && touch $P/__init__.py"
 $R "$E apply --theme navy --set pvr=cover 2>&1 | tail -1"; restart ""; errs
@@ -28,5 +33,13 @@ echo "== cover OFF"; mov cover_off; errs
 restart "python3 /tmp/cvmla/setcfg.py config.plugins.cineviewmla.poster_pvr=True;"
 $R "$E apply --theme navy --set pvr=classic 2>&1 | tail -1"; restart ""; errs
 echo "== classic (regression)"; mov classic; errs
+for t in navy burgundy; do
+  $R "$E apply --theme $t --set eventview=feature 2>&1 | tail -1"; restart ""; errs
+  echo "== feature $t ON"; evs feature_${t}_on; errs
+done
+restart "python3 /tmp/cvmla/setcfg.py config.plugins.cineviewmla.poster_eventview=False;"; errs
+echo "== feature burgundy OFF"; evs feature_burgundy_off; errs
+restart "python3 /tmp/cvmla/setcfg.py config.plugins.cineviewmla.poster_eventview=True;"
+$R "$E apply --theme navy --set eventview=classic-lines 2>&1 | tail -1"
 $R "rm -rf $P"; restart ""; st; errs
 echo T59_DONE
