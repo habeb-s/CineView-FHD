@@ -1,11 +1,11 @@
 #!/bin/bash
-# Details PVR "Cover Library" + Cinema EventView "Feature" (build52): MovieSelection with the cover of the SELECTED recording; cursor moves
+# Details PVR "Cover Library" + Cinema EventView "Feature" + Modern PVR (build53): MovieSelection with the cover of the SELECTED recording; cursor moves
 # (the cover / title must follow the selection); posters OFF -> MovieSelection_CVPosterOff (Classic geometry);
 # Classic PVR unchanged.  READ-ONLY on the HDD: the list is only opened and navigated, nothing is played, moved,
 # deleted or renamed (no OK / no colour keys).  Restore: Classic PVR, posters ON.
 exec 9>~/cineview-mla/t59.lock; flock -n 9 || { echo "t59 already running"; exit 1; }
 . ~/cineview-mla/p6lib.sh
-NEW=${1:-build52}
+NEW=${1:-build53}
 S=~/cineview-mla/shots/t59; rm -rf $S; mkdir -p $S
 E='python3 /usr/share/enigma2/CineView_FHD_MLA/mla/engine/composer.py'
 HBO="1:0:19:784:C6D4:16E:A00000:0:0:0:"
@@ -30,6 +30,11 @@ $R "$E apply --theme navy --set pvr=cover 2>&1 | tail -1"; restart ""; errs
 echo "== cover ON"; mov cover_on; errs
 restart "python3 /tmp/cvmla/setcfg.py config.plugins.cineviewmla.poster_pvr=False;"; errs
 echo "== cover OFF"; mov cover_off; errs
+restart "python3 /tmp/cvmla/setcfg.py config.plugins.cineviewmla.poster_pvr=True;"
+$R "$E apply --theme navy --set pvr=modern 2>&1 | tail -1"; restart ""; errs
+echo "== modern ON"; mov modern_on; errs
+restart "python3 /tmp/cvmla/setcfg.py config.plugins.cineviewmla.poster_pvr=False;"; errs
+echo "== modern OFF"; mov modern_off; errs
 restart "python3 /tmp/cvmla/setcfg.py config.plugins.cineviewmla.poster_pvr=True;"
 $R "$E apply --theme navy --set pvr=classic 2>&1 | tail -1"; restart ""; errs
 echo "== classic (regression)"; mov classic; errs

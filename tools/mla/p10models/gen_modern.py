@@ -432,6 +432,49 @@ def graphical_epg(skin, on):
 	return '\t<screen name="%s" position="0,0" size="1920,1080" flags="wfNoBorder" title="Graphical EPG">\n%s\n\t</screen>' % (name, "\n".join(l for l in x if l))
 
 
+PVR_KEY = "config.plugins.cineviewmla.poster_pvr"
+
+
+def movieselection(skin, on):
+	"""Modern MovieSelection (mockup modern_pvr): rounded list card (native MovieList; rounded selected row through
+	the native itemCornerRadiusSelected path of eListboxPythonMultiContent::paint) + rounded detail card of the
+	SELECTED recording (screen source "Service": ServiceName / ServiceTime / MovieInfo, cover = CineViewMLAPosterX).
+	Every native named widget of the Classic screen is kept (list, waitingtext, chosenletter, movie_sort, movie_off,
+	DescriptionBorder, TrashcanSize, freeDiskSpace, coloured keys).  OFF = MovieSelection_CVPosterOff (plugin)."""
+	src = "Service"
+	x = ['\t\t<eLabel position="0,0" size="1920,1080" backgroundColor="steThemePrimary" zPosition="-4" />',
+		'\t\t<widget source="Title" render="Label" position="60,26" size="1300,50" font="%s;32" foregroundColor="foreground" transparent="1" noWrap="1" zPosition="20" />' % BOLD,
+		'\t\t<widget source="global.CurrentTime" render="Label" position="1600,24" size="260,54" font="%s;40" foregroundColor="foreground" halign="right" transparent="1" zPosition="20">\n\t\t\t<convert type="ClockToText">Format:%%H:%%M</convert>\n\t\t</widget>' % BOLD,
+		'\t\t<widget name="movie_sort" pixmaps="icons/az.png,icons/newtop.png,icons/shuffle.png,icons/za.png,icons/oldtop.png,icons/faz.png,icons/fza.png,icons/default.png,icons/azold.png,icons/zanew.png,icons/longest.png,icons/shortest.png,icons/dtsrt.png,icons/dtsdt.png" position="1460,36" zPosition="5" size="52,30" transparent="1" alphatest="on" />',
+		'\t\t<widget name="movie_off" pixmaps="icons/ask.png,icons/movielist.png,icons/quit.png,icons/pause.png,icons/playlist.png,icons/playlistquit.png,icons/loop.png,icons/rep.png" position="1520,36" zPosition="5" size="52,30" transparent="1" alphatest="on" />',
+		'\t\t<eLabel position="60,100" size="1180,860" backgroundColor="steThemeCard" cornerRadius="28" zPosition="-2" />',
+		'\t\t<eLabel position="1264,100" size="596,860" backgroundColor="steThemeCard" cornerRadius="28" zPosition="-2" />',
+		'\t\t<widget name="waitingtext" position="76,116" size="1148,828" font="Regular;33" halign="center" valign="center" transparent="1" zPosition="4" />',
+		'\t\t<widget name="chosenletter" position="76,116" size="1148,828" foregroundColor="secondFG" font="Regular;112" halign="center" valign="center" transparent="1" zPosition="4" />',
+		'\t\t<widget name="list" position="76,116" size="1148,828" scrollbarMode="showOnDemand" itemHeight="69" font="Regular;30" transparent="1" backgroundColorSelected="#00314155" itemCornerRadiusSelected="16" zPosition="3" />',
+		'\t\t<widget name="DescriptionBorder" position="0,0" size="0,0" />']
+	tx, tw = 1292, 540
+	if on:
+		G.poster(skin, src, E(0, 0, 300, 450), PVR_KEY)
+		x += _poster_pair(src, 1412, 128, 300, 450, 22, PVR_KEY)
+		ty = 600
+	else:
+		ty = 128
+	x.append('\t\t<widget source="%s" render="Label" position="%d,%d" size="%d,84" font="%s;34" foregroundColor="foreground" transparent="1" zPosition="20">\n\t\t\t<convert type="ServiceName">Name</convert>\n\t\t</widget>' % (src, tx, ty, tw, BOLD))
+	py = ty + 98
+	x.append('\t\t<widget source="%s" render="Label" position="%d,%d" size="170,36" backgroundColor="%s" cornerRadius="18" halign="center" valign="center" font="Regular;22" foregroundColor="foreground" zPosition="20">\n\t\t\t<convert type="ServiceTime">StartTime</convert>\n\t\t\t<convert type="ClockToText">ShortDate</convert>\n\t\t</widget>' % (src, tx, py, PILL_BG))
+	x.append('\t\t<widget source="%s" render="Label" position="%d,%d" size="120,36" backgroundColor="%s" cornerRadius="18" halign="center" valign="center" font="Regular;22" foregroundColor="foreground" zPosition="20">\n\t\t\t<convert type="ServiceTime">Duration</convert>\n\t\t\t<convert type="ClockToText">AsLength</convert>\n\t\t</widget>' % (src, tx + 182, py, PILL_BG))
+	x.append(G.label(src, E(tx + 314, py + 2, tw - 314, 32), [("MovieInfo", "FileSize")], 22, "grey", ' halign="right"'))
+	x.append(G.label(src, E(tx, py + 50, tw, 32), [("MovieInfo", "RecordServiceName")], 23, "secondFG", ' noWrap="1"'))
+	dy = py + 94
+	x.append('\t\t<widget source="%s" render="RunningText" position="%d,%d" size="%d,%d" transparent="1" zPosition="20" foregroundColor="grey" font="Regular;22" options="%s">\n\t\t\t<convert type="MovieInfo">FullDescription</convert>\n\t\t</widget>' % (src, tx, dy, tw, 936 - dy, G.D_OPTS))
+	x.append('\t\t<widget name="freeDiskSpace" position="60,972" size="700,36" foregroundColor="grey" font="Regular;24" transparent="1" zPosition="20" />')
+	x.append('\t\t<widget name="TrashcanSize" position="1160,972" size="700,36" foregroundColor="grey" font="Regular;24" halign="right" transparent="1" zPosition="20" />')
+	x.append('\t\t<panel name="ButtonTemplate" />')
+	name = "MovieSelection" if on else "MovieSelection_CVPosterOff"
+	return '\t<screen name="%s" title="Movie Selection" position="fill" backgroundColor="steThemePrimary" flags="wfNoBorder">\n%s\n\t</screen>' % (name, "\n".join(l for l in x if l))
+
+
 FONTS = '\t<fonts>\n\t\t<font name="%s" filename="LiberationSans-Bold.ttf" scale="100" />\n\t</fonts>' % BOLD
 
 
@@ -498,6 +541,15 @@ def generate(skin):
 		parts.append(G._classic_screen(skin, "epg", n).strip("\n"))
 		provides.append(n)
 	made.append(_write_pack(skin, "epg", parts, provides, "EPG"))
+	# pvr: MovieSelection (+_CVPosterOff) Modern; MoviePlayer, PVRState, Timeshift*, MovieContextMenu Classic
+	psrc = open(os.path.join(skin, "layouts", "pvr", "classic", "screens.openatv.xml"), encoding="utf-8").read()
+	parts, provides = [movieselection(skin, True), movieselection(skin, False)], ["MovieSelection", "MovieSelection_CVPosterOff"]
+	for n in re.findall(r'<screen name="([^"]+)"', psrc):
+		if n == "MovieSelection":
+			continue
+		parts.append(G._classic_screen(skin, "pvr", n).strip("\n"))
+		provides.append(n)
+	made.append(_write_pack(skin, "pvr", parts, provides, "PVR"))
 	# eventview: live dashboard + the named-widget screens (ON / _CVPosterOff); context menu stays Classic
 	G.poster(skin, "Event", {"x": 0, "y": 0, "w": 220, "h": 330}, EV_KEY)
 	parts = [eventview_live(skin)]
