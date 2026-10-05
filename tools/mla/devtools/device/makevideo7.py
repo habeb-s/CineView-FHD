@@ -74,8 +74,8 @@ def C(t, n, lab, tag, good=True, secs=3.2):
     else:
         print("missing", t, n)
 
-still(card("CineView MLA — مراجعة النماذج", "Slot 8 · build51 ← build60 · لقطات فعلية من الرسيفر",
-           ["Modern بأقسامه الستة · Minimal بأقسامه الستة", "Columns · Cover Library وModern PVR على EMC", "EventView Feature · الأداء"]), 6)
+still(card("CineView MLA — مراجعة النماذج", "Slot 8 · build51 ← build63 · لقطات فعلية من الرسيفر",
+           ["Modern بأقسامه الستة · Minimal بأقسامه الستة", "Columns · Cover Library وModern PVR على EMC", "EventView Feature · Details Card · Cinema Shelf · الأداء"]), 6)
 
 still(card("1. Modern — 6/6 أقسام", "البطاقات المستديرة · الثيمات · Posters On / Off", ["الاعتماد البصري النهائي لك"]), 4)
 C("t57", "ib_navy_on", "InfoBar", "ON"); C("t57", "ib_navy_off", "InfoBar — بلا بوستر", "OFF")
@@ -85,7 +85,7 @@ C("t57", "cs_green_on_open", "قائمة القنوات — green", "THEME", Non
 C("t57", "epg_navy_on_right", "EPG", "ON"); C("t57", "epg_navy_off_open", "EPG — بلا بوستر", "OFF")
 C("t65", "ev_on_784", "EventView المباشر — شعار القناة في مكان ثابت", "ON"); C("t65", "ev_off_784", "EventView المباشر — بلا بوستر", "OFF")
 C("t57", "ev_navy_on_simple", "EventView من الدليل", "ON"); C("t57", "ev_navy_on_infobar", "InfoBarEventView", "ON")
-C("t61", "emc_modern_navy_on_down2", "PVR على EMC (زر PVR) — Modern", "ON"); C("t61", "emc_modern_off_down2", "PVR على EMC — بلا غلاف", "OFF")
+C("t61", "emc_modern_navy_on_down3", "PVR على EMC (زر PVR) — Modern", "ON"); C("t61", "emc_modern_off_down3", "PVR على EMC — بلا غلاف", "OFF")
 C("t61", "ms_modern_on_down1", "MovieSelection الأصلي — Modern", "ON")
 
 still(card("الأداء — accelAlloc", "السبب: أسطح البوسترات الكبيرة في Modern (240×360 · 300×450 · 400×600)",
@@ -115,13 +115,22 @@ for n, lab, tag in (("emc_cover_navy_on_down2", "Harry Potter — غلاف مح�
                     ("ms_cover_on_down1", "MovieSelection الأصلي — Cover Library", "ON"), ("emc_classic_down1", "Classic — EMC بشكله الأصلي", "FALLBACK")):
     C("t61", n, lab, tag)
 
-still(card("5. Cinema — EventView Feature", "الوصف كان فارغًا: طبقة التعتيم فوق نص ScrollLabel", ["أُصلحت (build60) · أداة الفحص تكشفها الآن"]), 5)
+still(card("5. Cinema — EventView Feature", "الوصف كان فارغًا: طبقة التعتيم فوق نص ScrollLabel", ["أُصلحت (build60) واختُبرت على الرسيفر (t64b) · أداة الفحص تكشفها الآن"]), 5)
 for n, lab, tag in (("ev_feature_navy_on_live", "Feature — INFO المباشر", "ON"), ("ev_feature_navy_on_simple", "Feature — من الدليل", "ON"),
                     ("ev_feature_burgundy_off_simple", "Feature — بلا بوستر", "OFF"), ("ev_feature_navy_on_infobar", "Feature — InfoBarEventView", "ON")):
     C("t64b", n, lab, tag)
 
+still(card("6. كل نموذج يملك أقسامه الستة", "Details: EventView Card · Cinema: PVR Cinema Shelf",
+           ["Cinema Shelf على EMC وعلى MovieSelection الأصلي", "القائمة بكامل الارتفاع: ارتفاع صف MovieList الأصلي = ارتفاع القائمة ÷ عدد العناصر"]), 6)
+for n, lab, tag in (("ev_card_navy_on_live", "Details — EventView Card", "ON"), ("ev_card_navy_on_simple", "Details Card — من الدليل", "ON"),
+                    ("ev_card_green_off_live", "Details Card — بلا بوستر (green)", "OFF"), ("ev_card_navy_on_infobar", "Details Card — InfoBarEventView", "ON"),
+                    ("emc_cinema_navy_on_down3", "Cinema Shelf على EMC — Ples malog pingvina", "ON"), ("emc_cinema_burgundy_on_down2", "Cinema Shelf — burgundy", "ON"),
+                    ("emc_cinema_off_down2", "Cinema Shelf على EMC — بلا غلاف", "OFF"), ("ms_cinema_on_down1", "Cinema Shelf — MovieSelection الأصلي", "ON"),
+                    ("ms_cinema_off_down1", "Cinema Shelf — MovieSelection بلا غلاف", "OFF")):
+    C("t66", n, lab, tag)
+
 still(card("بانتظار قرارك", "لا نشر ولا دمج في main",
-           ["الاعتماد البصري: Modern · Minimal · Columns · Cover Library · Feature", "accelAlloc في Modern: قبول أو تصغير البوسترات"]), 6)
+           ["الاعتماد البصري: Modern · Minimal · Columns · Cover Library · Feature · Details Card · Cinema Shelf", "accelAlloc في Modern: قبول أو تصغير البوسترات"]), 6)
 
 lst = os.path.join(T, "all.txt")
 with open(lst, "w") as fh:
