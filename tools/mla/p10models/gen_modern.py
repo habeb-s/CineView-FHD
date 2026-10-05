@@ -375,6 +375,63 @@ def eventview_named(screen_name, on, infobar=False):
 	return G.screen(screen_name, "Event View", [l for l in x if l], extra)
 
 
+EPG_KEY = "config.plugins.cineviewmla.poster_epg"
+
+
+def graphical_epg(skin, on):
+	"""Modern GraphicalEPG: Graphical Plus contract (gen_epg: native list / timeline / lab1 / bouquetlist widgets,
+	sources Event / Service = highlighted cell, user time span) with a rounded detail card, bold title and pills.
+	OFF = second screen GraphicalEPG_CVPosterOff (plugin rule): wider grid, narrow card, no poster."""
+	sys.path.insert(0, os.path.join(HERE, "..", "p9epg"))
+	import gen_epg as GE
+	src = "Event"
+	gw = 1250 if on else 1500
+	px = 60 + gw + 24
+	tx, tw = px + 24, 1860 - px - 48
+	x = ['\t\t<eLabel position="0,0" size="1920,1080" backgroundColor="steThemePrimary" zPosition="-1" />',
+		'\t\t<widget source="Title" render="Label" position="60,26" size="1100,50" font="%s;32" foregroundColor="foreground" transparent="1" zPosition="40" noWrap="1" />' % BOLD,
+		G.label("global.CurrentTime", E(1250, 38, 330, 32), [("ClockToText", "Format:%a %d %b")], 22, "grey", ' halign="right"', 40),
+		'\t\t<widget source="global.CurrentTime" render="Label" position="1600,24" size="260,54" font="%s;40" foregroundColor="foreground" halign="right" transparent="1" zPosition="40">\n\t\t\t<convert type="ClockToText">Format:%%H:%%M</convert>\n\t\t</widget>' % BOLD]
+	x += GE.grid(E(60, 150, gw, 800), E(60, 106, gw, 40))
+	x.append('\t\t<eLabel position="%d,100" size="%d,850" backgroundColor="steThemeCard" cornerRadius="24" zPosition="1" />' % (px, 1860 - px))
+	pill = lambda e: '\t\t<eLabel %s backgroundColor="%s" cornerRadius="%d" zPosition="2" />' % (G.pos(e), PILL_BG, e["h"] // 2)
+	if on:
+		G.poster(skin, src, E(0, 0, 240, 360), EPG_KEY)
+		x += _poster_pair(src, tx, 124, 240, 360, 18, EPG_KEY)
+		mx, mw = tx + 260, tw - 260
+		x.append('\t\t<widget source="Service" render="Picon" position="%d,128" size="130,64" alphatest="blend" scale="aspect" transparent="1" zPosition="40">\n\t\t\t<convert type="ServiceName">Reference</convert>\n\t\t</widget>' % mx)
+		x.append(pill(E(mx, 208, mw, 36)))
+		x += G.times(src, E(mx + 10, 210, mw - 28, 32), 23, "foreground")
+		x.append(pill(E(mx, 252, 130, 36)))
+		x.append(G.label(src, E(mx, 254, 130, 32), [("EventTime", "Duration"), ("ClockToText", "InMinutes")], 22, "foreground", ' halign="center"', 40))
+		x.append(G.label("Service", E(mx, 300, mw, 30), [("ServiceName", "Name")], 22, "grey", ' noWrap="1"', 40))
+		x.append(G.label(src, E(mx, 336, mw, 30), [("EventName", "Genre")], 21, "secondFG", ' noWrap="1"', 40))
+		x.append(G.label(src, E(mx, 372, 110, 30), [("CineViewMLAIMDb", "Plain,hide")], 22, "foreground", "", 40))
+		x.append(G.label(src, E(mx + 112, 374, mw - 112, 30), [("CineViewMLAIMDb", "Stars,hide")], 20, "secondFG", "", 40))
+		ty, th, tf = 508, 84, 34
+		dy, df = 606, 23
+		dh = 930 - dy
+	else:
+		x.append(G.label("Service", E(tx, 122, tw, 30), [("ServiceName", "Name")], 22, "grey", ' noWrap="1"', 40))
+		x.append(pill(E(tx, 162, tw, 36)))
+		x += G.times(src, E(tx + 10, 164, tw - 28, 32), 23, "foreground")
+		x.append(pill(E(tx, 206, 130, 36)))
+		x.append(G.label(src, E(tx, 208, 130, 32), [("EventTime", "Duration"), ("ClockToText", "InMinutes")], 22, "foreground", ' halign="center"', 40))
+		ty, th, tf = 258, 76, 30
+		dy, df = 350, 22
+		dh = 866 - dy
+		x.append(G.label(src, E(tx, 878, tw, 28), [("EventName", "Genre")], 21, "secondFG", ' noWrap="1"', 40))
+		x.append(G.label(src, E(tx, 908, 110, 30), [("CineViewMLAIMDb", "Plain,hide")], 22, "foreground", "", 40))
+		x.append(G.label(src, E(tx + 112, 910, tw - 112, 30), [("CineViewMLAIMDb", "Stars,hide")], 20, "secondFG", "", 40))
+	for t in G.text_variants(src, [("EventName", "Name")], E(tx, ty, tw, th), None, tf, "foreground", G.T_OPTS, "always"):
+		x.append(t.replace('font="Regular;%d"' % tf, 'font="%s;%d"' % (BOLD, tf)).replace('zPosition="20"', 'zPosition="40"'))
+	for t in G.text_variants(src, [("EventName", "FullDescription")], E(tx, dy, tw, dh), None, df, "grey", G.D_OPTS, "always"):
+		x.append(t.replace('zPosition="20"', 'zPosition="40"'))
+	x += GE.keys(985)
+	name = "GraphicalEPG" if on else "GraphicalEPG_CVPosterOff"
+	return '\t<screen name="%s" position="0,0" size="1920,1080" flags="wfNoBorder" title="Graphical EPG">\n%s\n\t</screen>' % (name, "\n".join(l for l in x if l))
+
+
 FONTS = '\t<fonts>\n\t\t<font name="%s" filename="LiberationSans-Bold.ttf" scale="100" />\n\t</fonts>' % BOLD
 
 
@@ -432,6 +489,15 @@ def generate(skin):
 			parts.append(c.strip("\n"))
 			provides.append(name)
 	made.append(_write_pack(skin, "channelselection", parts, provides, "Channel Selection"))
+	# epg: GraphicalEPG (+_CVPosterOff) Modern; every other EPG screen keeps its Classic contract
+	csrc = open(os.path.join(skin, "layouts", "epg", "classic", "screens.openatv.xml"), encoding="utf-8").read()
+	parts, provides = [graphical_epg(skin, True), graphical_epg(skin, False)], ["GraphicalEPG", "GraphicalEPG_CVPosterOff"]
+	for n in re.findall(r'<screen name="([^"]+)"', csrc):
+		if n in ("GraphicalEPG", "GraphicalEPG_CVPosterOff"):
+			continue
+		parts.append(G._classic_screen(skin, "epg", n).strip("\n"))
+		provides.append(n)
+	made.append(_write_pack(skin, "epg", parts, provides, "EPG"))
 	# eventview: live dashboard + the named-widget screens (ON / _CVPosterOff); context menu stays Classic
 	G.poster(skin, "Event", {"x": 0, "y": 0, "w": 220, "h": 330}, EV_KEY)
 	parts = [eventview_live(skin)]
