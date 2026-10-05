@@ -587,9 +587,8 @@ def _optimize(skin, xml):
 	xml, n = _DEFAULT_RE.subn(tile, xml)
 	assert "poster_default_" not in xml, "a Modern default poster escaped the optimizer"
 	xml = xml.replace('render="CineViewMLAPosterX" ', 'render="CineViewMLAPosterX" underlay="1" ')
-	# picons: the native Picon renderer pins every picon it ever showed in the accelerated pool (cached + accelAlways,
-	# t69: 42 channel-list picons = 4.8 MB); CineViewMLAPicon = same lookup, uncached load, released when hidden
-	xml = xml.replace('render="Picon" ', 'render="CineViewMLAPicon" ')
+	# picons stay native (t70): the channel list's own rows load the same picon files cached (listboxservice.cpp
+	# loadPNG cached=1), so the native Picon renderer shares those blocks; an uncached copy only added allocations.
 	return xml
 
 

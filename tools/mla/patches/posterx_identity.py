@@ -242,7 +242,8 @@ class _CineViewMLAPosterXIdentity(_CineViewMLAPosterXBase):
     def onShow(self):
         _CineViewMLAPosterXBase.onShow(self)
         if getattr(self, "underlay", False) and self.instance:
-            self.changed((self.CHANGED_DEFAULT,))
+            self._mla_last = _mla_time.time()
+            self._changed_now((self.CHANGED_DEFAULT,))
 
     def _show_default(self):
         if getattr(self, "underlay", False):
@@ -272,6 +273,9 @@ class _CineViewMLAPosterXIdentity(_CineViewMLAPosterXBase):
                 if pl is None:
                     pl = self._mla_picload = _mla_ePicLoad()
                 pl.setPara((w, h, 1, 1, False, 1, "#00000000"))
+                if getattr(self, "underlay", False):
+                    # the old block is freed before the new one is allocated (same event-loop turn: no repaint)
+                    self.instance.setPixmap(None)
                 if pl.startDecode(path, 0, 0, False) == 0:
                     pix = pl.getData()
                     if pix:
@@ -284,6 +288,30 @@ class _CineViewMLAPosterXIdentity(_CineViewMLAPosterXBase):
         _CineViewMLAPosterXBase._show(self, path)
 
     def changed(self, what):
+        """underlay="1": while a list cursor runs (changes < 0.4 s apart) only the position where it stops is
+        decoded (device t70: every cursor step decoded a 300x450 + a 160x240 picture).  The first change and any
+        isolated change are handled at once, so opening a screen is not delayed."""
+        if getattr(self, "underlay", False) and self.instance and what[0] != self.CHANGED_CLEAR:
+            now = _mla_time.time()
+            last, self._mla_last = getattr(self, "_mla_last", 0), now
+            if now - last < 0.4:
+                self._mla_pending = what
+                t = getattr(self, "_mla_settle", None)
+                if t is None:
+                    from enigma import eTimer
+                    t = self._mla_settle = eTimer()
+                    t.callback.append(self._mla_settled)
+                t.start(350, True)
+                return
+        self._changed_now(what)
+
+    def _mla_settled(self):
+        what = getattr(self, "_mla_pending", None)
+        self._mla_pending = None
+        if what is not None and self.instance:
+            self._changed_now(what)
+
+    def _changed_now(self, what):
         if not self.instance:
             return
         if getattr(self, "underlay", False) and self.suspended:
