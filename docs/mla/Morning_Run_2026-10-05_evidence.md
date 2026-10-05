@@ -379,3 +379,51 @@ Status: RUNTIME TESTED. 0 tracebacks, 0 skin errors and 0 crash logs in every ru
       plus 1955 kB of native picons; 28 accelAlloc failures.
     - build71: 3830 kB used, free 1551 kB; **no poster surface in the pool**, only native picons (3565 kB) and
       816×60; 1 failure (the start-up one).
+
+## 11. accelAlloc attribution per source (user request 22:03) — t81a / t81b, fix t83
+
+**t81a — RUNTIME TESTED.**
+- Setup: build71 deployed (the files of rc6), gAccel debug on, fixed zap order (HBO / HRT1 alternating), 3
+  diagnostic rounds on Modern.
+- Every failure is classified by the size of the surface requested at the moment of failure (enigma2 dumps the pool
+  at each failure).
+
+| Source | Failures | Share |
+|---|---|---|
+| Enigma2 picon cache (220×132, channel list rows, `listboxservice.cpp` `loadPNG(..., cached=1)`) | 3 | 42.9 % |
+| CineView poster decode (300×450, 240×360, 160×240) | 3 | 42.9 % |
+| Enigma2 image / other surface (1536×1024, right after a zap) | 1 | 14.3 % |
+
+- Pool at the last failure: 5275 kB used in 48 surfaces. 43 of them are 224×132 picons (115 kB each, about
+  4.9 MB), plus the 816×60 surface. Free: 99 kB in 2 blocks.
+- No poster surface was resident. The CineView failures are first-time decodes, not held blocks.
+
+**Root cause of the CineView share — ROOT CAUSE IDENTIFIED (enigma2 57b7a51 source).**
+- `lib/gdi/picload.cpp:1348`: `ePicLoad::getData()` allocates its result as
+  `new gPixmap(max_x, max_y, 32, NULL, gPixmap::accelAuto)`.
+- So the first decode of each poster (when its widget-size copy is not in `sz/` yet) asks the full pool for
+  300×450 / 240×360 / 160×240. The request fails, a warning is logged, and the pixmap falls back to RAM.
+- Right after that, the patch replaced the block with the accelNever copy. So these are transient requests, not
+  residency.
+
+**Fix — IMPLEMENTED (build75), device test t83 queued.**
+- The widget-size PNG is now made with PIL from the original cached poster, with no gPixmap at all. Pillow 12.3.0
+  is part of OpenATV 8.0.1.
+- It is then loaded `loadPNG(path, -1, 0)` (accelNever, uncached). ePicLoad remains the fallback when PIL is
+  missing.
+- The geometry is ePicLoad's exactly, from the source:
+  - fit inside w×h with the aspect kept, sizes truncated;
+  - offset `(max − scr) / 2`;
+  - borders `background ^ 0xFF000000` = opaque black;
+  - EXIF orientation ignored.
+- The original poster is only read: never rewritten or recompressed, and its visible size is unchanged.
+- **Offline A/B on the receiver** (86 existing ePicLoad `sz/` files vs PIL output from the same originals):
+  - geometry and black bars match; the alpha differs only for 2 PNG sources with transparency;
+  - PSNR median 30.4 dB (min 22.0). The difference is the scaler: ePicLoad box-averages, PIL LANCZOS is sharper;
+  - zoomed crops: same framing, PIL version crisper (text edges), no artefacts.
+  - Visual evidence: `shots/szcmp/szcmp.png`, `szcmp2.png` on ai-agent.
+- **This changes the poster pixels (sharper), not the size or layout. The user's visual approval is requested.**
+
+**Native share (picons, the 1536×1024 surface).**
+- These are Enigma2-internal (PixmapCache / list picon cache). They are documented here and not changed, per the
+  rule "no risky Enigma2 change".
