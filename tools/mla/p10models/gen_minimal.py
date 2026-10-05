@@ -234,7 +234,7 @@ def eventview(skin, name, on, live=False):
 	x.append('\t\t<widget name="datetime" position="%d,124" size="420,32" font="Regular;24" foregroundColor="secondFG" transparent="1" noWrap="1" zPosition="20" />' % (tx + 410))
 	x.append('\t\t<widget name="duration" position="%d,124" size="%d,32" font="Regular;24" foregroundColor="secondFG" transparent="1" noWrap="1" zPosition="20" />' % (tx + 840, max(80, tw - 840)))
 	x.append('\t\t<widget source="Title" render="Label" position="%d,164" size="%d,112" font="Regular;46" foregroundColor="foreground" transparent="1" zPosition="20" />' % (tx, tw))
-	x.append('\t\t<widget name="FullDescription" position="360,%d" size="1200,%d" font="Regular;24" foregroundColor="foreground" backgroundColor="steThemeOverlay" transparent="1" zPosition="20" />' % (dy, dh))
+	x.append('\t\t<widget name="FullDescription" position="360,%d" size="1200,%d" font="Regular;24" foregroundColor="foreground" backgroundColor="steThemePanel" transparent="1" zPosition="20" />' % (dy, dh))
 	if live:
 		x.append('\t\t<widget source="%s" render="Label" position="360,960" size="70,32" font="Regular;24" foregroundColor="grey" transparent="1" zPosition="20">\n\t\t\t<convert type="EventName">Name</convert>\n\t\t\t<convert type="CineViewMLAShowIf">always,True,text=NEXT</convert>\n\t\t</widget>' % NXT)
 		x.append(G.label(NXT, E(436, 960, 80, 32), [("EventTime", "StartTime"), ("ClockToText", "Format:%H:%M")], 24, "grey"))
@@ -253,7 +253,7 @@ def infobar_eventview(skin, name, on):
 	x.append('\t\t<widget name="datetime" position="%d,40" size="420,30" font="Regular;22" foregroundColor="secondFG" transparent="1" noWrap="1" zPosition="20" />' % tx)
 	x.append('\t\t<widget name="duration" position="%d,40" size="200,30" font="Regular;22" foregroundColor="secondFG" transparent="1" noWrap="1" zPosition="20" />' % (tx + 430))
 	x.append('\t\t<widget source="Title" render="Label" position="%d,74" size="%d,52" font="Regular;40" foregroundColor="foreground" transparent="1" noWrap="1" zPosition="20" />' % (tx, tw))
-	x.append('\t\t<widget name="FullDescription" position="%d,136" size="%d,168" font="Regular;23" foregroundColor="foreground" backgroundColor="steThemeOverlay" transparent="1" zPosition="20" />' % (tx, tw))
+	x.append('\t\t<widget name="FullDescription" position="%d,136" size="%d,168" font="Regular;23" foregroundColor="foreground" backgroundColor="steThemePanel" transparent="1" zPosition="20" />' % (tx, tw))
 	x.append(KEYS % (20, "%d,314" % tx, "%d,34" % tw))
 	return '\t<screen name="%s" position="0,0" size="1920,360" flags="wfNoBorder" title="Event View">\n%s\n\t</screen>' % (name, "\n".join(l for l in x if l))
 

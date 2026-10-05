@@ -41,7 +41,7 @@ def full(skin, name, on):
 	x.append(G.label("Event", {"x": tx + tw - 250, "y": 300, "w": 130, "h": 38}, [("CineViewMLAIMDb", "Plain,hide")], 27, "foreground", ' halign="right"'))
 	x.append(G.label("Event", {"x": tx + tw - 110, "y": 302, "w": 110, "h": 38}, [("CineViewMLAIMDb", "Stars,hide")], 22, "secondFG", ' halign="right"'))
 	x.append(G.box({"x": tx, "y": 352, "w": tw, "h": 2}, "#00444444", 6))
-	x.append('\t\t<widget name="FullDescription" position="%d,374" size="%d,540" font="Regular;27" foregroundColor="foreground" backgroundColor="steThemeOverlay" transparent="1" zPosition="20" />' % (tx, tw))
+	x.append('\t\t<widget name="FullDescription" position="%d,374" size="%d,540" font="Regular;27" foregroundColor="foreground" backgroundColor="steThemePanel" transparent="1" zPosition="20" />' % (tx, tw))
 	x.append(G.box({"x": 0, "y": 960, "w": 1920, "h": 120}, "steThemePanelAlt", 2))
 	x.append(KEYS % (26, "90,995", "1740,46"))
 	title = "Event View"
@@ -61,7 +61,7 @@ def infobar(skin, name, on):
 	x.append(G.label("Event", {"x": tx + 650, "y": 102, "w": tw - 650 - 250, "h": 34}, [("EventName", "Genre")], 25, "grey", ' noWrap="1"'))
 	x.append(G.label("Event", {"x": tx + tw - 240, "y": 102, "w": 130, "h": 34}, [("CineViewMLAIMDb", "Plain,hide")], 25, "foreground", ' halign="right"'))
 	x.append(G.label("Event", {"x": tx + tw - 100, "y": 104, "w": 100, "h": 34}, [("CineViewMLAIMDb", "Stars,hide")], 21, "secondFG", ' halign="right"'))
-	x.append('\t\t<widget name="FullDescription" position="%d,148" size="%d,212" font="Regular;25" foregroundColor="foreground" backgroundColor="steThemeOverlay" transparent="1" zPosition="20" />' % (tx, tw))
+	x.append('\t\t<widget name="FullDescription" position="%d,148" size="%d,212" font="Regular;25" foregroundColor="foreground" backgroundColor="steThemePanel" transparent="1" zPosition="20" />' % (tx, tw))
 	x.append(KEYS % (22, "%d,372" % tx, "%d,36" % tw))
 	return '\t<screen name="%s" position="0,0" size="1920,420" flags="wfNoBorder" title="Event View">\n%s\n\t</screen>' % (name, "\n".join(l for l in x if l))
 

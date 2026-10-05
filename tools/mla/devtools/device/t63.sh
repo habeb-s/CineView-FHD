@@ -7,7 +7,7 @@
 # Read-only on the HDD (not opened); PVR only up / down / EXIT.  Restore: Classic, navy, posters ON, movielist folder.
 exec 9>~/cineview-mla/t63.lock; flock -n 9 || { echo "t63 already running"; exit 1; }
 . ~/cineview-mla/p6lib.sh
-NEW=${1:-build57}
+NEW=${1:-build58}
 S=~/cineview-mla/shots/t63; rm -rf $S; mkdir -p $S
 E='python3 /usr/share/enigma2/CineView_FHD_MLA/mla/engine/composer.py'
 HRT1="1:0:19:D49:C738:16E:A00000:0:0:0:"
