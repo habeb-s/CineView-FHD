@@ -1092,6 +1092,16 @@ def main(golden, comps, control, out):
 			Image.open(src).convert("RGB").resize((720, 405)).save(os.path.join(d, "preview.png"))
 		else:
 			make_preview_none(os.path.join(d, "preview.png"))
+	# Columns on the native vertical EPG (user decision 2026-10-05 05:23; t42: compatible with OpenATV).
+	import gen_columns
+	for d in gen_columns.generate(skin):
+		print("COLUMNS pack:", os.path.relpath(d, skin))
+		src = os.path.join(emocks, "columns_on.png")
+		if emocks and os.path.isfile(src):
+			from PIL import Image
+			Image.open(src).convert("RGB").resize((720, 405)).save(os.path.join(d, "preview.png"))
+		else:
+			make_preview_none(os.path.join(d, "preview.png"))
 	# Modern model (look pending approval, 2026-10-04 night): InfoBar pack for real-device review; not selected.
 	sys.path.insert(0, os.path.join(HERE, "p10models"))
 	import gen_modern
