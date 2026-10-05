@@ -398,7 +398,8 @@ def modern_pvr(on):
 # ------------------------------------------------------------------------------------------------ MINIMAL
 def minimal_infobar(on):
 	im = video()
-	im = vgrad(im, (0, 880, W, 200), TINT, 0, SCRIM_A)
+	im = vgrad(im, (0, 820, W, 120), TINT, 0, SCRIM_A)
+	im = vgrad(im, (0, 940, W, 140), TINT, SCRIM_A, SCRIM_A)
 	d = ImageDraw.Draw(im, "RGBA")
 	x0 = 60
 	if on:
@@ -415,7 +416,9 @@ def minimal_infobar(on):
 
 def minimal_sib(on):
 	im = video()
-	im = vgrad(im, (0, 500, W, 580), TINT, 0, SCRIM_A)
+	# soft edge above, then a solid scrim under every text line (contrast over bright video)
+	im = vgrad(im, (0, 460, W, 160), TINT, 0, SCRIM_A)
+	im = vgrad(im, (0, 620, W, 460), TINT, SCRIM_A, SCRIM_A)
 	d = ImageDraw.Draw(im, "RGBA")
 	x0 = 60
 	if on:

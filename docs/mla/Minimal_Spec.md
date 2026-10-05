@@ -38,8 +38,9 @@ Theme roles from the existing theme files. No new colour constants per theme.
 - **Scrims.** `backgroundColor="#ff000000,#24RRGGBB,vertical,1"`: transparent at the top, theme colour at the
   bottom. The build fills in RRGGBB per theme, the same way `steThemeCard` is generated today. The gradient with
   alpha blending is verified on the receiver (t41).
-- **Contrast over video.** Text sits only on the darkest 45 % of the scrim (alpha ≥ 0xA0). Checked per theme on
-  bright frames (HRT1 stage scene), as for Video First.
+- **Contrast over video.** Text sits only on the solid part of the scrim (opacity 219/255 ≈ 86 %); the gradient is
+  only the soft upper edge. Checked per theme on a bright frame (HRT1 stage scene, letterbox and subtitles cropped
+  out), as for Video First.
 
 ## 3. Sections — layout, posters ON / OFF, native contract
 
@@ -48,7 +49,9 @@ real reflow: no thumbnail, no placeholder, no reserved gap. Source widgets switc
 named Python widgets use `<screen>_CVPosterOff` through the CineView MLA plugin (proven mechanism).
 
 ### 3.1 InfoBar (`InfoBar`; `RadioInfoBar` stays Classic)
-- **Scrim:** 0,880 → 1920x200.
+- **Scrim:** soft edge 0,820 → 1920x120 (transparent → theme tint), then solid tint 0,940 → 1920x140 under all text
+  (two eLabels: gradient + plain; mockup review 2026-10-05: a single 200-px gradient left the first text line on a
+  ~40 % scrim over bright video).
 - **Thumbnail:** 60,948, 70x105 (ON only).
 - **Text:** x0 = 150 (ON) / 60 (OFF).
 
@@ -64,7 +67,7 @@ Nothing technical is shown. Recording and timer state appear as a single accent 
 (native RecordState).
 
 ### 3.2 SecondInfoBar (`SecondInfoBar`, `SecondInfoBarSimple`): the expanded layer
-- **Scrim:** 0,500 → 1920x580.
+- **Scrim:** soft edge 0,460 → 1920x160, then solid tint 0,620 → 1920x460 under all text.
 - **Poster:** 60,640, 220x330 (ON).
 - **Text:** x0 = 310 (ON) / 60 (OFF).
 - **Content:**
