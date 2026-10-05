@@ -2,8 +2,8 @@
 """PVR pack "cinema" — Cinema Shelf (Five_Models_Plan.md §4: the Cinema model's own PVR; look pending approval).
 
 Cinema language (same as the Cinema InfoBar / SecondInfoBar / EventView Feature): the live picture stays behind a
-full-screen scrim, a large poster on the left, the selected recording's title big, one muted metadata row
-(date · duration · channel · size), the recording's short description, then the recording list under it.
+full-screen scrim; the left column is the selected recording (large poster, big title, stacked details, short
+description), the right column is the full-height recording list.
 
 Contracts used (nothing invented):
 * native MovieSelection (Screens/MovieSelection.py 57b7a51): every named widget of the Classic screen is kept
@@ -28,7 +28,11 @@ import emc_common as EMC  # noqa: E402
 
 KEY = "config.plugins.cineviewmla.poster_pvr"
 POSTER = (90, 120, 340, 510)
-LIST_Y, LIST_H, ITEM = 392, 552, 55
+# The list owns the full right column: the native MovieList derives its row height from the list height
+# (Components/MovieList.py setItemsPerPage: listHeight // config.movielist.itemsperpage; device t66: a 552-px list gave
+# 27-px rows), so it gets the full 860 px; the selected recording's card lives in the left column.
+LX, LY, LW, LH, ITEM = 870, 120, 960, 860, 55
+COL_W = 720
 
 
 def _top(emc):
@@ -36,6 +40,7 @@ def _top(emc):
 		'\t\t<widget source="Title" render="Label" position="90,40" size="1200,44" font="Regular;30" foregroundColor="secondFG" transparent="1" noWrap="1" zPosition="20" />',
 		G.label("global.CurrentTime", {"x": 1430, "y": 46, "w": 250, "h": 34}, [("ClockToText", "Format:%a %d %b")], 24, "grey", ' halign="right"'),
 		G.label("global.CurrentTime", {"x": 1690, "y": 34, "w": 140, "h": 54}, [("ClockToText", "Format:%H:%M")], 42, "foreground", ' halign="right"'),
+		'\t\t<eLabel position="840,120" size="2,860" backgroundColor="#00444444" zPosition="-1" />',
 		'\t\t<eLabel position="0,1000" size="1920,80" backgroundColor="steThemePanelAlt" zPosition="-2" />']
 	if not emc:
 		x.append('\t\t<widget name="movie_sort" pixmaps="icons/az.png,icons/newtop.png,icons/shuffle.png,icons/za.png,icons/oldtop.png,icons/faz.png,icons/fza.png,icons/default.png,icons/azold.png,icons/zanew.png,icons/longest.png,icons/shortest.png,icons/dtsrt.png,icons/dtsdt.png" position="1300,46" zPosition="5" size="52,30" transparent="1" alphatest="on" />')
@@ -43,60 +48,70 @@ def _top(emc):
 	return x
 
 
-def _card(skin, tx, tw, emc, on):
-	"""Selected recording: title, metadata row, short description (all from source "Service")."""
+def _lbl(conv, x, y, w, h, font, color, extra=""):
+	c = "".join('\n\t\t\t<convert type="%s">%s</convert>' % cv for cv in conv)
+	return '\t\t<widget source="Service" render="Label" position="%d,%d" size="%d,%d" font="Regular;%d" foregroundColor="%s" transparent="1" zPosition="20"%s>%s\n\t\t</widget>' % (x, y, w, h, font, color, extra, c)
+
+
+def _card(skin, on):
+	"""Selected recording in the left column (source "Service"): ON = poster + stacked details beside it, description
+	under both; OFF = no poster, the title and details take the column width, the description gets the rest."""
+	date = [("ServiceTime", "StartTime"), ("ClockToText", "ShortDate")]
+	dur = [("ServiceTime", "Duration"), ("ClockToText", "AsLength")]
 	x = []
 	if on:
 		px, py, pw, ph = POSTER
 		x += G.poster(skin, "Service", {"x": px, "y": py, "w": pw, "h": ph}, KEY)
-		x.append(G.label("Service", {"x": px, "y": py + ph + 24, "w": pw, "h": 32}, [("EventName", "Genre")], 23, "grey", ' noWrap="1"'))
-		x.append(G.label("Service", {"x": px, "y": py + ph + 62, "w": 150, "h": 34}, [("CineViewMLAIMDb", "Plain,hide")], 26, "foreground"))
-		x.append(G.label("Service", {"x": px + 150, "y": py + ph + 66, "w": pw - 150, "h": 30}, [("CineViewMLAIMDb", "Stars,hide")], 21, "secondFG", ' halign="right"'))
-	x.append('\t\t<widget source="Service" render="Label" position="%d,112" size="%d,70" font="Regular;52" foregroundColor="foreground" transparent="1" noWrap="1" zPosition="20">\n\t\t\t<convert type="ServiceName">Name</convert>\n\t\t</widget>' % (tx, tw))
-	x.append('\t\t<widget source="Service" render="Label" position="%d,196" size="200,36" font="Regular;27" foregroundColor="grey" transparent="1" noWrap="1" zPosition="20">\n\t\t\t<convert type="ServiceTime">StartTime</convert>\n\t\t\t<convert type="ClockToText">ShortDate</convert>\n\t\t</widget>' % tx)
-	x.append('\t\t<widget source="Service" render="Label" position="%d,196" size="150,36" font="Regular;27" foregroundColor="grey" transparent="1" noWrap="1" zPosition="20">\n\t\t\t<convert type="ServiceTime">Duration</convert>\n\t\t\t<convert type="ClockToText">AsLength</convert>\n\t\t</widget>' % (tx + 210))
-	x.append(G.label("Service", {"x": tx + 370, "y": 196, "w": tw - 370 - 210, "h": 36}, [("MovieInfo", "RecordServiceName")], 27, "secondFG", ' noWrap="1"'))
-	x.append(G.label("Service", {"x": tx + tw - 200, "y": 196, "w": 200, "h": 36}, [("MovieInfo", "FileSize")], 25, "grey", ' halign="right"'))
-	# ShortDescription for both: on EMC's service FullDescription is the file path (t61c); on the native list it is the
-	# recording's description, but one 3-line box shows the short one best in both
-	x.append('\t\t<widget source="Service" render="RunningText" position="%d,244" size="%d,112" font="Regular;26" foregroundColor="foreground" transparent="1" zPosition="20" options="%s">\n\t\t\t<convert type="MovieInfo">ShortDescription</convert>\n\t\t</widget>' % (tx, tw, G.D_OPTS))
-	x.append('\t\t<eLabel position="%d,370" size="%d,2" backgroundColor="#00444444" zPosition="-1" />' % (tx, tw))
+		cx, cw = px + pw + 30, COL_W - pw - 30
+		x.append(_lbl([("ServiceName", "Name")], cx, 114, cw, 156, 40, "foreground"))
+		x.append(_lbl(date, cx, 286, cw, 36, 27, "grey", ' noWrap="1"'))
+		x.append(_lbl(dur, cx, 326, cw, 36, 27, "grey", ' noWrap="1"'))
+		x.append(_lbl([("MovieInfo", "RecordServiceName")], cx, 366, cw, 36, 27, "secondFG", ' noWrap="1"'))
+		x.append(_lbl([("MovieInfo", "FileSize")], cx, 406, cw, 36, 25, "grey", ' noWrap="1"'))
+		x.append(_lbl([("EventName", "Genre")], cx, 452, cw, 34, 24, "grey", ' noWrap="1"'))
+		x.append(_lbl([("CineViewMLAIMDb", "Plain,hide")], cx, 494, 140, 36, 27, "foreground"))
+		x.append(_lbl([("CineViewMLAIMDb", "Stars,hide")], cx + 140, 498, 140, 32, 22, "secondFG", ' noWrap="1"'))
+		dy = 664
+	else:
+		x.append(_lbl([("ServiceName", "Name")], 90, 112, COL_W, 124, 48, "foreground"))
+		x.append(_lbl(date, 90, 252, 220, 36, 27, "grey", ' noWrap="1"'))
+		x.append(_lbl(dur, 320, 252, 160, 36, 27, "grey", ' noWrap="1"'))
+		x.append(_lbl([("MovieInfo", "FileSize")], 490, 252, 320, 36, 25, "grey", ' halign="right" noWrap="1"'))
+		x.append(_lbl([("MovieInfo", "RecordServiceName")], 90, 294, COL_W, 36, 27, "secondFG", ' noWrap="1"'))
+		x.append(_lbl([("EventName", "Genre")], 90, 336, 500, 34, 24, "grey", ' noWrap="1"'))
+		x.append(_lbl([("CineViewMLAIMDb", "Plain,hide")], 600, 334, 100, 36, 26, "foreground", ' halign="right"'))
+		x.append(_lbl([("CineViewMLAIMDb", "Stars,hide")], 700, 338, 110, 32, 21, "secondFG", ' halign="right" noWrap="1"'))
+		dy = 392
+	x.append('\t\t<eLabel position="90,%d" size="%d,2" backgroundColor="#00444444" zPosition="-1" />' % (dy - 14, COL_W))
+	# ShortDescription: on EMC's service FullDescription is the file path (t61c); the short one reads well in both
+	x.append('\t\t<widget source="Service" render="RunningText" position="90,%d" size="%d,%d" font="Regular;26" foregroundColor="foreground" transparent="1" zPosition="20" options="%s">\n\t\t\t<convert type="MovieInfo">ShortDescription</convert>\n\t\t</widget>' % (dy, COL_W, 940 - dy, G.D_OPTS))
 	return x
 
 
 def native(skin, on):
-	tx = 480 if on else 90
-	tw = 1830 - tx
-	x = _top(False) + _card(skin, tx, tw, False, on)
-	geo = 'position="%d,%d" size="%d,%d"' % (tx, LIST_Y, tw, LIST_H)
+	x = _top(False) + _card(skin, on)
+	geo = 'position="%d,%d" size="%d,%d"' % (LX, LY, LW, LH)
 	x.append('\t\t<widget name="waitingtext" %s font="Regular;33" halign="center" valign="center" transparent="1" zPosition="4" />' % geo)
 	x.append('\t\t<widget name="chosenletter" %s foregroundColor="secondFG" font="Regular;112" halign="center" valign="center" transparent="1" zPosition="4" />' % geo)
 	x.append('\t\t<widget name="list" %s scrollbarMode="showOnDemand" itemHeight="%d" font="Regular;29" transparent="1" zPosition="3" />' % (geo, ITEM))
 	x.append('\t\t<widget name="DescriptionBorder" position="0,0" size="0,0" />')
-	if on:
-		x.append('\t\t<widget name="freeDiskSpace" position="90,%d" size="340,32" foregroundColor="grey" font="Regular;22" transparent="1" zPosition="20" />' % 712)
-		x.append('\t\t<widget name="TrashcanSize" position="90,%d" size="340,32" foregroundColor="grey" font="Regular;22" transparent="1" zPosition="20" />' % 748)
-	else:
-		x.append('\t\t<widget name="freeDiskSpace" position="1130,950" size="700,32" foregroundColor="grey" font="Regular;22" halign="right" transparent="1" zPosition="20" />')
-		x.append('\t\t<widget name="TrashcanSize" position="90,950" size="700,32" foregroundColor="grey" font="Regular;22" transparent="1" zPosition="20" />')
+	x.append('\t\t<widget name="freeDiskSpace" position="90,948" size="400,32" foregroundColor="grey" font="Regular;22" transparent="1" zPosition="20" />')
+	x.append('\t\t<widget name="TrashcanSize" position="490,948" size="320,32" foregroundColor="grey" font="Regular;22" halign="right" transparent="1" zPosition="20" />')
 	x.append('\t\t<panel name="ButtonTemplate" />')
 	name = "MovieSelection" if on else "MovieSelection_CVPosterOff"
 	return G.screen(name, "Movie Selection", [l for l in x if l])
 
 
 def emc_screen(skin, on):
-	tx = 480 if on else 90
-	tw = 1830 - tx
-	x = _top(True) + _card(skin, tx, tw, True, on)
-	x.append('\t\t<widget name="wait" position="%d,%d" size="%d,%d" font="Regular;33" halign="center" valign="center" transparent="1" zPosition="4" />' % (tx, LIST_Y, tw, LIST_H))
-	x.append(EMC.emc_list(tx, LIST_Y, tw, LIST_H, ITEM, 29, 25))
+	x = _top(True) + _card(skin, on)
+	x.append('\t\t<widget name="wait" position="%d,%d" size="%d,%d" font="Regular;33" halign="center" valign="center" transparent="1" zPosition="4" />' % (LX, LY, LW, LH))
+	x.append(EMC.emc_list(LX, LY, LW, LH, ITEM, 29, 25))
 	if on:
 		px, py, pw, ph = POSTER
 		x += EMC.emc_cover_under(px, py, pw, ph)
-		x.append('\t\t<widget source="spacefree" render="Label" position="90,712" size="340,32" foregroundColor="grey" font="Regular;22" transparent="1" zPosition="20" />')
 	else:
 		x += EMC.emc_cover_under(1880, 900, 2, 2)  # EMC's cover widgets exist but are out of sight (no poster space)
-		x.append('\t\t<widget source="spacefree" render="Label" position="1130,950" size="700,32" foregroundColor="grey" font="Regular;22" halign="right" transparent="1" zPosition="20" />')
+	x.append('\t\t<widget source="spacefree" render="Label" position="90,948" size="720,32" foregroundColor="grey" font="Regular;22" transparent="1" zPosition="20" />')
 	x += EMC.emc_keys(1016, 90, 440)
 	name = "EMCSelection" if on else "EMCSelection_CVPosterOff"
 	return G.screen(name, "EMC", [l for l in x if l])
