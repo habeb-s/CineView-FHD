@@ -28,7 +28,9 @@ KEYS = '\t\t<widget addon="ColorButtonsSequence" connection="key_red,key_green,k
 
 def full(skin, name, on):
 	"""EventView / EventViewSimple: full screen."""
-	x = [G.box({"x": 0, "y": 0, "w": 1920, "h": 1080}, "steThemeOverlay", 1)]
+	# all plain eLabels BELOW z 0: the native ScrollLabel draws its text label at the default z (device t59/t64: with
+	# the dim layer at z 1 the whole description was hidden)
+	x = [G.box({"x": 0, "y": 0, "w": 1920, "h": 1080}, "steThemeOverlay", -4)]
 	tx = 530 if on else 90
 	tw = 1830 - tx
 	if on:
@@ -40,9 +42,9 @@ def full(skin, name, on):
 	x.append(G.label("Event", {"x": tx + 660, "y": 300, "w": tw - 660 - 260, "h": 38}, [("EventName", "Genre")], 27, "grey", ' noWrap="1"'))
 	x.append(G.label("Event", {"x": tx + tw - 250, "y": 300, "w": 130, "h": 38}, [("CineViewMLAIMDb", "Plain,hide")], 27, "foreground", ' halign="right"'))
 	x.append(G.label("Event", {"x": tx + tw - 110, "y": 302, "w": 110, "h": 38}, [("CineViewMLAIMDb", "Stars,hide")], 22, "secondFG", ' halign="right"'))
-	x.append(G.box({"x": tx, "y": 352, "w": tw, "h": 2}, "#00444444", 6))
+	x.append(G.box({"x": tx, "y": 352, "w": tw, "h": 2}, "#00444444", -1))
 	x.append('\t\t<widget name="FullDescription" position="%d,374" size="%d,540" font="Regular;27" foregroundColor="foreground" backgroundColor="steThemePanel" transparent="1" zPosition="20" />' % (tx, tw))
-	x.append(G.box({"x": 0, "y": 960, "w": 1920, "h": 120}, "steThemePanelAlt", 2))
+	x.append(G.box({"x": 0, "y": 960, "w": 1920, "h": 120}, "steThemePanelAlt", -2))
 	x.append(KEYS % (26, "90,995", "1740,46"))
 	title = "Event View"
 	return G.screen(name, title, [l for l in x if l])
@@ -50,7 +52,7 @@ def full(skin, name, on):
 
 def infobar(skin, name, on):
 	"""InfoBarEventView: top band over the InfoBar EPG (Classic 1920x360 band; Feature 1920x420)."""
-	x = [G.box({"x": 0, "y": 0, "w": 1920, "h": 420}, "steThemeOverlay", 1)]
+	x = [G.box({"x": 0, "y": 0, "w": 1920, "h": 420}, "steThemeOverlay", -4)]
 	tx = 300 if on else 60
 	tw = 1860 - tx
 	if on:

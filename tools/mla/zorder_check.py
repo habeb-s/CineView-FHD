@@ -32,7 +32,12 @@ def overlap(a, b):
 	return a and b and a[0] < b[0] + b[2] and b[0] < a[0] + a[2] and a[1] < b[1] + b[3] and b[1] < a[1] + a[3]
 
 
+SCROLLLABELS = ("FullDescription", "epg_description")  # native ScrollLabel (EventView): its text label is drawn at z 0
+
+
 def z(e):
+	if e.tag == "widget" and e.get("name") in SCROLLLABELS:
+		return 0  # device t59/t64: zPosition on the ScrollLabel does not lift its text over an eLabel at z >= 0
 	try:
 		return int(e.get("zPosition", "0"))
 	except ValueError:
