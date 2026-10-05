@@ -443,3 +443,42 @@ reinst.sh 22:36).
 **Native share (picons, the 1536×1024 surface).**
 - These are Enigma2-internal (PixmapCache / list picon cache). They are documented here and not changed, per the
   rule "no risky Enigma2 change".
+
+## 12. No Poster layout instead of a placeholder (user decision 22:03)
+
+**Mechanism — IMPLEMENTED (build73 / 74 / 76 / 77).**
+- The poster renderer publishes, per (toggle key, nexts), whether it shows a REAL poster
+  (`Components/CineViewMLAPosterState.py`).
+- `CineViewMLAShowIf` variants flagged `,poster0` / `,poster1` follow that state. Posters ON and the event has no
+  poster → the screen's posters-OFF arrangement for that moment.
+- The placeholder widgets (tile / icon / inner frame) are removed from those screens, and the poster widget gets
+  `underlay="1"`, so nothing is decoded when there is no poster.
+- Screens per build (build step `noposter.py`):
+  - build73: 52 dynamic screens (InfoBars, SIBs, channel lists, live EventView, EPG lists, PVR cover / minimal);
+  - build74: + both GraphicalEPG ON screens (Modern, Graphical Plus): poster card / No Poster card in the same screen;
+  - build76: + PVR cards (Modern, Cinema Shelf, Cover Library; MovieSelection and EMC), 58 dynamic screens.
+- Named-widget EventView designs (EventViewSimple / InfoBarEventView, Details Card, Feature, Minimal): the plugin
+  opens `<name>_CVPosterOff` when the event has no cached poster (cache only, no network).
+- **Remaining static:** SecondInfoBarECM (non-default SIB mode; Python-owned named widgets; the screen is created
+  once with the InfoBar). It keeps the default placeholder.
+
+**t82 — RUNTIME TESTED (build73).**
+- Five models, navy, posters ON. HBO HD (film, poster), 1:0:19:786 (Cinemax HD) and HRT1 (news, generic): SIB,
+  EventView and channel list grabbed.
+- Every model: 0 tracebacks, 0 new skin errors, 0 crash logs. accel = start-up warning only (Classic 3).
+- With a poster: the posters-ON arrangement as approved. Without one: the posters-OFF arrangement, with no
+  placeholder. The Cinema SIB without a poster is identical to the approved posters-OFF screen (t68).
+- Harness note: the InfoBar grabs came 5 s after OK, when the Modern InfoBar had already timed out. These are not
+  screen faults; the InfoBar is covered by the SIB and channel-list grabs and is re-grabbed later.
+
+**Found and fixed (pre-existing, visible in the approved t68 grabs): Classic EventView strip picon — IMPLEMENTED
+(build77), device check in t84.**
+- The strip has a picon ON / OFF variant pair.
+  - A fresh screen sends only CHANGED_DEFAULT, which the native Picon ignores (Renderer/Picon.py 57b7a51), so the
+    picon never loaded. It was missing in t68 ON and OFF.
+  - `Picon.changed()` calls `instance.show()` whenever it loads a file, so a hidden variant (text "") drew the
+    default picon (t82, Cinemax: "habeb-s" default next to the real picon).
+- Fix in `CineViewMLAShowIf` (our converter only):
+  - poster-flagged variants run one deferred CHANGED_ALL once the screen is built, and again after each
+    poster-state change;
+  - hidden variants are re-hidden after the downstream update.
