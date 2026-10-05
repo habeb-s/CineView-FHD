@@ -81,6 +81,16 @@ def main(out):
 		s = end_sample(t76, key)
 		if s:
 			phases.append((lab, s))
+	t78 = log("t78.log")
+	ab_rows = []
+	for m in re.finditer(r"^\s+(emc_hp|emc_ples|ev_78\d)\s+mean abs diff \[([^\]]*)\]\s+PSNR ([\d.]+) dB", t78, re.M):
+		k, mean, psnr = m.groups()
+		lab = {"emc_hp": "EMC · Harry Potter (local cover)", "emc_ples": "EMC · Ples malog pingvina (identity)"}.get(k, "EventView · service %s" % k[3:])
+		pic = img(os.path.join(S, "t78", "AB_%s.png" % k), 520, 74)
+		ab_rows.append('<figure class="ab">%s<figcaption>%s · mean difference %s · PSNR %s dB</figcaption></figure>' % (
+			'<img loading="lazy" alt="%s" src="%s">' % (lab, pic) if pic else "", lab, mean, psnr))
+	pools = re.findall(r"^== (A|B) = (\S+).*?^\s+pool: (.*?)$", t78, re.M | re.S)
+	pool_rows = "".join('<tr><td>%s</td><td>%s</td></tr>' % ("Modern Large " + b if a == "A" else "Current " + b, p) for a, b, p in pools)
 	errs = model_errs(log("t68.log"))
 	tb = sum(v[0] for vs in errs.values() for v in vs)
 	se = sum(v[1] for vs in errs.values() for v in vs)
@@ -123,6 +133,7 @@ def main(out):
 			m, m, "" if mi == 0 else " hidden", chip, "".join(rows), "".join(th)))
 
 	html = TEMPLATE.replace("%BARS%", "".join(bars)).replace("%PHASES%", prow or '<tr><td colspan="5">t76 not run</td></tr>') \
+		.replace("%AB%", "".join(ab_rows) or '<p class="note">t78 not run yet.</p>').replace("%POOL%", pool_rows or '<tr><td colspan="2">t78 not run yet</td></tr>') \
 		.replace("%TABS%", "".join(tabs)).replace("%PANES%", "".join(panes)).replace("%TB%", str(tb)).replace("%SE%", str(se)).replace("%SECLS%", "ok" if se == 0 else "warn") \
 		.replace("%SENOTE%", "" if se == 0 else '<span class="fn">(Classic MovieSelection: list attributes enigma2 rejects; removed in build70 / rc5)</span>').replace("%CL%", str(cl))
 	open(out, "w", encoding="utf-8").write(html)
@@ -182,6 +193,7 @@ figure img{display:block;width:100%;border-radius:6px;border:1px solid var(--lin
 figcaption{font:12px var(--mono);color:var(--muted);margin-top:4px}
 .miss{aspect-ratio:16/9;max-width:100%;display:grid;place-items:center;border:1px dashed var(--line);border-radius:6px;color:var(--muted);font:12px var(--mono)}
 .th{margin-top:6px}
+.abgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:14px}
 .theme{display:grid;grid-template-columns:110px minmax(0,1fr);gap:12px;align-items:start}
 .tname{font:500 13px var(--mono);display:flex;align-items:center;gap:8px;padding-top:4px}
 .trow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
@@ -203,6 +215,13 @@ figcaption{font:12px var(--mono);color:var(--muted);margin-top:4px}
   <div class="bars">%BARS%</div>
   <h3>Final Modern, other conditions</h3>
   <div class="tw"><table><thead><tr><th>Condition</th><th>Rounds</th><th>Warnings</th><th>RSS end</th><th>CPU</th></tr></thead><tbody>%PHASES%</tbody></table></div>
+</section>
+<section class="block">
+  <h2>Poster quality: before and after</h2>
+  <p class="note">The same poster on the same screen, left as the Large build drew it, right as the current build draws it. The cached poster file is untouched; only how the picture is held in memory changed. A PSNR of 99 dB means the two are pixel-identical.</p>
+  <div class="abgrid">%AB%</div>
+  <h3>Fast graphics memory after the same steps</h3>
+  <div class="tw"><table><thead><tr><th>Build</th><th>Pool content (gAccel dump)</th></tr></thead><tbody>%POOL%</tbody></table></div>
 </section>
 <section class="block">
   <h2>The five models</h2>
