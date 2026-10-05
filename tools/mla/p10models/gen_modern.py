@@ -508,7 +508,9 @@ def emc_selection(skin, on):
 	x.append(G.label(src, E(tx + 314, py + 2, tw - 314, 32), [("MovieInfo", "FileSize")], 22, "grey", ' halign="right"'))
 	x.append(G.label(src, E(tx, py + 50, tw, 32), [("MovieInfo", "RecordServiceName")], 23, "secondFG", ' noWrap="1"'))
 	dy = py + 94
-	x.append('\t\t<widget source="%s" render="RunningText" position="%d,%d" size="%d,%d" transparent="1" zPosition="20" foregroundColor="grey" font="Regular;22" options="%s">\n\t\t\t<convert type="MovieInfo">FullDescription</convert>\n\t\t</widget>' % (src, tx, dy, tw, 936 - dy, G.D_OPTS))
+	# EMC: description from .meta (MovieInfo ShortDescription) then .eit text; FullDescription is the path for EMC (t61)
+	x.append('\t\t<widget source="%s" render="RunningText" position="%d,%d" size="%d,84" transparent="1" zPosition="20" foregroundColor="foreground" font="Regular;22" options="%s">\n\t\t\t<convert type="MovieInfo">ShortDescription</convert>\n\t\t</widget>' % (src, tx, dy, tw, G.D_OPTS))
+	x.append('\t\t<widget source="%s" render="RunningText" position="%d,%d" size="%d,%d" transparent="1" zPosition="20" foregroundColor="grey" font="Regular;22" options="%s">\n\t\t\t<convert type="EventName">ExtendedDescription</convert>\n\t\t</widget>' % (src, tx, dy + 92, tw, 936 - dy - 92, G.D_OPTS))
 	x.append('\t\t<widget source="spacefree" render="Label" position="60,972" size="700,36" foregroundColor="grey" font="Regular;24" transparent="1" zPosition="20" />')
 	x += EMC.emc_keys(1018, 60, 300, 24)
 	name = "EMCSelection" if on else "EMCSelection_CVPosterOff"

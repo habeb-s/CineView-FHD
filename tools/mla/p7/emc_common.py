@@ -18,20 +18,22 @@ Contract — EMC 4.0 git1790 installed on the receiver (Slot 8), read from its c
 _COOL = {"CoolIconPos": 5, "CoolIconSize": "50,40", "CoolMoviePos": 65, "CoolMovieHPos": 6, "CoolPiconPos": 40, "CoolPiconHPos": 5,
 	"CoolPiconHeight": 35, "CoolMoviePiconPos": 140, "CoolBarHPos": 14, "CoolDateHPos": 7, "CoolDateColor": 1, "CoolHighlightColor": 1,
 	"CoolTitleColor": 1, "CoolSelNumTxtWidth": 50, "CoolDirInfoWidth": 300}
-_RIGHT = {"CoolBarPos": 770, "CoolProgressPos": 840, "CoolCSPos": 860, "CoolDatePos": 920}
-_BASE_W = 1190
 
 
 def emc_list(x, y, w, h, item=45, font=30, date_font=28, extra=""):
 	a = dict(_COOL)
-	shift = w - _BASE_W
-	for k, v in _RIGHT.items():
-		a[k] = v + shift
-	a["CoolDateWidth"] = 240
+	# columns from the right edge: date, then the progress bar; the title takes everything left of the bar
+	# (device t61: EMC CoolSkin offsets shifted for a 690-px list left a 200-px title column: "Harry Potter i p")
+	date_w = 240 if w >= 1000 else 150
+	a["CoolDatePos"] = w - date_w - 10
+	a["CoolBarPos"] = a["CoolDatePos"] - 140
+	a["CoolProgressPos"] = a["CoolBarPos"] + 70
+	a["CoolCSPos"] = a["CoolBarPos"] + 90
+	a["CoolDateWidth"] = date_w
 	a["CoolBarSizeSa"] = "120,21"
-	a["CoolMovieSize"] = max(200, 700 + shift)
-	a["CoolMoviePiconSize"] = max(200, 600 + shift)
-	a["CoolFolderSize"] = max(300, 800 + shift)
+	a["CoolMovieSize"] = a["CoolBarPos"] - a["CoolMoviePos"] - 12
+	a["CoolMoviePiconSize"] = a["CoolBarPos"] - a["CoolMoviePiconPos"] - 12
+	a["CoolFolderSize"] = a["CoolDatePos"] - a["CoolMoviePos"] - 12
 	a["CoolFont"] = "Regular;%d" % font
 	a["CoolSelectFont"] = "Regular;%d" % font
 	a["CoolDateFont"] = "Regular;%d" % date_font

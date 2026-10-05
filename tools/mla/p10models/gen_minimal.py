@@ -172,7 +172,7 @@ def graphical(skin):
 
 
 # ------------------------------------------------------------------------------------------------ PVR (§3.5)
-def _pvr_strip(skin, src, key):
+def _pvr_strip(skin, src, key, emc=False):
 	x = [box(60, 770, 1800, 1, "#60FFFFFF", 1)]
 	x += thumb(skin, src, 60, 790, 110, 165, key)
 	for x0, inv in ((196, ""), (60, ",Invert")):
@@ -181,7 +181,8 @@ def _pvr_strip(skin, src, key):
 		x.append(gate('\t\t<widget source="%s" render="Label" position="%d,838" size="170,30" font="Regular;22" foregroundColor="secondFG" transparent="1" zPosition="20">\n\t\t\t<convert type="ServiceTime">StartTime</convert>\n\t\t\t<convert type="ClockToText">ShortDate</convert>\n\t\t</widget>' % (src, x0), key, inv))
 		x.append(gate(G.label(src, E(x0 + 180, 838, 420, 30), [("MovieInfo", "RecordServiceName")], 22, "secondFG", ' noWrap="1"'), key, inv))
 		x.append(gate('\t\t<widget source="%s" render="Label" position="%d,838" size="140,30" font="Regular;22" foregroundColor="secondFG" transparent="1" zPosition="20">\n\t\t\t<convert type="ServiceTime">Duration</convert>\n\t\t\t<convert type="ClockToText">AsLength</convert>\n\t\t</widget>' % (src, x0 + 610), key, inv))
-		x += text(src, [("MovieInfo", "FullDescription")], E(x0, 876, w, 78), 21, "foreground", key, inv)
+		# EMC: MovieInfo FullDescription is the file path (t61) -> its description from .meta
+		x += text(src, [("MovieInfo", "ShortDescription" if emc else "FullDescription")], E(x0, 876, w, 78), 21, "foreground", key, inv)
 	return x
 
 
@@ -214,7 +215,7 @@ def emcselection(skin):
 		'\t\t<widget name="wait" position="60,120" size="1800,640" font="Regular;33" halign="center" valign="center" transparent="1" zPosition="4" />',
 		EMC.emc_list(60, 120, 1800, 640, 50, 28, 24)]
 	x += EMC.emc_cover_under(1880, 1040, 2, 2)
-	x += _pvr_strip(skin, "Service", key)
+	x += _pvr_strip(skin, "Service", key, emc=True)
 	x.append('\t\t<widget source="spacefree" render="Label" position="60,976" size="560,30" foregroundColor="grey" font="Regular;20" transparent="1" zPosition="20" />')
 	x += EMC.emc_keys(1018, 640, 300, 22)
 	return '\t<screen name="EMCSelection" title="EMC" position="fill" backgroundColor="steThemePrimary" flags="wfNoBorder">\n%s\n\t</screen>' % "\n".join(l for l in x if l)
