@@ -4,8 +4,8 @@
 # logs / accelAlloc) -> back to Classic navy.  The HDD is not opened; PVR = EMC on the USB test folder.
 exec 9>~/cineview-mla/t77.lock; flock -n 9 || { echo "t77 already running"; exit 1; }
 . ~/cineview-mla/p6lib.sh
-IPK=${1:?ipk}; TAG=rc5
-S=~/cineview-mla/shots/t77; rm -rf $S; mkdir -p $S
+IPK=${1:?ipk}; TAG=${2:-rc5}
+S=~/cineview-mla/shots/t77_$TAG; rm -rf $S; mkdir -p $S
 E='python3 /usr/share/enigma2/CineView_FHD_MLA/mla/engine/composer.py'
 HBO="1:0:19:784:C6D4:16E:A00000:0:0:0:"
 P=/usr/lib/enigma2/python/Plugins/Extensions/CineViewMLAScreenOpen
