@@ -63,7 +63,8 @@ def text(src, conv, e, font, color, key, inv, opts=None):
 
 
 def screen(name, body, extra=' position="fill" backgroundColor="transparent"'):
-	return '\t<screen name="%s" title="%s"%s flags="wfNoBorder">\n%s\n\t</screen>' % (name, name, extra, "\n".join(l for l in body if l))
+	title = "" if "title=" in extra else ' title="%s"' % name
+	return '\t<screen name="%s"%s%s flags="wfNoBorder">\n%s\n\t</screen>' % (name, title, extra, "\n".join(l for l in body if l))
 
 
 # ------------------------------------------------------------------------------------------------ InfoBar (§3.1)
