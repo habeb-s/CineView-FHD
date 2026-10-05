@@ -272,8 +272,18 @@ class _CineViewMLAPosterXIdentity(_CineViewMLAPosterXBase):
             return
         ev = self._resolve_event() if not is_rec else _source_event(self.source)
         name, short, ext, begin = _mla_event_texts(ev) if ev is not None else ("", "", "", 0)
-        if is_rec and not name:
-            name, short = _mla_recording_texts(self.source)
+        if is_rec:
+            # recordings: the .meta title / description complete what the event (or EMC's own service event) lacks;
+            # device t61c: EMC's event carried the title but no description -> no year -> no reliable identity
+            mname, mshort = _mla_recording_texts(self.source)
+            if ext.startswith("/"):
+                ext = ""  # EMC's service event returns the file path as its extended description (t61c)
+            if short.startswith("/"):
+                short = ""
+            if not name:
+                name = mname
+            if not short and not ext:
+                short = mshort
         if not name:
             # No EPG event: neutral default poster, never an empty frame (user rule, 21:09).
             self._title = ""

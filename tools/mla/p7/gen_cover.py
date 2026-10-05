@@ -42,10 +42,9 @@ def emc_screen(skin, on):
 		'\t\t<widget source="Service" render="Label" position="305,545" size="150,38" foregroundColor="foreground" font="Regular;28" halign="center" transparent="1" zPosition="20">\n\t\t\t<convert type="ServiceTime">Duration</convert>\n\t\t\t<convert type="ClockToText">AsLength</convert>\n\t\t</widget>',
 		'\t\t<widget source="Service" render="Label" position="455,545" size="260,38" foregroundColor="foreground" font="Regular;28" halign="right" noWrap="1" transparent="1" zPosition="20">\n\t\t\t<convert type="MovieInfo">RecordServiceName</convert>\n\t\t</widget>',
 		'\t\t<eLabel position="55,595" size="660,2" backgroundColor="#00444444" zPosition="1" />',
-		# EMC: MovieInfo ShortDescription = the recording's description (.meta), EventName ExtendedDescription = .eit text
-		# (as EMC's own skin); MovieInfo FullDescription returns the FILE PATH for EMC's service (device t61)
-		'\t\t<widget source="Service" render="RunningText" position="55,610" size="660,96" foregroundColor="secondFG" font="Regular;26" transparent="1" zPosition="20" options="%s">\n\t\t\t<convert type="MovieInfo">ShortDescription</convert>\n\t\t</widget>' % G.D_OPTS,
-		'\t\t<widget source="Service" render="RunningText" position="55,714" size="660,145" foregroundColor="foreground" font="Regular;25" transparent="1" zPosition="20" options="%s">\n\t\t\t<convert type="EventName">ExtendedDescription</convert>\n\t\t</widget>' % G.D_OPTS,
+		# EMC: MovieInfo ShortDescription = the recording's description; for EMC's service both MovieInfo FullDescription
+		# and EventName ExtendedDescription return the FILE PATH (device t61, t61c)
+		'\t\t<widget source="Service" render="RunningText" position="55,610" size="660,250" foregroundColor="secondFG" font="Regular;26" transparent="1" zPosition="20" options="%s">\n\t\t\t<convert type="MovieInfo">ShortDescription</convert>\n\t\t</widget>' % G.D_OPTS,
 		'\t\t<widget source="Service" render="Label" position="55,875" size="200,34" foregroundColor="grey" font="Regular;25" transparent="1" zPosition="20">\n\t\t\t<convert type="MovieInfo">FileSize</convert>\n\t\t</widget>',
 		'\t\t<widget source="spacefree" render="Label" position="260,875" size="455,34" foregroundColor="grey" font="Regular;25" halign="right" transparent="1" zPosition="20" />',
 		'\t\t<eLabel position="760,95" size="1125,835" backgroundColor="steThemePanelAlt" zPosition="-3" />']
