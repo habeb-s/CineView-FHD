@@ -127,6 +127,36 @@ every section".
     known issue is NOT simply accepted for Modern.
   - t62 measures which Modern screen and which surface sizes fail (posters ON vs OFF).
 
+- **t57b (build54) — RUNTIME TESTED.**
+  - Modern SecondInfoBar now opens with the corrected timing (OK, 1.5 s, OK): NOW / NEXT cards, live chips
+    (HD · 1920×1080 · 16:9 · SNR · dB), posters ON/OFF, navy and green, 0 errors.
+  - CS bouquet title is shown.
+  - The live EventView picon was shown, but a second, stray default picon appeared where the hidden ON/OFF variant
+    sits: a Picon whose poster-switch variant is hidden still draws itself on every change. Fixed (build57+): one
+    picon at a fixed place for both modes.
+- **accelAlloc root cause (t62, build55) — ROOT CAUSE IDENTIFIED.** Failures per Modern step, posters ON:
+  CS 10 moves 5, EventView 2, EPG open 3, EPG moves 4; InfoBar and SIB 0. Failures by surface size: 240×360 (7),
+  300×450 (6), 400×600 (2), 1536×1024 (1, at start-up, also present with Classic).
+  **With posters OFF: 0 failures in every step** (only the start-up 1536×1024).
+  So the Modern-specific failures are the large poster surfaces (Modern shows 240–400 px wide posters, often two per
+  screen) that no longer fit in the receiver's small accelerated pool. The picture then falls back to normal RAM:
+  every poster still appeared in every grab, RSS stayed flat, CPU per round stayed flat.
+  Options for the user: accept (fallback only), or smaller Modern poster sizes.
+- **Test-harness errors found and fixed this morning** (none of them a skin defect):
+  - t54 colour-key codes;
+  - t57 OK timing;
+  - t61: the EMC packs were REFUSED by the engine's colour validation because of EMC's numeric `Cool*Color="1"`
+    flags, the apply output was not checked, so t61 tested Classic. Fixed: numeric `*Color` values are flags; the
+    tests now print "APPLY FAILED".
+  - A script copied over a RUNNING test (t61) killed it mid-run; the receiver was verified Classic afterwards.
+    Rule: never replace a running test script.
+- **Cinema EventView Feature (t59, build53) — DEFECT FOUND.**
+  - The native ScrollLabel description was EMPTY in every Feature screen (live, from the EPG, InfoBar EPG, ON and
+    OFF). Layout, poster, titles, times, IMDb and key captions were correct.
+  - The only difference from the working Modern / Classic screens is the translucent `steThemeOverlay` background
+    colour.
+  - Changed to an opaque theme colour (Feature and Minimal), build58. Re-test t64.
+
 ## 5. PVR on the screen the PVR key really opens (EMC) — IMPLEMENTED, device test t61
 - **EMC contract.** Read from EMC's compiled modules on the receiver (no source is shipped):
   - `EMCSelection.__init__`: skinName = ["EMCSelectionExtended", "EMCSelection"]; "EMCSelectionOwn" only when
