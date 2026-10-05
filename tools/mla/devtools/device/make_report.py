@@ -30,7 +30,7 @@ def end_sample(text, label):
 		"hwm": int(hwm) // 1024, "accel": int(acc), "rss0": int(start[-1][1]) // 1024 if start else None}
 
 
-def img(path, w=960, q=72):
+def img(path, w=800, q=68):
 	if not os.path.exists(path):
 		return None
 	im = Image.open(path).convert("RGB")
@@ -112,7 +112,7 @@ def main(out):
 			cells = []
 			for sk, slab in THEME_SECTIONS:
 				name = "%s_%s_on_%s.png" % (m, t, sk)
-				src = img(os.path.join(S, "t68", name), 480, 68)
+				src = img(os.path.join(S, "t68", name), 420, 62)
 				cells.append('<figure>%s<figcaption>%s</figcaption></figure>' % ('<img loading="lazy" alt="%s %s %s" src="%s">' % (mlab, t, slab, src) if src else '<div class="miss">no grab</div>', slab))
 			th.append('<div class="theme"><div class="tname"><i class="sw sw-%s"></i>%s</div><div class="trow">%s</div></div>' % (t, t, "".join(cells)))
 		e_on = errs.get((m, "navy", "posters ON"), [])
