@@ -7,8 +7,8 @@
 # USB test folder only; nothing played / deleted / moved.  Restore: Classic, navy, posters ON, debug off.
 exec 9>~/cineview-mla/t81.lock; flock -n 9 || { echo "t81 already running"; exit 1; }
 . ~/cineview-mla/p6lib.sh
-NEW=${1:-build71}
-S=~/cineview-mla/shots/t81; rm -rf $S; mkdir -p $S
+NEW=${1:-build71}; MODE=${2:-deploy}; TAG=${3:-a}
+S=~/cineview-mla/shots/t81$TAG; rm -rf $S; mkdir -p $S
 E='python3 /usr/share/enigma2/CineView_FHD_MLA/mla/engine/composer.py'
 HBO="1:0:19:784:C6D4:16E:A00000:0:0:0:"
 HRT1="1:0:19:D49:C738:16E:A00000:0:0:0:"
@@ -80,8 +80,10 @@ for l in L:
 OURS = {"400x600", "300x450", "240x360", "220x330", "200x300", "160x240", "146x218", "110x165", "340x510", "210x315", "225x338", "120x180", "155x233", "205x308", "105x158"}
 cat = collections.Counter()
 for k, v in fails.items():
-    cat["CineView poster sizes" if k in OURS else ("native picons 220x132" if k == "220x132" else "native other (%s)" % k)] += v
+    cat["CineView poster decode" if k in OURS else ("Enigma2 picon cache (220x132)" if k == "220x132" else "Enigma2 image/other surface (%s)" % k)] += v
 print("   attribution:", dict(cat.most_common()))
+tot = sum(cat.values()) or 1
+for k, v in cat.most_common(): print("   share %5.1f %%  %4d  %s" % (100.0 * v / tot, v, k))
 for k, v in ctxc.most_common(8): print("   context %3d x %s" % (v, k))
 print("   failures:", nfail, "by requested surface:", dict(fails.most_common(8)))
 if last:
@@ -94,7 +96,7 @@ PY
 }
 $R 'sh -s' < ~/cineview-mla/repo/tools/mla/devtools/device/tmedia_pvr.sh
 OLDDIR=$($R 'grep "^config.movielist.last_videodir=" /etc/enigma2/settings | cut -d= -f2-'); echo "movielist folder before: '$OLDDIR'"
-~/cineview-mla/deploy_b.sh $NEW
+if [ "$MODE" = installed ]; then echo "== using the INSTALLED package: $($R 'opkg status enigma2-plugin-skins-cineview-fhd-mla | grep Version')"; else ~/cineview-mla/deploy_b.sh $NEW; fi
 cat ~/cineview-mla/devtools/CineViewMLAScreenOpen/plugin.py | $R "mkdir -p $P && cat > $P/plugin.py && touch $P/__init__.py"
 ap --theme navy $MODERN
 echo "== 1. diagnostic (accel debug), 3 rounds"
