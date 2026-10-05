@@ -47,6 +47,7 @@ PERF = [  # (label, log, sample label, note)
 	("Modern Optimized v3 (build66)", "t70.log", "v3", "uncached picons (reverted)"),
 	("Modern Optimized v5 (build68)", "t74.log", "v5", "final path: settle + RAM posters"),
 	("Classic (build68)", "t75.log", "classic", "reference, same navigation"),
+	("Modern current (build71), 60 min", "t79.log", "long", "stability run, 60 min instead of 25"),
 ]
 MODELS = [("classic", "Classic"), ("details", "Details"), ("cinema", "Cinema"), ("modern", "Modern"), ("minimal", "Minimal")]
 SECTIONS = [("ib", "InfoBar"), ("sib", "SecondInfoBar"), ("cs", "Channel list"), ("epg", "EPG"), ("ev", "EventView"), ("emc", "PVR · EMC"), ("ms", "PVR · MovieSelection")]
