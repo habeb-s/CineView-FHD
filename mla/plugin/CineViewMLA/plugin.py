@@ -603,6 +603,10 @@ def _install_epg_eventview_name():
 				if configfile.getResolvedKey("config.plugins.cineviewmla.poster_eventview", silent=True) == "False":
 					names = ["EventViewSimple" + POSTER_OFF_SUFFIX] + names
 				self.skinName = names
+			elif mla_active() and self.skinName == ["EventView"] and configfile.getResolvedKey("config.plugins.cineviewmla.poster_eventview", silent=True) == "False":
+				# live event, posters off: a design built on the native named widgets ships 'EventView_CVPosterOff'
+				# (Cinema Feature); designs without it (Classic dashboard) fall back to 'EventView' natively
+				self.skinName = ["EventView" + POSTER_OFF_SUFFIX, "EventView"]
 		except Exception as err:
 			print("[CineViewMLA] EPG event view name: %s" % err)
 	wrapped._cvmla_epg_ev = True

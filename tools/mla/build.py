@@ -1097,6 +1097,11 @@ def main(golden, comps, control, out):
 	for d in gen_cover.generate(skin):
 		print("COVER pack:", os.path.relpath(d, skin))
 		make_preview_none(os.path.join(d, "preview.png"))
+	# Cinema model: EventView Feature (look pending approval).
+	import gen_feature
+	for d in gen_feature.generate(skin):
+		print("FEATURE pack:", os.path.relpath(d, skin))
+		make_preview_none(os.path.join(d, "preview.png"))
 	# Columns on the native vertical EPG (user decision 2026-10-05 05:23; t42: compatible with OpenATV).
 	import gen_columns
 	for d in gen_columns.generate(skin):
