@@ -204,7 +204,7 @@ figcaption{font:12px var(--mono);color:var(--muted);margin-top:4px}
 </style>
 <div class="wrap">
 <header>
-  <div class="kicker">Slot 8 · Vu+ Duo 4K SE · OpenATV 8.0.1 · build69 · dev/mla-openatv</div>
+  <div class="kicker">Slot 8 · Vu+ Duo 4K SE · OpenATV 8.0.1 · dev/mla-openatv · model grabs build69 · current build71 / rc6</div>
   <h1>CineView MLA Model Review</h1>
   <p class="lede">The five design models on all six sections, as the receiver drew them: posters on and off in the navy theme, and every model in the six themes. Every picture below is a screen grab from the receiver; every number comes from a test log.</p>
   <div class="facts"><span>Tracebacks <b class="ok">%TB%</b></span><span>New skin errors <b class="%SECLS%">%SE%</b>%SENOTE%</span><span>Crash logs <b class="ok">%CL%</b></span><span>Test media <b>USB only, HDD not opened</b></span></div>
@@ -225,6 +225,7 @@ figcaption{font:12px var(--mono);color:var(--muted);margin-top:4px}
 </section>
 <section class="block">
   <h2>The five models</h2>
+  <p class="note">Grabs from build69 (t68). build71 differs only where no poster exists: its placeholder is drawn back to the exact original look (inner frame line and full-size icon), see the comparison above.</p>
   <div class="tabs" role="tablist">%TABS%</div>
   %PANES%
 </section>
