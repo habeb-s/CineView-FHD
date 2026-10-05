@@ -70,6 +70,85 @@ def model_errs(text):
 	return out
 
 
+ATTR_RUNS = [("t81a · build71 deployed", "t81a.log"), ("t81b · rc6 installed", "t81b.log"), ("t83 · build75 (PIL sizing)", "t83.log")]
+ATTR_SRC = ["CineView poster decode", "Enigma2 picon cache (220x132)", "Enigma2 image/other surface"]
+
+
+def attribution():
+	"""t81a / t81b / t83: '   share  42.9 %     3  <source>' lines -> {run: {source: (count, pct)}}, totals."""
+	runs = []
+	for lab, lg in ATTR_RUNS:
+		t = log(lg)
+		if "T81_DONE" not in t:
+			continue
+		d = {}
+		for m in re.finditer(r"^\s+share\s+([\d.]+) %\s+(\d+)\s+(.+?)\s*$", t, re.M):
+			src = next((k for k in ATTR_SRC if m.group(3).startswith(k)), m.group(3))
+			d[src] = (int(m.group(2)), float(m.group(1)))
+		tot = re.search(r"^\s+failures: (\d+)", t, re.M)
+		runs.append((lab, d, int(tot.group(1)) if tot else sum(c for c, _ in d.values())))
+	if not runs:
+		return '<tr><td colspan="2">t81 not run yet</td></tr>', ""
+	head = "<tr><th>Source</th>%s</tr>" % "".join("<th>%s</th>" % r[0] for r in runs)
+	rows = []
+	for src in ATTR_SRC:
+		cells = "".join('<td class="n">%s</td>' % ("%d · %.1f %%" % d[src] if src in d else "0") for _, d, _ in runs)
+		rows.append("<tr><td>%s</td>%s</tr>" % ({"CineView poster decode": "CineView poster, first decode (ePicLoad)", "Enigma2 picon cache (220x132)": "Enigma2 list picon cache 220×132",
+			"Enigma2 image/other surface": "Enigma2 other surface (1536×1024)"}[src], cells))
+	rows.append('<tr><td><b>Total</b></td>%s</tr>' % "".join('<td class="n"><b>%d</b></td>' % t for _, _, t in runs))
+	return head, "".join(rows)
+
+
+def pil_ab():
+	t = log("t83.log")
+	m = re.search(r"AB pairs=(\d+) psnr min/median/max ([\d.]+)/([\d.]+)/([\d.]+)", t)
+	figs = []
+	for i, cap in enumerate(("lowest PSNR", "second lowest", "median")):
+		pic = img(os.path.join(S, "t83", "AB_%d.png" % i), 560, 80)
+		lab = re.search(r"^ab %d \S+ ([\d.]+) dB" % i, t, re.M)
+		if pic:
+			figs.append('<figure class="ab"><img loading="lazy" alt="ePicLoad vs PIL, %s" src="%s"><figcaption>left ePicLoad · right PIL · %s%s</figcaption></figure>' % (cap, pic, cap, " · %s dB" % lab.group(1) if lab else ""))
+	made = re.search(r"made with PIL during the run: (\d+)", t)
+	note = ("%s identical posters compared; PSNR min / median / max %s / %s / %s dB. Widget-size copies made with PIL during the run: %s." % (m.group(1), m.group(2), m.group(3), m.group(4), made.group(1) if made else "?")) if m else "t83 not run yet."
+	return note, "".join(figs)
+
+
+NP_MODELS = [("modern", "Modern"), ("classic", "Classic"), ("details", "Details"), ("cinema", "Cinema"), ("minimal", "Minimal")]
+
+
+def noposter():
+	"""t82 (InfoBar, SecondInfoBar, EventView, channel list: HBO with a poster vs HRT1 news without) and t84 (EPG
+	cards on HBO / HRT1, PVR rows of the USB test folder)."""
+	out = []
+	for m, lab in NP_MODELS:
+		rows = []
+		for sk, slab in (("ib", "InfoBar"), ("sib", "SecondInfoBar"), ("ev", "EventView"), ("cs", "Channel list")):
+			a = img(os.path.join(S, "t82", "%s_hbo_%s.png" % (m, sk)), 520, 60)
+			b = img(os.path.join(S, "t82", "%s_hrt1_%s.png" % (m, sk)), 520, 60)
+			if not (a or b):
+				continue
+			rows.append('<section class="sec"><h3>%s</h3><div class="pair">%s%s</div></section>' % (slab,
+				'<figure><div class="tag on">HBO · poster</div>%s</figure>' % ('<img loading="lazy" alt="%s %s with poster" src="%s">' % (lab, slab, a) if a else '<div class="miss">no grab</div>'),
+				'<figure><div class="tag off">HRT1 · no poster</div>%s</figure>' % ('<img loading="lazy" alt="%s %s without poster" src="%s">' % (lab, slab, b) if b else '<div class="miss">no grab</div>')))
+		a = img(os.path.join(S, "t84", "%s_epg_hbo.png" % m), 520, 60)
+		b = img(os.path.join(S, "t84", "%s_epg_hrt1.png" % m), 520, 60)
+		if a or b:
+			rows.append('<section class="sec"><h3>EPG card</h3><div class="pair">%s%s</div></section>' % (
+				'<figure><div class="tag on">HBO</div>%s</figure>' % ('<img loading="lazy" alt="%s EPG HBO" src="%s">' % (lab, a) if a else '<div class="miss">no grab</div>'),
+				'<figure><div class="tag off">HRT1</div>%s</figure>' % ('<img loading="lazy" alt="%s EPG HRT1" src="%s">' % (lab, b) if b else '<div class="miss">no grab</div>')))
+		for kind, klab in (("emc", "PVR · EMC rows"), ("ms", "PVR · MovieSelection rows")):
+			cells = []
+			for k in range(5):
+				pic = img(os.path.join(S, "t84", "%s_%s_%d.png" % (m, kind, k)), 420, 58)
+				if pic:
+					cells.append('<figure><img loading="lazy" alt="%s %s row %d" src="%s"><figcaption>row %d</figcaption></figure>' % (lab, klab, k, pic, k))
+			if cells:
+				rows.append('<section class="sec"><h3>%s</h3><div class="rowgrid">%s</div></section>' % (klab, "".join(cells)))
+		if rows:
+			out.append('<details class="np"%s><summary>%s</summary><div class="pane">%s</div></details>' % (" open" if not out else "", lab, "".join(rows)))
+	return "".join(out) or '<p class="note">t82 / t84 not run yet.</p>'
+
+
 def main(out):
 	perf = []
 	for lab, lg, key, note in PERF:
@@ -133,7 +212,9 @@ def main(out):
 		panes.append('<div class="pane" role="tabpanel" id="pane-%s" aria-labelledby="tab-%s"%s><div class="pmeta">%s</div>%s<h3 class="th">Six themes · posters ON</h3>%s</div>' % (
 			m, m, "" if mi == 0 else " hidden", chip, "".join(rows), "".join(th)))
 
-	html = TEMPLATE.replace("%BARS%", "".join(bars)).replace("%PHASES%", prow or '<tr><td colspan="5">t76 not run</td></tr>') \
+	ahead, arows = attribution()
+	abnote, abfigs = pil_ab()
+	html = TEMPLATE.replace("%ATTRH%", ahead).replace("%ATTR%", arows).replace("%PILNOTE%", abnote).replace("%PILAB%", abfigs).replace("%NOPOSTER%", noposter()).replace("%BARS%", "".join(bars)).replace("%PHASES%", prow or '<tr><td colspan="5">t76 not run</td></tr>') \
 		.replace("%AB%", "".join(ab_rows) or '<p class="note">t78 not run yet.</p>').replace("%POOL%", pool_rows or '<tr><td colspan="2">t78 not run yet</td></tr>') \
 		.replace("%TABS%", "".join(tabs)).replace("%PANES%", "".join(panes)).replace("%TB%", str(tb)).replace("%SE%", str(se)).replace("%SECLS%", "ok" if se == 0 else "warn") \
 		.replace("%SENOTE%", "" if se == 0 else '<span class="fn">(Classic MovieSelection: list attributes enigma2 rejects; removed in build70 / rc5)</span>').replace("%CL%", str(cl))
@@ -194,6 +275,9 @@ figure img{display:block;width:100%;border-radius:6px;border:1px solid var(--lin
 figcaption{font:12px var(--mono);color:var(--muted);margin-top:4px}
 .miss{aspect-ratio:16/9;max-width:100%;display:grid;place-items:center;border:1px dashed var(--line);border-radius:6px;color:var(--muted);font:12px var(--mono)}
 .th{margin-top:6px}
+.rowgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:10px}
+details.np{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 16px}
+details.np summary{font:600 20px var(--display);cursor:pointer}
 .abgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:14px}
 .theme{display:grid;grid-template-columns:110px minmax(0,1fr);gap:12px;align-items:start}
 .tname{font:500 13px var(--mono);display:flex;align-items:center;gap:8px;padding-top:4px}
@@ -223,6 +307,19 @@ figcaption{font:12px var(--mono);color:var(--muted);margin-top:4px}
   <div class="abgrid">%AB%</div>
   <h3>Fast graphics memory after the same steps</h3>
   <div class="tw"><table><thead><tr><th>Build</th><th>Pool content (gAccel dump)</th></tr></thead><tbody>%POOL%</tbody></table></div>
+</section>
+<section class="block">
+  <h2>Where the remaining warnings come from</h2>
+  <p class="note">The same three diagnostic rounds with a fixed channel order, fast-graphics debug on. Every warning is attributed by the size of the picture that was being created when it happened. The picon cache and the 1536×1024 surface belong to Enigma2 itself (pictures it keeps for good); CineView does not change them. The CineView share was the first decode of a poster: Enigma2’s picture loader always asks fast memory for its result.</p>
+  <div class="tw"><table><thead>%ATTRH%</thead><tbody>%ATTR%</tbody></table></div>
+  <h3>Poster scaling without fast memory: Enigma2 loader vs PIL</h3>
+  <p class="note">From build75 the widget-size copy of a poster is made from the original file with PIL, with the loader’s exact framing (same size, same black bars), and then shown from normal memory. The original poster file is never rewritten. The scaler differs: Enigma2 averages pixel blocks, PIL uses Lanczos, so the PIL copy is sharper. Size and layout are unchanged. %PILNOTE%</p>
+  <div class="abgrid">%PILAB%</div>
+</section>
+<section class="block">
+  <h2>No poster: the real layout instead of a placeholder</h2>
+  <p class="note">Posters on. Left: an event or recording that has a poster. Right: one without (news, generic programme), which now gets the screen’s posters-off arrangement for that moment instead of the default picture. Screens whose layout is fixed when they open (named EventView designs) choose their No Poster screen when they open.</p>
+  %NOPOSTER%
 </section>
 <section class="block">
   <h2>The five models</h2>
