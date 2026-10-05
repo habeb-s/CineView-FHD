@@ -504,3 +504,32 @@ reinst.sh 22:36).
   - poster-flagged variants run one deferred CHANGED_ALL once the screen is built, and again after each
     poster-state change;
   - hidden variants are re-hidden after the downstream update.
+
+**t84 — RUNTIME TESTED (build77).**
+- Models: Modern, Cinema, Details, Minimal (posters ON, navy), plus the Classic EventView strip check.
+- Per model:
+  - InfoBar 2.5 s after OK on HBO and HRT1;
+  - GraphicalEPG with the highlighted event on HBO (+ 2 × RIGHT) and on HRT1 (+ 1 × RIGHT);
+  - EMC and native MovieSelection on the USB test folder, every row:
+    - trashcan and Latest Recordings;
+    - Harry Potter (local cover);
+    - Ples malog pingvina (identity lookup);
+    - Dnevnik (generic news);
+    - the test clip.
+- Every model: 0 tracebacks, 0 new skin errors, 0 crash logs. accel = start-up warning only (Minimal 0).
+- Results:
+  - InfoBar (Modern / Cinema / Details / Minimal): HRT1 drops the poster, and text and picon move to the
+    posters-OFF place.
+  - GraphicalEPG:
+    - Modern: poster card on HBO films; on HRT1 the No Poster card (service name, picon in its one place, times /
+      duration pills, title, description), no placeholder.
+    - Graphical Plus (Cinema / Details): the same panel without the poster slot. Times are right-aligned (G.times),
+      duration left-aligned. **Needs the user's visual approval.**
+  - PVR cards:
+    - Modern, Cinema Shelf, Cover Library on EMC and MovieSelection: rows with a cover use the cover arrangement;
+      Dnevnik, the test clip and folders use the No Poster arrangement (text from the top / title at the top of the
+      cover column).
+    - The native list keeps its geometry.
+  - Classic EventView strip (ShowIf fix): the picon shows on HBO (with poster), Cinemax (with poster) and HRT1 (no
+    poster, OFF position), with no stray default picon. **ROOT CAUSE FIXED, RUNTIME TESTED.**
+- Grabs: `shots/t84/` on ai-agent.
