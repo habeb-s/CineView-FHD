@@ -35,4 +35,3 @@ for mp in ("/media/hdd", "/media/usb"):
 		print("   %-10s ismount=%s dev=%s root_dev=%s" % (mp, os.path.ismount(mp), os.stat(mp).st_dev, os.stat("/").st_dev))
 	except OSError as e:
 		print("  ", mp, e)
-print("   /media/hdd/poster exists:", os.path.isdir("/media/hdd/poster"), "(read only check)")
