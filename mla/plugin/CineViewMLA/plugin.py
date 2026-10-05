@@ -380,7 +380,7 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 
 	def keyProfiles(self):
 		from Screens.ChoiceBox import ChoiceBox
-		choices = [(_("Save current settings as a profile"), "save")]
+		choices = [(_("Apply a design model to every section"), "model"), (_("Save current settings as a profile"), "save")]
 		if self._profile_names():
 			choices += [(_("Load a profile"), "load"), (_("Delete a profile"), "delete")]
 		self.session.openWithCallback(self._profileAction, ChoiceBox, text=_("CineView profiles"), choiceList=choices)
@@ -388,6 +388,10 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 	def _profileAction(self, choice):
 		from Screens.ChoiceBox import ChoiceBox
 		if not choice:
+			return
+		if choice[1] == "model":
+			models = [(_(MODELS[m]["label"]), m) for m in MODEL_ORDER]
+			self.session.openWithCallback(self._modelLoad, ChoiceBox, text=_("Design model"), choiceList=models)
 			return
 		if choice[1] == "save":
 			from Screens.VirtualKeyBoard import VirtualKeyBoard
@@ -454,6 +458,29 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 			msg += "\n" + _("Not available here (kept as is): %s") % ", ".join(skipped)
 		self.session.open(MessageBox, msg, MessageBox.TYPE_INFO, timeout=6)
 
+	def _modelLoad(self, choice):
+		"""One model on every section at once (Five_Models_Plan.md: a profile applies one model to all sections).
+		Only the selection in this screen changes; GREEN applies it through the engine (trial + automatic revert).
+		A section whose design is not installed keeps its current design and is listed."""
+		if not choice:
+			return
+		model = MODELS.get(choice[1], {})
+		skipped = []
+		for sec, lid in model.get("layouts", {}).items():
+			cfg = self.cfgLayouts.get(sec)
+			if cfg is None:
+				continue
+			if lid in list(cfg.choices):
+				cfg.value = lid
+			else:
+				skipped.append(_(self.secs.get(sec, {}).get("label", sec)))
+		self["config"].l.invalidate()
+		self.updatePreview()
+		msg = _("Model '%s' selected for every section. Press GREEN to apply it.") % _(model.get("label", choice[1]))
+		if skipped:
+			msg += "\n" + _("Not available yet (kept as is): %s") % ", ".join(skipped)
+		self.session.open(MessageBox, msg, MessageBox.TYPE_INFO, timeout=6)
+
 	def _profileDelete(self, choice):
 		if not choice:
 			return
@@ -505,6 +532,16 @@ class CineViewMLAPreview(Screen):
 def main(session, **kwargs):
 	session.open(CineViewMLASetup)
 
+
+# Design models (Five_Models_Plan.md "Mapping proposal"; looks pending the user's approval except Classic).
+MODEL_ORDER = ("classic", "details", "cinema", "modern", "minimal")
+MODELS = {
+	"classic": {"label": "Classic", "layouts": {"infobar": "classic", "secondinfobar": "classic", "channelselection": "classic", "epg": "classic", "pvr": "classic", "eventview": "classic"}},
+	"details": {"label": "Details", "layouts": {"infobar": "details", "secondinfobar": "details", "channelselection": "posterlist", "epg": "graphicalplus", "pvr": "cover", "eventview": "classic"}},
+	"cinema": {"label": "Cinema", "layouts": {"infobar": "cinema", "secondinfobar": "cinema", "channelselection": "videofirst", "epg": "graphicalplus", "pvr": "classic", "eventview": "feature"}},
+	"modern": {"label": "Modern", "layouts": {"infobar": "modern", "secondinfobar": "modern", "channelselection": "modern", "epg": "modern", "pvr": "modern", "eventview": "modern"}},
+	"minimal": {"label": "Minimal", "layouts": {"infobar": "minimal", "secondinfobar": "minimal", "channelselection": "minimal", "epg": "minimal", "pvr": "minimal", "eventview": "minimal"}},
+}
 
 POSTER_OFF_SUFFIX = "_CVPosterOff"
 
