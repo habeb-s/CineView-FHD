@@ -192,6 +192,53 @@ def _mla_recording_texts(source):
         return "", ""
 
 
+_MLA_SZ_MAX = 400  # widget-size PNGs kept in the poster cache (oldest removed first)
+
+
+def _mla_sized_path(path, w, h):
+    """Widget-size copy of a poster, in the poster cache only (never next to a recording)."""
+    try:
+        import hashlib
+        d = os.path.join(CACHE_ROOT, "sz")
+        _mkdir(d)
+        return os.path.join(d, "%s_%dx%d.png" % (hashlib.md5(path.encode("utf-8", "replace")).hexdigest(), w, h))
+    except Exception:
+        return None
+
+
+def _mla_sized_load(sp, src):
+    """The widget-size PNG, loaded NEVER into the accelerated pool (loadPNG accel=-1, uncached).  Device t71: the
+    receiver's 5400 kB pool fills up with the channel list's cached picons (42 x 116 kB, native list code), after
+    which every poster allocation failed and fell back to RAM anyway; a RAM surface from the start avoids the
+    failed request and keeps the pool for the native code."""
+    try:
+        if sp and os.path.exists(sp) and os.path.getmtime(sp) >= os.path.getmtime(src):
+            from enigma import loadPNG
+            return loadPNG(sp, -1, 0)
+    except Exception as err:
+        _log("sized load: %s" % err)
+    return None
+
+
+def _mla_sized_save(sp, pix):
+    try:
+        from enigma import savePNG
+        try:
+            rc = savePNG(sp + ".tmp", pix) if sp else -1
+        except TypeError:
+            rc = savePNG(sp + ".tmp", pix.__deref__())
+        if rc == 0:
+            os.rename(sp + ".tmp", sp)
+            d = os.path.dirname(sp)
+            names = os.listdir(d)
+            if len(names) > _MLA_SZ_MAX:
+                names.sort(key=lambda n: os.path.getmtime(os.path.join(d, n)))
+                for n in names[:len(names) - _MLA_SZ_MAX]:
+                    os.remove(os.path.join(d, n))
+    except Exception as err:
+        _log("sized save: %s" % err)
+
+
 _CineViewMLAPosterXBase = CineViewMLAPosterX
 
 
@@ -272,13 +319,26 @@ class _CineViewMLAPosterXIdentity(_CineViewMLAPosterXBase):
                 pl = getattr(self, "_mla_picload", None)
                 if pl is None:
                     pl = self._mla_picload = _mla_ePicLoad()
-                pl.setPara((w, h, 1, 1, False, 1, "#00000000"))
+                sp = None
                 if getattr(self, "underlay", False):
                     # the old block is freed before the new one is allocated (same event-loop turn: no repaint)
                     self.instance.setPixmap(None)
+                    sp = _mla_sized_path(path, w, h)
+                    pix = _mla_sized_load(sp, path)
+                    if pix:
+                        self.instance.setPixmap(pix)
+                        self.instance.setScale(1)
+                        self.instance.show()
+                        return
+                pl.setPara((w, h, 1, 1, False, 1, "#00000000"))
                 if pl.startDecode(path, 0, 0, False) == 0:
                     pix = pl.getData()
                     if pix:
+                        if sp:
+                            _mla_sized_save(sp, pix)
+                            ram = _mla_sized_load(sp, path)
+                            if ram:
+                                pix = ram  # the decoded block is released right here
                         self.instance.setPixmap(pix)
                         self.instance.setScale(1)
                         self.instance.show()
