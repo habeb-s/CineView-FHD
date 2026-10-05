@@ -149,6 +149,49 @@ def _mla_engine_enabled():
         return True
 
 
+def _mla_local_cover(source):
+    """Recordings (MovieSelection / EMC 'Service' source): a cover file the user keeps next to the recording wins
+    over any lookup (EMC / OpenATV convention: '<file>.jpg', '<file without extension>.jpg', .png; for a folder
+    '<folder>/folder.jpg' or '<folder>.jpg').  Read-only: nothing is written next to the recording.
+    Returns (is_recording, path or None)."""
+    try:
+        ref = _source_ref(source)
+        path = ref.getPath() if ref is not None else ""
+    except Exception:
+        return False, None
+    if not path or not path.startswith("/"):
+        return False, None
+    path = path.rstrip("/")
+    if os.path.isdir(path):
+        cands = [os.path.join(path, "folder.jpg"), os.path.join(path, "folder.png"), path + ".jpg", path + ".png"]
+    elif os.path.isfile(path):
+        stem = os.path.splitext(path)[0]
+        cands = [stem + ".jpg", path + ".jpg", stem + ".png", path + ".png"]
+    else:
+        return False, None
+    for c in cands:
+        try:
+            if os.path.isfile(c) and os.path.getsize(c) > 1000:
+                return True, c
+        except OSError:
+            pass
+    return True, None
+
+
+def _mla_recording_texts(source):
+    """A recording without an .eit event: its own title and description from the .meta (native iServiceInformation
+    of the file), so the same identity rules decide (generic -> default image, unsure -> default image)."""
+    try:
+        from enigma import eServiceCenter, iServiceInformation
+        ref = _source_ref(source)
+        info = eServiceCenter.getInstance().info(ref)
+        if info is None:
+            return "", ""
+        return info.getName(ref) or "", info.getInfoString(ref, iServiceInformation.sDescription) or ""
+    except Exception:
+        return "", ""
+
+
 _CineViewMLAPosterXBase = CineViewMLAPosterX
 
 
@@ -221,8 +264,16 @@ class _CineViewMLAPosterXIdentity(_CineViewMLAPosterXBase):
             self._timer.stop()
             self._title = ""
             return
-        ev = self._resolve_event()
+        is_rec, cover = _mla_local_cover(self.source) if self.nexts == 0 else (False, None)
+        if cover:
+            self._title = ""
+            self._timer.stop()
+            self._show(cover)
+            return
+        ev = self._resolve_event() if not is_rec else _source_event(self.source)
         name, short, ext, begin = _mla_event_texts(ev) if ev is not None else ("", "", "", 0)
+        if is_rec and not name:
+            name, short = _mla_recording_texts(self.source)
         if not name:
             # No EPG event: neutral default poster, never an empty frame (user rule, 21:09).
             self._title = ""

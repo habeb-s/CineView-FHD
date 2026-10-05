@@ -24,6 +24,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, "..", "p7"))
 import gen_details as G  # noqa: E402
+import emc_common as EMC  # noqa: E402
 
 KEY = "config.plugins.cineviewmla.poster_infobar"
 SRC_NOW, SRC_NEXT, SVC = "session.Event_Now", "session.Event_Next", "session.CurrentService"
@@ -477,6 +478,41 @@ def movieselection(skin, on):
 	return '\t<screen name="%s" title="Movie Selection" position="fill" backgroundColor="steThemePrimary" flags="wfNoBorder">\n%s\n\t</screen>' % (name, "\n".join(l for l in x if l))
 
 
+def emc_selection(skin, on):
+	"""Modern EMC (EnhancedMovieCenter = what the PVR key opens here): the same two rounded cards as the Modern
+	MovieSelection, built on EMC's own widgets (emc_common.py).  No mini-TV (Modern has none).  OFF =
+	EMCSelection_CVPosterOff: the detail card without cover, text from the top of the card."""
+	src = "Service"
+	x = ['\t\t<eLabel position="0,0" size="1920,1080" backgroundColor="steThemePrimary" zPosition="-4" />',
+		'\t\t<widget source="Title" render="Label" position="60,26" size="1300,50" font="%s;30" foregroundColor="foreground" transparent="1" noWrap="1" zPosition="20" />' % BOLD,
+		'\t\t<widget source="global.CurrentTime" render="Label" position="1600,24" size="260,54" font="%s;40" foregroundColor="foreground" halign="right" transparent="1" zPosition="20">\n\t\t\t<convert type="ClockToText">Format:%%H:%%M</convert>\n\t\t</widget>' % BOLD,
+		'\t\t<eLabel position="60,100" size="1180,860" backgroundColor="steThemeCard" cornerRadius="28" zPosition="-2" />',
+		'\t\t<eLabel position="1264,100" size="596,860" backgroundColor="steThemeCard" cornerRadius="28" zPosition="-2" />',
+		'\t\t<widget name="wait" position="76,116" size="1148,828" font="Regular;33" halign="center" valign="center" transparent="1" zPosition="4" />',
+		EMC.emc_list(84, 124, 1132, 812, 58, 30, 26, ' backgroundColorSelected="#00314155" itemCornerRadiusSelected="16"')]
+	tx, tw = 1292, 540
+	if on:
+		G.poster(skin, src, E(0, 0, 300, 450), PVR_KEY)
+		x += EMC.emc_cover_under(1412, 128, 300, 450)
+		x += _poster_pair(src, 1412, 128, 300, 450, 22, PVR_KEY)
+		ty = 600
+	else:
+		x += EMC.emc_cover_under(1850, 950, 2, 2)
+		ty = 128
+	x.append('\t\t<widget source="%s" render="Label" position="%d,%d" size="%d,84" font="%s;34" foregroundColor="foreground" transparent="1" zPosition="20">\n\t\t\t<convert type="ServiceName">Name</convert>\n\t\t</widget>' % (src, tx, ty, tw, BOLD))
+	py = ty + 98
+	x.append('\t\t<widget source="%s" render="Label" position="%d,%d" size="170,36" backgroundColor="%s" cornerRadius="18" halign="center" valign="center" font="Regular;22" foregroundColor="foreground" zPosition="20">\n\t\t\t<convert type="ServiceTime">StartTime</convert>\n\t\t\t<convert type="ClockToText">ShortDate</convert>\n\t\t</widget>' % (src, tx, py, PILL_BG))
+	x.append('\t\t<widget source="%s" render="Label" position="%d,%d" size="120,36" backgroundColor="%s" cornerRadius="18" halign="center" valign="center" font="Regular;22" foregroundColor="foreground" zPosition="20">\n\t\t\t<convert type="ServiceTime">Duration</convert>\n\t\t\t<convert type="ClockToText">AsLength</convert>\n\t\t</widget>' % (src, tx + 182, py, PILL_BG))
+	x.append(G.label(src, E(tx + 314, py + 2, tw - 314, 32), [("MovieInfo", "FileSize")], 22, "grey", ' halign="right"'))
+	x.append(G.label(src, E(tx, py + 50, tw, 32), [("MovieInfo", "RecordServiceName")], 23, "secondFG", ' noWrap="1"'))
+	dy = py + 94
+	x.append('\t\t<widget source="%s" render="RunningText" position="%d,%d" size="%d,%d" transparent="1" zPosition="20" foregroundColor="grey" font="Regular;22" options="%s">\n\t\t\t<convert type="EventName">ExtendedDescription</convert>\n\t\t</widget>' % (src, tx, dy, tw, 936 - dy, G.D_OPTS))
+	x.append('\t\t<widget source="spacefree" render="Label" position="60,972" size="700,36" foregroundColor="grey" font="Regular;24" transparent="1" zPosition="20" />')
+	x += EMC.emc_keys(1018, 60, 300, 24)
+	name = "EMCSelection" if on else "EMCSelection_CVPosterOff"
+	return '\t<screen name="%s" title="EMC" position="fill" backgroundColor="steThemePrimary" flags="wfNoBorder">\n%s\n\t</screen>' % (name, "\n".join(l for l in x if l))
+
+
 FONTS = '\t<fonts>\n\t\t<font name="%s" filename="LiberationSans-Bold.ttf" scale="100" />\n\t</fonts>' % BOLD
 
 
@@ -545,7 +581,8 @@ def generate(skin):
 	made.append(_write_pack(skin, "epg", parts, provides, "EPG"))
 	# pvr: MovieSelection (+_CVPosterOff) Modern; MoviePlayer, PVRState, Timeshift*, MovieContextMenu Classic
 	psrc = open(os.path.join(skin, "layouts", "pvr", "classic", "screens.openatv.xml"), encoding="utf-8").read()
-	parts, provides = [movieselection(skin, True), movieselection(skin, False)], ["MovieSelection", "MovieSelection_CVPosterOff"]
+	parts = [movieselection(skin, True), movieselection(skin, False), emc_selection(skin, True), emc_selection(skin, False)]
+	provides = ["MovieSelection", "MovieSelection_CVPosterOff", "EMCSelection", "EMCSelection_CVPosterOff"]
 	for n in re.findall(r'<screen name="([^"]+)"', psrc):
 		if n == "MovieSelection":
 			continue

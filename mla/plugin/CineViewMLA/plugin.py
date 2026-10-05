@@ -573,6 +573,13 @@ def _install_poster_off_names():
 		targets.append((MovieSelection, "pvr"))  # MovieSelection_CVPosterOff (PVR pack "cover")
 	except Exception as err:
 		print("[CineViewMLA] posters-off names: MovieSelection unavailable: %s" % err)
+	try:
+		# EnhancedMovieCenter (the PVR key on this receiver opens it): its EMCSelection screen; EMC's own skin
+		# choice (config.EMC.use_orig_skin -> "EMCSelectionOwn") is left alone (see the name check below)
+		from Plugins.Extensions.EnhancedMovieCenter.MovieSelection import EMCSelection
+		targets.append((EMCSelection, "pvr"))
+	except Exception as err:
+		print("[CineViewMLA] posters-off names: EMCSelection unavailable: %s" % err)
 	for cls, section in targets:
 		orig = cls.__init__
 		if getattr(orig, "_cvmla_poster_off", False):
@@ -583,8 +590,8 @@ def _install_poster_off_names():
 			try:
 				if mla_active() and configfile.getResolvedKey("config.plugins.cineviewmla.poster_%s" % _section, silent=True) == "False":
 					names = self.skinName if isinstance(self.skinName, list) else [self.skinName]
-					if _section == "pvr" and names != ["MovieSelection"]:
-						names = []  # MovieSelectionSlim (user's slim list) keeps its own screen
+					if _section == "pvr" and names not in (["MovieSelection"], ["EMCSelectionExtended", "EMCSelection"]):
+						names = []  # MovieSelectionSlim / EMCSelectionOwn (the user's own choices) keep their screens
 					if names and not names[0].endswith(POSTER_OFF_SUFFIX):
 						self.skinName = [n + POSTER_OFF_SUFFIX for n in names] + list(names)
 			except Exception as err:

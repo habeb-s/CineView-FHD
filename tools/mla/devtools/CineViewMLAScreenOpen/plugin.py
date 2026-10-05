@@ -81,6 +81,15 @@ def _open(what):
 			_keep[:] = [dlg, t]
 	elif what == "radio":
 		ib.showRadio()  # native RADIO key path (ChannelSelectionRadio, or ChannelSelection in e1-like mode)
+	elif what == "nativemovies":
+		# the native MovieSelection, opened on the USB test folder (never the HDD); the previous folder value is
+		# kept in /tmp/cvmla/last_videodir for the test's restore step
+		from Screens.MovieSelection import MovieSelection
+		old = config.movielist.last_videodir.value
+		open("/tmp/cvmla/last_videodir", "w").write(old)
+		config.movielist.last_videodir.value = "/media/usb/cineview-mla/testmedia/"
+		_session.open(MovieSelection, None)  # the value stays on USB until the test restores it (MovieSelection may
+		# read it after __init__); the test restarts Enigma2 with the saved value
 	elif what == "movies":
 		ib.showMovies()  # native PVR key path (MovieSelection; listing only, nothing is played)
 	elif what == "vertical":
