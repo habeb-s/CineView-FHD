@@ -1,11 +1,11 @@
 #!/bin/bash
-# Modern SecondInfoBar + Channel Selection + EventView packs (build49) on the receiver: posters ON / OFF (real reflow),
+# Modern SecondInfoBar + Channel Selection + EventView + EPG packs (build50) on the receiver: posters ON / OFF (real reflow),
 # three themes for text contrast (navy, burgundy, green), cursor movement in the channel list (the right card must
 # follow the CURSOR service), skin errors / tracebacks after each step.  Look still pending the user's approval.
 # Restore: Classic everywhere, navy, posters ON.
 exec 9>~/cineview-mla/t57.lock; flock -n 9 || { echo "t57 already running"; exit 1; }
 . ~/cineview-mla/p6lib.sh
-NEW=${1:-build49}
+NEW=${1:-build50}
 S=~/cineview-mla/shots/t57; rm -rf $S; mkdir -p $S
 E='python3 /usr/share/enigma2/CineView_FHD_MLA/mla/engine/composer.py'
 HRT1="1:0:19:D49:C738:16E:A00000:0:0:0:"
@@ -21,24 +21,29 @@ evs() {  # $1 tag: live INFO (EventView), vertical EPG other event -> INFO (Even
   op vertical 9; $RC 106; sleep 3; $RC 108; sleep 3; $RC 358; sleep 5; ga ev_$1_simple; X; sleep 2; X; sleep 2; X; sleep 2
   op infobarepg 7; $RC 358; sleep 5; ga ev_$1_infobar; X; sleep 2; X; sleep 2; X; sleep 2
 }
+epg() {  # $1 tag: Graphical EPG, cursor right / down (the card follows the highlighted cell)
+  zap $HBO; X; op graph 9; ga epg_$1_open; $RC 106; sleep 3; ga epg_$1_right; $RC 108; sleep 3; ga epg_$1_down; X; sleep 2; X; sleep 2
+}
 zap() { curl -s -m 8 -o /dev/null "http://192.168.1.250/api/zap?sRef=$1"; sleep 8; }
 ~/cineview-mla/deploy_b.sh $NEW
 cat ~/cineview-mla/devtools/CineViewMLAScreenOpen/plugin.py | $R "mkdir -p $P && cat > $P/plugin.py && touch $P/__init__.py"
 for t in navy burgundy green; do
-  $R "$E apply --theme $t --set infobar=modern --set secondinfobar=modern --set channelselection=modern --set eventview=modern 2>&1 | tail -1"
+  $R "$E apply --theme $t --set infobar=modern --set secondinfobar=modern --set channelselection=modern --set eventview=modern --set epg=modern 2>&1 | tail -1"
   restart ""; errs
   echo "== $t posters ON"
   zap $HRT1; X; sleep 2; $RC 352; sleep 2.5; ga ib_${t}_on; $RC 352; sleep 4; ga sib_${t}_on; X; sleep 2
   zap $HBO; X; $RC 108; sleep 5; ga cs_${t}_on_open; $RC 108; sleep 3; ga cs_${t}_on_down1; $RC 108; sleep 3; $RC 108; sleep 3; ga cs_${t}_on_down3; X; sleep 2; errs
   evs ${t}_on; errs
+  epg ${t}_on; errs
   if [ $t = navy ]; then
     echo "== $t posters OFF"
-    restart "python3 /tmp/cvmla/setcfg.py config.plugins.cineviewmla.poster_secondinfobar=False; python3 /tmp/cvmla/setcfg.py config.plugins.cineviewmla.poster_channelselection=False; python3 /tmp/cvmla/setcfg.py config.plugins.cineviewmla.poster_infobar=False; python3 /tmp/cvmla/setcfg.py config.plugins.cineviewmla.poster_eventview=False;"; errs
+    restart "python3 /tmp/cvmla/setcfg.py config.plugins.cineviewmla.poster_secondinfobar=False; python3 /tmp/cvmla/setcfg.py config.plugins.cineviewmla.poster_channelselection=False; python3 /tmp/cvmla/setcfg.py config.plugins.cineviewmla.poster_infobar=False; python3 /tmp/cvmla/setcfg.py config.plugins.cineviewmla.poster_eventview=False; python3 /tmp/cvmla/setcfg.py config.plugins.cineviewmla.poster_epg=False;"; errs
     zap $HRT1; X; sleep 2; $RC 352; sleep 2.5; ga ib_${t}_off; $RC 352; sleep 4; ga sib_${t}_off; X; sleep 2
     zap $HBO; X; $RC 108; sleep 5; ga cs_${t}_off_open; $RC 108; sleep 3; ga cs_${t}_off_down1; X; sleep 2; errs
     evs ${t}_off; errs
-    restart "python3 /tmp/cvmla/setcfg.py config.plugins.cineviewmla.poster_secondinfobar=True; python3 /tmp/cvmla/setcfg.py config.plugins.cineviewmla.poster_channelselection=True; python3 /tmp/cvmla/setcfg.py config.plugins.cineviewmla.poster_infobar=True; python3 /tmp/cvmla/setcfg.py config.plugins.cineviewmla.poster_eventview=True;"
+    epg ${t}_off; errs
+    restart "python3 /tmp/cvmla/setcfg.py config.plugins.cineviewmla.poster_secondinfobar=True; python3 /tmp/cvmla/setcfg.py config.plugins.cineviewmla.poster_channelselection=True; python3 /tmp/cvmla/setcfg.py config.plugins.cineviewmla.poster_infobar=True; python3 /tmp/cvmla/setcfg.py config.plugins.cineviewmla.poster_eventview=True; python3 /tmp/cvmla/setcfg.py config.plugins.cineviewmla.poster_epg=True;"
   fi
 done
-$R "$E apply --theme navy --set infobar=classic --set secondinfobar=classic --set channelselection=classic --set eventview=classic-lines 2>&1 | tail -1"; $R "rm -rf $P"; restart ""; st; errs
+$R "$E apply --theme navy --set infobar=classic --set secondinfobar=classic --set channelselection=classic --set eventview=classic-lines --set epg=classic 2>&1 | tail -1"; $R "rm -rf $P"; restart ""; st; errs
 echo T57_DONE
