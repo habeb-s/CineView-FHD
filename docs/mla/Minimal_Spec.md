@@ -82,7 +82,9 @@ Nothing technical is shown. Recording and timer state appear as a single accent 
 - `SecondInfoBarECM` stays Classic.
 
 ### 3.3 Channel Selection (`ChannelSelection`, `ChannelSelectionRadio`, `SimpleChannelSelection`)
-- **List column:** 0..820 on a horizontal scrim (theme tint, alpha ≈ 0x28). The video stays visible to its right.
+- **List column:** 0..820 on a solid scrim (theme tint, ≈ 84 %). The video stays visible to its right; the info
+  area of the cursor row (below) has its own bottom-right scrim (soft edge 600..730, solid from 730), so its text never
+  sits on raw video.
 - **Rows:** 50 px. Number (grey 21), name (25), now title (20, grey) in one line.
   - The selected row gets a 4 px accent bar at its left edge and brighter text; there is no row background box.
   - Name clipping uses the same native-contract fix as Video First (cell narrowed by the picon offset).

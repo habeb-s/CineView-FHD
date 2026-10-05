@@ -477,7 +477,9 @@ def minimal_pvr(on):
 def minimal_cs(on):
 	im = video()
 	im = vgrad(im, (0, 0, 820, H), TINT, 215, 215)
-	im = vgrad(im, (820, 0, 260, H), TINT, 120, 120)
+	# info area of the cursor row: soft edge, then a solid scrim under its text (no vertical band at x 1080)
+	im = vgrad(im, (820, 600, W - 820, 130), TINT, 0, SCRIM_A)
+	im = vgrad(im, (820, 730, W - 820, 350), TINT, SCRIM_A, SCRIM_A)
 	d = ImageDraw.Draw(im, "RGBA")
 	d.text((60, 40), D["bouquet"], font=font(26), fill=MUTED)
 	rows = D["rows"][:17]
