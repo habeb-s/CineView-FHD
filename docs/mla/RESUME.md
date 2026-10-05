@@ -1,27 +1,28 @@
-# CineView MLA: resume point (updated 2026-10-05 22:55 Riyadh)
+# CineView MLA: resume point (updated 2026-10-05 23:58 Riyadh)
 
 | Item | Value |
 |---|---|
-| Last build | build76: build75 (PIL widget-size posters) + No Poster cards on GraphicalEPG and PVR |
-| Builds | build71 = rc6 files; build73 = No Poster infrastructure (52 dynamic screens); build74 = + EPG cards; build75 = + PIL sizing; build76 = + PVR cards (58 dynamic) |
-| Packages | rc5 / rc5.1 published (dev/mla-openatv `release/rc`); rc6 (build71) on ai-agent only, installed on Slot 8 |
-| Receiver | Slot 8, Vu+ Duo 4K SE, OpenATV 8.0.1, rc6 installed (reinst.sh, 22:36) |
-| Last successful tests | t81a (attribution: picons 42.9 %, CineView first decode 42.9 %, 1536×1024 14.3 %), reinst rc6 OK |
-| Queue on ai-agent | t81b (rc6 installed) → q82: t82 (build73 No Poster IB/SIB/CS/EV) → q83: t83 (build75, sz/ aside, attribution) → q84: t84 (build76 EPG/PVR No Poster cards) |
+| Last build | build77 = PIL widget-size posters (no gPixmap) + No Poster layout incl. EPG / PVR cards + ShowIf Picon fix |
+| Builds | build71 = rc6 files; build73 No Poster infra; build74 EPG cards; build75 PIL sizing; build76 PVR cards; build77 ShowIf fix |
+| Packages | rc5 / rc5.1 published (`release/rc`); rc6 (build71) on ai-agent only; rc7 (build77) queued (q85) |
+| Receiver | Slot 8, Vu+ Duo 4K SE, OpenATV 8.0.1; rc6 installed, build deployed over it by the tests |
+| Last successful tests | t81a / t81b (attribution), t82 (No Poster, 5 models, clean), **t83 (CineView accelAlloc share 0)** |
+| Queue on ai-agent | t84 (build77: EPG / PVR / InfoBar No Poster + Classic EV picon) → q85: package rc7 if t84 clean → t77.sh rc7 install test |
 | Last commit | see `git log -1` on dev/mla-openatv |
 
 ## Next steps after the queue
-1. t81b vs t81a: before/after rc6 (same build files, installed package vs deploy).
-2. t83: the CineView share should be 0. Check `sized make` count, `sz.t83pil` vs `sz` (identical posters, A/B).
-3. t82 / t84 grabs: No Poster layout on every dynamic screen; prepare a visual sheet for the user's approval.
-4. Second device (DM900, OpenATV 7.6.0): posters not shown. rc5.1 = build70 had the development cache default
-   (/media/usb/...). rc6+ has the release order (HDD real mount → USB → /tmp). **Installing rc6 on the DM900
-   would write posters to its HDD if one is mounted.** The user must be told before that. Run `diag-mla.sh` there.
-5. Final report page (`make_report.py`) → publish; release-candidate summary (rc7 from build76+ after tests).
+1. t84 grabs: EPG cards, PVR rows (EMC + MovieSelection), InfoBar, Classic EventView strip picon.
+2. t77_rc7.log: install from the package, five models, 0 errors → publish rc7 in `release/rc` (+ SHA256SUMS,
+   installer pointing to rc7), only if clean.
+3. Report page (`make_report.py`) → publish as an artifact.
+4. Second device (DM900, OpenATV 7.6.0): posters not shown; needs `diag-mla.sh` output from that receiver.
+   - rc5.1 (build70) default cache was `/media/usb/...`; without a USB stick that path is created on the root
+     filesystem (flash). rc6+ uses real mounts only.
+   - rc6+ release order puts posters on `/media/hdd/poster` when an HDD is mounted. **Tell the user before they
+     install rc6/rc7 on the DM900.**
 
 ## Known limitation
-- SecondInfoBarECM (non-default SIB mode, Python-owned named widgets, screen created once with the InfoBar) keeps
-  the default placeholder: it cannot switch layout per event.
+- SecondInfoBarECM (non-default SIB mode, Python-owned named widgets, screen created once) keeps the placeholder.
 
 ## Rules (unchanged)
 - Slot 8 and dev/mla-openatv only.
