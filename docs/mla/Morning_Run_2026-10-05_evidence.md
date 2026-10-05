@@ -398,6 +398,22 @@ Status: RUNTIME TESTED. 0 tracebacks, 0 skin errors and 0 crash logs in every ru
   4.9 MB), plus the 816×60 surface. Free: 99 kB in 2 blocks.
 - No poster surface was resident. The CineView failures are first-time decodes, not held blocks.
 
+**t81b — RUNTIME TESTED.** The same steps and order with the INSTALLED package 1.0.0~rc6 (force-reinstalled,
+reinst.sh 22:36).
+
+| Source | t81a (build71 deployed) | t81b (rc6 installed) |
+|---|---|---|
+| Enigma2 picon cache 220×132 | 3 (42.9 %) | 3 (37.5 %) |
+| CineView poster first decode | 3 (42.9 %): 300×450, 240×360, 160×240 | 4 (50.0 %): 300×450, 160×240, 400×600, 200×300 |
+| Enigma2 image / other 1536×1024 | 1 (14.3 %) | 1 (12.5 %) |
+| Total | 7 | 8 |
+
+- Both runs had 0 tracebacks, 0 new skin errors and 0 crash logs.
+- The installed package and the deployed build behave the same; the poster count depends on which events first
+  need a widget-size copy.
+- One t81b context line shows the failure right next to `[ePNG] saving to …/sz`: the ePicLoad block of a first
+  decode.
+
 **Root cause of the CineView share — ROOT CAUSE IDENTIFIED (enigma2 57b7a51 source).**
 - `lib/gdi/picload.cpp:1348`: `ePicLoad::getData()` allocates its result as
   `new gPixmap(max_x, max_y, 32, NULL, gPixmap::accelAuto)`.
