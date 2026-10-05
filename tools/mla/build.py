@@ -1154,15 +1154,15 @@ def main(golden, comps, control, out):
 	# screen; applied to every pack, the approved Classic one included.
 	sys.path.insert(0, os.path.join(HERE, "p7"))
 	import emc_common
-	for sec in sorted(os.listdir(os.path.join(skin, "layouts"))):
-		for pack in sorted(os.listdir(os.path.join(skin, "layouts", sec))):
-			lp = os.path.join(skin, "layouts", sec, pack, "screens.openatv.xml")
+	for lsec in sorted(os.listdir(os.path.join(skin, "layouts"))):
+		for lpack in sorted(os.listdir(os.path.join(skin, "layouts", lsec))):
+			lp = os.path.join(skin, "layouts", lsec, lpack, "screens.openatv.xml")
 			if not os.path.isfile(lp):
 				continue
-			src = open(lp, encoding="utf-8").read()
-			out = re.sub(r'<widget name="list" [^>]*/>', lambda m: emc_common.clean_movielist(m.group(0)) if "dateWidth=" in m.group(0) else m.group(0), src)
-			if out != src:
-				open(lp, "w", encoding="utf-8").write(out)
+			lx = open(lp, encoding="utf-8").read()
+			lx2 = re.sub(r'<widget name="list" [^>]*/>', lambda m: emc_common.clean_movielist(m.group(0)) if "dateWidth=" in m.group(0) else m.group(0), lx)
+			if lx2 != lx:
+				open(lp, "w", encoding="utf-8").write(lx2)
 				print("MOVIELIST legacy attributes removed:", os.path.relpath(lp, skin))
 	# Accelerated-pool optimizer for every non-Classic pack (tools/mla/accel_opt.py; device t67-t74)
 	import accel_opt
