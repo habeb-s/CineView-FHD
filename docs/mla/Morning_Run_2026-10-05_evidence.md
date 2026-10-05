@@ -210,3 +210,37 @@ tint (≈86 %) under every text line. The page also carries the first Modern PVR
 ## 6. Pending at the time of writing
 t57 (Modern SIB/CS/EPG/EV), t58 (Columns), t59 (Cover, Feature, Modern PVR), t60 (performance soak:
 Modern 25 min vs Classic 10 min, accelAlloc counted), t54b (key functions).
+
+## 7. After the 08:45 decisions (second half of the morning)
+
+- **Cinema EventView Feature, t64b (build60) — RUNTIME TESTED, the description defect is fixed.**
+  - Root cause (from t64): the dim eLabel at z 1 covered the native ScrollLabel, which draws its text at z 0.
+  - Fix: every plain eLabel of the pack is below z 0; `zorder_check.py` now treats FullDescription/epg_description
+    as z 0 and reports 0 covered widgets on build60/62.
+  - t64b: live INFO, page down, EPG → INFO (EventViewSimple), InfoBar EPG → INFO; navy ON, burgundy ON, burgundy OFF.
+    The full description is visible in every screen; OFF reflows from the left edge; only captioned keys are drawn.
+  - 0 tracebacks, 0 new skin errors, 0 crash logs.
+  - Still open for approval: the look.
+- **Modern EventView picon, t65 (build60) — RUNTIME TESTED, fixed.**
+  - One Service-source picon at a fixed place, for ON and OFF.
+  - HBO HD → HBO picon, HBO 2 HD → HBO 2 picon; no stray default picon. OFF: one picon, text from the left edge.
+  - 0 tracebacks, 0 skin errors.
+- **EMC PVR, t61d (build61) — identity cover in EMC RUNTIME TESTED.**
+  - EMC's event for a recording has no description, so the poster engine now reads the recording's own .meta
+    (name / description) through eServiceCenter. Path-valued descriptions are dropped (EMC returns the file path for
+    FullDescription / ExtendedDescription).
+  - Cover Library (navy ON):
+    - Harry Potter → local cover file;
+    - Ples malog pingvina → identity poster (Happy Feet);
+    - Dnevnik → CineView default image.
+  - The description is the recording's short description, with no path.
+  - Remaining cosmetic point: in the 690-px Cover list, EMC's progress bar and date leave about 320 px for the
+    title ("Harry Potter i plameni p…"). The title is shown in full under the cover.
+  - EMC shows the folder path as the "description" of its trashcan entry (EMC's own data).
+- **New sections so that each model owns all six (IMPLEMENTED — NOT RUNTIME VERIFIED until t66):**
+  - `eventview/detailscard`: Details EventView Card. A framed opaque card with the Details grey top line, a 300×450
+    poster with the 3-px frame, and native named widgets plus ScrollLabel; `_CVPosterOff`.
+  - `pvr/cinema`: Cinema Shelf. A scrim over the live picture, a 340×510 poster, the big title of the selected
+    recording, a metadata row and the short description, with the list underneath. Both native MovieSelection and
+    EMC are covered; `_CVPosterOff` for both.
+  - The models now map Details → `detailscard` and Cinema → `cinema` PVR. Both packs pass bounds and z-order checks.
