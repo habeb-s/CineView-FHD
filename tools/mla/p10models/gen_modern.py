@@ -285,6 +285,96 @@ def channelselection(skin, screen_name, title):
 	return G.screen(screen_name, title, [l for l in x if l])
 
 
+EV_KEY = "config.plugins.cineviewmla.poster_eventview"
+EV_KEYS = '\t\t<widget addon="ColorButtonsSequence" connection="key_red,key_green,key_yellow,key_blue" textColors="key_red:#00a00000,key_green:#00008000,key_yellow:#00a08000,key_blue:#000040a0" renderType="ColorTextOver" buttonCornerRadius="10" layoutStyle="fluid" alignment="left" foregroundColor="#00ffffff" font="Regular;%d" position="%s" size="%s" spacing="14" transparent="1" zPosition="40" />'
+
+
+def _poster_pair(src, x, y, w, h, r, key, nexts=None, z=19):
+	"""CineView default image (follows the poster switch) + the poster renderer, both rounded."""
+	gate = '<convert type="ConfigEntryTest">%s,False,Invert</convert><convert type="ConditionalShowHide" />' % key
+	n = ' nexts="%d"' % nexts if nexts is not None else ""
+	return ['\t\t<widget source="session.CurrentService" render="Pixmap" pixmap="mla_assets/poster_default_%dx%d.png" position="%d,%d" size="%d,%d" cornerRadius="%d" zPosition="%d">%s</widget>' % (w, h, x, y, w, h, r, z, gate),
+		'\t\t<widget source="%s" render="CineViewMLAPosterX" position="%d,%d" size="%d,%d" cornerRadius="%d" zPosition="%d"%s toggle="%s" />' % (src, x, y, w, h, r, z + 1, n, key)]
+
+
+def _bold_title(src, conv, e, font, key, inv, opts=None):
+	out = []
+	for t in G.text_variants(src, conv, e, None, font, "foreground", opts or G.T_OPTS, "always"):
+		out.append(t.replace("CineViewMLAShowIf\">always,True,", "CineViewMLAShowIf\">%s,True%s," % (key, inv)).replace('font="Regular;%d"' % font, 'font="%s;%d"' % (BOLD, font)))
+	return out
+
+
+def eventview_live(skin):
+	"""EventView = the event of the PLAYING service (plugin rule: other events open EventViewSimple).  Source-based
+	(session.Event_Now / Event_Next), posters ON / OFF through CineViewMLAShowIf; the native named widgets of
+	EventViewEPGSelect are not placed (as in the Classic dashboard)."""
+	for w, h in ((400, 600), (110, 165)):
+		G.poster(skin, "Event", {"x": 0, "y": 0, "w": w, "h": h}, EV_KEY)
+	x = ['\t\t<eLabel position="0,0" size="1920,1080" backgroundColor="#87000000" zPosition="-4" />',
+		'\t\t<eLabel position="60,60" size="1800,960" backgroundColor="steThemeCard" cornerRadius="32" zPosition="-2" />']
+	x += _poster_pair("Event", 100, 100, 400, 600, 24, EV_KEY, 0)
+	for tx, inv, ny in ((540, "", 760), (100, ",Invert", 800)):
+		tw = 1820 - tx
+		x.append(_gate('\t\t<widget source="%s" render="Picon" mode="infobar" scale="aspect" position="%d,104" size="150,76" alphatest="blend" transparent="1" zPosition="20">\n\t\t\t<convert type="ServiceName">Reference</convert>\n\t\t</widget>' % (SVC, tx), EV_KEY, inv))
+		x.append(_gate('\t\t<widget source="%s" render="RunningText" position="%d,122" size="%d,40" transparent="1" zPosition="20" foregroundColor="grey" font="%s;28" noWrap="1" options="%s">\n\t\t\t<convert type="ServiceName">NameOnly</convert>\n\t\t</widget>' % (SVC, tx + 170, 700, BOLD, G.RUN_OPTS), EV_KEY, inv))
+		x += _bold_title(SRC_NOW, [("EventName", "Name")], E(tx, 196, tw, 128), 52, EV_KEY, inv)
+		# meta row: times pill | duration | genre | IMDb
+		x.append('\t\t<widget source="%s" render="Label" position="%d,340" size="196,40" backgroundColor="%s" cornerRadius="20" zPosition="18">\n\t\t\t<convert type="EventName">Name</convert>\n\t\t\t<convert type="CineViewMLAShowIf">%s,True%s,text=</convert>\n\t\t</widget>' % (SRC_NOW, tx, PILL_BG, EV_KEY, inv))
+		x += [_gate(t, EV_KEY, inv) for t in G.times(SRC_NOW, E(tx + 14, 344, 168, 32), 24, "foreground")]
+		x.append(_gate(G.label(SRC_NOW, E(tx + 212, 344, 130, 32), [("EventTime", "Duration"), ("ClockToText", "InMinutes")], 24, "grey"), EV_KEY, inv))
+		x.append(_gate(G.label(SRC_NOW, E(tx + 350, 344, tw - 350 - 260, 32), [("EventName", "Genre")], 24, "secondFG", ' noWrap="1"'), EV_KEY, inv))
+		x.append(_gate(G.label(SRC_NOW, E(tx + tw - 250, 344, 130, 32), [("CineViewMLAIMDb", "Plain,hide")], 24, "foreground", ' halign="right"'), EV_KEY, inv))
+		x.append(_gate(G.label(SRC_NOW, E(tx + tw - 110, 346, 110, 32), [("CineViewMLAIMDb", "Stars,hide")], 22, "secondFG", ' halign="right"'), EV_KEY, inv))
+		x.append('\t\t<widget source="%s" render="Progress" position="%d,396" size="%d,6" pixmap="infobar/pbar.png" backgroundColor="%s" cornerRadius="3" zPosition="20">\n\t\t\t<convert type="EventTime">Progress</convert>\n\t\t\t<convert type="CineViewMLAShowIf">%s,True%s</convert>\n\t\t</widget>' % (SRC_NOW, tx, tw, PILL_BG, EV_KEY, inv))
+		for t in G.text_variants(SRC_NOW, [("EventName", "FullDescription")], E(tx, 424, tw, ny - 20 - 424), None, 25, "foreground", G.D_OPTS, "always"):
+			x.append(t.replace("CineViewMLAShowIf\">always,True,", "CineViewMLAShowIf\">%s,True%s," % (EV_KEY, inv)))
+		x.append('\t\t<widget source="session.CurrentService" render="Label" position="100,%d" size="1720,2" backgroundColor="#00283a50" zPosition="20">\n\t\t\t<convert type="CineViewMLAShowIf">%s,True%s,text=</convert>\n\t\t</widget>' % (ny, EV_KEY, inv))
+		nx = 236 if not inv else 100
+		if not inv:
+			x += _poster_pair("Event", 100, ny + 20, 110, 165, 12, EV_KEY, 1)
+		nw = 1820 - nx
+		x.append('\t\t<widget source="%s" render="Label" position="%d,%d" size="84,32" backgroundColor="%s" cornerRadius="16" halign="center" valign="center" foregroundColor="foreground" font="%s;20" zPosition="20">\n\t\t\t<convert type="EventName">Name</convert>\n\t\t\t<convert type="CineViewMLAShowIf">%s,True%s,text=NEXT</convert>\n\t\t</widget>' % (SRC_NEXT, nx, ny + 24, PILL_BG, BOLD, EV_KEY, inv))
+		x += [_gate(t, EV_KEY, inv) for t in G.times(SRC_NEXT, E(nx + 100, ny + 24, 160, 32), 23, "grey")]
+		x.append(_gate('\t\t<widget source="%s" render="RunningText" position="%d,%d" size="%d,40" transparent="1" zPosition="20" foregroundColor="foreground" font="%s;30" noWrap="1" options="%s">\n\t\t\t<convert type="EventName">Name</convert>\n\t\t</widget>' % (SRC_NEXT, nx, ny + 66, nw, BOLD, G.H_OPTS), EV_KEY, inv))
+		x.append(_gate('\t\t<widget source="%s" render="RunningText" position="%d,%d" size="%d,52" transparent="1" zPosition="20" foregroundColor="grey" font="Regular;21" options="%s">\n\t\t\t<convert type="EventName">ShortDescription</convert>\n\t\t</widget>' % (SRC_NEXT, nx, ny + 110, nw, G.D_OPTS), EV_KEY, inv))
+	x.append(EV_KEYS % (24, "100,972", "1720,40"))
+	return G.screen("EventView", "Event View", [l for l in x if l])
+
+
+def eventview_named(screen_name, on, infobar=False):
+	"""EventViewSimple / InfoBarEventView (+_CVPosterOff): the native named widgets (channel, datetime, duration,
+	FullDescription) and the Title / Event sources.  The poster switch selects the screen name (plugin rule), so ON
+	and OFF are two screens with their own geometry (real reflow)."""
+	if infobar:
+		# InfoBarEventView: top card only, no dimming (the InfoBar EPG under it stays visible, as in Classic)
+		x, cy, ch = [], 40, 400
+	else:
+		x, cy, ch = ['\t\t<eLabel position="0,0" size="1920,1080" backgroundColor="#87000000" zPosition="-4" />'], 60, 960
+	x.append('\t\t<eLabel position="60,%d" size="1800,%d" backgroundColor="steThemeCard" cornerRadius="32" zPosition="-2" />' % (cy, ch))
+	pw, ph = (220, 330) if infobar else (400, 600)
+	tx = (100 + pw + 40) if on else 100
+	tw = 1820 - tx
+	if on:
+		x += _poster_pair("Event", 100, cy + 35, pw, ph, 20 if infobar else 24, EV_KEY)
+	y = cy + 40
+	if not infobar:
+		x.append('\t\t<widget name="channel" position="%d,%d" size="%d,40" font="%s;28" foregroundColor="grey" transparent="1" noWrap="1" zPosition="20" />' % (tx, y, tw, BOLD))
+		y += 56
+	x.append('\t\t<widget source="Title" render="Label" position="%d,%d" size="%d,%d" font="%s;%d" foregroundColor="foreground" transparent="1" zPosition="20" />' % (tx, y, tw, 60 if infobar else 128, BOLD, 40 if infobar else 52))
+	y += 76 if infobar else 144
+	x.append('\t\t<widget name="datetime" position="%d,%d" size="440,40" font="Regular;24" foregroundColor="foreground" backgroundColor="%s" cornerRadius="20" halign="center" valign="center" zPosition="20" />' % (tx, y, PILL_BG))
+	x.append('\t\t<widget name="duration" position="%d,%d" size="180,40" font="Regular;24" foregroundColor="foreground" backgroundColor="%s" cornerRadius="20" halign="center" valign="center" zPosition="20" />' % (tx + 452, y, PILL_BG))
+	x.append(G.label("Event", E(tx + 648, y + 4, tw - 648 - 250, 32), [("EventName", "Genre")], 24, "secondFG", ' noWrap="1"'))
+	x.append(G.label("Event", E(tx + tw - 240, y + 4, 130, 32), [("CineViewMLAIMDb", "Plain,hide")], 24, "foreground", ' halign="right"'))
+	x.append(G.label("Event", E(tx + tw - 100, y + 6, 100, 32), [("CineViewMLAIMDb", "Stars,hide")], 22, "secondFG", ' halign="right"'))
+	y += 64
+	keys_y = cy + ch - 56
+	x.append('\t\t<widget name="FullDescription" position="%d,%d" size="%d,%d" font="Regular;%d" foregroundColor="foreground" backgroundColor="steThemeCard" transparent="1" zPosition="20" />' % (tx, y, tw, keys_y - 16 - y, 24 if infobar else 26))
+	x.append(EV_KEYS % (22 if infobar else 24, "%d,%d" % (tx, keys_y), "%d,40" % tw))
+	extra = ""
+	return G.screen(screen_name, "Event View", [l for l in x if l], extra)
+
+
 FONTS = '\t<fonts>\n\t\t<font name="%s" filename="LiberationSans-Bold.ttf" scale="100" />\n\t</fonts>' % BOLD
 
 
@@ -342,6 +432,16 @@ def generate(skin):
 			parts.append(c.strip("\n"))
 			provides.append(name)
 	made.append(_write_pack(skin, "channelselection", parts, provides, "Channel Selection"))
+	# eventview: live dashboard + the named-widget screens (ON / _CVPosterOff); context menu stays Classic
+	G.poster(skin, "Event", {"x": 0, "y": 0, "w": 220, "h": 330}, EV_KEY)
+	parts = [eventview_live(skin)]
+	for name, ib in (("EventViewSimple", False), ("InfoBarEventView", True)):
+		parts.append(eventview_named(name, True, ib))
+		parts.append(eventview_named(name + "_CVPosterOff", False, ib))
+	ctx = G._classic_screen(skin, "eventview", "EventViewContextMenu")
+	if ctx:
+		parts.append(ctx.strip("\n"))
+	made.append(_write_pack(skin, "eventview", parts, ["EventView", "EventViewSimple", "EventViewSimple_CVPosterOff", "InfoBarEventView", "InfoBarEventView_CVPosterOff"] + (["EventViewContextMenu"] if ctx else []), "EventView"))
 	return made
 
 
