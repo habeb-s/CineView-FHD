@@ -231,6 +231,19 @@ class _CineViewMLAPosterXIdentity(_CineViewMLAPosterXBase):
         except Exception as err:
             _log("release: %s" % err)
 
+    def onHide(self):
+        """underlay="1": a screen that is only hidden (InfoBar, SecondInfoBar, Channel Selection stay alive between
+        uses) gives its poster block back to the accelerated pool; onShow decodes it again (cached file)."""
+        _CineViewMLAPosterXBase.onHide(self)
+        if getattr(self, "underlay", False) and self.instance:
+            self._timer.stop()
+            self._release()
+
+    def onShow(self):
+        _CineViewMLAPosterXBase.onShow(self)
+        if getattr(self, "underlay", False) and self.instance:
+            self.changed((self.CHANGED_DEFAULT,))
+
     def _show_default(self):
         if getattr(self, "underlay", False):
             # the skin draws the default under this widget with no large bitmap (gradient tile + small icon)
@@ -272,6 +285,11 @@ class _CineViewMLAPosterXIdentity(_CineViewMLAPosterXBase):
 
     def changed(self, what):
         if not self.instance:
+            return
+        if getattr(self, "underlay", False) and self.suspended:
+            # hidden screen: nothing is decoded until onShow (device t67: pool use of hidden screens)
+            self._timer.stop()
+            self._release()
             return
         if what[0] == self.CHANGED_CLEAR or not self._enabled():
             if getattr(self, "underlay", False):
@@ -332,6 +350,8 @@ class _CineViewMLAPosterXIdentity(_CineViewMLAPosterXBase):
     def _poll(self):
         if not self.instance or not self._title:
             return
+        if getattr(self, "underlay", False) and self.suspended:
+            return  # shown again later: onShow re-resolves
         ident = getattr(self, "_ident", None)
         if ident is None or ident["key"] != self._title:
             return
