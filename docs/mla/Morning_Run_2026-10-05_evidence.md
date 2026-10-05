@@ -5,7 +5,7 @@ Nothing was written to the HDD, to other slots, to `main`, to the tuner, or to m
 
 Status words follow CLAUDE.md: IMPLEMENTED — NOT RUNTIME VERIFIED / RUNTIME TESTED / DEVICE VERIFIED.
 
-## 1. HD / 16:9 indicators disappearing — ROOT CAUSE IDENTIFIED, fix under device test (t56)
+## 1. HD / 16:9 indicators disappearing — ROOT CAUSE IDENTIFIED, fix RUNTIME TESTED (t56)
 **Baseline t53 (build44, native ServiceInfo).**
 - Protocol: 2 rounds × 6 themes × {Classic, Modern}; per sample: apply theme → restart Enigma2 → zap HRT1 → OK → grab →
   automatic detection.
@@ -30,7 +30,15 @@ Status words follow CLAUDE.md: IMPLEMENTED — NOT RUNTIME VERIFIED / RUNTIME TE
   evStart / evUpdatedInfo (the native eAVControl fallback reads the running decoder while sVideoInfo is -1).
 - The build rewrites only those tokens in every MLA skin file (86 places, all designs). Other ServiceInfo tokens
   stay native.
-- Verification t56 (build48): same protocol, 3 rounds × 6 themes × {Classic, Modern} = 36 samples. **Result: pending.**
+- **Verification t56 (build48).**
+  - Same protocol as t53, 3 rounds × 6 themes × {Classic, Modern} = 36 samples.
+  - **Result: 36 of 36 samples show HD and 16:9** (baseline t53: 5 of 24 missing).
+  - The failure condition itself happened 4 times (Modern `r1_purple`, `r2_graphite`, `r2_navy`, `r2_purple`):
+    not a single evVideoSizeChanged after the converters connected.
+  - In those 4 samples the chips turned True from the start / info events (the eAVControl fallback reads the
+    running decoder) and stayed True through both rechecks. With the native converter they would have stayed hidden.
+  - Chance check: at the baseline miss rate (5/24 ≈ 21 %), 36 clean samples by luck has a probability of about 0.0002.
+  - Evidence: `docs/mla/evidence/t56/` (log, Modern debug logs, crops).
 
 ## 2. Graphical Plus — RUNTIME TESTED (t55, build46)
 - 3 hours: confirmed earlier from the timeline labels (≈181 min ON and OFF; the receiver uses the default 180).
@@ -84,5 +92,5 @@ and subtitles cropped out. The self-review found weak text contrast on bright vi
 tint (≈86 %) under every text line. The page also carries the first Modern PVR mockup.
 
 ## 6. Pending at the time of writing
-t56 (HD fix), t57 (Modern SIB/CS/EPG/EV), t58 (Columns), t59 (Cover, Feature, Modern PVR), t60 (performance soak:
+t57 (Modern SIB/CS/EPG/EV), t58 (Columns), t59 (Cover, Feature, Modern PVR), t60 (performance soak:
 Modern 25 min vs Classic 10 min, accelAlloc counted), t54b (key functions).
