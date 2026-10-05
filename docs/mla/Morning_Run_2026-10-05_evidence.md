@@ -303,5 +303,23 @@ Modern 25 min vs Classic 10 min, accelAlloc counted), t54b (key functions).
 | v2 build65 (t69) | 278 | 91 s | 145.3 MB |
 | v3 build66 (t70) | 344 | 94 s | 140.8 MB |
 | **v5 build68 (t74)** | **17** | **90 s** | 146.6 MB |
+| Classic build68 (t75, reference) | 625 | 130 s | 149.2 MB |
 
-Status: RUNTIME TESTED. 0 tracebacks, 0 skin errors and 0 crash logs in every run. Classic reference (t75), Modern posters OFF and themes (t76), and five-model grabs (t68) follow.
+**Final Modern under other conditions (t76, build69):**
+
+| Condition | Warnings (incl. start-up) |
+|---|---|
+| Posters OFF, 8 min | 3 |
+| green, 5 min | 14 |
+| burgundy, 5 min | 22 |
+| black, 3 min | 4 |
+| graphite, 3 min | 13 |
+| purple, 3 min | 1 |
+
+- Zaps HBO HD / HRT1 ran in every round; 0 tracebacks; screenshots in `shots/t76`.
+- "Tovar" and "Avenija divova" show the default tile in every screen. poster.log has `candidates=0 -> no-reliable-match` for both, so this is the identity policy, not a display fault.
+- **Conclusion:** with the identical navigation, the final Modern uses fewer accelerated-pool requests than Classic (17 vs 625 in 25 min) and less CPU (90 s vs 130 s).
+- The remaining warnings come from the native list code once the pool is full of its cached picons; Classic hits them first.
+- The same optimisation (`accel_opt.py`) now covers Details, Cinema, Minimal and Columns. The approved Classic packs are left untouched.
+
+Status: RUNTIME TESTED. 0 tracebacks, 0 skin errors and 0 crash logs in every run.
