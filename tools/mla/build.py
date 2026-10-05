@@ -1097,6 +1097,16 @@ def main(golden, comps, control, out):
 	for d in gen_cover.generate(skin):
 		print("COVER pack:", os.path.relpath(d, skin))
 		make_preview_none(os.path.join(d, "preview.png"))
+	# Details model: EventView Card (look pending approval).
+	import gen_details_ev
+	for d in gen_details_ev.generate(skin):
+		print("DETAILS EV pack:", os.path.relpath(d, skin))
+		make_preview_none(os.path.join(d, "preview.png"))
+	# Cinema model: PVR Cinema Shelf (look pending approval).
+	import gen_cinema_pvr
+	for d in gen_cinema_pvr.generate(skin):
+		print("CINEMA PVR pack:", os.path.relpath(d, skin))
+		make_preview_none(os.path.join(d, "preview.png"))
 	# Cinema model: EventView Feature (look pending approval).
 	import gen_feature
 	for d in gen_feature.generate(skin):

@@ -537,8 +537,8 @@ def main(session, **kwargs):
 MODEL_ORDER = ("classic", "details", "cinema", "modern", "minimal")
 MODELS = {
 	"classic": {"label": "Classic", "layouts": {"infobar": "classic", "secondinfobar": "classic", "channelselection": "classic", "epg": "classic", "pvr": "classic", "eventview": "classic"}},
-	"details": {"label": "Details", "layouts": {"infobar": "details", "secondinfobar": "details", "channelselection": "posterlist", "epg": "graphicalplus", "pvr": "cover", "eventview": "classic"}},
-	"cinema": {"label": "Cinema", "layouts": {"infobar": "cinema", "secondinfobar": "cinema", "channelselection": "videofirst", "epg": "graphicalplus", "pvr": "classic", "eventview": "feature"}},
+	"details": {"label": "Details", "layouts": {"infobar": "details", "secondinfobar": "details", "channelselection": "posterlist", "epg": "graphicalplus", "pvr": "cover", "eventview": "detailscard"}},
+	"cinema": {"label": "Cinema", "layouts": {"infobar": "cinema", "secondinfobar": "cinema", "channelselection": "videofirst", "epg": "graphicalplus", "pvr": "cinema", "eventview": "feature"}},
 	"modern": {"label": "Modern", "layouts": {"infobar": "modern", "secondinfobar": "modern", "channelselection": "modern", "epg": "modern", "pvr": "modern", "eventview": "modern"}},
 	"minimal": {"label": "Minimal", "layouts": {"infobar": "minimal", "secondinfobar": "minimal", "channelselection": "minimal", "epg": "minimal", "pvr": "minimal", "eventview": "minimal"}},
 }
