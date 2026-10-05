@@ -22,10 +22,24 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import gen_details as G  # noqa: E402
 import emc_common as EMC  # noqa: E402
+sys.path.insert(0, os.path.join(HERE, ".."))
+import noposter as NP  # noqa: E402
 
 KEY = "config.plugins.cineviewmla.poster_pvr"
 LIST = (790, 125, 690, 760)
 COVER = (1512, 128, 340, 510)
+
+
+def cover_texts(poster):
+	"""Title / genre / IMDb of the selected recording in the cover column: under the cover while it shows a real
+	cover, at the top of the column when the recording has none (No Poster layout instead of a placeholder, user
+	decision 2026-10-05 22:03; the native list keeps its width: its geometry cannot follow the event)."""
+	cx, cy, cw, ch = COVER
+	y = cy + ch + 22 if poster else cy
+	out = [G.label("Service", {"x": cx, "y": y, "w": cw, "h": 76}, [("ServiceName", "Name")], 28, "foreground", ' valign="top"', 20),
+		G.label("Service", {"x": cx, "y": y + 84, "w": cw - 130, "h": 30}, [("EventName", "Genre")], 22, "grey", ' noWrap="1"', 20),
+		G.label("Service", {"x": cx + cw - 120, "y": y + 84, "w": 120, "h": 30}, [("CineViewMLAIMDb", "Plain,hide")], 22, "secondFG", ' halign="right"', 20)]
+	return NP.gate(out, KEY, poster)
 
 
 def emc_screen(skin, on):
@@ -56,9 +70,7 @@ def emc_screen(skin, on):
 		x.append('\t\t<eLabel position="1490,110" size="2,800" backgroundColor="#00444444" zPosition="1" />')
 		x += EMC.emc_cover_under(cx, cy, cw, ch)
 		x += G.poster(skin, "Service", {"x": cx, "y": cy, "w": cw, "h": ch}, KEY)
-		x.append(G.label("Service", {"x": cx, "y": cy + ch + 22, "w": cw, "h": 76}, [("ServiceName", "Name")], 28, "foreground", ' valign="top"', 20))
-		x.append(G.label("Service", {"x": cx, "y": cy + ch + 106, "w": cw - 130, "h": 30}, [("EventName", "Genre")], 22, "grey", ' noWrap="1"', 20))
-		x.append(G.label("Service", {"x": cx + cw - 120, "y": cy + ch + 106, "w": 120, "h": 30}, [("CineViewMLAIMDb", "Plain,hide")], 22, "secondFG", ' halign="right"', 20))
+		x += cover_texts(True) + cover_texts(False)
 	else:
 		x += EMC.emc_cover_under(1880, 900, 2, 2)  # EMC's cover widgets exist but are out of sight (no poster space)
 	x.append('\t\t<eLabel position="55,958" size="1810,2" backgroundColor="#00444444" zPosition="1" />')
@@ -84,12 +96,7 @@ def generate(skin):
 	cx, cy, cw, ch = COVER
 	extra = ['\t\t<eLabel position="1490,110" size="2,800" backgroundColor="#00444444" zPosition="1" />']
 	extra += G.poster(skin, "Service", {"x": cx, "y": cy, "w": cw, "h": ch}, KEY)
-	extra.append(G.label("Service", {"x": cx, "y": cy + ch + 22, "w": cw, "h": 76}, [("ServiceName", "Name")], 28, "foreground", ' valign="top"', 20)
-		.replace("</widget>", '\t<convert type="CineViewMLAShowIf">%s,True</convert>\n\t\t</widget>' % KEY))
-	extra.append(G.label("Service", {"x": cx, "y": cy + ch + 106, "w": cw - 130, "h": 30}, [("EventName", "Genre")], 22, "grey", ' noWrap="1"', 20)
-		.replace("</widget>", '\t<convert type="CineViewMLAShowIf">%s,True</convert>\n\t\t</widget>' % KEY))
-	extra.append(G.label("Service", {"x": cx + cw - 120, "y": cy + ch + 106, "w": 120, "h": 30}, [("CineViewMLAIMDb", "Plain,hide")], 22, "secondFG", ' halign="right"', 20)
-		.replace("</widget>", '\t<convert type="CineViewMLAShowIf">%s,True</convert>\n\t\t</widget>' % KEY))
+	extra += cover_texts(True) + cover_texts(False)
 	body = body.replace("\t\t<panel name=\"ButtonTemplate\" />", "\n".join(extra) + "\n\t\t<panel name=\"ButtonTemplate\" />", 1)
 	assert "\n".join(extra) in body, "ButtonTemplate anchor"
 	off = classic.replace(lists[0], EMC.clean_movielist(lists[0])).replace('<screen name="MovieSelection"', '<screen name="MovieSelection_CVPosterOff"', 1)

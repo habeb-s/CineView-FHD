@@ -468,6 +468,19 @@ def graphical_epg(skin, on):
 PVR_KEY = "config.plugins.cineviewmla.poster_pvr"
 
 
+def _pvr_text(src, tx, tw, ty, desc, desc_color):
+	"""Detail-card texts of the selected recording from y = ty (name, date / length pills, size, channel, text)."""
+	x = ['\t\t<widget source="%s" render="Label" position="%d,%d" size="%d,84" font="%s;34" foregroundColor="foreground" transparent="1" zPosition="20">\n\t\t\t<convert type="ServiceName">Name</convert>\n\t\t</widget>' % (src, tx, ty, tw, BOLD)]
+	py = ty + 98
+	x.append('\t\t<widget source="%s" render="Label" position="%d,%d" size="170,36" backgroundColor="%s" cornerRadius="18" halign="center" valign="center" font="Regular;22" foregroundColor="foreground" zPosition="20">\n\t\t\t<convert type="ServiceTime">StartTime</convert>\n\t\t\t<convert type="ClockToText">ShortDate</convert>\n\t\t</widget>' % (src, tx, py, PILL_BG))
+	x.append('\t\t<widget source="%s" render="Label" position="%d,%d" size="120,36" backgroundColor="%s" cornerRadius="18" halign="center" valign="center" font="Regular;22" foregroundColor="foreground" zPosition="20">\n\t\t\t<convert type="ServiceTime">Duration</convert>\n\t\t\t<convert type="ClockToText">AsLength</convert>\n\t\t</widget>' % (src, tx + 182, py, PILL_BG))
+	x.append(G.label(src, E(tx + 314, py + 2, tw - 314, 32), [("MovieInfo", "FileSize")], 22, "grey", ' halign="right"'))
+	x.append(G.label(src, E(tx, py + 50, tw, 32), [("MovieInfo", "RecordServiceName")], 23, "secondFG", ' noWrap="1"'))
+	dy = py + 94
+	x.append('\t\t<widget source="%s" render="RunningText" position="%d,%d" size="%d,%d" transparent="1" zPosition="20" foregroundColor="%s" font="Regular;22" options="%s">\n\t\t\t<convert type="MovieInfo">%s</convert>\n\t\t</widget>' % (src, tx, dy, tw, 936 - dy, desc_color, G.D_OPTS, desc))
+	return x
+
+
 def movieselection(skin, on):
 	"""Modern MovieSelection (mockup modern_pvr): rounded list card (native MovieList; rounded selected row through
 	the native itemCornerRadiusSelected path of eListboxPythonMultiContent::paint) + rounded detail card of the
@@ -490,17 +503,11 @@ def movieselection(skin, on):
 	if on:
 		G.poster(skin, src, E(0, 0, 300, 450), PVR_KEY)
 		x += _poster_pair(src, 1412, 128, 300, 450, 22, PVR_KEY)
-		ty = 600
+		# the card follows the cover of the SELECTED recording: below the cover, or from the top when it has none
+		x += NP.gate(_pvr_text(src, tx, tw, 600, "FullDescription", "grey"), PVR_KEY, True)
+		x += NP.gate(_pvr_text(src, tx, tw, 128, "FullDescription", "grey"), PVR_KEY, False)
 	else:
-		ty = 128
-	x.append('\t\t<widget source="%s" render="Label" position="%d,%d" size="%d,84" font="%s;34" foregroundColor="foreground" transparent="1" zPosition="20">\n\t\t\t<convert type="ServiceName">Name</convert>\n\t\t</widget>' % (src, tx, ty, tw, BOLD))
-	py = ty + 98
-	x.append('\t\t<widget source="%s" render="Label" position="%d,%d" size="170,36" backgroundColor="%s" cornerRadius="18" halign="center" valign="center" font="Regular;22" foregroundColor="foreground" zPosition="20">\n\t\t\t<convert type="ServiceTime">StartTime</convert>\n\t\t\t<convert type="ClockToText">ShortDate</convert>\n\t\t</widget>' % (src, tx, py, PILL_BG))
-	x.append('\t\t<widget source="%s" render="Label" position="%d,%d" size="120,36" backgroundColor="%s" cornerRadius="18" halign="center" valign="center" font="Regular;22" foregroundColor="foreground" zPosition="20">\n\t\t\t<convert type="ServiceTime">Duration</convert>\n\t\t\t<convert type="ClockToText">AsLength</convert>\n\t\t</widget>' % (src, tx + 182, py, PILL_BG))
-	x.append(G.label(src, E(tx + 314, py + 2, tw - 314, 32), [("MovieInfo", "FileSize")], 22, "grey", ' halign="right"'))
-	x.append(G.label(src, E(tx, py + 50, tw, 32), [("MovieInfo", "RecordServiceName")], 23, "secondFG", ' noWrap="1"'))
-	dy = py + 94
-	x.append('\t\t<widget source="%s" render="RunningText" position="%d,%d" size="%d,%d" transparent="1" zPosition="20" foregroundColor="grey" font="Regular;22" options="%s">\n\t\t\t<convert type="MovieInfo">FullDescription</convert>\n\t\t</widget>' % (src, tx, dy, tw, 936 - dy, G.D_OPTS))
+		x += _pvr_text(src, tx, tw, 128, "FullDescription", "grey")
 	x.append('\t\t<widget name="freeDiskSpace" position="60,972" size="700,36" foregroundColor="grey" font="Regular;24" transparent="1" zPosition="20" />')
 	x.append('\t\t<widget name="TrashcanSize" position="1160,972" size="700,36" foregroundColor="grey" font="Regular;24" halign="right" transparent="1" zPosition="20" />')
 	x.append('\t\t<panel name="ButtonTemplate" />')
@@ -521,24 +528,17 @@ def emc_selection(skin, on):
 		'\t\t<widget name="wait" position="76,116" size="1148,828" font="Regular;33" halign="center" valign="center" transparent="1" zPosition="4" />',
 		EMC.emc_list(84, 124, 1132, 812, 58, 30, 26, ' backgroundColorSelected="#00314155" itemCornerRadiusSelected="16"')]
 	tx, tw = 1292, 540
+	# EMC: the recording's description (MovieInfo ShortDescription); for EMC's service FullDescription and
+	# ExtendedDescription return the FILE PATH (device t61, t61c)
 	if on:
 		G.poster(skin, src, E(0, 0, 300, 450), PVR_KEY)
 		x += EMC.emc_cover_under(1412, 128, 300, 450)
 		x += _poster_pair(src, 1412, 128, 300, 450, 22, PVR_KEY)
-		ty = 600
+		x += NP.gate(_pvr_text(src, tx, tw, 600, "ShortDescription", "foreground"), PVR_KEY, True)
+		x += NP.gate(_pvr_text(src, tx, tw, 128, "ShortDescription", "foreground"), PVR_KEY, False)
 	else:
 		x += EMC.emc_cover_under(1850, 950, 2, 2)
-		ty = 128
-	x.append('\t\t<widget source="%s" render="Label" position="%d,%d" size="%d,84" font="%s;34" foregroundColor="foreground" transparent="1" zPosition="20">\n\t\t\t<convert type="ServiceName">Name</convert>\n\t\t</widget>' % (src, tx, ty, tw, BOLD))
-	py = ty + 98
-	x.append('\t\t<widget source="%s" render="Label" position="%d,%d" size="170,36" backgroundColor="%s" cornerRadius="18" halign="center" valign="center" font="Regular;22" foregroundColor="foreground" zPosition="20">\n\t\t\t<convert type="ServiceTime">StartTime</convert>\n\t\t\t<convert type="ClockToText">ShortDate</convert>\n\t\t</widget>' % (src, tx, py, PILL_BG))
-	x.append('\t\t<widget source="%s" render="Label" position="%d,%d" size="120,36" backgroundColor="%s" cornerRadius="18" halign="center" valign="center" font="Regular;22" foregroundColor="foreground" zPosition="20">\n\t\t\t<convert type="ServiceTime">Duration</convert>\n\t\t\t<convert type="ClockToText">AsLength</convert>\n\t\t</widget>' % (src, tx + 182, py, PILL_BG))
-	x.append(G.label(src, E(tx + 314, py + 2, tw - 314, 32), [("MovieInfo", "FileSize")], 22, "grey", ' halign="right"'))
-	x.append(G.label(src, E(tx, py + 50, tw, 32), [("MovieInfo", "RecordServiceName")], 23, "secondFG", ' noWrap="1"'))
-	dy = py + 94
-	# EMC: the recording's description (MovieInfo ShortDescription); for EMC's service FullDescription and
-	# ExtendedDescription return the FILE PATH (device t61, t61c)
-	x.append('\t\t<widget source="%s" render="RunningText" position="%d,%d" size="%d,%d" transparent="1" zPosition="20" foregroundColor="foreground" font="Regular;22" options="%s">\n\t\t\t<convert type="MovieInfo">ShortDescription</convert>\n\t\t</widget>' % (src, tx, dy, tw, 936 - dy, G.D_OPTS))
+		x += _pvr_text(src, tx, tw, 128, "ShortDescription", "foreground")
 	x.append('\t\t<widget source="spacefree" render="Label" position="60,972" size="700,36" foregroundColor="grey" font="Regular;24" transparent="1" zPosition="20" />')
 	x += EMC.emc_keys(1018, 60, 300, 24)
 	name = "EMCSelection" if on else "EMCSelection_CVPosterOff"

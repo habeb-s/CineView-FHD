@@ -25,6 +25,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import gen_details as G  # noqa: E402
 import emc_common as EMC  # noqa: E402
+sys.path.insert(0, os.path.join(HERE, ".."))
+import noposter as NP  # noqa: E402
 
 KEY = "config.plugins.cineviewmla.poster_pvr"
 POSTER = (90, 120, 340, 510)
@@ -56,12 +58,21 @@ def _lbl(conv, x, y, w, h, font, color, extra=""):
 def _card(skin, on):
 	"""Selected recording in the left column (source "Service"): ON = poster + stacked details beside it, description
 	under both; OFF = no poster, the title and details take the column width, the description gets the rest."""
+	if on:
+		# the card follows the cover of the SELECTED recording (No Poster layout instead of a placeholder, user
+		# decision 2026-10-05 22:03): the poster arrangement while it shows a real cover, otherwise the OFF one
+		px, py, pw, ph = POSTER
+		return (G.poster(skin, "Service", {"x": px, "y": py, "w": pw, "h": ph}, KEY)
+			+ NP.gate(_texts(True), KEY, True) + NP.gate(_texts(False), KEY, False))
+	return _texts(False)
+
+
+def _texts(poster):
 	date = [("ServiceTime", "StartTime"), ("ClockToText", "ShortDate")]
 	dur = [("ServiceTime", "Duration"), ("ClockToText", "AsLength")]
 	x = []
-	if on:
+	if poster:
 		px, py, pw, ph = POSTER
-		x += G.poster(skin, "Service", {"x": px, "y": py, "w": pw, "h": ph}, KEY)
 		cx, cw = px + pw + 30, COL_W - pw - 30
 		x.append(_lbl([("ServiceName", "Name")], cx, 114, cw, 156, 40, "foreground"))
 		x.append(_lbl(date, cx, 286, cw, 36, 27, "grey", ' noWrap="1"'))
