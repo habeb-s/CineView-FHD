@@ -530,47 +530,19 @@ FONTS = '\t<fonts>\n\t\t<font name="%s" filename="LiberationSans-Bold.ttf" scale
 # threshold, and the poster widget gets underlay="1": it shows nothing (and releases its picture) when there
 # is no poster, instead of decoding the 600x900 default.  Look: same tile, same icon, rounded corners kept.
 VARIANT = os.environ.get("MLA_MODERN_VARIANT", "optimized")
-TILE_PNG = "poster_tile.png"  # 4x90 vertical gradient of poster_default.jpg, stretched (1440 bytes: never accel)
-ICON_MAX_W = 120  # 120x88x4 = 42240 bytes < 48000: never enters the accelerated pool
 
 
 def _tile(skin):
-	"""The default image's background gradient as a tiny PNG, stretched by the widget (scale="1").  Device t67: a
-	Pixmap widget with only a gradient backgroundColor and no pixmap draws nothing (ePixmap paints no background)."""
-	from PIL import Image
-	path = os.path.join(skin, G.FRAME_DIR, TILE_PNG)
-	if not os.path.isfile(path):
-		top, bot = (15, 23, 42), (23, 38, 61)
-		im = Image.new("RGB", (4, 90))
-		for y in range(90):
-			c = tuple(int(round(top[i] + (bot[i] - top[i]) * y / 89.0)) for i in range(3))
-			for x in range(4):
-				im.putpixel((x, y), c)
-		im.save(path)
-	return "%s/%s" % (G.FRAME_DIR, TILE_PNG)
+	"""Shared with tools/mla/accel_opt.py (one implementation of the default tile / icon / frame strips)."""
+	sys.path.insert(0, os.path.join(HERE, ".."))
+	import accel_opt
+	return accel_opt.tile(skin)
 
 
 def _icon(skin, w):
-	"""CineView default icon (film frame + play triangle, colours of poster_default.jpg), RGBA, drawn at 4x and
-	downsampled.  Width = 43 % of the poster width, capped at ICON_MAX_W."""
-	from PIL import Image, ImageDraw
-	iw = min(ICON_MAX_W, max(24, int(round(w * 0.433))))
-	ih = int(round(iw * 190 / 260.0))
-	name = "poster_icon_%dx%d.png" % (iw, ih)
-	path = os.path.join(skin, G.FRAME_DIR, name)
-	if not os.path.isfile(path):
-		k = 4 * iw / 260.0
-		im = Image.new("RGBA", (iw * 4, ih * 4), (0, 0, 0, 0))
-		d = ImageDraw.Draw(im)
-		fr = (123, 140, 168, 255)
-		d.rounded_rectangle([0, 0, iw * 4 - 1, ih * 4 - 1], radius=int(14 * k), outline=fr, width=max(4, int(8 * k)))
-		for i in range(6):
-			sx = int((12 + 43 * i) * k)
-			for sy in (int(12 * k), int(160 * k)):
-				d.rounded_rectangle([sx, sy, sx + int(18 * k), sy + int(18 * k)], radius=int(4 * k), fill=(120, 140, 167, 255))
-		d.polygon([(int(100 * k), int(60 * k)), (int(166 * k), int(95 * k)), (int(100 * k), int(130 * k))], fill=(231, 176, 49, 255))
-		im.resize((iw, ih), Image.LANCZOS).save(path)
-	return "%s/%s" % (G.FRAME_DIR, name), iw, ih
+	sys.path.insert(0, os.path.join(HERE, ".."))
+	import accel_opt
+	return accel_opt.icon(skin, w)
 
 
 _DEFAULT_RE = re.compile(r'(\t*)<widget source="([^"]+)" render="Pixmap" pixmap="mla_assets/poster_default_(\d+)x(\d+)\.png" position="(\d+),(\d+)" size="(\d+),(\d+)" cornerRadius="([^"]+)" zPosition="(-?\d+)">(.*?)</widget>')
