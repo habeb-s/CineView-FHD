@@ -12,8 +12,8 @@ NOT packaged (runtime state, created/kept on the receiver): the 'active'/'lkg' l
 factory one, /etc/enigma2/cineview_mla (selection, journal, profiles).
 
 Maintainer scripts:
-  preinst  : refuses anything but OpenATV 8.0.x (distro/imageversion from /usr/lib/enigma.info; the screen
-             contract was verified on 8.0.1 / enigma2 57b7a51) and refuses to replace a foreign
+  preinst  : OpenATV 7.6 or 8.0 only (distro/imageversion from /usr/lib/enigma.info; device-verified on 8.0.1 /
+             enigma2 57b7a51, contracts of 7.6 checked statically: tools/mla/compat_image.py) and refuses to replace a foreign
              /usr/bin/enigma2_pre_start.sh.  Missing/ambiguous image data -> stop (no guessing).
   postinst : first install -> 'active' = factory (Classic, navy).  Upgrade -> the user's current selection is
              re-applied with the new packs (new sealed generation); if that fails, factory is activated.
@@ -35,7 +35,7 @@ REPO = os.path.abspath(os.path.join(HERE, "..", ".."))
 
 CONTROL = """Package: {pkg}
 Version: {ver}
-Description: CineView FHD MLA skin for OpenATV 8.0.x (layout packs, six themes, CineView Designs control UI)
+Description: CineView FHD MLA skin for OpenATV 7.6 / 8.0 (layout packs, six themes, CineView Designs control UI)
 Section: skins
 Priority: optional
 Maintainer: habeb-s
@@ -55,8 +55,16 @@ DISTRO=$(sed -n "s/^distro='\{0,1\}\([^']*\)'\{0,1\}$/\1/p" $INFO | head -1)
 VER=$(sed -n "s/^imageversion='\{0,1\}\([^']*\)'\{0,1\}$/\1/p" $INFO | head -1)
 MODEL=$(sed -n "s/^machinebuild='\{0,1\}\([^']*\)'\{0,1\}$/\1/p" $INFO | head -1)
 echo "CineView MLA: image $DISTRO $VER on $MODEL"
-if [ "$DISTRO" != "openatv" ]; then echo "CineView MLA: image '$DISTRO' is not supported by this package (OpenATV 8.0.x only). Stopped."; exit 1; fi
-case "$VER" in 8.0|8.0.*) ;; *) echo "CineView MLA: OpenATV '$VER' is not verified for this package (8.0.x only). Stopped."; exit 1;; esac
+# Supported = the OpenATV enigma2 versions whose contracts were checked against this package (tools/mla/compat_image.py):
+#   7.6 and 8.0: no difference.  7.5 and older lack the 'addon' widgets (ColorButtonsSequence / ButtonSequence),
+#   MovieInfo FullDescription (7.3: also ServiceListLegacy), so the screens would not build.  Newer versions are
+#   refused until they are checked.  No receiver model is excluded.
+if [ "$DISTRO" != "openatv" ]; then echo "CineView MLA: image '$DISTRO' is not OpenATV - this package uses OpenATV-only screen contracts. Stopped."; exit 1; fi
+case "$VER" in
+  7.6|7.6.*|8.0|8.0.*) ;;
+  7.[0-5]|7.[0-5].*|6.*|5.*) echo "CineView MLA: OpenATV '$VER' lacks skin features this package needs ('addon' widgets, MovieInfo FullDescription); OpenATV 7.6 or 8.0 required. Stopped."; exit 1;;
+  *) echo "CineView MLA: OpenATV '$VER' has not been checked against this package yet (checked: 7.6, 8.0). Stopped."; exit 1;;
+esac
 H=/usr/bin/enigma2_pre_start.sh
 if [ -e "$H" ] && ! grep -q "CineView MLA guardian" "$H"; then
   echo "CineView MLA: $H belongs to something else - not replacing it. Stopped."; exit 1
