@@ -392,11 +392,12 @@ def minimal_pvr(on):
 	"""MovieSelection (Minimal_Spec.md 3.5): native list + details strip of the selected recording."""
 	data = json.load(open(os.environ["MODEL_PVR"], encoding="utf-8")) if os.environ.get("MODEL_PVR") else {}
 	pv, free, folder = data.get("items", []), data.get("free", ""), data.get("directory", "")
+	sel = int(data.get("selected", 2))
 	im = Image.new("RGBA", (W, H), tuple(max(0, c - 4) for c in TINT) + (255,))
 	d = ImageDraw.Draw(im, "RGBA")
 	d.text((60, 40), "Recordings  ·  %s" % folder, font=font(26), fill=MUTED)
 	tbox(d, 1600, 34, 260, 44, 34, G["clock"], MUTED, align="right", lines=1)
-	sel = 2
+
 	for i, r in enumerate(pv[:10]):
 		ry = 120 + i * 64
 		if i == sel:
