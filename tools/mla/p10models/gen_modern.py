@@ -316,10 +316,8 @@ def eventview_live(skin):
 	x += _poster_pair("Event", 100, 100, 400, 600, 24, EV_KEY, 0)
 	for tx, inv, ny in ((540, "", 760), (100, ",Invert", 800)):
 		tw = 1820 - tx
-		# picon from the screen's own "Service" source (EventViewBase ServiceEvent = the event's service); device t57:
-		# session.CurrentService + Picon showed nothing in this screen (opened while the service plays: no change event)
-		x.append(_gate('\t\t<widget source="Service" render="Picon" scale="aspect" position="%d,104" size="150,76" alphatest="blend" transparent="1" zPosition="20">\n\t\t\t<convert type="ServiceName">Reference</convert>\n\t\t</widget>' % tx, EV_KEY, inv))
-		x.append(_gate('\t\t<widget source="%s" render="RunningText" position="%d,122" size="%d,40" transparent="1" zPosition="20" foregroundColor="grey" font="%s;28" noWrap="1" options="%s">\n\t\t\t<convert type="ServiceName">NameOnly</convert>\n\t\t</widget>' % (SVC, tx + 170, 700, BOLD, G.RUN_OPTS), EV_KEY, inv))
+		pass  # picon: one fixed place for ON and OFF (below)
+		x.append(_gate('\t\t<widget source="%s" render="RunningText" position="%d,122" size="%d,40" transparent="1" zPosition="20" foregroundColor="grey" font="%s;28" noWrap="1" options="%s">\n\t\t\t<convert type="ServiceName">NameOnly</convert>\n\t\t</widget>' % (SVC, tx, 900, BOLD, G.RUN_OPTS), EV_KEY, inv))
 		x += _bold_title(SRC_NOW, [("EventName", "Name")], E(tx, 196, tw, 128), 52, EV_KEY, inv)
 		# meta row: times pill | duration | genre | IMDb
 		x.append('\t\t<widget source="%s" render="Label" position="%d,340" size="196,40" backgroundColor="%s" cornerRadius="20" zPosition="18">\n\t\t\t<convert type="EventName">Name</convert>\n\t\t\t<convert type="CineViewMLAShowIf">%s,True%s,text=</convert>\n\t\t</widget>' % (SRC_NOW, tx, PILL_BG, EV_KEY, inv))
@@ -340,6 +338,10 @@ def eventview_live(skin):
 		x += [_gate(t, EV_KEY, inv) for t in G.times(SRC_NEXT, E(nx + 100, ny + 24, 160, 32), 23, "grey")]
 		x.append(_gate('\t\t<widget source="%s" render="RunningText" position="%d,%d" size="%d,40" transparent="1" zPosition="20" foregroundColor="foreground" font="%s;30" noWrap="1" options="%s">\n\t\t\t<convert type="EventName">Name</convert>\n\t\t</widget>' % (SRC_NEXT, nx, ny + 66, nw, BOLD, G.H_OPTS), EV_KEY, inv))
 		x.append(_gate('\t\t<widget source="%s" render="RunningText" position="%d,%d" size="%d,52" transparent="1" zPosition="20" foregroundColor="grey" font="Regular;21" options="%s">\n\t\t\t<convert type="EventName">ShortDescription</convert>\n\t\t</widget>' % (SRC_NEXT, nx, ny + 110, nw, G.D_OPTS), EV_KEY, inv))
+	# picon from the screen's own "Service" source (t57: session.CurrentService showed nothing here), at ONE fixed
+	# place for ON and OFF: t57b showed that a Picon whose poster-switch variant is hidden still draws the default
+	# picon (Picon shows itself on every change), so the picon must not have ON/OFF variants
+	x.append('\t\t<widget source="Service" render="Picon" scale="aspect" position="1670,96" size="150,76" alphatest="blend" transparent="1" zPosition="20">\n\t\t\t<convert type="ServiceName">Reference</convert>\n\t\t</widget>')
 	x.append(EV_KEYS % (24, "100,972", "1720,40"))
 	return G.screen("EventView", "Event View", [l for l in x if l])
 
