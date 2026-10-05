@@ -533,3 +533,35 @@ reinst.sh 22:36).
   - Classic EventView strip (ShowIf fix): the picon shows on HBO (with poster), Cinemax (with poster) and HRT1 (no
     poster, OFF position), with no stray default picon. **ROOT CAUSE FIXED, RUNTIME TESTED.**
 - Grabs: `shots/t84/` on ai-agent.
+
+## 13. Release candidate 1.0.0~rc7 (build77) — DEVICE VERIFIED on Slot 8; NOT final
+
+**Contents compared with rc6:**
+- widget-size posters made with PIL (no accelAlloc warnings from CineView, t83);
+- No Poster layout on 58 screens plus the named EventView screens (t82 / t84);
+- ShowIf Picon fix (t84).
+
+**t77_rc7:**
+- backup to `state/backup-rc7` (USB);
+- opkg upgrade rc6 → rc7: `install ok installed`;
+- factory Classic, then each of the five models applied from the installed package with the six sections opened;
+- every model: 0 tracebacks, 0 new skin errors, 0 crash logs;
+- end state: Classic navy, skin CineView_FHD_MLA.
+
+**Published on dev/mla-openatv `release/rc`:**
+- `enigma2-plugin-skins-cineview-fhd-mla_1.0.0~rc7_all.ipk`;
+- SHA256 `6d752cf8acdde16ef52abb80d47ddc9b72da3c48c0c004a3168fd9ff29afbca6`;
+- unpacked 8.6 MB, the same as build77;
+- `SHA256SUMS` updated.
+
+**Installer.** `install-mla.sh` now installs rc7; `install-mla-rc5.sh` keeps rc5.1.
+- The same checks run before anything is installed (OpenATV 7.6 / 8.0, any model, arch `all`, Python ≥ 3.9,
+  space, SHA256).
+- New: the "poster cache" step. Without `HDD_CACHE=1`, runtime.json pins the cache to a real USB mount (not the
+  root device, not multiboot media), otherwise to /tmp. An existing setting is kept. **No HDD writes unless the
+  user asks for them.**
+- The pin logic was tried on Slot 8 against /tmp copies (nothing changed):
+  - no runtime.json → /tmp (the Slot 8 USB stick is the root device);
+  - `HDD_CACHE=1` → left to the skin;
+  - existing setting → kept.
+- Raw download from GitHub: SHA256 matches. The published installer with `DRYRUN=1` on Slot 8: all checks passed.
