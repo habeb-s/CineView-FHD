@@ -440,6 +440,28 @@ reinst.sh 22:36).
   - Visual evidence: `shots/szcmp/szcmp.png`, `szcmp2.png` on ai-agent.
 - **This changes the poster pixels (sharper), not the size or layout. The user's visual approval is requested.**
 
+**t83 — RUNTIME TESTED (build75, same steps and channel order as t81a/b).**
+- The ePicLoad-made `sz/` folder was moved aside (USB dev cache), so EVERY poster took the first-decode path.
+- 27 widget-size PNGs were made with PIL during the run (`sized make … (PIL, no gPixmap)` in poster.log); no
+  ePicLoad fallback was logged.
+
+| Source | t81a (build71) | t81b (rc6 installed) | **t83 (build75, PIL)** |
+|---|---|---|---|
+| CineView poster first decode | 3 (42.9 %) | 4 (50.0 %) | **0 (0 %)** |
+| Enigma2 list picon cache 220×132 | 3 | 3 | 3 (75 %) |
+| Enigma2 other surface 1536×1024 (start-up, InfoBarSummary) | 1 | 1 | 1 (25 %) |
+| Total | 7 | 8 | **4** |
+
+- 0 tracebacks, 0 new skin errors, 0 crash logs.
+- A/B of the same 17 posters (ePicLoad `sz` vs PIL `sz.t83pil`, identical keys):
+  - PSNR min / median / max 25.9 / 31.6 / 38.1 dB;
+  - same size, framing and colours; PIL is crisper on small text;
+  - grabs `shots/t83/AB_0..2.png` (ai-agent).
+- After the run the ePicLoad folder was put back (`sz` 110 files) and the PIL folder kept as `sz.t83pil` (27). Nothing
+  was deleted from the poster originals.
+- **Conclusion: CineView no longer adds accelAlloc warnings. What remains is Enigma2-internal (list picon cache and one
+  start-up surface).**
+
 **Native share (picons, the 1536×1024 surface).**
 - These are Enigma2-internal (PixmapCache / list picon cache). They are documented here and not changed, per the
   rule "no risky Enigma2 change".
