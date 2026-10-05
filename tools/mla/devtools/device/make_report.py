@@ -323,7 +323,7 @@ details.np summary{font:600 20px var(--display);cursor:pointer}
 </section>
 <section class="block">
   <h2>Where the remaining warnings come from</h2>
-  <p class="note">The same three diagnostic rounds with a fixed channel order, fast-graphics debug on. Every warning is attributed by the size of the picture that was being created when it happened. The picon cache and the 1536×1024 surface belong to Enigma2 itself (pictures it keeps for good); CineView does not change them. The CineView share was the first decode of a poster: Enigma2’s picture loader always asks fast memory for its result.</p>
+  <p class="note">The same eight navigation rounds with a fixed channel order, fast-graphics debug on. Every warning is attributed by the size of the picture that was being created when it happened. The picon cache and the 1536×1024 surface belong to Enigma2 itself (pictures it keeps for good); CineView does not change them. The CineView share was the first decode of a poster: Enigma2’s picture loader always asks fast memory for its result.</p>
   <div class="tw"><table><thead>%ATTRH%</thead><tbody>%ATTR%</tbody></table></div>
   <h3>Poster scaling without fast memory: Enigma2 loader vs PIL</h3>
   <p class="note">From build75 the widget-size copy of a poster is made from the original file with PIL, with the loader’s exact framing (same size, same black bars), and then shown from normal memory. The original poster file is never rewritten. The scaler differs: Enigma2 averages pixel blocks, PIL uses Lanczos, so the PIL copy is sharper. Size and layout are unchanged. %PILNOTE%</p>
