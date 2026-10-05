@@ -23,37 +23,87 @@ SKIN = "usr/share/enigma2/CineView_FHD_MLA"
 PY = "usr/lib/enigma2/python/Components"
 DEFAULT_THEME = "navy"
 POSTER_PATCH_OLD = "CACHE_ROOT = _cineview_poster_cache_root()\n"
-POSTER_PATCH_NEW = '''def _mla_cache_root():
-    # CineView MLA: explicit, isolated cache.  Never the HDD block device (checked by st_dev,
-    # not by path name).  Configured in /etc/enigma2/cineview_mla/runtime.json ("poster_cache").
-    default = "/media/usb/cineview-mla/dev-cache/mla/poster"
-    path = default
+POSTER_PATCH_NEW = '''def _mla_cache_plan():
+    """Where the shared, persistent poster cache lives (one cache for every design and screen; the key is the event
+    identity, never the design).  No side effects: nothing is created here.  Returns (path, reason).
+    * Development (Slot 8): /etc/enigma2/cineview_mla/runtime.json "poster_cache" = an explicit path; the HDD block
+      device is refused (checked by st_dev, not by name) unless runtime.json says "allow_hdd": true.
+    * Release (no explicit path): 1. /media/hdd/poster when /media/hdd is a real read-write mount of a block device
+      (listed in /proc/mounts, os.path.ismount, a device other than the root filesystem's);  2. <mount>/poster on
+      another real read-write /media block mount (USB first; multiboot media excluded);  3. /tmp/CINEVIEW-MLA/poster.
+    The cache is never deleted by an upgrade or a normal removal (package_ipk.py postrm leaves it alone)."""
+    rt = {}
     try:
         import json as _json
-        path = _json.load(open("/etc/enigma2/cineview_mla/runtime.json")).get("poster_cache", default)
+        rt = _json.load(open("/etc/enigma2/cineview_mla/runtime.json"))
     except Exception:
         pass
-    deny = set()
-    for src, mp, fstype, opts in _cineview_mounts():
-        if mp in ("/media/hdd", "/hdd") or src.startswith("UUID=ea5ccf03"):
+    mounts = _cineview_mounts()
+    try:
+        root_dev = os.stat("/").st_dev
+    except OSError:
+        root_dev = None
+
+    def real_block_mount(mp, opts, src):
+        try:
+            return ("rw" in opts and os.path.ismount(mp) and os.stat(mp).st_dev != root_dev
+                and (src.startswith("/dev/") or src.startswith("UUID=") or src.startswith("LABEL=")))
+        except OSError:
+            return False
+
+    hdd_devs = set()
+    for src, mp, fstype, opts in mounts:
+        if mp in ("/media/hdd", "/hdd"):
             try:
-                deny.add(os.stat(mp).st_dev)
+                hdd_devs.add(os.stat(mp).st_dev)
             except OSError:
                 pass
-    try:
-        if not os.path.isdir(path):
-            os.makedirs(path)
-        if os.stat(path).st_dev not in deny and os.access(path, os.W_OK):
-            return path
-    except Exception:
-        pass
-    fallback = "/tmp/CINEVIEW-MLA/poster"
-    try:
-        if not os.path.isdir(fallback):
-            os.makedirs(fallback)
-    except Exception:
-        pass
-    return fallback
+    explicit = rt.get("poster_cache")
+    if explicit:
+        probe = explicit
+        while probe and not os.path.exists(probe):
+            probe = os.path.dirname(probe.rstrip("/"))
+        try:
+            dev = os.stat(probe or "/").st_dev
+        except OSError:
+            dev = None
+        if dev in hdd_devs and not rt.get("allow_hdd"):
+            return "/tmp/CINEVIEW-MLA/poster", "explicit path is on the HDD (refused in development)"
+        return explicit, "explicit (runtime.json)"
+    for src, mp, fstype, opts in mounts:
+        if mp == "/media/hdd" and real_block_mount(mp, opts, src):
+            return "/media/hdd/poster", "HDD (real mount %s)" % src
+    usb = []
+    for src, mp, fstype, opts in mounts:
+        if not mp.startswith("/media/") or mp == "/media/hdd":
+            continue
+        if fstype in ("tmpfs", "devtmpfs", "proc", "sysfs", "overlay", "squashfs", "nfs", "nfs4", "cifs", "smbfs", "fuse.sshfs"):
+            continue
+        if not real_block_mount(mp, opts, src):
+            continue
+        try:
+            if _cineview_is_multiboot_mount(mp):
+                continue
+        except Exception:
+            pass
+        usb.append((0 if "usb" in mp else 1, mp, src))
+    if usb:
+        usb.sort()
+        return os.path.join(usb[0][1], "poster"), "removable storage (%s)" % usb[0][2]
+    return "/tmp/CINEVIEW-MLA/poster", "no HDD / USB storage"
+
+
+def _mla_cache_root():
+    path, reason = _mla_cache_plan()
+    for p in (path, "/tmp/CINEVIEW-MLA/poster"):
+        try:
+            if not os.path.isdir(p):
+                os.makedirs(p)
+            if os.access(p, os.W_OK):
+                return p
+        except Exception:
+            pass
+    return "/tmp/CINEVIEW-MLA/poster"
 
 CACHE_ROOT = _mla_cache_root()
 '''
