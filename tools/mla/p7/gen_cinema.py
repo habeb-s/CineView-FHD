@@ -63,7 +63,10 @@ def times_sw(src, g, font, color, arg):
 def cinema_infobar(skin, key, on, off):
 	x = []
 	b = on["band"]
-	x.append('\t\t<ePixmap pixmap="infobar/bl80.png" position="%d,%d" size="%d,%d" zPosition="1" alphatest="blend" scale="1" />' % (b["x"], b["y"], b["w"], b["h"]))
+	# band: was the themed bitmap infobar/bl80.png (1920x330 solid RGBA = 2.5 MB pinned in the 5400 kB accelerated
+	# pool, device t72/t74 analysis); the bitmap is one solid colour = steThemePanel within 1-3 levels (black theme:
+	# #000000 vs #101214), so an eLabel draws the same band without any bitmap
+	x.append('\t\t<eLabel position="%d,%d" size="%d,%d" backgroundColor="steThemePanel" zPosition="1" />' % (b["x"], b["y"], b["w"], b["h"]))
 	x += poster(skin, "session.Event_Now", on["poster_now"], key)
 	for eid in ("picon",):
 		x += _shown(on[eid], off[eid], key, lambda g, a: _with_showif('\t\t<widget source="session.CurrentService" render="Picon" mode="infobar" scale="aspect" %s alphatest="blend" transparent="1" zPosition="20">\n\t\t\t<convert type="ServiceName">Reference</convert>\n\t\t</widget>' % pos(g), a))
