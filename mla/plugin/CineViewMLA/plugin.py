@@ -27,7 +27,7 @@ STATE = "/etc/enigma2/cineview_mla"
 RUNTIME = os.path.join(STATE, "runtime.json")
 PREVIEW_NONE = os.path.join(SKIN_DIR, "mla_assets", "preview_none.png")
 PROFILES = os.path.join(STATE, "profiles")
-POSTER_SECTIONS = ("infobar", "secondinfobar", "channelselection", "epg", "eventview")
+POSTER_SECTIONS = ("infobar", "secondinfobar", "channelselection", "epg", "pvr", "eventview")
 HEALTHY_AFTER_MS = 60000
 TRIAL_CONFIRM_SECONDS = 20
 TRIAL_GRACE_SECONDS = 40  # deadline = healthy (60 s) + prompt (20 s) + grace
@@ -531,6 +531,11 @@ def _install_poster_off_names():
 		targets.append((EPGSelection, "epg"))  # GraphicalEPG_CVPosterOff (EPG pack "graphicalplus")
 	except Exception as err:
 		print("[CineViewMLA] posters-off names: EPGSelection unavailable: %s" % err)
+	try:
+		from Screens.MovieSelection import MovieSelection
+		targets.append((MovieSelection, "pvr"))  # MovieSelection_CVPosterOff (PVR pack "cover")
+	except Exception as err:
+		print("[CineViewMLA] posters-off names: MovieSelection unavailable: %s" % err)
 	for cls, section in targets:
 		orig = cls.__init__
 		if getattr(orig, "_cvmla_poster_off", False):
@@ -541,6 +546,8 @@ def _install_poster_off_names():
 			try:
 				if mla_active() and configfile.getResolvedKey("config.plugins.cineviewmla.poster_%s" % _section, silent=True) == "False":
 					names = self.skinName if isinstance(self.skinName, list) else [self.skinName]
+					if _section == "pvr" and names != ["MovieSelection"]:
+						names = []  # MovieSelectionSlim (user's slim list) keeps its own screen
 					if names and not names[0].endswith(POSTER_OFF_SUFFIX):
 						self.skinName = [n + POSTER_OFF_SUFFIX for n in names] + list(names)
 			except Exception as err:

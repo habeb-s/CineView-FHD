@@ -81,6 +81,8 @@ def _open(what):
 			_keep[:] = [dlg, t]
 	elif what == "radio":
 		ib.showRadio()  # native RADIO key path (ChannelSelectionRadio, or ChannelSelection in e1-like mode)
+	elif what == "movies":
+		ib.showMovies()  # native PVR key path (MovieSelection; listing only, nothing is played)
 	elif what == "vertical":
 		ib.openVerticalEPG()
 	elif what == "graph":

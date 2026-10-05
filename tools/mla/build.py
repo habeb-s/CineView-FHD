@@ -1092,6 +1092,11 @@ def main(golden, comps, control, out):
 			Image.open(src).convert("RGB").resize((720, 405)).save(os.path.join(d, "preview.png"))
 		else:
 			make_preview_none(os.path.join(d, "preview.png"))
+	# Details model: PVR Cover Library (look pending approval).
+	import gen_cover
+	for d in gen_cover.generate(skin):
+		print("COVER pack:", os.path.relpath(d, skin))
+		make_preview_none(os.path.join(d, "preview.png"))
 	# Columns on the native vertical EPG (user decision 2026-10-05 05:23; t42: compatible with OpenATV).
 	import gen_columns
 	for d in gen_columns.generate(skin):
