@@ -104,17 +104,16 @@ for n, lab, tag in (("cs_navy_on_open", "قائمة القنوات — تميي�
                     ("ev_navy_on_infobar", "InfoBarEventView", "ON")):
     still(caption(S("t57", n), lab, tag, tag != "THEME" or None), 3)
 if os.path.exists(S("t57b", "ev_navy_on_live")): still(caption(S("t57b", "ev_navy_on_live"), "EventView المباشر — شعار القناة من مصدر الشاشة", "FIX", True), 3.5)
-for n, lab, tag in (("pvr_modern_on_open", "Modern PVR — بطاقتان مستديرتان", "ON"), ("pvr_modern_on_down2", "المؤشر — الغلاف والتفاصيل تتبعه", "ON"), ("pvr_modern_off_open", "Modern PVR — بلا غلاف", "OFF")):
-    if os.path.exists(S("t59", n)): still(caption(S("t59", n), lab, tag, True), 3.5)
 
 still(card("4. Columns", "على Vertical EPG الأصلي في OpenATV — خمس قنوات جنبًا إلى جنب", ["بطاقة الحدث تتبع العمود والحدث المحدد"]), 4)
 for n, lab, tag in (("col_navy_on_open", "Columns — البوسترات ظاهرة", "ON"), ("col_navy_on_right2_down1", "يمين ثم أسفل — Peter Pan", "ON"),
                     ("col_burgundy_off_down3", "بلا بوستر — ثيم burgundy", "OFF"), ("col_navy_on_info", "INFO — الحدث المحدد", "OK")):
     still(caption(S("t58", n), lab, tag, True), 3.5)
 
-still(card("5. Details — Cover Library", "قائمة التسجيلات الأصلية + غلاف التسجيل المحدد", ["قراءة فقط من الـHDD — لا تشغيل ولا حذف"]), 4)
-for n, lab, tag in (("pvr_cover_on_open", "Cover Library", "ON"), ("pvr_cover_on_down2", "المؤشر — الغلاف يتبعه", "ON"), ("pvr_cover_off_open", "بلا غلاف — هندسة Classic", "OFF")):
-    if os.path.exists(S("t59", n)): still(caption(S("t59", n), lab, tag, True), 3.5)
+still(card("5. شاشة التسجيلات — لم تُختبر بعد", "زر PVR على هذا الرسيفر يفتح EMC وليس MovieSelection",
+           ["لذلك لم تظهر Cover Library ولا Modern PVR في الاختبار — EMC بقي على شكله الأصلي",
+            "سأفتح MovieSelection مباشرة في اختبار لاحق (قراءة فقط)"]), 6)
+still(caption(S("t59", "pvr_cover_on_open"), "ما ظهر فعلًا: EMC الأصلي (لا علاقة له بالتصميم الجديد)", "NOT TESTED", False), 3.5)
 still(card("6. Cinema — EventView Feature", "بوستر كبير · عنوان 56 · الوصف في ScrollLabel الأصلي", []), 4)
 for n, lab, tag in (("ev_feature_navy_on_live", "Feature — INFO المباشر", "ON"), ("ev_feature_navy_on_simple", "Feature — من الدليل", "ON"),
                     ("ev_feature_burgundy_off_simple", "Feature — بلا بوستر", "OFF"), ("ev_feature_navy_on_infobar", "Feature — InfoBarEventView", "ON")):
