@@ -130,6 +130,97 @@ def infobar(skin):
 	return G.screen("InfoBar", "InfoBar", [l for l in x if l])
 
 
+SIB_KEY = "config.plugins.cineviewmla.poster_secondinfobar"
+SIB_CARD_Y, SIB_CARD_W, SIB_CARD_H = 540, 890, 480
+SIB_POSTER = (200, 300)
+
+
+def _gate(w, key, inv):
+	"""Append the poster switch (ON / OFF variant) to a widget that has no CineViewMLAShowIf yet."""
+	return w.replace("</widget>", "\t<convert type=\"CineViewMLAShowIf\">%s,True%s</convert>\n\t\t</widget>" % (key, inv))
+
+
+def sib_card(skin, i):
+	"""One NOW (i=0) / NEXT (i=1) card of the Modern SecondInfoBar (mockup modern_sib)."""
+	src = SRC_NOW if i == 0 else SRC_NEXT
+	cx = 60 + i * 910
+	x = ['\t\t<eLabel position="%d,%d" size="%d,%d" backgroundColor="steThemeCard" cornerRadius="28" zPosition="-2" />' % (cx, SIB_CARD_Y, SIB_CARD_W, SIB_CARD_H)]
+	# poster (ON): rounded, CineView default image under it; NEXT uses the poster engine's "nexts" index
+	pw, ph = SIB_POSTER
+	px, py = cx + 28, 568
+	G.poster(skin, src, {"x": px, "y": py, "w": pw, "h": ph}, SIB_KEY)  # creates the default image file
+	gate = '<convert type="ConfigEntryTest">%s,False,Invert</convert><convert type="ConditionalShowHide" />' % SIB_KEY
+	x.append('\t\t<widget source="%s" render="Pixmap" pixmap="mla_assets/poster_default_%dx%d.png" position="%d,%d" size="%d,%d" cornerRadius="18" zPosition="19">%s</widget>' % (SVC, pw, ph, px, py, pw, ph, gate))
+	x.append('\t\t<widget source="%s" render="CineViewMLAPosterX" position="%d,%d" size="%d,%d" cornerRadius="18" zPosition="20" nexts="%d" toggle="%s" />' % (SRC_NOW, px, py, pw, ph, i, SIB_KEY))
+	for tx, inv in ((cx + 252, ""), (cx + 28, ",Invert")):
+		tw = cx + SIB_CARD_W - 28 - tx
+		# NOW / NEXT accent pill (only when the event exists: text comes from the event via ShowIf text=)
+		x.append('\t\t<widget source="%s" render="Label" position="%d,570" size="96,34" backgroundColor="secondFG" cornerRadius="17" halign="center" valign="center" foregroundColor="#001a1300" font="%s;20" zPosition="20">\n\t\t\t<convert type="EventName">Name</convert>\n\t\t\t<convert type="CineViewMLAShowIf">%s,True%s,text=%s</convert>\n\t\t</widget>' % (src, tx, BOLD, SIB_KEY, inv, "NOW" if i == 0 else "NEXT"))
+		# times beside the pill: "HH:MM – HH:MM"
+		x += [_gate(w, SIB_KEY, inv) for w in G.times(src, E(tx + 112, 572, 160, 32), 24, "secondFG")]
+		# duration (minutes), right side of the pill row
+		x.append(_gate(G.label(src, E(cx + SIB_CARD_W - 28 - 160, 572, 160, 32), [("EventTime", "Duration"), ("ClockToText", "InMinutes")], 22, "grey", ' halign="right"'), SIB_KEY, inv))
+		# title: bold 36, up to 2 lines (rtl/ltr variants)
+		for w in G.text_variants(src, [("EventName", "Name")], E(tx, 616, tw, 90), None, 36, "foreground", G.T_OPTS, "always"):
+			x.append(w.replace("CineViewMLAShowIf\">always,True,", "CineViewMLAShowIf\">%s,True%s," % (SIB_KEY, inv)).replace('font="Regular;36"', 'font="%s;36"' % BOLD))
+		# genre / IMDb line (empty when the EPG has no genre; IMDb only when the identity is reliable)
+		x.append(_gate(G.label(src, E(tx, 712, tw - 240, 32), [("EventName", "Genre")], 23, "secondFG", ' noWrap="1"'), SIB_KEY, inv))
+		x.append(_gate(G.label(src, E(tx + tw - 230, 712, 120, 32), [("CineViewMLAIMDb", "Plain,hide")], 23, "foreground", ' halign="right"'), SIB_KEY, inv))
+		x.append(_gate(G.label(src, E(tx + tw - 100, 714, 100, 32), [("CineViewMLAIMDb", "Stars,hide")], 21, "secondFG", ' halign="right"'), SIB_KEY, inv))
+		if i == 0:
+			x.append('\t\t<widget source="%s" render="Progress" position="%d,750" size="%d,6" pixmap="infobar/pbar.png" backgroundColor="%s" cornerRadius="3" zPosition="20">\n\t\t\t<convert type="EventTime">Progress</convert>\n\t\t\t<convert type="CineViewMLAShowIf">%s,True%s</convert>\n\t\t</widget>' % (src, tx, tw, PILL_BG, SIB_KEY, inv))
+		# description: ON beside the poster (to the card bottom), OFF the full card width
+		dy = 772
+		for w in G.text_variants(src, [("EventName", "FullDescription")], E(tx, dy, tw, 1000 - dy), None, 23, "grey", G.D_OPTS, "always"):
+			x.append(w.replace("CineViewMLAShowIf\">always,True,", "CineViewMLAShowIf\">%s,True%s," % (SIB_KEY, inv)))
+	return x
+
+
+def sib_header():
+	"""Thin service line above the cards: picon, number, name (left); live chips (right) — same pills as the InfoBar."""
+	x = ['\t\t<eLabel position="0,420" size="1920,660" backgroundColor="#ff000000,#2a000000,vertical,1" zPosition="-3" />']
+	x.append('\t\t<widget source="%s" render="Picon" mode="infobar" scale="aspect" position="60,468" size="110,56" alphatest="blend" transparent="1" zPosition="20">\n\t\t\t<convert type="ServiceName">Reference</convert>\n\t\t</widget>' % SVC)
+	x.append('\t\t<widget source="%s" render="ChannelNumber" position="186,474" size="80,44" transparent="1" zPosition="20" foregroundColor="foreground" font="%s;30" />' % (SVC, BOLD))
+	x.append('\t\t<widget source="%s" render="RunningText" position="270,474" size="700,44" transparent="1" zPosition="20" foregroundColor="foreground" font="%s;30" noWrap="1" options="%s">\n\t\t\t<convert type="ServiceName">NameOnly</convert>\n\t\t</widget>' % (SVC, BOLD, G.RUN_OPTS))
+	ch, _ = chips()
+	# the InfoBar chip row sits at y 818; move it to the SecondInfoBar header row (y 478)
+	x += [c.replace(',%d" size=' % CHIP_Y, ',478" size=') for c in ch]
+	return x
+
+
+def secondinfobar(skin):
+	body = sib_header()
+	for i in (0, 1):
+		body += sib_card(skin, i)
+	body = [l for l in body if l]
+	return [G.screen("SecondInfoBar", "Second Infobar", body), G.screen("SecondInfoBarSimple", "Second Infobar", body)]
+
+
+FONTS = '\t<fonts>\n\t\t<font name="%s" filename="LiberationSans-Bold.ttf" scale="100" />\n\t</fonts>' % BOLD
+
+
+def _write_pack(skin, section, parts, provides, label):
+	d = os.path.join(skin, "layouts", section, "modern")
+	os.makedirs(d, exist_ok=True)
+	xml = '<?xml version="1.0" encoding="utf-8"?>\n<!-- CineView Modern (%s) — generated by tools/mla/p10models/gen_modern.py. Look NOT approved yet. Do not edit by hand. -->\n<skin>\n%s\n%s\n</skin>\n' % (label, FONTS, "\n".join("\t" + p.strip() if not p.startswith("\t") else p for p in parts))
+	p = os.path.join(d, "screens.openatv.xml")
+	open(p, "w", encoding="utf-8").write(xml)
+	json.dump({"schema": 1, "id": "modern", "section": section, "name": "CineView Modern", "version": "0.1.0", "author": "habeb-s",
+		"license": "CineView-Proprietary", "origin": "tools/mla/p10models (Modern model mockup, look pending approval)",
+		"targets": {"openatv": {"file": "screens.openatv.xml", "min_version": "8.0.1"}}, "provides_screens": provides,
+		"options": [], "preview": "preview.png"}, open(os.path.join(d, "manifest.json"), "w"), indent=1)
+	import xml.etree.ElementTree as ET
+	r = ET.parse(p).getroot()
+	for scr in r.findall("screen"):
+		for el in scr.iter():
+			ps, ss = el.get("position"), el.get("size")
+			if ps and ss and not ps.startswith(("c", "e")) and ps != "fill":
+				px, py = (int(v) for v in ps.split(","))
+				sw, sh = (int(v) for v in ss.split(","))
+				assert 0 <= px and px + sw <= 1920 and 0 <= py and py + sh <= 1080, el.attrib
+	return d
+
+
 def generate(skin):
 	from PIL import Image
 	# default poster image at the Modern slot size (same CineView default image as Details)
@@ -137,29 +228,18 @@ def generate(skin):
 	dp = os.path.join(skin, G.FRAME_DIR, "poster_default_%dx%d.png" % (w, h))
 	if not os.path.isfile(dp):
 		Image.open(os.path.join(skin, G.FRAME_DIR, "poster_default.jpg")).convert("RGB").resize((w, h), Image.LANCZOS).save(dp)
-	d = os.path.join(skin, "layouts", "infobar", "modern")
-	os.makedirs(d, exist_ok=True)
+	made = []
 	parts = [infobar(skin)]
 	radio = G._classic_screen(skin, "infobar", "RadioInfoBar")
 	if radio:
 		parts.append(radio.strip("\n"))
-	fonts = '\t<fonts>\n\t\t<font name="%s" filename="LiberationSans-Bold.ttf" scale="100" />\n\t</fonts>' % BOLD
-	xml = '<?xml version="1.0" encoding="utf-8"?>\n<!-- CineView Modern (InfoBar) — generated by tools/mla/p10models/gen_modern.py. Look NOT approved yet. Do not edit by hand. -->\n<skin>\n%s\n%s\n</skin>\n' % (fonts, "\n".join("\t" + p.strip() if not p.startswith("\t") else p for p in parts))
-	p = os.path.join(d, "screens.openatv.xml")
-	open(p, "w", encoding="utf-8").write(xml)
-	json.dump({"schema": 1, "id": "modern", "section": "infobar", "name": "CineView Modern", "version": "0.1.0", "author": "habeb-s",
-		"license": "CineView-Proprietary", "origin": "tools/mla/p10models (Modern model mockup, look pending approval)",
-		"targets": {"openatv": {"file": "screens.openatv.xml", "min_version": "8.0.1"}}, "provides_screens": ["InfoBar"] + (["RadioInfoBar"] if radio else []),
-		"options": [], "preview": "preview.png"}, open(os.path.join(d, "manifest.json"), "w"), indent=1)
-	import xml.etree.ElementTree as ET
-	r = ET.parse(p).getroot()
-	for el in r.find("screen").iter():
-		ps, ss = el.get("position"), el.get("size")
-		if ps and ss and not ps.startswith(("c", "e")):
-			px, py = (int(v) for v in ps.split(","))
-			sw, sh = (int(v) for v in ss.split(","))
-			assert 0 <= px and px + sw <= 1920 and 0 <= py and py + sh <= 1080, el.attrib
-	return [d]
+	made.append(_write_pack(skin, "infobar", parts, ["InfoBar"] + (["RadioInfoBar"] if radio else []), "InfoBar"))
+	parts = secondinfobar(skin)
+	ecm = G._classic_screen(skin, "secondinfobar", "SecondInfoBarECM")
+	if ecm:
+		parts.append(ecm.strip("\n"))
+	made.append(_write_pack(skin, "secondinfobar", parts, ["SecondInfoBar", "SecondInfoBarSimple"] + (["SecondInfoBarECM"] if ecm else []), "SecondInfoBar"))
+	return made
 
 
 if __name__ == "__main__":
