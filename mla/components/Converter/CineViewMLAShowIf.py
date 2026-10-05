@@ -15,8 +15,14 @@
 #         Arabic/Hebrew/Syriac/Thaana/N'Ko or their presentation forms = rtl, any other letter = ltr).
 #         Used to give right-to-left texts a right-aligned variant: on OpenATV 57b7a51 eLabel treats
 #         "bidi" alignment as left and wraps RTL paragraphs with the short line on top.
+import os
+
 from Components.config import configfile
 from Components.Converter.Converter import Converter
+
+# Diagnostics (off by default): with this file present, every widget using ",bool" logs each update with the raw
+# video info of the playing service (device investigation of the Modern HD / 16:9 chips, 2026-10-05).
+DEBUG_FLAG = "/etc/enigma2/cineview_mla/debug_showif"
 
 
 class CineViewMLAShowIf(Converter):
@@ -37,10 +43,11 @@ class CineViewMLAShowIf(Converter):
 				self._literal = p[5:]
 		if self._key is None and not self._always:
 			print("[CineViewMLAShowIf] invalid arguments '%s' (shown)" % args)
+		self._debug = self._bool and os.path.exists(DEBUG_FLAG)
 
 	def __getattr__(self, name):
 		# Transparent like ConditionalShowHide; never recurse while the object is being built.
-		if name.startswith("__") or name in ("source", "_key", "_value", "_invert", "_dir", "_always", "_bool", "_literal", "_up_visible"):
+		if name.startswith("__") or name in ("source", "_key", "_value", "_invert", "_dir", "_always", "_bool", "_literal", "_up_visible", "_debug"):
 			raise AttributeError(name)
 		return getattr(self.source, name)
 
@@ -95,11 +102,31 @@ class CineViewMLAShowIf(Converter):
 		visible = self._visible() and getattr(self, "_up_visible", True)
 		for element in self.downstream_elements:
 			element.visible = visible
+		if getattr(self, "_debug", False):
+			self._log("changed %s" % (what,), visible)
 		Converter.changed(self, what)
 
 	def connectDownstream(self, downstream):
 		Converter.connectDownstream(self, downstream)
 		downstream.visible = self._visible() and getattr(self, "_up_visible", True)
+		if getattr(self, "_debug", False):
+			self._log("connect", downstream.visible)
+
+	def _log(self, event, visible):
+		try:
+			from enigma import iServiceInformation
+			up = self.source
+			arg = getattr(up, "type", None) or getattr(up, "token", None)
+			svc = getattr(getattr(up, "source", None), "service", None)
+			info = svc and svc.info()
+			vi = info and info.getInfoString(iServiceInformation.sVideoInfo)
+			try:
+				b = up.boolean
+			except Exception as err:
+				b = "err:%s" % err
+			print("[CineViewMLAShowIf] dbg %x %s token=%s literal=%s boolean=%s visible=%s videoinfo=%s" % (id(self) & 0xffffff, event, arg, self._literal, b, visible, vi))
+		except Exception as err:
+			print("[CineViewMLAShowIf] dbg error %s" % err)
 
 
 _RTL_RANGES = ((0x0590, 0x08FF), (0xFB1D, 0xFDFF), (0xFE70, 0xFEFF), (0x10800, 0x10FFF), (0x1E800, 0x1EFFF))
