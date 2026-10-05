@@ -189,7 +189,7 @@ def movieselection(skin):
 	key = "config.plugins.cineviewmla.poster_pvr"
 	classic = G._classic_screen(skin, "pvr", "MovieSelection")
 	lst = re.findall(r'<widget name="list" [^>]*/>', classic)[0]
-	lst = re.sub(r'position="[^"]*" size="[^"]*"', 'position="60,120" size="1800,640"', lst, count=1)
+	lst = EMC.clean_movielist(re.sub(r'position="[^"]*" size="[^"]*"', 'position="60,120" size="1800,640"', lst, count=1))
 	x = [box(0, 0, 1920, 1080, "steThemePrimary", -4),
 		'\t\t<widget source="Title" render="Label" position="60,40" size="1300,40" font="Regular;26" foregroundColor="grey" transparent="1" noWrap="1" zPosition="20" />',
 		G.label("global.CurrentTime", E(1600, 34, 260, 44), [("ClockToText", "Format:%H:%M")], 34, "grey", ' halign="right"'),

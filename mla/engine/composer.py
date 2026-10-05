@@ -178,7 +178,8 @@ def validate(selection, components=None, warnings=None):
 			if node.tag == "panel" and node.get("name") and node.get("name") not in all_screens:
 				sink.append(f"{n}: panel '{node.get('name')}' not defined")
 			for k, v in node.attrib.items():
-				if k.lower().endswith("color") and v and not v.startswith("#") and v not in colors and "," not in v:
+				# numeric values are flags, not colours (EMC MovieCenter: CoolDateColor="1", CoolTitleColor="1")
+				if k.lower().endswith("color") and v and not v.startswith("#") and v not in colors and "," not in v and not v.isdigit():
 					sink.append(f"{n}: color '{v}' not defined")
 			if components is not None:
 				r = node.get("render")

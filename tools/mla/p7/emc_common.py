@@ -55,3 +55,17 @@ def emc_cover_under(x, y, w, h):
 	return ['\t\t<widget name="CoverBg" position="%d,%d" size="%d,%d" zPosition="16" />' % (x, y, w, h),
 		'\t\t<widget name="CoverBgLbl" position="%d,%d" size="%d,%d" zPosition="16" transparent="1" />' % (x, y, w, h),
 		'\t\t<widget name="Cover" position="%d,%d" size="%d,%d" alphatest="blend" zPosition="17" />' % (x, y, w, h)]
+
+
+# Attributes of the inherited Classic MovieSelection list that 57b7a51 does not know (device t61: 15 "[Skin] Error"
+# lines per opening, no visual effect).  New packs drop them; the approved Classic screen is left as it is.
+LEGACY_MOVIELIST_ATTRS = ("dateWidth", "fontSizesCompact", "fontSizesMinimal", "pbarHeight", "pbarLargeWidth", "spaceRight",
+	"columnsOriginal", "columnsCompactDescription", "compactColumn", "treeDescription", "partIconeShiftMinimal",
+	"partIconeShiftCompact", "partIconeShiftOriginal", "iconsWidth", "spaceIconeText")
+
+
+def clean_movielist(widget_xml):
+	import re
+	for a in LEGACY_MOVIELIST_ATTRS:
+		widget_xml = re.sub(r'\s%s="[^"]*"' % a, "", widget_xml)
+	return widget_xml

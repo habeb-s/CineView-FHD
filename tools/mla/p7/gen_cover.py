@@ -77,7 +77,7 @@ def generate(skin):
 	for w in ("waitingtext", "chosenletter"):
 		on_w = re.search(r'<widget name="%s" position="790,125" size="1060,760"' % w, classic)
 		assert on_w, w
-	body = classic.replace(lists[0], on)
+	body = classic.replace(lists[0], EMC.clean_movielist(on))
 	body = body.replace('<widget name="waitingtext" position="790,125" size="1060,760"', '<widget name="waitingtext" position="%d,%d" size="%d,%d"' % LIST)
 	body = body.replace('<widget name="chosenletter" position="790,125" size="1060,760"', '<widget name="chosenletter" position="%d,%d" size="%d,%d"' % LIST)
 	cx, cy, cw, ch = COVER
@@ -91,7 +91,7 @@ def generate(skin):
 		.replace("</widget>", '\t<convert type="CineViewMLAShowIf">%s,True</convert>\n\t\t</widget>' % KEY))
 	body = body.replace("\t\t<panel name=\"ButtonTemplate\" />", "\n".join(extra) + "\n\t\t<panel name=\"ButtonTemplate\" />", 1)
 	assert "\n".join(extra) in body, "ButtonTemplate anchor"
-	off = classic.replace('<screen name="MovieSelection"', '<screen name="MovieSelection_CVPosterOff"', 1)
+	off = classic.replace(lists[0], EMC.clean_movielist(lists[0])).replace('<screen name="MovieSelection"', '<screen name="MovieSelection_CVPosterOff"', 1)
 	parts = ["\t" + body, "\t" + off, emc_screen(skin, True), emc_screen(skin, False)]
 	for n in names:
 		if n == "MovieSelection":
