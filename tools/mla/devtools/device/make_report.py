@@ -27,7 +27,7 @@ def end_sample(text, label):
 	r, t, cpu, rss, hwm, thr, fds, acc = m[-1]
 	start = re.findall(r"\[%s start\] \S+ cpu_ms=(\d+) rss_kB=(\d+)" % re.escape(label), text)
 	return {"rounds": int(r), "cpu_s": (int(cpu) - int(start[-1][0])) / 1000.0 if start else None, "rss": int(rss) // 1024,
-		"hwm": int(hwm) // 1024, "accel": int(acc) - 1, "rss0": int(start[-1][1]) // 1024 if start else None}
+		"hwm": int(hwm) // 1024, "accel": int(acc), "rss0": int(start[-1][1]) // 1024 if start else None}
 
 
 def img(path, w=960, q=72):
@@ -198,7 +198,7 @@ figcaption{font:12px var(--mono);color:var(--muted);margin-top:4px}
 </header>
 <section class="block">
   <h2>Modern performance: accelAlloc warnings in 25 minutes</h2>
-  <p class="note">The receiver has 5400 kB of fast graphics memory. Every run below repeats the same round: channel list fast and slow, EventView, SecondInfoBar, EPG, EMC on the USB folder, and a channel change. Fewer is better; nothing was lost on screen in any run, the warning means the picture went to normal memory.</p>
+  <p class="note">The receiver has 5400 kB of fast graphics memory. Every run below repeats the same round: channel list fast and slow, EventView, SecondInfoBar, EPG, EMC on the USB folder, and a channel change. Counts include the one warning every start-up logs. Fewer is better; nothing was lost on screen in any run, the warning means the picture went to normal memory.</p>
   <div class="bars">%BARS%</div>
   <h3>Final Modern, other conditions</h3>
   <div class="tw"><table><thead><tr><th>Condition</th><th>Rounds</th><th>Warnings</th><th>RSS end</th><th>CPU</th></tr></thead><tbody>%PHASES%</tbody></table></div>
