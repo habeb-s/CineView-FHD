@@ -221,7 +221,21 @@ class _CineViewMLAPosterXIdentity(_CineViewMLAPosterXBase):
                 return None
         return None
 
+    def _release(self):
+        """underlay="1" widgets (Modern): hide AND drop the decoded picture.  The receiver's accelerated pool is
+        5400 kB (gFBDC log line) and a hidden ePixmap keeps its gPixmap; a released one frees its block at once.
+        Device t60/t62: Modern's large posters failed accelAlloc 639 times in 25 min, Classic once."""
+        self.instance.hide()
+        try:
+            self.instance.setPixmap(None)
+        except Exception as err:
+            _log("release: %s" % err)
+
     def _show_default(self):
+        if getattr(self, "underlay", False):
+            # the skin draws the default under this widget with no large bitmap (gradient tile + small icon)
+            self._release()
+            return
         if os.path.exists(_MLA_DEFAULT):
             self._show(_MLA_DEFAULT)
         else:
@@ -260,7 +274,10 @@ class _CineViewMLAPosterXIdentity(_CineViewMLAPosterXBase):
         if not self.instance:
             return
         if what[0] == self.CHANGED_CLEAR or not self._enabled():
-            self.instance.hide()
+            if getattr(self, "underlay", False):
+                self._release()
+            else:
+                self.instance.hide()
             self._timer.stop()
             self._title = ""
             return

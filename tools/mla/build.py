@@ -220,10 +220,13 @@ RENDERER_PATCHES = [
 	# (old, new) — exact, each must occur once in the golden CineViewPosterX.py
 	('''            if key == "nexts":''', '''            if key == "toggle":
                 self.toggle = value
+            elif key == "underlay":
+                self.underlay = value == "1"
             elif key == "nexts":'''),
 	('''        self.nexts = 0
         self._title = ""''', '''        self.nexts = 0
         self.toggle = None
+        self.underlay = False
         self._title = ""'''),
 	('''        title = _clean_title(self._resolve_title())''', '''        if not self._enabled():
             self.instance.hide()
