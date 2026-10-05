@@ -1125,6 +1125,17 @@ def main(golden, comps, control, out):
 			Image.open(src).convert("RGB").resize((720, 405)).save(os.path.join(d, "preview.png"))
 		else:
 			make_preview_none(os.path.join(d, "preview.png"))
+	# Minimal model (prototype, look pending approval 2026-10-05 08:45): the six sections.
+	import gen_minimal
+	for d in gen_minimal.generate(skin):
+		print("MINIMAL pack:", os.path.relpath(d, skin))
+		sec = os.path.basename(os.path.dirname(d))
+		src = os.path.join(mmocks, "minimal_%s_on.png" % sec)
+		if mmocks and os.path.isfile(src):
+			from PIL import Image
+			Image.open(src).convert("RGB").resize((720, 405)).save(os.path.join(d, "preview.png"))
+		else:
+			make_preview_none(os.path.join(d, "preview.png"))
 	print("SERVICEINFO video tokens -> CineViewMLAServiceInfo:", apply_serviceinfo_video(skin))
 	for f, scr, pos, size in apply_zorder_backgrounds(skin):
 		print("Z-ORDER %-45s %-28s background eLabel %s %s -> zPosition -1" % (f, scr, pos, size))

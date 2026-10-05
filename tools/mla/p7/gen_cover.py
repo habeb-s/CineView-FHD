@@ -43,7 +43,7 @@ def emc_screen(skin, on):
 		'\t\t<widget source="Service" render="Label" position="455,545" size="260,38" foregroundColor="foreground" font="Regular;28" halign="right" noWrap="1" transparent="1" zPosition="20">\n\t\t\t<convert type="MovieInfo">RecordServiceName</convert>\n\t\t</widget>',
 		'\t\t<eLabel position="55,595" size="660,2" backgroundColor="#00444444" zPosition="1" />',
 		'\t\t<widget source="Service" render="Label" position="55,612" size="660,36" foregroundColor="secondFG" font="Regular;27" noWrap="1" transparent="1" zPosition="20">\n\t\t\t<convert type="MovieInfo">ShortDescription</convert>\n\t\t</widget>',
-		'\t\t<widget source="Service" render="RunningText" position="55,656" size="660,203" foregroundColor="foreground" font="Regular;25" transparent="1" zPosition="20" options="%s">\n\t\t\t<convert type="EventName">ExtendedDescription</convert>\n\t\t</widget>' % G.D_OPTS,
+		'\t\t<widget source="Service" render="RunningText" position="55,656" size="660,203" foregroundColor="foreground" font="Regular;25" transparent="1" zPosition="20" options="%s">\n\t\t\t<convert type="MovieInfo">FullDescription</convert>\n\t\t</widget>' % G.D_OPTS,
 		'\t\t<widget source="Service" render="Label" position="55,875" size="200,34" foregroundColor="grey" font="Regular;25" transparent="1" zPosition="20">\n\t\t\t<convert type="MovieInfo">FileSize</convert>\n\t\t</widget>',
 		'\t\t<widget source="spacefree" render="Label" position="260,875" size="455,34" foregroundColor="grey" font="Regular;25" halign="right" transparent="1" zPosition="20" />',
 		'\t\t<eLabel position="760,95" size="1125,835" backgroundColor="steThemePanelAlt" zPosition="-3" />']
