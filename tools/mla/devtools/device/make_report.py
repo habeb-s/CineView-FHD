@@ -302,7 +302,7 @@ details.np summary{font:600 20px var(--display);cursor:pointer}
 </style>
 <div class="wrap">
 <header>
-  <div class="kicker">Slot 8 · Vu+ Duo 4K SE · OpenATV 8.0.1 · dev/mla-openatv · model grabs build69 · current build71 / rc6</div>
+  <div class="kicker">Slot 8 · Vu+ Duo 4K SE · OpenATV 8.0.1 · dev/mla-openatv · model grabs build69 · current build77 / rc7</div>
   <h1>CineView MLA Model Review</h1>
   <p class="lede">The five design models on all six sections, as the receiver drew them: posters on and off in the navy theme, and every model in the six themes. Every picture below is a screen grab from the receiver; every number comes from a test log.</p>
   <div class="facts"><span>Tracebacks <b class="ok">%TB%</b></span><span>New skin errors <b class="%SECLS%">%SE%</b>%SENOTE%</span><span>Crash logs <b class="ok">%CL%</b></span><span>Test media <b>USB only, HDD not opened</b></span></div>
