@@ -530,8 +530,24 @@ FONTS = '\t<fonts>\n\t\t<font name="%s" filename="LiberationSans-Bold.ttf" scale
 # threshold, and the poster widget gets underlay="1": it shows nothing (and releases its picture) when there
 # is no poster, instead of decoding the 600x900 default.  Look: same tile, same icon, rounded corners kept.
 VARIANT = os.environ.get("MLA_MODERN_VARIANT", "optimized")
-TILE_BG = "#000f172a,#001a2840,vertical"
+TILE_PNG = "poster_tile.png"  # 4x90 vertical gradient of poster_default.jpg, stretched (1440 bytes: never accel)
 ICON_MAX_W = 120  # 120x88x4 = 42240 bytes < 48000: never enters the accelerated pool
+
+
+def _tile(skin):
+	"""The default image's background gradient as a tiny PNG, stretched by the widget (scale="1").  Device t67: a
+	Pixmap widget with only a gradient backgroundColor and no pixmap draws nothing (ePixmap paints no background)."""
+	from PIL import Image
+	path = os.path.join(skin, G.FRAME_DIR, TILE_PNG)
+	if not os.path.isfile(path):
+		top, bot = (15, 23, 42), (23, 38, 61)
+		im = Image.new("RGB", (4, 90))
+		for y in range(90):
+			c = tuple(int(round(top[i] + (bot[i] - top[i]) * y / 89.0)) for i in range(3))
+			for x in range(4):
+				im.putpixel((x, y), c)
+		im.save(path)
+	return "%s/%s" % (G.FRAME_DIR, TILE_PNG)
 
 
 def _icon(skin, w):
@@ -565,9 +581,9 @@ def _optimize(skin, xml):
 		ind, src, w, h, x, y, _w, _h, r, z, gate = m.groups()
 		x, y, w, h, z = int(x), int(y), int(w), int(h), int(z)
 		icon, iw, ih = _icon(skin, w)
-		return ('%s<widget source="%s" render="Pixmap" position="%d,%d" size="%d,%d" backgroundColor="%s" cornerRadius="%s" zPosition="%d">%s</widget>\n'
+		return ('%s<widget source="%s" render="Pixmap" pixmap="%s" position="%d,%d" size="%d,%d" scale="1" cornerRadius="%s" zPosition="%d">%s</widget>\n'
 			'%s<widget source="%s" render="Pixmap" pixmap="%s" position="%d,%d" size="%d,%d" alphatest="blend" zPosition="%d">%s</widget>') % (
-			ind, src, x, y, w, h, TILE_BG, r, z - 1, gate, ind, src, icon, x + (w - iw) // 2, y + (h - ih) // 2, iw, ih, z, gate)
+			ind, src, _tile(skin), x, y, w, h, r, z - 1, gate, ind, src, icon, x + (w - iw) // 2, y + (h - ih) // 2, iw, ih, z, gate)
 	xml, n = _DEFAULT_RE.subn(tile, xml)
 	assert "poster_default_" not in xml, "a Modern default poster escaped the optimizer"
 	xml = xml.replace('render="CineViewMLAPosterX" ', 'render="CineViewMLAPosterX" underlay="1" ')
