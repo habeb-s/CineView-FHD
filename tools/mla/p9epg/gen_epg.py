@@ -22,6 +22,8 @@ sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.join(HERE, "..", "p7"))
 import spec_epg as SP  # noqa: E402
 import gen_details as G  # noqa: E402
+sys.path.insert(0, os.path.join(HERE, ".."))
+import noposter as NP  # noqa: E402
 
 KEY = "config.plugins.cineviewmla.poster_epg"
 SRC = "Event"
@@ -79,6 +81,17 @@ def panel_texts(L, poster_on):
 	return out
 
 
+def _gated(lines, with_poster):
+	inv = "" if with_poster else ",Invert"
+	out = []
+	for l in lines:
+		if 'CineViewMLAShowIf">always,True,' in l:
+			out.append(l.replace('CineViewMLAShowIf">always,True,', 'CineViewMLAShowIf">%s,True%s,poster0,' % (KEY, inv)))
+		else:
+			out += NP.gate([l], KEY, with_poster)
+	return out
+
+
 def graphical(skin, on):
 	sp = SP.GRAPHICAL_PLUS
 	L = sp["posters_on" if on else "posters_off"]
@@ -89,7 +102,11 @@ def graphical(skin, on):
 	if on:
 		x += G.poster(skin, SRC, E(L["poster"]), KEY)
 		x.append('\t\t<widget source="Service" render="Picon" %s alphatest="blend" scale="aspect" transparent="1" zPosition="40">\n\t\t\t<convert type="ServiceName">Reference</convert>\n\t\t</widget>' % G.pos(E(L["ch_picon"])))
-	x += panel_texts(L, on)
+	if on:
+		# both arrangements in the one screen: the panel follows the poster of the highlighted event
+		x += _gated(panel_texts(L, on), True) + _gated(panel_texts(SP.GRAPHICAL_PLUS["posters_on_noposter"], on), False)
+	else:
+		x += panel_texts(L, on)
 	x.append('\t\t<eLabel position="40,964" size="1840,2" backgroundColor="steThemePanelAlt" zPosition="30" />')
 	x += keys()
 	name = "GraphicalEPG" if on else "GraphicalEPG_CVPosterOff"

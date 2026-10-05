@@ -43,6 +43,18 @@ GRAPHICAL_PLUS = {
 		"title": (1374, 500, 482, 82, 34),  # 2 lines x 39
 		"desc": (1374, 600, 482, 312, 23),  # 12 lines x 26
 	},
+	# posters ON, highlighted event WITHOUT a poster: same screen and panel, no poster slot (No Poster layout instead
+	# of a placeholder, user decision 2026-10-05 22:03).  The picon keeps its one place (ch_picon above): a Picon
+	# cannot have hidden variants (t57b).
+	"posters_on_noposter": {
+		"ch_name": (1374, 140, 250, 30, 22),
+		"title": (1374, 206, 482, 82, 34),
+		"times": (1374, 298, 482, 30, 24),
+		"duration": (1374, 334, 482, 28, 22),
+		"genre": (1374, 370, 482, 28, 21),
+		"rating": (1374, 406, 482, 30, 22),
+		"desc": (1374, 450, 482, 468, 23),  # 18 lines x 26
+	},
 	"posters_off": {
 		"timeline": (40, 96, 1540, 40),
 		"grid": (40, 140, 1540, 800),

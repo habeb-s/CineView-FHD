@@ -25,6 +25,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, "..", "p7"))
 import gen_details as G  # noqa: E402
 import emc_common as EMC  # noqa: E402
+sys.path.insert(0, os.path.join(HERE, ".."))
+import noposter as NP  # noqa: E402
 
 KEY = "config.plugins.cineviewmla.poster_infobar"
 SRC_NOW, SRC_NEXT, SVC = "session.Event_Now", "session.Event_Next", "session.CurrentService"
@@ -400,38 +402,64 @@ def graphical_epg(skin, on):
 	x += GE.grid(E(60, 150, gw, 800), E(60, 106, gw, 40))
 	x.append('\t\t<eLabel position="%d,100" size="%d,850" backgroundColor="steThemeCard" cornerRadius="24" zPosition="1" />' % (px, 1860 - px))
 	pill = lambda e: '\t\t<eLabel %s backgroundColor="%s" cornerRadius="%d" zPosition="2" />' % (G.pos(e), PILL_BG, e["h"] // 2)
+	def card(mode):
+		"""mode "poster" = posters ON, real poster; "noposter" = posters ON, the event has no poster (same screen, the
+		picon stays at its one fixed place: a Picon cannot have hidden variants, t57b); "off" = GraphicalEPG_CVPosterOff."""
+		c = []
+		mx, mw = tx + 260, tw - 260
+		if mode == "poster":
+			c.append(pill(E(mx, 208, mw, 36)))
+			c += G.times(src, E(mx + 10, 210, mw - 28, 32), 23, "foreground")
+			c.append(pill(E(mx, 252, 130, 36)))
+			c.append(G.label(src, E(mx, 254, 130, 32), [("EventTime", "Duration"), ("ClockToText", "InMinutes")], 22, "foreground", ' halign="center"', 40))
+			c.append(G.label("Service", E(mx, 300, mw, 30), [("ServiceName", "Name")], 22, "grey", ' noWrap="1"', 40))
+			c.append(G.label(src, E(mx, 336, mw, 30), [("EventName", "Genre")], 21, "secondFG", ' noWrap="1"', 40))
+			c.append(G.label(src, E(mx, 372, 110, 30), [("CineViewMLAIMDb", "Plain,hide")], 22, "foreground", "", 40))
+			c.append(G.label(src, E(mx + 112, 374, mw - 112, 30), [("CineViewMLAIMDb", "Stars,hide")], 20, "secondFG", "", 40))
+			ty, th, tf, dy, df = 508, 84, 34, 606, 23
+			dh = 930 - dy
+		elif mode == "noposter":
+			c.append(G.label("Service", E(tx, 144, 240, 30), [("ServiceName", "Name")], 22, "grey", ' noWrap="1"', 40))
+			c.append(pill(E(tx, 208, tw, 36)))
+			c += G.times(src, E(tx + 10, 210, tw - 28, 32), 23, "foreground")
+			c.append(pill(E(tx, 252, 130, 36)))
+			c.append(G.label(src, E(tx, 254, 130, 32), [("EventTime", "Duration"), ("ClockToText", "InMinutes")], 22, "foreground", ' halign="center"', 40))
+			c.append(G.label(src, E(tx + 146, 256, tw - 146, 30), [("EventName", "Genre")], 21, "secondFG", ' noWrap="1"', 40))
+			c.append(G.label(src, E(tx, 298, 110, 30), [("CineViewMLAIMDb", "Plain,hide")], 22, "foreground", "", 40))
+			c.append(G.label(src, E(tx + 112, 300, tw - 112, 30), [("CineViewMLAIMDb", "Stars,hide")], 20, "secondFG", "", 40))
+			ty, th, tf, dy, df = 344, 84, 34, 442, 23
+			dh = 930 - dy
+		else:
+			c.append(G.label("Service", E(tx, 122, tw, 30), [("ServiceName", "Name")], 22, "grey", ' noWrap="1"', 40))
+			c.append(pill(E(tx, 162, tw, 36)))
+			c += G.times(src, E(tx + 10, 164, tw - 28, 32), 23, "foreground")
+			c.append(pill(E(tx, 206, 130, 36)))
+			c.append(G.label(src, E(tx, 208, 130, 32), [("EventTime", "Duration"), ("ClockToText", "InMinutes")], 22, "foreground", ' halign="center"', 40))
+			ty, th, tf, dy, df = 258, 76, 30, 350, 22
+			dh = 866 - dy
+			c.append(G.label(src, E(tx, 878, tw, 28), [("EventName", "Genre")], 21, "secondFG", ' noWrap="1"', 40))
+			c.append(G.label(src, E(tx, 908, 110, 30), [("CineViewMLAIMDb", "Plain,hide")], 22, "foreground", "", 40))
+			c.append(G.label(src, E(tx + 112, 910, tw - 112, 30), [("CineViewMLAIMDb", "Stars,hide")], 20, "secondFG", "", 40))
+		t = []
+		for v in G.text_variants(src, [("EventName", "Name")], E(tx, ty, tw, th), None, tf, "foreground", G.T_OPTS, "always"):
+			t.append(v.replace('font="Regular;%d"' % tf, 'font="%s;%d"' % (BOLD, tf)).replace('zPosition="20"', 'zPosition="40"'))
+		for v in G.text_variants(src, [("EventName", "FullDescription")], E(tx, dy, tw, dh), None, df, "grey", G.D_OPTS, "always"):
+			t.append(v.replace('zPosition="20"', 'zPosition="40"'))
+		if mode == "off":
+			return c + t
+		# posters ON: both arrangements in the one screen; the card follows the poster of the highlighted event
+		# (No Poster layout instead of a placeholder, user decision 2026-10-05 22:03)
+		inv = "" if mode == "poster" else ",Invert"
+		t = [v.replace('CineViewMLAShowIf">always,True,', 'CineViewMLAShowIf">%s,True%s,poster0,' % (EPG_KEY, inv)) for v in t]
+		return NP.gate(c, EPG_KEY, mode == "poster") + t
+
 	if on:
 		G.poster(skin, src, E(0, 0, 240, 360), EPG_KEY)
 		x += _poster_pair(src, tx, 124, 240, 360, 18, EPG_KEY)
-		mx, mw = tx + 260, tw - 260
-		x.append('\t\t<widget source="Service" render="Picon" position="%d,128" size="130,64" alphatest="blend" scale="aspect" transparent="1" zPosition="40">\n\t\t\t<convert type="ServiceName">Reference</convert>\n\t\t</widget>' % mx)
-		x.append(pill(E(mx, 208, mw, 36)))
-		x += G.times(src, E(mx + 10, 210, mw - 28, 32), 23, "foreground")
-		x.append(pill(E(mx, 252, 130, 36)))
-		x.append(G.label(src, E(mx, 254, 130, 32), [("EventTime", "Duration"), ("ClockToText", "InMinutes")], 22, "foreground", ' halign="center"', 40))
-		x.append(G.label("Service", E(mx, 300, mw, 30), [("ServiceName", "Name")], 22, "grey", ' noWrap="1"', 40))
-		x.append(G.label(src, E(mx, 336, mw, 30), [("EventName", "Genre")], 21, "secondFG", ' noWrap="1"', 40))
-		x.append(G.label(src, E(mx, 372, 110, 30), [("CineViewMLAIMDb", "Plain,hide")], 22, "foreground", "", 40))
-		x.append(G.label(src, E(mx + 112, 374, mw - 112, 30), [("CineViewMLAIMDb", "Stars,hide")], 20, "secondFG", "", 40))
-		ty, th, tf = 508, 84, 34
-		dy, df = 606, 23
-		dh = 930 - dy
+		x.append('\t\t<widget source="Service" render="Picon" position="%d,128" size="130,64" alphatest="blend" scale="aspect" transparent="1" zPosition="40">\n\t\t\t<convert type="ServiceName">Reference</convert>\n\t\t</widget>' % (tx + 260))
+		x += card("poster") + card("noposter")
 	else:
-		x.append(G.label("Service", E(tx, 122, tw, 30), [("ServiceName", "Name")], 22, "grey", ' noWrap="1"', 40))
-		x.append(pill(E(tx, 162, tw, 36)))
-		x += G.times(src, E(tx + 10, 164, tw - 28, 32), 23, "foreground")
-		x.append(pill(E(tx, 206, 130, 36)))
-		x.append(G.label(src, E(tx, 208, 130, 32), [("EventTime", "Duration"), ("ClockToText", "InMinutes")], 22, "foreground", ' halign="center"', 40))
-		ty, th, tf = 258, 76, 30
-		dy, df = 350, 22
-		dh = 866 - dy
-		x.append(G.label(src, E(tx, 878, tw, 28), [("EventName", "Genre")], 21, "secondFG", ' noWrap="1"', 40))
-		x.append(G.label(src, E(tx, 908, 110, 30), [("CineViewMLAIMDb", "Plain,hide")], 22, "foreground", "", 40))
-		x.append(G.label(src, E(tx + 112, 910, tw - 112, 30), [("CineViewMLAIMDb", "Stars,hide")], 20, "secondFG", "", 40))
-	for t in G.text_variants(src, [("EventName", "Name")], E(tx, ty, tw, th), None, tf, "foreground", G.T_OPTS, "always"):
-		x.append(t.replace('font="Regular;%d"' % tf, 'font="%s;%d"' % (BOLD, tf)).replace('zPosition="20"', 'zPosition="40"'))
-	for t in G.text_variants(src, [("EventName", "FullDescription")], E(tx, dy, tw, dh), None, df, "grey", G.D_OPTS, "always"):
-		x.append(t.replace('zPosition="20"', 'zPosition="40"'))
+		x += card("off")
 	x += GE.keys(985)
 	name = "GraphicalEPG" if on else "GraphicalEPG_CVPosterOff"
 	return '\t<screen name="%s" position="0,0" size="1920,1080" flags="wfNoBorder" title="Graphical EPG">\n%s\n\t</screen>' % (name, "\n".join(l for l in x if l))
