@@ -61,7 +61,7 @@ class CineViewMLAShowIf(Converter):
 
 	def __getattr__(self, name):
 		# Transparent like ConditionalShowHide; never recurse while the object is being built.
-		if name.startswith("__") or name in ("source", "_key", "_value", "_invert", "_dir", "_always", "_bool", "_literal", "_up_visible", "_debug", "_pflag"):
+		if name.startswith("__") or name in ("source", "_key", "_value", "_invert", "_dir", "_always", "_bool", "_literal", "_up_visible", "_debug", "_pflag", "_mla_t"):
 			raise AttributeError(name)
 		return getattr(self.source, name)
 
@@ -89,12 +89,21 @@ class CineViewMLAShowIf(Converter):
 		return match ^ self._invert
 
 	def poster_state_changed(self, key, nexts):
-		"""CineViewMLAPosterState notification: re-evaluate the variant when its poster widget changed state."""
+		"""CineViewMLAPosterState notification: re-evaluate the variant when its poster widget changed state.
+		The poster widget may publish while its screen is still being built (renderer instances of later widgets do
+		not exist yet, and a fresh screen only sends CHANGED_DEFAULT, which Picon ignores: device t68 / t82, Classic
+		EventView strip without a picon).  So the refresh runs now AND once more when the event loop is back (the
+		screen is complete then)."""
 		if key == self._key and nexts == self._pflag and getattr(self, "source", None) is not None:
-			try:
+			self._refresh()
+			self._schedule_refresh()
+
+	def _refresh(self):
+		try:
+			if getattr(self, "source", None) is not None:
 				self.changed((self.CHANGED_ALL,))
-			except Exception as err:
-				print("[CineViewMLAShowIf] poster state refresh: %s" % err)
+		except Exception as err:
+			print("[CineViewMLAShowIf] poster state refresh: %s" % err)
 
 	@property
 	def text(self):
@@ -134,12 +143,35 @@ class CineViewMLAShowIf(Converter):
 		if getattr(self, "_debug", False):
 			self._log("changed %s" % (what,), visible)
 		Converter.changed(self, what)
+		if not visible:
+			# native Picon (Renderer/Picon.py 57b7a51) calls instance.show() whenever it loads a file -- for a hidden
+			# variant that is the default picon (its text is "").  Keep hidden variants hidden (device t57b / t82).
+			for element in self.downstream_elements:
+				try:
+					element.visible = False
+				except Exception:
+					pass
 
 	def connectDownstream(self, downstream):
 		Converter.connectDownstream(self, downstream)
 		downstream.visible = self._visible() and getattr(self, "_up_visible", True)
 		if getattr(self, "_debug", False):
 			self._log("connect", downstream.visible)
+		if self._pflag is not None:
+			# poster-following variants: one full update once the screen is built, so a Picon variant loads its picture
+			# even when the poster state does not change (a fresh screen only sends CHANGED_DEFAULT)
+			self._schedule_refresh()
+
+	def _schedule_refresh(self):
+		try:
+			from enigma import eTimer
+			t = getattr(self, "_mla_t", None)
+			if t is None:
+				t = self._mla_t = eTimer()
+				t.callback.append(self._refresh)
+			t.start(0, True)
+		except Exception as err:
+			print("[CineViewMLAShowIf] poster state timer: %s" % err)
 
 	def _log(self, event, visible):
 		try:
