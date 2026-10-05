@@ -123,7 +123,8 @@ def main(out):
 			m, m, "" if mi == 0 else " hidden", chip, "".join(rows), "".join(th)))
 
 	html = TEMPLATE.replace("%BARS%", "".join(bars)).replace("%PHASES%", prow or '<tr><td colspan="5">t76 not run</td></tr>') \
-		.replace("%TABS%", "".join(tabs)).replace("%PANES%", "".join(panes)).replace("%TB%", str(tb)).replace("%SE%", str(se)).replace("%CL%", str(cl))
+		.replace("%TABS%", "".join(tabs)).replace("%PANES%", "".join(panes)).replace("%TB%", str(tb)).replace("%SE%", str(se)).replace("%SECLS%", "ok" if se == 0 else "warn") \
+		.replace("%SENOTE%", "" if se == 0 else '<span class="fn">(Classic MovieSelection: list attributes enigma2 rejects; removed in build70 / rc5)</span>').replace("%CL%", str(cl))
 	open(out, "w", encoding="utf-8").write(html)
 	print("OUT", out, os.path.getsize(out) // 1024, "kB; perf rows", len(perf), "phases", len(phases), "model err groups", len(errs))
 
@@ -150,7 +151,7 @@ h3{font-size:20px;font-weight:600}
 .lede{max-width:68ch;color:var(--muted);margin:10px 0 0}
 .facts{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:14px;font:13px var(--mono);color:var(--muted)}
 .facts b{color:var(--fg);font-weight:500}
-.ok{color:var(--good)}
+.ok{color:var(--good)}.warn{color:var(--bad)}.fn{color:var(--muted);margin-left:6px}
 .block{display:flex;flex-direction:column;gap:14px}
 .note{max-width:72ch;color:var(--muted);margin:0}
 .bars{display:flex;flex-direction:column;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px}
@@ -194,7 +195,7 @@ figcaption{font:12px var(--mono);color:var(--muted);margin-top:4px}
   <div class="kicker">Slot 8 · Vu+ Duo 4K SE · OpenATV 8.0.1 · build69 · dev/mla-openatv</div>
   <h1>CineView MLA Model Review</h1>
   <p class="lede">The five design models on all six sections, as the receiver drew them: posters on and off in the navy theme, and every model in the six themes. Every picture below is a screen grab from the receiver; every number comes from a test log.</p>
-  <div class="facts"><span>Tracebacks <b class="ok">%TB%</b></span><span>New skin errors <b class="ok">%SE%</b></span><span>Crash logs <b class="ok">%CL%</b></span><span>Test media <b>USB only, HDD not opened</b></span></div>
+  <div class="facts"><span>Tracebacks <b class="ok">%TB%</b></span><span>New skin errors <b class="%SECLS%">%SE%</b>%SENOTE%</span><span>Crash logs <b class="ok">%CL%</b></span><span>Test media <b>USB only, HDD not opened</b></span></div>
 </header>
 <section class="block">
   <h2>Modern performance: accelAlloc warnings in 25 minutes</h2>
