@@ -296,12 +296,12 @@ Modern 25 min vs Classic 10 min, accelAlloc counted), t54b (key functions).
 
 **25-minute soak, identical round** (channel list fast/slow + EventView, SecondInfoBar, EPG, EMC on USB, HBO/HRT1 zap):
 
-| Run | Warnings / 25 min | CPU | RSS end |
+| Run | Warnings / 25 min (incl. 1 at start-up) | CPU | RSS end |
 |---|---|---|---|
 | Modern Large build63 (t67) | 741 | 116 s | 152.6 MB |
 | Optimized v1 build64 (t67) | 249 | 96 s | 149.3 MB |
 | v2 build65 (t69) | 278 | 91 s | 145.3 MB |
 | v3 build66 (t70) | 344 | 94 s | 140.8 MB |
-| **v5 build68 (t74)** | **16** | **90 s** | 146.6 MB |
+| **v5 build68 (t74)** | **17** | **90 s** | 146.6 MB |
 
 Status: RUNTIME TESTED. 0 tracebacks, 0 skin errors and 0 crash logs in every run. Classic reference (t75), Modern posters OFF and themes (t76), and five-model grabs (t68) follow.
