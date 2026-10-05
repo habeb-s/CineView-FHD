@@ -323,3 +323,32 @@ Modern 25 min vs Classic 10 min, accelAlloc counted), t54b (key functions).
 - The same optimisation (`accel_opt.py`) now covers Details, Cinema, Minimal and Columns. The approved Classic packs are left untouched.
 
 Status: RUNTIME TESTED. 0 tracebacks, 0 skin errors and 0 crash logs in every run.
+
+## 9. User conditions 20:10 (poster look, memory, cache): implementation
+
+- **Poster appearance:** unchanged. Same widget sizes, same layout, no recompression. Every screen decodes the
+  original cached file (never overwritten) at the widget's own size, as before. The `underlay` path keeps a
+  lossless PNG of exactly that decode in `<poster cache>/sz/` (keyed by the source path + size). It loads it with
+  `loadPNG(accel=-1)`, so the picture sits in normal RAM, not in the 5400 kB accelerated pool. A picture is
+  released when its screen hides or the widget empties, and never decoded while hidden. t78 compares before/after
+  pixels on the receiver.
+- **Default placeholder:** the exact look of `poster_default.jpg`, without a full-size bitmap:
+  - background gradient (4×90 PNG, stretched);
+  - the original inner frame line (3 px at an 18 px inset on 600×900, scaled) drawn as strips;
+  - the film icon cut from the default image at the widget size, in vertical slices under 48000 bytes.
+  - Offline comparison with the original image scaled the same way: mean difference about 1 level out of 255
+    (400×600: 1.0/0.5/0.8; 300×450: 1.3/0.7/1.0; 146×218: 1.7/1.2/1.5).
+  - Superseded: build69/70 capped the icon at 120 px and had no inner line.
+- **Accelerated pool:** treated as display memory only, never as storage. The fix does not depend on USB or HDD.
+- **Poster cache, release policy** (`_mla_cache_plan`, no side effects; `_mla_cache_root` creates the folder):
+  1. `/media/hdd/poster`, only when `/media/hdd` is a real read-write block-device mount (in /proc/mounts,
+     `os.path.ismount`, a device other than `/`);
+  2. `<mount>/poster` on another real read-write /media block mount (USB first, multiboot media excluded);
+  3. `/tmp/CINEVIEW-MLA/poster`.
+  - There is one cache for every design and screen, keyed by the event identity. A cached poster is used at once,
+    with no network.
+  - An upgrade or a normal removal never deletes the cache. Only the `sz/` derivatives are capped (400 files,
+    oldest first); original downloads are never deleted.
+- **Development (Slot 8):** runtime.json `poster_cache` points to the USB. A path on the HDD device is refused
+  unless `"allow_hdd": true`. No HDD write has been made. `cache_plan_dryrun.py` (t79) shows the choice for
+  development and for a release install without creating anything.
