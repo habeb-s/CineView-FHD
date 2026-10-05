@@ -546,6 +546,33 @@ MODELS = {
 POSTER_OFF_SUFFIX = "_CVPosterOff"
 
 
+def _event_has_poster(event):
+	"""True when the poster engine already holds a reliable poster for this event (cache only, no network).
+	Screens whose layout is fixed when they open (named-widget EventView designs) use their No Poster screen
+	('<name>_CVPosterOff') for events without one, instead of a placeholder (user decision 2026-10-05 22:03).
+	Unknown (engine not loaded, error) -> True: the normal screen, as before."""
+	if event is None:
+		return False
+	try:
+		import Components.Renderer.CineViewMLAPosterX as P
+		name, short, ext, begin = P._mla_event_texts(event)
+		if not name:
+			return False
+		ident = P._mla_identify(name, short, ext, now_year=time.localtime().tm_year + 1)
+		if ident.get("generic"):
+			return False
+		return bool(P._mla_cached(ident))
+	except Exception as err:
+		print("[CineViewMLA] poster lookup: %s" % err)
+		return True
+
+
+def _poster_off(section, event=None, check_event=False):
+	if configfile.getResolvedKey("config.plugins.cineviewmla.poster_%s" % section, silent=True) == "False":
+		return True
+	return check_event and not _event_has_poster(event)
+
+
 def _install_poster_off_names():
 	"""Posters OFF for screens whose texts are Python-owned named widgets (SecondInfoBarECM, EventViewSimple,
 	InfoBarEventView).  The skin ships '<name>_CVPosterOff' screens with the wider geometry; here the screen's
@@ -588,7 +615,10 @@ def _install_poster_off_names():
 		def wrapped(self, *args, _orig=orig, _section=section, **kw):
 			_orig(self, *args, **kw)
 			try:
-				if mla_active() and configfile.getResolvedKey("config.plugins.cineviewmla.poster_%s" % _section, silent=True) == "False":
+				# EventViewSimple / InfoBarEventView (session, event, ref, ...): an event without a poster also gets the
+				# No Poster screen
+				ev = args[1] if _section == "eventview" and len(args) > 1 else kw.get("Event", kw.get("event"))
+				if mla_active() and _poster_off(_section, ev, check_event=(_section == "eventview")):
 					names = self.skinName if isinstance(self.skinName, list) else [self.skinName]
 					if _section == "pvr" and names not in (["MovieSelection"], ["EMCSelectionExtended", "EMCSelection"]):
 						names = []  # MovieSelectionSlim / EMCSelectionOwn (the user's own choices) keep their screens
@@ -642,12 +672,13 @@ def _install_epg_eventview_name():
 	def wrapped(self, session, *args, **kw):
 		orig(self, session, *args, **kw)
 		try:
+			event = args[0] if args else kw.get("event")
 			if mla_active() and self.skinName == ["EventView"] and _not_live_now(session, args, kw):
 				names = ["EventViewSimple", "EventView"]
-				if configfile.getResolvedKey("config.plugins.cineviewmla.poster_eventview", silent=True) == "False":
+				if _poster_off("eventview", event, check_event=True):
 					names = ["EventViewSimple" + POSTER_OFF_SUFFIX] + names
 				self.skinName = names
-			elif mla_active() and self.skinName == ["EventView"] and configfile.getResolvedKey("config.plugins.cineviewmla.poster_eventview", silent=True) == "False":
+			elif mla_active() and self.skinName == ["EventView"] and _poster_off("eventview", event, check_event=True):
 				# live event, posters off: a design built on the native named widgets ships 'EventView_CVPosterOff'
 				# (Cinema Feature); designs without it (Classic dashboard) fall back to 'EventView' natively
 				self.skinName = ["EventView" + POSTER_OFF_SUFFIX, "EventView"]
