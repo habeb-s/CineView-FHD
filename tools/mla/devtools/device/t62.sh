@@ -14,7 +14,7 @@ HBO="1:0:19:784:C6D4:16E:A00000:0:0:0:"
 restart() { o=$(pid); $R 'init 4; for i in $(seq 1 25); do pidof enigma2 >/dev/null || break; sleep 1; done; '"$1"' init 3'; newe2 $o; sleep 28; }
 zap() { curl -s -m 8 -o /dev/null "http://192.168.1.250/api/zap?sRef=$1"; sleep 8; }
 op() { $R "echo $1 > /tmp/cvmla/open.txt"; sleep ${2:-5}; }
-cnt() { $R 'f=/home/root/logs/$(ls -t /home/root/logs | grep debug | head -1); grep -a -c "accel alloc failed\|accelAlloc failed" $f'; }
+cnt() { $R 'f=/home/root/logs/$(ls -t /home/root/logs | grep debug | head -1); grep -a -c "accelAlloc failed" $f'; }
 step() { local a=$(cnt); eval "$2"; local b=$(cnt); echo "   step $1: +$((b - a)) failures"; }
 steps() {
   zap $HBO; X; sleep 2
