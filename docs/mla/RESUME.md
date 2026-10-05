@@ -1,28 +1,26 @@
-# CineView MLA: resume point (updated 2026-10-05 23:58 Riyadh)
+# CineView MLA: resume point (updated 2026-10-06 00:50 Riyadh)
 
 | Item | Value |
 |---|---|
-| Last build | build77 = PIL widget-size posters (no gPixmap) + No Poster layout incl. EPG / PVR cards + ShowIf Picon fix |
-| Builds | build71 = rc6 files; build73 No Poster infra; build74 EPG cards; build75 PIL sizing; build76 PVR cards; build77 ShowIf fix |
-| Packages | rc5 / rc5.1 published (`release/rc`); rc6 (build71) on ai-agent only; rc7 (build77) queued (q85) |
-| Receiver | Slot 8, Vu+ Duo 4K SE, OpenATV 8.0.1; rc6 installed, build deployed over it by the tests |
-| Last successful tests | t81a / t81b (attribution), t82 (No Poster, 5 models, clean), **t83 (CineView accelAlloc share 0)** |
-| Queue on ai-agent | t84 (build77: EPG / PVR / InfoBar No Poster + Classic EV picon) → q85: package rc7 if t84 clean → t77.sh rc7 install test |
+| Last build | build77 = package **1.0.0~rc7** (published, `release/rc`, SHA256 `6d752cf8…afbca6`) |
+| Receiver | Slot 8, Vu+ Duo 4K SE, OpenATV 8.0.1; **rc7 installed** (t77_rc7), Classic navy, posters ON |
+| Last successful tests | t81a / t81b (attribution), t82 (No Poster, 5 models), t83 (CineView accelAlloc 0), t84 (EPG / PVR / InfoBar No Poster + Classic EV picon), t77_rc7 (install + five models) |
+| Queue on ai-agent | empty |
+| Report | `docs/mla/evidence/report/CineView_MLA_Model_Review.html` (published as an artifact) |
 | Last commit | see `git log -1` on dev/mla-openatv |
 
-## Next steps after the queue
-1. t84 grabs: EPG cards, PVR rows (EMC + MovieSelection), InfoBar, Classic EventView strip picon.
-2. t77_rc7.log: install from the package, five models, 0 errors → publish rc7 in `release/rc` (+ SHA256SUMS,
-   installer pointing to rc7), only if clean.
-3. Report page (`make_report.py`) → publish as an artifact.
-4. Second device (DM900, OpenATV 7.6.0): posters not shown; needs `diag-mla.sh` output from that receiver.
-   - rc5.1 (build70) default cache was `/media/usb/...`; without a USB stick that path is created on the root
-     filesystem (flash). rc6+ uses real mounts only.
-   - rc6+ release order puts posters on `/media/hdd/poster` when an HDD is mounted. **Tell the user before they
-     install rc6/rc7 on the DM900.**
+## Waiting for the user
+1. Visual approval:
+   - No Poster arrangements, especially the Graphical Plus panel without a poster and the Cover Library column;
+   - PIL widget-size posters (same size and framing, sharper than ePicLoad).
+2. Second device (DM900, OpenATV 7.6.0): output of `diag-mla.sh`. rc7's installer pins the poster cache to USB or
+   /tmp (no HDD writes unless `HDD_CACHE=1`).
+3. A dedicated HDD-cache test (`/media/hdd/poster`) only after the user's OK.
 
 ## Known limitation
 - SecondInfoBarECM (non-default SIB mode, Python-owned named widgets, screen created once) keeps the placeholder.
+- The remaining accelAlloc warnings are Enigma2-internal: the list picon cache (220×132, cached=1) and one
+  start-up surface. They are documented and not changed.
 
 ## Rules (unchanged)
 - Slot 8 and dev/mla-openatv only.
