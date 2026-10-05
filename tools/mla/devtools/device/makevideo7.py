@@ -110,8 +110,8 @@ C("t58", "col_navy_on_open", "Columns", "ON"); C("t58", "col_navy_on_right2_down
 
 still(card("4. PVR — Cover Library على EMC", "زر PVR يفتح EMC: الشاشة صُممت على عناصر EMC الحقيقية",
            ["الغلاف: صورة بجانب التسجيل ← بحث بعنوان التسجيل ← الصورة الافتراضية", "Classic يترك EMC بشكله الأصلي (fallback آمن) · مجلد USB فقط"]), 6)
-for n, lab, tag in (("emc_cover_navy_on_down1", "Harry Potter — غلاف محلي بجانب التسجيل", "ON"), ("emc_cover_navy_on_down2", "Ples malog pingvina — من عنوان التسجيل", "ON"),
-                    ("emc_cover_navy_on_down3", "Dnevnik — برنامج عام: الصورة الافتراضية", "ON"), ("emc_cover_off_down1", "بلا غلاف — قائمة عريضة", "OFF"),
+for n, lab, tag in (("emc_cover_navy_on_down2", "Harry Potter — غلاف محلي بجانب التسجيل", "ON"), ("emc_cover_navy_on_down3", "Ples malog pingvina — من عنوان التسجيل", "ON"),
+                    ("emc_cover_navy_on_down4", "Dnevnik — برنامج عام: الصورة الافتراضية", "ON"), ("emc_cover_off_down2", "بلا غلاف — قائمة عريضة", "OFF"),
                     ("ms_cover_on_down1", "MovieSelection الأصلي — Cover Library", "ON"), ("emc_classic_down1", "Classic — EMC بشكله الأصلي", "FALLBACK")):
     C("t61", n, lab, tag)
 
