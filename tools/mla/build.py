@@ -839,6 +839,36 @@ def apply_classic_posters_off_named(skin):
 	return out
 
 
+EV_KEYS_COLOURS = "key_red:#00a00000,key_green:#00008000,key_yellow:#00a08000,key_blue:#000040a0"  # = Graphical Plus keys
+
+
+def apply_eventview_key_captions(skin):
+	"""Coloured-key captions in the Classic EventView screens (user decision 2026-10-05 05:23).  The screens never
+	showed key_red..key_blue although EventViewEPGSelect / EventViewSimple set them (Add Timer / Change Timer,
+	Single EPG, Multi EPG, Similar) and the keys work.  Native 57b7a51 addon ColorButtonsSequence: only keys with a
+	caption are drawn, each as a small rounded block in its key colour (renderType ColorTextOver), so no empty
+	bar appears and no approved element moves.  Placement = space no element uses (verified on the device grabs):
+	  EventView (full-screen dashboard): the video gap above the bottom strip (strip starts at y 842);
+	  EventViewSimple(_CVPosterOff), 1820x760: the band under the description (description ends at y 705);
+	  InfoBarEventView(_CVPosterOff), 1920x360: the band under the description (ends at y 320)."""
+	p = os.path.join(skin, "layouts", "eventview", "classic", "screens.openatv.xml")
+	x = open(p, encoding="utf-8").read()
+	tpl = '\t\t<widget addon="ColorButtonsSequence" connection="key_red,key_green,key_yellow,key_blue" textColors="%s" renderType="ColorTextOver" buttonCornerRadius="8" layoutStyle="fluid" alignment="left" foregroundColor="#00ffffff" font="Regular;%d" position="%s" size="%s" spacing="12" transparent="1" zPosition="40" />\n'
+	places = {"EventView": ("24,792", "1872,42", 26), "EventViewSimple": ("45,e-50", "e-90,40", 25), "EventViewSimple_CVPosterOff": ("45,e-50", "e-90,40", 25),
+		"InfoBarEventView": ("45,e-38", "1560,34", 22), "InfoBarEventView_CVPosterOff": ("45,e-38", "1560,34", 22)}
+	n = 0
+	for scr, (pos, size, font) in places.items():
+		m = re.search(r'<screen name="%s".*?</screen>' % re.escape(scr), x, re.S)
+		if not m:
+			continue
+		body = m.group(0)
+		assert "ColorButtonsSequence" not in body, scr
+		x = x.replace(body, body.replace("</screen>", (tpl % (EV_KEYS_COLOURS, font, pos, size)) + "\t</screen>", 1), 1)
+		n += 1
+	open(p, "w", encoding="utf-8").write(x)
+	return n
+
+
 def make_classic_lines_pack(skin):
 	"""EventView 'Classic — line by line' (user approval in principle 2026-10-04 17:01; Classic with continuous
 	scrolling stays the factory choice).  Same pack as Classic EventView, only the 8 EventView description widgets:
@@ -1003,6 +1033,7 @@ def main(golden, comps, control, out):
 			print("POSTERS-OFF (Classic, named widgets) %-16s %s_CVPosterOff: %d widgets widened" % (sec, scr, n))
 	print("Multi EPG description: %d posters on/off variants (no overlap with the poster)" % apply_multiepg_description(skin))
 	print("Vertical EPG: channel page index hidden per the native contract (%d screens)" % apply_vertical_epg_index(skin))
+	print("EventView key captions (Classic): %d screens" % apply_eventview_key_captions(skin))
 	print("EventView pack classic-lines: %d description widgets (line by line, opaque label)" % make_classic_lines_pack(skin))
 	# P7: Details family (user-approved direction 2026-10-03; Classic packs untouched).
 	make_default_poster(os.path.join(skin, "mla_assets", "poster_default.jpg"))  # the P7 poster slots embed it
