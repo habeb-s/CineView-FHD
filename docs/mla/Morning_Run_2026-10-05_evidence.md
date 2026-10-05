@@ -269,3 +269,39 @@ Modern 25 min vs Classic 10 min, accelAlloc counted), t54b (key functions).
   - Restored: EventView classic-lines, PVR classic, navy, posters ON, movielist folder unset → unset.
 - **Note (Minimal):** the native MovieSelection list is 640 px, giving 32-px rows with the user's itemsperpage. They
   are readable on t63 grabs but tight; this is kept as is until the Minimal look decision.
+
+## 8. Modern accelAlloc (user decision 13:15: "fix Modern first") — ROOT CAUSE IDENTIFIED, fix RUNTIME TESTED
+
+**Facts from the receiver:**
+- The receiver log reads `[gFBDC] 5400kB available for acceleration surfaces`.
+- In enigma2 57b7a51 (`lib/gdi`), every surface of 48000 bytes or more is a candidate for the pool (`GFX_SURFACE_ACCELERATION_THRESHOLD`).
+- PNGs loaded by the skin are cached for good (`LoadPixmap` → `PixmapCache`).
+- The native channel list caches every row picon it draws (`listboxservice.cpp` `loadPNG`, `cached=1` by default). The native Picon renderer does the same (`setScale(1)` → `setPixmapFromFile`, accel = `m_scale`, cached).
+
+**Debug dumps of the pool at the moment of failure (dev trigger `setACCELDebug`):**
+- t69 (Modern v2): the pool held per-size default posters plus 220×132 picons.
+- t71 (Modern v3): 42 × 220×132 picons (4.8 MB) + 816×60; 5021 kB used, largest free block 106 kB.
+- t72 (Classic, same navigation): 31 picons (3.5 MB) plus Classic posters; **230 failures in 5 rounds**. The t60 "Classic = 1" came from a lighter round (no zaps, no EMC).
+
+**Fix (Modern Optimized, then `tools/mla/accel_opt.py` for every non-Classic pack):**
+- **Default posters:** each default poster is a stretched 4×90 gradient tile plus a film icon under 48000 bytes. There are no per-size PNGs any more.
+- **Frames:** each 3-px frame PNG is replaced by four strips of a 4×4 PNG.
+- **Poster widgets (`underlay="1"`):**
+  - they release their picture when hidden or empty, and decode nothing while hidden;
+  - while a cursor runs (changes less than 0.4 s apart), only the position where it stops is decoded;
+  - the old block is freed before the new decode;
+  - the picture is shown from a widget-size PNG in the poster cache (`sz/`, capped at 400 files), loaded with `loadPNG(accel=-1)`, outside the pool.
+- **Picons stay native.** An uncached copy (v3) only added allocations, because the list rows already cache the same files (t70: 344).
+- **Cinema InfoBar band:** the 1920×330 solid themed bitmap (2.5 MB pinned) is now an eLabel `steThemePanel` (same colour within 1–3 levels; the black theme is #101214 instead of #000000).
+
+**25-minute soak, identical round** (channel list fast/slow + EventView, SecondInfoBar, EPG, EMC on USB, HBO/HRT1 zap):
+
+| Run | Warnings / 25 min | CPU | RSS end |
+|---|---|---|---|
+| Modern Large build63 (t67) | 741 | 116 s | 152.6 MB |
+| Optimized v1 build64 (t67) | 249 | 96 s | 149.3 MB |
+| v2 build65 (t69) | 278 | 91 s | 145.3 MB |
+| v3 build66 (t70) | 344 | 94 s | 140.8 MB |
+| **v5 build68 (t74)** | **16** | **90 s** | 146.6 MB |
+
+Status: RUNTIME TESTED. 0 tracebacks, 0 skin errors and 0 crash logs in every run. Classic reference (t75), Modern posters OFF and themes (t76), and five-model grabs (t68) follow.
