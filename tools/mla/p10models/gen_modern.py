@@ -240,7 +240,7 @@ def channelselection(skin, screen_name, title):
 	x = ['\t\t<eLabel position="0,0" size="1920,1080" backgroundColor="#73000000" zPosition="-4" />',
 		'\t\t<eLabel position="60,60" size="840,960" backgroundColor="steThemeCard" cornerRadius="28" zPosition="-2" />',
 		'\t\t<eLabel position="920,60" size="940,960" backgroundColor="steThemeCard" cornerRadius="28" zPosition="-2" />',
-		'\t\t<widget name="Title" position="92,78" size="620,48" font="%s;32" foregroundColor="foreground" backgroundColor="steThemeCard" transparent="1" noWrap="1" zPosition="20" />' % BOLD,
+		'\t\t<widget source="Title" render="Label" position="92,78" size="620,48" font="%s;32" foregroundColor="foreground" transparent="1" noWrap="1" zPosition="20" />' % BOLD,
 		'\t\t<widget source="global.CurrentTime" render="Label" position="720,82" size="150,40" font="%s;30" foregroundColor="secondFG" halign="right" transparent="1" zPosition="20">\n\t\t\t<convert type="ClockToText">Format:%%H:%%M</convert>\n\t\t</widget>' % BOLD]
 	la.update({"position": "%d,%d" % CS_LIST[:2], "size": "%d,%d" % CS_LIST[2:], "itemHeight": str(CS_ROW), "serviceItemHeight": str(CS_ROW),
 		"serviceNumberFont": "Regular;24", "serviceNameFont": "%s;27" % BOLD, "serviceInfoFont": "Regular;22", "selectionPixmap": _cs_selection(skin),
@@ -315,7 +315,9 @@ def eventview_live(skin):
 	x += _poster_pair("Event", 100, 100, 400, 600, 24, EV_KEY, 0)
 	for tx, inv, ny in ((540, "", 760), (100, ",Invert", 800)):
 		tw = 1820 - tx
-		x.append(_gate('\t\t<widget source="%s" render="Picon" mode="infobar" scale="aspect" position="%d,104" size="150,76" alphatest="blend" transparent="1" zPosition="20">\n\t\t\t<convert type="ServiceName">Reference</convert>\n\t\t</widget>' % (SVC, tx), EV_KEY, inv))
+		# picon from the screen's own "Service" source (EventViewBase ServiceEvent = the event's service); device t57:
+		# session.CurrentService + Picon showed nothing in this screen (opened while the service plays: no change event)
+		x.append(_gate('\t\t<widget source="Service" render="Picon" scale="aspect" position="%d,104" size="150,76" alphatest="blend" transparent="1" zPosition="20">\n\t\t\t<convert type="ServiceName">Reference</convert>\n\t\t</widget>' % tx, EV_KEY, inv))
 		x.append(_gate('\t\t<widget source="%s" render="RunningText" position="%d,122" size="%d,40" transparent="1" zPosition="20" foregroundColor="grey" font="%s;28" noWrap="1" options="%s">\n\t\t\t<convert type="ServiceName">NameOnly</convert>\n\t\t</widget>' % (SVC, tx + 170, 700, BOLD, G.RUN_OPTS), EV_KEY, inv))
 		x += _bold_title(SRC_NOW, [("EventName", "Name")], E(tx, 196, tw, 128), 52, EV_KEY, inv)
 		# meta row: times pill | duration | genre | IMDb
