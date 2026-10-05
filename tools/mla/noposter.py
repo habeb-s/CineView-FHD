@@ -77,6 +77,33 @@ def screen_body(body):
 	return body, variants, True
 
 
+def gate(lines, key, with_poster, n=0):
+	"""Generator helper for list screens whose layout is fixed when they open (EPG / PVR cards): returns the same
+	elements shown only while the card's poster widget (toggle key, nexts n) shows a real poster (with_poster=True)
+	or only while it does not (False).  eLabels become Label widgets with an empty text (ShowIf 'text='); widgets get
+	a CineViewMLAShowIf at the end of their converter chain; named widgets (Python-owned) are returned unchanged."""
+	arg = "%s,True%s,poster%d" % (key, "" if with_poster else ",Invert", n)
+	out = []
+	for l in lines:
+		if not l:
+			continue
+		s = l.strip()
+		ind = l[:len(l) - len(l.lstrip())]
+		if s.startswith("<eLabel"):
+			attrs = s[len("<eLabel"):].rstrip("/>").rstrip()
+			out.append('%s<widget source="session.CurrentService" render="Label"%s>\n%s\t<convert type="CineViewMLAShowIf">%s,text=</convert>\n%s</widget>' % (ind, attrs, ind, arg, ind))
+		elif s.startswith("<widget") and 'name="' in s.split(">", 1)[0] and 'source="' not in s.split(">", 1)[0]:
+			out.append(l)
+		elif s.startswith("<widget") and s.endswith("/>") and "</widget>" not in s:
+			out.append('%s>\n%s\t<convert type="CineViewMLAShowIf">%s</convert>\n%s</widget>' % (l.rstrip()[:-2].rstrip(), ind, arg, ind))
+		elif s.startswith("<widget") and s.endswith("</widget>"):
+			k = l.rfind("</widget>")
+			out.append(l[:k].rstrip() + '\n%s\t<convert type="CineViewMLAShowIf">%s</convert>\n%s</widget>' % (ind, arg, ind) + l[k + len("</widget>"):])
+		else:
+			out.append(l)
+	return out
+
+
 def run(skin):
 	dynamic, static = [], []
 	base = os.path.join(skin, "layouts")
