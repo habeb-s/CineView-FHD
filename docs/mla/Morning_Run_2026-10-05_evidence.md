@@ -64,8 +64,14 @@ Status words follow CLAUDE.md: IMPLEMENTED — NOT RUNTIME VERIFIED / RUNTIME TE
     unchanged (0 → 0).
   - YELLOW / BLUE without a caption did nothing (correct).
   - RED without a caption opened an empty native list (native behaviour of EventViewEPGSelect, not CineView).
-- t54b repeats the functional part with the correct codes (live: GREEN timer editor, YELLOW Single EPG,
-  BLUE Multi EPG). **Pending.**
+- **t54b (build54, correct codes) — RUNTIME TESTED.**
+  - Live INFO: captions "Add Timer", "Single EPG", "Multi EPG". GREEN opened the RecordTimer editor and EXIT
+    cancelled it. YELLOW opened the Single EPG of the channel. BLUE opened the Multi EPG.
+  - EPG-opened event: caption "Add Timer"; GREEN opened the timer editor.
+  - Timer list before and after: 0 → 0 (nothing was added).
+  - Every caption shown has a real function.
+  - RED has no caption, but it still opens the native (empty) Similar list. That is native EventViewEPGSelect
+    behaviour, unchanged by CineView.
 - Pre-existing, not from this change: the Classic `EPGSelection` list carries attributes 57b7a51 does not know
   (`setEventItemFont`, `setEventTimeFont`, `setColWidths`, `setColGap`, `setIconDistance`). They are only log
   errors with no visual effect. Left unchanged (approved Classic screen).
@@ -86,7 +92,62 @@ Plugin changes (technical): `pvr` poster switch (MovieSelection only for the pla
 user's MovieSelectionSlim keeps its own screen); live EventView `_CVPosterOff` name; MENU → "Apply a design model to
 every section".
 
-## 5. Minimal — mockups published for approval
+## 4b. Device results of the new packs
+- **Modern SIB / CS / EPG / EventView (t57, build51) — RUNTIME TESTED with 2 findings.**
+  - 0 tracebacks and 0 new skin errors in 3 themes, posters ON/OFF.
+  - CS: rounded selection row; the right card follows the CURSOR service (HBO HD → HBO 2 → Kino TV); NOW / NEXT
+    with posters; the CineView default image when no reliable poster exists; full reflow when posters are OFF.
+  - EPG: the card follows the cell; OFF = wider grid, IMDb in the footer.
+  - EventViewSimple / InfoBarEventView: ON/OFF reflow; caption "Add Timer".
+  - Finding 1: the live EventView picon was missing (session.CurrentService picon in a screen opened while the
+    service plays). Fixed in build54: the picon now comes from the screen's own "Service" source. Re-test t57b.
+  - Finding 2: the CS bouquet title was empty because it was declared as a named widget. Fixed in build54: it is now
+    the "Title" source. Re-test t57b.
+  - The SecondInfoBar grabs showed the InfoBar. The 1920-px grab between the two OK presses outlasted the InfoBar
+    timeout (a test-timing error). t57b uses OK, 1.5 s, OK, as in t30.
+- **Columns (t58, build51) — RUNTIME TESTED.**
+  - Five channel columns: picon, name, active-column highlight, time + title rows.
+  - The event card follows column and event (HBO 3 HD → Peter Pan).
+  - Posters ON and OFF (card reflow), navy and burgundy.
+  - INFO opens EventViewSimple for the selected event.
+  - 0 errors.
+  - Minor: a third title line of a long event is cut at the row edge (native row height = list height /
+    `vertical_itemsperpage`).
+- **PVR (t59) — NOT EXERCISED.** InfoBar.showMovies (the PVR key) opens EnhancedMovieCenter on this receiver, so
+  MovieSelection (Cover Library / Modern PVR) was never on screen; EMC showed its own skin. The user requires PVR to
+  work on EMC (decision 08:45) → section 5.
+- **Performance soak (t60, build54).**
+  - Modern 25 min (15 rounds of CS + EventView + SIB + EPG): RSS 146 → 152.5 MB, flat after round 3; peak 159 MB;
+    threads 15; fds 98, flat; CPU per 2 rounds ≈ 15–16 s, no slowdown; 0 tracebacks.
+  - Classic 10 min (baseline): RSS 146.7 → 150.4 MB; threads 15.
+  - **accelAlloc failures:**
+    - Modern: 639 (≈ 43 per round, growing linearly).
+    - Classic: 1 over the whole run.
+  - No memory growth, no slowdown and no picture loss in any grab. But this is a clear Modern-specific increase, so the
+    known issue is NOT simply accepted for Modern.
+  - t62 measures which Modern screen and which surface sizes fail (posters ON vs OFF).
+
+## 5. PVR on the screen the PVR key really opens (EMC) — IMPLEMENTED, device test t61
+- **EMC contract.** Read from EMC's compiled modules on the receiver (no source is shipped):
+  - `EMCSelection.__init__`: skinName = ["EMCSelectionExtended", "EMCSelection"]; "EMCSelectionOwn" only when
+    `config.EMC.use_orig_skin`. The CoolSkin XML is an embedded fallback.
+  - EMC widgets: list (MovieCenter, `Cool*` layout attributes), wait, key_* Buttons, spacefree, Cover, CoverBg,
+    CoverBgLbl, Video, music tags; source "Service" (EMCServiceEvent).
+- **Packs.** "cover" (Details) and "modern" now also ship `EMCSelection` and `EMCSelection_CVPosterOff`.
+  - Classic ships none, so EMC keeps its own skin: the safe fallback.
+  - `EMCSelectionOwn` is the user's explicit EMC choice and is never replaced.
+- **Plugin.** The pvr poster switch also covers EMCSelection, for EMC's default name list only.
+- **Covers.** The poster renderer now uses, in order:
+  1. a cover file next to the recording (`<name>.jpg`, `<file>.jpg`, `.png`, folder.jpg), read-only;
+  2. otherwise the identity engine on the recording's own title (from .eit, or from .meta when there is no .eit);
+  3. otherwise the CineView default image.
+- **Test media.** On the Slot 8 USB stick only (`tmedia_pvr.sh`), with three cases:
+  - A: identity from the title;
+  - B: local cover file;
+  - C: generic programme → default image.
+  - The HDD is never opened.
+
+## 5b. Minimal — mockups published for approval
 Artifact "CineView Minimal — النماذج": 6 sections × posters ON/OFF × 6 themes. The frame is HRT1 with the letterbox
 and subtitles cropped out. The self-review found weak text contrast on bright video, so the spec now puts a solid
 tint (≈86 %) under every text line. The page also carries the first Modern PVR mockup.
