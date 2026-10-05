@@ -25,6 +25,7 @@ model() {
     details) echo "--set infobar=details --set secondinfobar=details --set channelselection=posterlist --set epg=graphicalplus --set pvr=cover --set eventview=detailscard";;
     cinema)  echo "--set infobar=cinema --set secondinfobar=cinema --set channelselection=videofirst --set epg=graphicalplus --set pvr=cinema --set eventview=feature";;
     modern)  echo "--set infobar=modern --set secondinfobar=modern --set channelselection=modern --set epg=modern --set pvr=modern --set eventview=modern";;
+    minimal) echo "--set infobar=minimal --set secondinfobar=minimal --set channelselection=minimal --set epg=minimal --set pvr=minimal --set eventview=minimal";;
     classic) echo "--set infobar=classic --set secondinfobar=classic --set channelselection=classic --set epg=classic --set pvr=classic --set eventview=classic-lines";;
   esac
 }
@@ -32,8 +33,10 @@ $R 'sh -s' < ~/cineview-mla/repo/tools/mla/devtools/device/tmedia_pvr.sh | tail 
 ~/cineview-mla/deploy_b.sh $NEW >/dev/null 2>&1
 cat ~/cineview-mla/devtools/CineViewMLAScreenOpen/plugin.py | $R "mkdir -p $P && cat > $P/plugin.py && touch $P/__init__.py"
 OLDDIR=$($R 'grep "^config.movielist.last_videodir=" /etc/enigma2/settings | cut -d= -f2-'); echo "movielist folder before: '$OLDDIR'"
-for m in modern cinema details; do
+for m in modern cinema details minimal; do
   echo "== $m navy posters ON"; ap --theme navy $(model $m); restart ""; errs
+  zap $HBO; X; $RC 352; sleep 2.5; ga ${m}_ib_hbo; X; sleep 2
+  zap $HRT1; X; $RC 352; sleep 2.5; ga ${m}_ib_hrt1; X; sleep 2
   zap $HBO; X; op graph 8; ga ${m}_epg_hbo; $RC 106; sleep 4; ga ${m}_epg_hbo_r1; $RC 106; sleep 4; ga ${m}_epg_hbo_r2; X; sleep 2; X; sleep 2
   zap $HRT1; X; op graph 8; ga ${m}_epg_hrt1; $RC 106; sleep 4; ga ${m}_epg_hrt1_r1; X; sleep 2; X; sleep 2
   op movies 9; ga ${m}_emc_0; for k in 1 2 3 4; do $RC 108; sleep 4; ga ${m}_emc_$k; done; X; sleep 3
