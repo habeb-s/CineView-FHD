@@ -12,23 +12,21 @@ removal/log screens) keep one CineView presentation for all models; only the the
 Status words: **tested** = implemented and exercised on the receiver (Slot 8); **approved** = the user approved the
 look; **pending** = the user still has to approve it.
 
+Status as of 2026-10-05 midday (build63, Slot 8). **RT** = RUNTIME TESTED on the receiver with posters ON and OFF;
+**approved** = the user approved the look; **pending** = look awaiting approval.
+
 | Section | Classic | Details | Cinema | Modern | Minimal |
 |---|---|---|---|---|---|
-| InfoBar | tested, approved | tested (P7), pending | tested (P7), pending | **device-tested build38 (t43)**, look pending | mockup, pending |
-| SecondInfoBar | tested, approved | tested (P7), pending | tested (P7), pending | mockup, pending | mockup, pending |
-| Channel Selection | tested, approved | Poster List: tested, look approved in direction | Video First L/R: tested, look approved in direction | mockup, pending | mockup, pending |
-| EPG — Graphical | tested, approved | Graphical Plus: device-tested build36 (ON/OFF, 6 themes, cursor follow), look pending | — (proposal: Graphical Plus with the Cinema palette) | mockup, pending | mockup, pending |
-| EPG — Single / Multi / Quick / InfoBar | tested, approved (Classic only) | uses Classic | uses Classic | not started | not started |
-| PVR | Classic, tested | Cover Library: planned | — | not started | not started |
-| EventView | Classic + "line by line" option, tested; from an EPG now shows the selected event (build42, t50) | — | Feature: planned | mockup, pending | mockup, pending |
+| InfoBar | RT, approved | RT (P7), pending | RT (P7), pending | RT (t43, t57), direction approved | RT (t63), pending |
+| SecondInfoBar | RT, approved | RT (P7), pending | RT (P7), pending | RT (t57b), direction approved | RT (t63), pending |
+| Channel Selection | RT, approved | Poster List: RT, direction approved | Video First: RT, direction approved | RT (t57b; bouquet name from Title), direction approved | RT (t63), pending |
+| EPG — Graphical | RT, approved | Graphical Plus: RT (t55), approved | Graphical Plus (shared) | Modern grid: RT (t57) | RT (t63), pending |
+| EPG — Vertical | Classic | — | — | — | — ; **Columns** pack (any model): RT (t58), approved |
+| PVR (native MovieSelection + EMC) | native; EMC keeps its own skin (fallback) | Cover Library: RT (t61b–d) | **Cinema Shelf**: RT (t66/t66b) | RT (t61b–d) | RT (t63) |
+| EventView | Classic + line-by-line, RT | **Details Card**: RT (t66/t66b) | Feature: RT (t64b; description fixed) | RT (t57b, t65; one fixed picon) | RT (t63) |
 
-**Approved-and-tested section count per model** (out of the 6 sections IB, SIB, CS, EPG, PVR, EV):
-- Classic 6/6.
-- Details 0/6 approved. IB, SIB and CS are tested but the final look is not yet approved; Graphical Plus is in test.
-- Cinema 0/6 approved. IB, SIB and CS are tested, look pending.
-- Modern 0/6 approved. The InfoBar runs on the receiver (t43); the other 5 sections are mockups. The skin
-  features Modern needs are confirmed on the receiver (t41).
-- Minimal 0/6 (mockups).
+Every model now owns all six sections; the CineView MLA menu "Apply a design model to every section" applies
+`MODELS` in `mla/plugin/CineViewMLA/plugin.py`. Single / Multi / Quick / InfoBar EPG stay Classic in every model.
 
 ## Mapping proposal (pending approval)
 - **Details**: InfoBar/SIB Details, Channel Selection *Poster List*, EPG *Graphical Plus*, PVR *Cover Library*, EventView *Details card*.

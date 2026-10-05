@@ -237,10 +237,35 @@ Modern 25 min vs Classic 10 min, accelAlloc counted), t54b (key functions).
   - Remaining cosmetic point: in the 690-px Cover list, EMC's progress bar and date leave about 320 px for the
     title ("Harry Potter i plameni p…"). The title is shown in full under the cover.
   - EMC shows the folder path as the "description" of its trashcan entry (EMC's own data).
-- **New sections so that each model owns all six (IMPLEMENTED — NOT RUNTIME VERIFIED until t66):**
-  - `eventview/detailscard`: Details EventView Card. A framed opaque card with the Details grey top line, a 300×450
-    poster with the 3-px frame, and native named widgets plus ScrollLabel; `_CVPosterOff`.
-  - `pvr/cinema`: Cinema Shelf. A scrim over the live picture, a 340×510 poster, the big title of the selected
-    recording, a metadata row and the short description, with the list underneath. Both native MovieSelection and
-    EMC are covered; `_CVPosterOff` for both.
-  - The models now map Details → `detailscard` and Cinema → `cinema` PVR. Both packs pass bounds and z-order checks.
+- **t61d, remaining parts — RUNTIME TESTED.**
+  - Cover OFF (wide list, no cover) and the native MovieSelection with the Cover pack (Ples → Happy Feet) work.
+  - Modern navy/green ON (Ples → Happy Feet, HP → local cover) and OFF work, as does the native MovieSelection
+    (Dnevnik → default image).
+  - Classic leaves EMC in its own skin (fallback).
+  - 0 tracebacks, 0 skin errors, 0 crash logs; the movielist folder was restored (unset → unset).
+  - **PVR conclusion:** the PVR key (EMC), the native MovieSelection and the Classic fallback are all covered.
+- **New sections so that each model owns all six:**
+  - `eventview/detailscard` — Details EventView Card: an opaque framed card with the Details grey top line, a
+    300×450 poster with the 3-px frame, native named widgets and ScrollLabel; `_CVPosterOff`.
+  - `pvr/cinema` — Cinema Shelf: a scrim over the live picture. The left column holds the selected recording
+    (340×510 poster, big title, stacked details, short description); the right column holds the full-height list.
+    It covers the native MovieSelection and EMC, with `_CVPosterOff` for both.
+  - Models: Details → `detailscard`, Cinema → PVR `cinema`.
+- **t66 (build62) — RUNTIME TESTED, 2 defects found.**
+  - Details Card: live / page down / EPG → INFO / InfoBar EPG → INFO, navy ON, green ON, green OFF.
+    - Description visible; a series without identity → default image; 0 tracebacks / skin errors.
+    - Defect 1: the IMDb stars label (100 px) wrapped its fifth star onto a second line. The Feature InfoBarEventView
+      has the same width. Fixed: 130 px with noWrap.
+  - Cinema Shelf on EMC (navy, burgundy, OFF): HP local cover, Ples identity, Dnevnik default; no path descriptions.
+    - Defect 2: on the native MovieSelection the rows were 27 px and overlapped. Root cause, read from the
+      receiver's MovieList.pyc: `setItemsPerPage` sets the row height to listHeight // config.movielist.itemsperpage.
+      `itemHeight` in the skin is ignored, so a 552-px list gives cramped rows.
+    - Fix: the list takes the full-height right column (860 px → 43 px rows) and the card moves to the left column.
+- **t66b (build63) — RUNTIME TESTED, both fixes confirmed.**
+  - Native MovieSelection rows are readable ON and OFF; the stars fit on one line.
+  - 0 tracebacks, 0 skin errors, 0 crash logs.
+  - accelAlloc stayed at the start-up value 1 in every Details Card and Cinema Shelf step (t66: 3–5 on two Cinema
+    steps; t66b: 1).
+  - Restored: EventView classic-lines, PVR classic, navy, posters ON, movielist folder unset → unset.
+- **Note (Minimal):** the native MovieSelection list is 640 px, giving 32-px rows with the user's itemsperpage. They
+  are readable on t63 grabs but tight; this is kept as is until the Minimal look decision.
