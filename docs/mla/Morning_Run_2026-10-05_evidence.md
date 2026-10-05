@@ -155,7 +155,13 @@ every section".
     OFF). Layout, poster, titles, times, IMDb and key captions were correct.
   - The only difference from the working Modern / Classic screens is the translucent `steThemeOverlay` background
     colour.
-  - Changed to an opaque theme colour (Feature and Minimal), build58. Re-test t64.
+  - First hypothesis: the translucent `steThemeOverlay` background colour. Changed to an opaque colour (build58).
+    **t64 disproved it**: the description was still empty.
+  - **Root cause.** Feature's full-screen dim eLabel sat at zPosition 1, while Modern's and Classic's sit below
+    0. The native ScrollLabel draws its text label at z 0 whatever zPosition the skin gives it.
+  - Fix (build60): every plain eLabel of the Feature screens is now below z 0. `zorder_check.py` now treats
+    FullDescription / epg_description as z 0: it flags the old build58 pack (6 cases) and passes all 30 packs of
+    build60. Re-test t64b.
 
 ## 5. PVR on the screen the PVR key really opens (EMC) — IMPLEMENTED, device test t61
 - **EMC contract.** Read from EMC's compiled modules on the receiver (no source is shipped):
@@ -176,6 +182,25 @@ every section".
   - B: local cover file;
   - C: generic programme → default image.
   - The HDD is never opened.
+
+- **EMC PVR, re-run t61b (build57, the engine fix applied) — RUNTIME TESTED with 2 findings.**
+  - EMC now opens the CineView screens.
+  - Cover Library:
+    - live picture + details on the left; list + cover on the right;
+    - local cover file (Harry Potter) shown;
+    - generic "Dnevnik" → CineView default image;
+    - OFF = wide list.
+  - Modern: two rounded cards, cover, pills; OFF reflow; green theme.
+  - Native MovieSelection with the Cover pack on the USB folder: narrowed list + identity poster
+    ("Ples malog pingvina" → Happy Feet).
+  - 0 tracebacks, 0 skin errors. The movielist folder was restored (unset → unset).
+  - Finding 1: EMC's list columns, shifted from its 1190-px CoolSkin, left a 200-px title column in the 690-px
+    Cover list. Fixed: columns are laid out from the right edge.
+  - Finding 2: `MovieInfo FullDescription` returns the FILE PATH for EMC's service. Fixed: EMC screens use
+    `MovieInfo ShortDescription` (.meta) + `EventName ExtendedDescription` (.eit), like EMC's own skin.
+  - Re-test t61c (build59).
+  - Not yet confirmed: in EMC the identity recording ("Ples malog pingvina") showed the default image at first sight,
+    while MovieSelection later showed its poster. This is probably the first-time download; t61c will show it.
 
 ## 5b. Minimal — mockups published for approval
 Artifact "CineView Minimal — النماذج": 6 sections × posters ON/OFF × 6 themes. The frame is HRT1 with the letterbox
