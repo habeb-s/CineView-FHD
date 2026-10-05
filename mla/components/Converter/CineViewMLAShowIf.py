@@ -41,13 +41,27 @@ class CineViewMLAShowIf(Converter):
 				self._dir = p[4:]
 			elif p.startswith("text="):
 				self._literal = p[5:]
+		# ",poster0" / ",poster1": the posters-ON variant also needs a REAL poster on the screen's poster widget with
+		# this toggle key and nexts 0/1 (CineViewMLAPosterState); otherwise the posters-OFF variant is shown.  No
+		# placeholder: an event without a poster gets the No Poster layout (user decision 2026-10-05 22:03).
+		self._pflag = None
+		for p in parts[2:]:
+			if p in ("poster0", "poster1"):
+				self._pflag = int(p[-1])
+		if self._pflag is not None:
+			try:
+				from Components.CineViewMLAPosterState import listen
+				listen(self)
+			except Exception as err:
+				print("[CineViewMLAShowIf] poster state unavailable: %s" % err)
+				self._pflag = None
 		if self._key is None and not self._always:
 			print("[CineViewMLAShowIf] invalid arguments '%s' (shown)" % args)
 		self._debug = self._bool and os.path.exists(DEBUG_FLAG)
 
 	def __getattr__(self, name):
 		# Transparent like ConditionalShowHide; never recurse while the object is being built.
-		if name.startswith("__") or name in ("source", "_key", "_value", "_invert", "_dir", "_always", "_bool", "_literal", "_up_visible", "_debug"):
+		if name.startswith("__") or name in ("source", "_key", "_value", "_invert", "_dir", "_always", "_bool", "_literal", "_up_visible", "_debug", "_pflag"):
 			raise AttributeError(name)
 		return getattr(self.source, name)
 
@@ -65,7 +79,22 @@ class CineViewMLAShowIf(Converter):
 		value = configfile.getResolvedKey(self._key, silent=True)
 		if value is None:
 			value = "True"
-		return (value == self._value) ^ self._invert
+		match = value == self._value
+		if match and self._pflag is not None and self._value == "True":
+			try:
+				from Components.CineViewMLAPosterState import get
+				match = get(self._key, self._pflag)
+			except Exception:
+				pass
+		return match ^ self._invert
+
+	def poster_state_changed(self, key, nexts):
+		"""CineViewMLAPosterState notification: re-evaluate the variant when its poster widget changed state."""
+		if key == self._key and nexts == self._pflag and getattr(self, "source", None) is not None:
+			try:
+				self.changed((self.CHANGED_ALL,))
+			except Exception as err:
+				print("[CineViewMLAShowIf] poster state refresh: %s" % err)
 
 	@property
 	def text(self):

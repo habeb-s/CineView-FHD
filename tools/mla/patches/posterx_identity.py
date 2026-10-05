@@ -292,9 +292,18 @@ class _CineViewMLAPosterXIdentity(_CineViewMLAPosterXBase):
             self._mla_last = _mla_time.time()
             self._changed_now((self.CHANGED_DEFAULT,))
 
+    def _mla_publish(self, available):
+        """Tell the screen's ",posterN" layout variants whether a REAL poster is shown (CineViewMLAPosterState)."""
+        try:
+            from Components.CineViewMLAPosterState import publish
+            publish(self.toggle, self.nexts, available)
+        except Exception as err:
+            _log("poster state: %s" % err)
+
     def _show_default(self):
+        self._mla_publish(False)
         if getattr(self, "underlay", False):
-            # the skin draws the default under this widget with no large bitmap (gradient tile + small icon)
+            # no poster: the screen's No Poster layout takes over (dynamic screens) or the skin's default tile shows
             self._release()
             return
         if os.path.exists(_MLA_DEFAULT):
@@ -329,6 +338,7 @@ class _CineViewMLAPosterXIdentity(_CineViewMLAPosterXBase):
                         self.instance.setPixmap(pix)
                         self.instance.setScale(1)
                         self.instance.show()
+                        self._mla_publish(path != _MLA_DEFAULT)
                         return
                 pl.setPara((w, h, 1, 1, False, 1, "#00000000"))
                 if pl.startDecode(path, 0, 0, False) == 0:
@@ -342,10 +352,12 @@ class _CineViewMLAPosterXIdentity(_CineViewMLAPosterXBase):
                         self.instance.setPixmap(pix)
                         self.instance.setScale(1)
                         self.instance.show()
+                        self._mla_publish(path != _MLA_DEFAULT)
                         return
         except Exception as err:
             _log("picload fallback: %s" % err)
         _CineViewMLAPosterXBase._show(self, path)
+        self._mla_publish(path != _MLA_DEFAULT)
 
     def changed(self, what):
         """underlay="1": while a list cursor runs (changes < 0.4 s apart) only the position where it stops is
@@ -384,6 +396,7 @@ class _CineViewMLAPosterXIdentity(_CineViewMLAPosterXBase):
                 self._release()
             else:
                 self.instance.hide()
+            self._mla_publish(False)
             self._timer.stop()
             self._title = ""
             return

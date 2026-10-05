@@ -1219,6 +1219,13 @@ def main(golden, comps, control, out):
 	for f, nd, nf in accel_opt.run(skin):
 		if nd or nf:
 			print("ACCEL-OPT %-52s default posters %d, frames %d -> tile/icon/strips" % (f, nd, nf))
+	# No Poster layout instead of a placeholder in every screen that has posters-ON/OFF variants (tools/mla/noposter.py)
+	import noposter
+	np_dyn, np_static = noposter.run(skin)
+	for f, scr, nvar in np_dyn:
+		print("NO-POSTER dynamic %-52s %-30s %d variants" % (f, scr, nvar))
+	for f, scr in np_static:
+		print("NO-POSTER static  %-52s %-30s (separate posters-off screen / no variants: placeholder kept)" % (f, scr))
 	print("SERVICEINFO video tokens -> CineViewMLAServiceInfo:", apply_serviceinfo_video(skin))
 	for f, scr, pos, size in apply_zorder_backgrounds(skin):
 		print("Z-ORDER %-45s %-28s background eLabel %s %s -> zPosition -1" % (f, scr, pos, size))
