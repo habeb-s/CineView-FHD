@@ -125,6 +125,12 @@ def noposter():
 		for sk, slab in (("ib", "InfoBar"), ("sib", "SecondInfoBar"), ("ev", "EventView"), ("cs", "Channel list")):
 			a = img(os.path.join(S, "t82", "%s_hbo_%s.png" % (m, sk)), 520, 60)
 			b = img(os.path.join(S, "t82", "%s_hrt1_%s.png" % (m, sk)), 520, 60)
+			if sk == "ib" and os.path.exists(os.path.join(S, "t84", "%s_ib_hbo.png" % m)):
+				# t82 grabbed 5 s after OK, when the InfoBar had already timed out; t84 grabbed at 2.5 s
+				a = img(os.path.join(S, "t84", "%s_ib_hbo.png" % m), 520, 60)
+				b = img(os.path.join(S, "t84", "%s_ib_hrt1.png" % m), 520, 60)
+			elif sk == "ib":
+				continue
 			if not (a or b):
 				continue
 			rows.append('<section class="sec"><h3>%s</h3><div class="pair">%s%s</div></section>' % (slab,
@@ -146,6 +152,13 @@ def noposter():
 				rows.append('<section class="sec"><h3>%s</h3><div class="rowgrid">%s</div></section>' % (klab, "".join(cells)))
 		if rows:
 			out.append('<details class="np"%s><summary>%s</summary><div class="pane">%s</div></details>' % (" open" if not out else "", lab, "".join(rows)))
+	ev = []
+	for n, lab in (("784", "HBO HD · poster"), ("786", "Cinemax HD · poster"), ("D49", "HRT1 · no poster")):
+		pic = img(os.path.join(S, "t84", "classic_ev_%s.png" % n), 520, 60)
+		if pic:
+			ev.append('<figure><img loading="lazy" alt="Classic EventView %s" src="%s"><figcaption>%s</figcaption></figure>' % (lab, pic, lab))
+	if ev:
+		out.append('<details class="np"><summary>Classic · EventView strip picon (fixed)</summary><div class="pane"><p class="note">Before: no picon on a freshly opened EventView (also in the approved t68 grabs), and a hidden variant could draw the default picon. Now the picon shows in its place with and without a poster.</p><div class="rowgrid">%s</div></div></details>' % "".join(ev))
 	return "".join(out) or '<p class="note">t82 / t84 not run yet.</p>'
 
 
