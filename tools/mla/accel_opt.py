@@ -21,7 +21,6 @@ import re
 FRAME_DIR = "mla_assets"
 TILE_PNG = "poster_tile.png"
 LINE_PNG = "px_505050.png"
-ICON_MAX_W = 120  # 120x88x4 = 42240 bytes < 48000
 SKIP_PACKS = ("classic", "classic-lines")
 
 
@@ -47,25 +46,50 @@ def line(skin):
 	return "%s/%s" % (FRAME_DIR, LINE_PNG)
 
 
-def icon(skin, w):
-	"""CineView default icon (film frame + play triangle, colours of poster_default.jpg), drawn at 4x."""
-	from PIL import Image, ImageDraw
-	iw = min(ICON_MAX_W, max(24, int(round(w * 0.433))))
-	ih = int(round(iw * 190 / 260.0))
-	name = "poster_icon_%dx%d.png" % (iw, ih)
-	path = os.path.join(skin, FRAME_DIR, name)
+FRAME_LINE_PNG = "px_3f4e65.png"  # the default image's inner frame line colour (63,78,101)
+
+
+def inner_frame(skin, ind, src, x, y, w, h, z, close):
+	"""The thin inner frame line of poster_default.jpg (3 px at 18 px inset on 600x900), scaled to the widget, as four
+	stretched 4x4 strips: the default placeholder keeps its original look without a full-size bitmap."""
+	from PIL import Image
+	path = os.path.join(skin, FRAME_DIR, FRAME_LINE_PNG)
 	if not os.path.isfile(path):
-		k = 4 * iw / 260.0
-		im = Image.new("RGBA", (iw * 4, ih * 4), (0, 0, 0, 0))
-		d = ImageDraw.Draw(im)
-		d.rounded_rectangle([0, 0, iw * 4 - 1, ih * 4 - 1], radius=int(14 * k), outline=(123, 140, 168, 255), width=max(4, int(8 * k)))
-		for i in range(6):
-			sx = int((12 + 43 * i) * k)
-			for sy in (int(12 * k), int(160 * k)):
-				d.rounded_rectangle([sx, sy, sx + int(18 * k), sy + int(18 * k)], radius=int(4 * k), fill=(120, 140, 167, 255))
-		d.polygon([(int(100 * k), int(60 * k)), (int(166 * k), int(95 * k)), (int(100 * k), int(130 * k))], fill=(231, 176, 49, 255))
-		im.resize((iw, ih), Image.LANCZOS).save(path)
-	return "%s/%s" % (FRAME_DIR, name), iw, ih
+		Image.new("RGB", (4, 4), (63, 78, 101)).save(path)
+	px = "%s/%s" % (FRAME_DIR, FRAME_LINE_PNG)
+	i = int(round(18 * w / 600.0))
+	t = max(1, int(round(3 * w / 600.0)))
+	strips = ((x + i, y + i, w - 2 * i, t), (x + i, y + h - i - t, w - 2 * i, t), (x + i, y + i + t, t, h - 2 * i - 2 * t), (x + w - i - t, y + i + t, t, h - 2 * i - 2 * t))
+	return "\n".join('%s<widget source="%s" render="Pixmap" pixmap="%s" position="%d,%d" size="%d,%d" scale="1" zPosition="%d"%s' % (
+		ind, src, px, sx, sy, sw, sh, z, close) for sx, sy, sw, sh in strips)
+
+
+def icon(skin, w, h):
+	"""The film icon of poster_default.jpg exactly as the old per-size default showed it: the default image is scaled
+	to the widget size (same LANCZOS resize as before) and only the icon area is kept, cut into vertical slices of
+	< 48000 bytes each (never accelerated, never pinned).  Returns [(pixmap, dx, dy, sw, sh)] relative to the tile."""
+	from PIL import Image
+	src = os.path.join(skin, FRAME_DIR, "poster_default.jpg")
+	rx, ry = int(round(170 * w / 600.0)), int(round(335 * h / 900.0))
+	rw, rh = int(round(260 * w / 600.0)), int(round(190 * h / 900.0))
+	step = max(8, 47000 // (rh * 4))
+	out = []
+	full = None
+	for i, dx in enumerate(range(0, rw, step)):
+		sw = min(step, rw - dx)
+		name = "poster_icon_%dx%d_%d.png" % (w, h, i)
+		path = os.path.join(skin, FRAME_DIR, name)
+		if not os.path.isfile(path):
+			if full is None:
+				full = Image.open(src).convert("RGB").resize((w, h), Image.LANCZOS)
+			full.crop((rx + dx, ry, rx + dx + sw, ry + rh)).save(path)
+		out.append(("%s/%s" % (FRAME_DIR, name), rx + dx, ry, sw, rh))
+	return out
+
+
+def icon_widgets(skin, ind, src, x, y, w, h, z, close):
+	return "\n".join('%s<widget source="%s" render="Pixmap" pixmap="%s" position="%d,%d" size="%d,%d" zPosition="%d"%s' % (
+		ind, src, p, x + dx, y + dy, sw, sh, z, close) for p, dx, dy, sw, sh in icon(skin, w, h))
 
 
 _W = re.compile(r'(\t*)<widget\b([^>]*?)\bpixmap="mla_assets/(poster_default|frame_border_505050)_(\d+)x(\d+)\.png"([^>]*?)(/>|>(.*?)</widget>)', re.S)
@@ -88,10 +112,9 @@ def optimize_xml(skin, xml):
 		close = (">%s</widget>" % inner) if tail != "/>" else " />"
 		if kind == "poster_default":
 			r = (' cornerRadius="%s"' % a["cornerRadius"]) if "cornerRadius" in a else ""
-			ic, iw, ih = icon(skin, w)
-			return ('%s<widget source="%s" render="Pixmap" pixmap="%s" position="%d,%d" size="%d,%d" scale="1"%s zPosition="%d"%s\n'
-				'%s<widget source="%s" render="Pixmap" pixmap="%s" position="%d,%d" size="%d,%d" alphatest="blend" zPosition="%d"%s') % (
-				ind, src, tile(skin), x, y, w, h, r, z - 1, close, ind, src, ic, x + (w - iw) // 2, y + (h - ih) // 2, iw, ih, z, close)
+			return '%s<widget source="%s" render="Pixmap" pixmap="%s" position="%d,%d" size="%d,%d" scale="1"%s zPosition="%d"%s\n%s\n%s' % (
+				ind, src, tile(skin), x, y, w, h, r, z - 1, close, icon_widgets(skin, ind, src, x, y, w, h, z, close),
+				inner_frame(skin, ind, src, x, y, w, h, z, close))
 		# frame: 3-px border of a (w x h) box -> four strips
 		px = line(skin)
 		strips = ((x, y, w, 3), (x, y + h - 3, w, 3), (x, y + 3, 3, h - 6), (x + w - 3, y + 3, 3, h - 6))

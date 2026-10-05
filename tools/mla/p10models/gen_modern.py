@@ -532,17 +532,17 @@ FONTS = '\t<fonts>\n\t\t<font name="%s" filename="LiberationSans-Bold.ttf" scale
 VARIANT = os.environ.get("MLA_MODERN_VARIANT", "optimized")
 
 
+def _accel():
+	sys.path.insert(0, os.path.join(HERE, ".."))
+	import accel_opt
+	return accel_opt
+
+
 def _tile(skin):
 	"""Shared with tools/mla/accel_opt.py (one implementation of the default tile / icon / frame strips)."""
 	sys.path.insert(0, os.path.join(HERE, ".."))
 	import accel_opt
 	return accel_opt.tile(skin)
-
-
-def _icon(skin, w):
-	sys.path.insert(0, os.path.join(HERE, ".."))
-	import accel_opt
-	return accel_opt.icon(skin, w)
 
 
 _DEFAULT_RE = re.compile(r'(\t*)<widget source="([^"]+)" render="Pixmap" pixmap="mla_assets/poster_default_(\d+)x(\d+)\.png" position="(\d+),(\d+)" size="(\d+),(\d+)" cornerRadius="([^"]+)" zPosition="(-?\d+)">(.*?)</widget>')
@@ -552,10 +552,11 @@ def _optimize(skin, xml):
 	def tile(m):
 		ind, src, w, h, x, y, _w, _h, r, z, gate = m.groups()
 		x, y, w, h, z = int(x), int(y), int(w), int(h), int(z)
-		icon, iw, ih = _icon(skin, w)
-		return ('%s<widget source="%s" render="Pixmap" pixmap="%s" position="%d,%d" size="%d,%d" scale="1" cornerRadius="%s" zPosition="%d">%s</widget>\n'
-			'%s<widget source="%s" render="Pixmap" pixmap="%s" position="%d,%d" size="%d,%d" alphatest="blend" zPosition="%d">%s</widget>') % (
-			ind, src, _tile(skin), x, y, w, h, r, z - 1, gate, ind, src, icon, x + (w - iw) // 2, y + (h - ih) // 2, iw, ih, z, gate)
+		close = ">%s</widget>" % gate
+		A = _accel()
+		return ('%s<widget source="%s" render="Pixmap" pixmap="%s" position="%d,%d" size="%d,%d" scale="1" cornerRadius="%s" zPosition="%d"%s\n' % (
+			ind, src, _tile(skin), x, y, w, h, r, z - 1, close)) + A.icon_widgets(skin, ind, src, x, y, w, h, z, close) + "\n" + \
+			A.inner_frame(skin, ind, src, x, y, w, h, z, close)
 	xml, n = _DEFAULT_RE.subn(tile, xml)
 	assert "poster_default_" not in xml, "a Modern default poster escaped the optimizer"
 	xml = xml.replace('render="CineViewMLAPosterX" ', 'render="CineViewMLAPosterX" underlay="1" ')
