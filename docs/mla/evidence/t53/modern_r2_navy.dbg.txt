@@ -1,0 +1,16 @@
+06:02:33.8907 [CineViewMLAShowIf] dbg 143f0 changed (0,) token=20 literal=SD boolean=False visible=False videoinfo=None
+06:02:33.8911 [CineViewMLAShowIf] dbg 143f0 connect token=20 literal=SD boolean=False visible=False videoinfo=None
+06:02:33.8916 [CineViewMLAShowIf] dbg 14468 changed (0,) token=13 literal=HD boolean=False visible=False videoinfo=None
+06:02:33.8918 [CineViewMLAShowIf] dbg 14468 connect token=13 literal=HD boolean=False visible=False videoinfo=None
+06:02:33.8924 [CineViewMLAShowIf] dbg 144e0 changed (0,) token=9 literal=UHD boolean=False visible=False videoinfo=None
+06:02:33.8926 [CineViewMLAShowIf] dbg 144e0 connect token=9 literal=UHD boolean=False visible=False videoinfo=None
+06:02:33.8931 [CineViewMLAShowIf] dbg 14558 changed (0,) token=29 literal=16:9 boolean=False visible=False videoinfo=None
+06:02:33.8934 [CineViewMLAShowIf] dbg 14558 connect token=29 literal=16:9 boolean=False visible=False videoinfo=None
+06:02:36.3242 [CineViewMLAShowIf] dbg 14468 changed (3, 15) token=13 literal=HD boolean=False visible=False videoinfo=0|0|25000|0|3|-1
+06:02:36.3249 [CineViewMLAShowIf] dbg 144e0 changed (3, 15) token=9 literal=UHD boolean=False visible=False videoinfo=0|0|25000|0|3|-1
+06:02:36.3264 [CineViewMLAShowIf] dbg 14558 changed (3, 15) token=29 literal=16:9 boolean=True visible=True videoinfo=0|0|25000|0|3|-1
+06:02:36.3280 [CineViewMLAShowIf] dbg 143f0 changed (3, 15) token=20 literal=SD boolean=True visible=True videoinfo=0|0|25000|0|3|-1
+06:02:36.4912 [CineViewMLAShowIf] dbg 14468 changed (3, 15) token=13 literal=HD boolean=True visible=True videoinfo=1920|1080|50000|0|3|-1
+06:02:36.4919 [CineViewMLAShowIf] dbg 144e0 changed (3, 15) token=9 literal=UHD boolean=False visible=False videoinfo=1920|1080|50000|0|3|-1
+06:02:36.4931 [CineViewMLAShowIf] dbg 14558 changed (3, 15) token=29 literal=16:9 boolean=True visible=True videoinfo=1920|1080|50000|0|3|-1
+06:02:36.5289 [CineViewMLAShowIf] dbg 143f0 changed (3, 15) token=20 literal=SD boolean=False visible=False videoinfo=1920|1080|50000|0|3|-1

@@ -1,0 +1,8 @@
+05:45:50.9739 [CineViewMLAShowIf] dbg f533f0 changed (0,) token=20 literal=SD boolean=False visible=False videoinfo=None
+05:45:50.9742 [CineViewMLAShowIf] dbg f533f0 connect token=20 literal=SD boolean=False visible=False videoinfo=None
+05:45:50.9747 [CineViewMLAShowIf] dbg f53468 changed (0,) token=13 literal=HD boolean=False visible=False videoinfo=None
+05:45:50.9750 [CineViewMLAShowIf] dbg f53468 connect token=13 literal=HD boolean=False visible=False videoinfo=None
+05:45:50.9755 [CineViewMLAShowIf] dbg f534e0 changed (0,) token=9 literal=UHD boolean=False visible=False videoinfo=None
+05:45:50.9758 [CineViewMLAShowIf] dbg f534e0 connect token=9 literal=UHD boolean=False visible=False videoinfo=None
+05:45:50.9763 [CineViewMLAShowIf] dbg f53558 changed (0,) token=29 literal=16:9 boolean=False visible=False videoinfo=None
+05:45:50.9765 [CineViewMLAShowIf] dbg f53558 connect token=29 literal=16:9 boolean=False visible=False videoinfo=None

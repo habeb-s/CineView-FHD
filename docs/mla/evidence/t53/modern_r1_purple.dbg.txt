@@ -1,0 +1,16 @@
+05:51:55.1970 [CineViewMLAShowIf] dbg fd13f0 changed (0,) token=20 literal=SD boolean=False visible=False videoinfo=None
+05:51:55.1974 [CineViewMLAShowIf] dbg fd13f0 connect token=20 literal=SD boolean=False visible=False videoinfo=None
+05:51:55.1979 [CineViewMLAShowIf] dbg fd1468 changed (0,) token=13 literal=HD boolean=False visible=False videoinfo=None
+05:51:55.1982 [CineViewMLAShowIf] dbg fd1468 connect token=13 literal=HD boolean=False visible=False videoinfo=None
+05:51:55.1987 [CineViewMLAShowIf] dbg fd14e0 changed (0,) token=9 literal=UHD boolean=False visible=False videoinfo=None
+05:51:55.1989 [CineViewMLAShowIf] dbg fd14e0 connect token=9 literal=UHD boolean=False visible=False videoinfo=None
+05:51:55.1994 [CineViewMLAShowIf] dbg fd1558 changed (0,) token=29 literal=16:9 boolean=False visible=False videoinfo=None
+05:51:55.1997 [CineViewMLAShowIf] dbg fd1558 connect token=29 literal=16:9 boolean=False visible=False videoinfo=None
+05:51:57.9875 [CineViewMLAShowIf] dbg fd1468 changed (3, 15) token=13 literal=HD boolean=True visible=True videoinfo=1920|1080|25000|0|3|-1
+05:51:57.9882 [CineViewMLAShowIf] dbg fd14e0 changed (3, 15) token=9 literal=UHD boolean=False visible=False videoinfo=1920|1080|25000|0|3|-1
+05:51:57.9897 [CineViewMLAShowIf] dbg fd1558 changed (3, 15) token=29 literal=16:9 boolean=True visible=True videoinfo=1920|1080|25000|0|3|-1
+05:51:57.9911 [CineViewMLAShowIf] dbg fd13f0 changed (3, 15) token=20 literal=SD boolean=False visible=False videoinfo=1920|1080|25000|0|3|-1
+05:51:58.1986 [CineViewMLAShowIf] dbg fd1468 changed (3, 15) token=13 literal=HD boolean=True visible=True videoinfo=1920|1080|25000|1|3|-1
+05:51:58.1992 [CineViewMLAShowIf] dbg fd14e0 changed (3, 15) token=9 literal=UHD boolean=False visible=False videoinfo=1920|1080|25000|1|3|-1
+05:51:58.2005 [CineViewMLAShowIf] dbg fd1558 changed (3, 15) token=29 literal=16:9 boolean=True visible=True videoinfo=1920|1080|25000|1|3|-1
+05:51:58.2018 [CineViewMLAShowIf] dbg fd13f0 changed (3, 15) token=20 literal=SD boolean=False visible=False videoinfo=1920|1080|25000|1|3|-1
