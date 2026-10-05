@@ -603,7 +603,7 @@ def _install_epg_eventview_name():
 	print("[CineViewMLA] EPG event view name installed")
 
 
-NAME_CLIP_LAYOUTS = ("posterlist", "videofirst", "videofirst-right")  # narrow channel lists (D1)
+NAME_CLIP_LAYOUTS = ("posterlist", "videofirst", "videofirst-right", "modern")  # narrow channel lists (D1, Modern 808 px)
 
 
 def _active_layout(section):
