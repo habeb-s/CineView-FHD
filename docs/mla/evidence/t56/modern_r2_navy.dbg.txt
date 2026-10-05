@@ -1,0 +1,32 @@
+07:15:41.4903 [CineViewMLAShowIf] dbg ff34e0 changed (0,) token=20 literal=SD boolean=False visible=False videoinfo=None
+07:15:41.4906 [CineViewMLAShowIf] dbg ff34e0 connect token=20 literal=SD boolean=False visible=False videoinfo=None
+07:15:41.4911 [CineViewMLAShowIf] dbg ff3558 changed (0,) token=13 literal=HD boolean=False visible=False videoinfo=None
+07:15:41.4914 [CineViewMLAShowIf] dbg ff3558 connect token=13 literal=HD boolean=False visible=False videoinfo=None
+07:15:41.4919 [CineViewMLAShowIf] dbg ff35d0 changed (0,) token=9 literal=UHD boolean=False visible=False videoinfo=None
+07:15:41.4922 [CineViewMLAShowIf] dbg ff35d0 connect token=9 literal=UHD boolean=False visible=False videoinfo=None
+07:15:41.4927 [CineViewMLAShowIf] dbg ff3648 changed (0,) token=29 literal=16:9 boolean=False visible=False videoinfo=None
+07:15:41.4929 [CineViewMLAShowIf] dbg ff3648 connect token=29 literal=16:9 boolean=False visible=False videoinfo=None
+07:15:41.9796 [CineViewMLAShowIf] dbg ff3558 changed (3, 0) token=13 literal=HD boolean=False visible=False videoinfo=None
+07:15:41.9801 [CineViewMLAShowIf] dbg ff35d0 changed (3, 0) token=9 literal=UHD boolean=False visible=False videoinfo=None
+07:15:41.9812 [CineViewMLAShowIf] dbg ff3648 changed (3, 0) token=29 literal=16:9 boolean=False visible=False videoinfo=None
+07:15:41.9819 [CineViewMLAShowIf] dbg ff34e0 changed (3, 0) token=20 literal=SD boolean=False visible=False videoinfo=None
+07:15:42.2544 [CineViewMLAShowIf] dbg ff3558 changed (3, 0) token=13 literal=HD boolean=True visible=True videoinfo=
+07:15:42.2557 [CineViewMLAShowIf] dbg ff35d0 changed (3, 0) token=9 literal=UHD boolean=False visible=False videoinfo=
+07:15:42.2576 [CineViewMLAShowIf] dbg ff3648 changed (3, 0) token=29 literal=16:9 boolean=True visible=True videoinfo=
+07:15:42.2930 [CineViewMLAShowIf] dbg ff34e0 changed (3, 0) token=20 literal=SD boolean=False visible=False videoinfo=
+07:15:43.3723 [CineViewMLAShowIf] dbg ff3558 changed (3, 5) token=13 literal=HD boolean=True visible=True videoinfo=1920|1080|25000|0|3|-1
+07:15:43.3730 [CineViewMLAShowIf] dbg ff35d0 changed (3, 5) token=9 literal=UHD boolean=False visible=False videoinfo=1920|1080|25000|0|3|-1
+07:15:43.3741 [CineViewMLAShowIf] dbg ff3648 changed (3, 5) token=29 literal=16:9 boolean=True visible=True videoinfo=1920|1080|25000|0|3|-1
+07:15:43.3768 [CineViewMLAShowIf] dbg ff34e0 changed (3, 5) token=20 literal=SD boolean=False visible=False videoinfo=1920|1080|25000|0|3|-1
+07:15:43.9671 [CineViewMLAShowIf] dbg ff3558 changed (3, 5) token=13 literal=HD boolean=True visible=True videoinfo=1920|1080|25000|0|3|-1
+07:15:43.9677 [CineViewMLAShowIf] dbg ff35d0 changed (3, 5) token=9 literal=UHD boolean=False visible=False videoinfo=1920|1080|25000|0|3|-1
+07:15:43.9689 [CineViewMLAShowIf] dbg ff3648 changed (3, 5) token=29 literal=16:9 boolean=True visible=True videoinfo=1920|1080|25000|0|3|-1
+07:15:44.0057 [CineViewMLAShowIf] dbg ff34e0 changed (3, 5) token=20 literal=SD boolean=False visible=False videoinfo=1920|1080|25000|0|3|-1
+07:15:45.4679 [CineViewMLAShowIf] dbg ff3558 changed (1,) token=13 literal=HD boolean=True visible=True videoinfo=1920|1080|25000|0|3|-1
+07:15:45.4685 [CineViewMLAShowIf] dbg ff35d0 changed (1,) token=9 literal=UHD boolean=False visible=False videoinfo=1920|1080|25000|0|3|-1
+07:15:45.4694 [CineViewMLAShowIf] dbg ff3648 changed (1,) token=29 literal=16:9 boolean=True visible=True videoinfo=1920|1080|25000|0|3|-1
+07:15:45.5063 [CineViewMLAShowIf] dbg ff34e0 changed (1,) token=20 literal=SD boolean=False visible=False videoinfo=1920|1080|25000|0|3|-1
+07:15:47.9687 [CineViewMLAShowIf] dbg ff3558 changed (1,) token=13 literal=HD boolean=True visible=True videoinfo=1920|1080|25000|0|3|-1
+07:15:47.9693 [CineViewMLAShowIf] dbg ff35d0 changed (1,) token=9 literal=UHD boolean=False visible=False videoinfo=1920|1080|25000|0|3|-1
+07:15:47.9699 [CineViewMLAShowIf] dbg ff3648 changed (1,) token=29 literal=16:9 boolean=True visible=True videoinfo=1920|1080|25000|0|3|-1
+07:15:48.0068 [CineViewMLAShowIf] dbg ff34e0 changed (1,) token=20 literal=SD boolean=False visible=False videoinfo=1920|1080|25000|0|3|-1

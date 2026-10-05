@@ -1,0 +1,48 @@
+07:09:41.9410 [CineViewMLAShowIf] dbg f8e4e0 changed (0,) token=20 literal=SD boolean=False visible=False videoinfo=None
+07:09:41.9414 [CineViewMLAShowIf] dbg f8e4e0 connect token=20 literal=SD boolean=False visible=False videoinfo=None
+07:09:41.9419 [CineViewMLAShowIf] dbg f8e558 changed (0,) token=13 literal=HD boolean=False visible=False videoinfo=None
+07:09:41.9422 [CineViewMLAShowIf] dbg f8e558 connect token=13 literal=HD boolean=False visible=False videoinfo=None
+07:09:41.9427 [CineViewMLAShowIf] dbg f8e5d0 changed (0,) token=9 literal=UHD boolean=False visible=False videoinfo=None
+07:09:41.9430 [CineViewMLAShowIf] dbg f8e5d0 connect token=9 literal=UHD boolean=False visible=False videoinfo=None
+07:09:41.9434 [CineViewMLAShowIf] dbg f8e648 changed (0,) token=29 literal=16:9 boolean=False visible=False videoinfo=None
+07:09:41.9437 [CineViewMLAShowIf] dbg f8e648 connect token=29 literal=16:9 boolean=False visible=False videoinfo=None
+07:09:42.4075 [CineViewMLAShowIf] dbg f8e558 changed (3, 0) token=13 literal=HD boolean=False visible=False videoinfo=None
+07:09:42.4081 [CineViewMLAShowIf] dbg f8e5d0 changed (3, 0) token=9 literal=UHD boolean=False visible=False videoinfo=None
+07:09:42.4091 [CineViewMLAShowIf] dbg f8e648 changed (3, 0) token=29 literal=16:9 boolean=False visible=False videoinfo=None
+07:09:42.4098 [CineViewMLAShowIf] dbg f8e4e0 changed (3, 0) token=20 literal=SD boolean=False visible=False videoinfo=None
+07:09:42.6775 [CineViewMLAShowIf] dbg f8e558 changed (3, 0) token=13 literal=HD boolean=True visible=True videoinfo=
+07:09:42.6788 [CineViewMLAShowIf] dbg f8e5d0 changed (3, 0) token=9 literal=UHD boolean=False visible=False videoinfo=
+07:09:42.6807 [CineViewMLAShowIf] dbg f8e648 changed (3, 0) token=29 literal=16:9 boolean=True visible=True videoinfo=
+07:09:42.7162 [CineViewMLAShowIf] dbg f8e4e0 changed (3, 0) token=20 literal=SD boolean=False visible=False videoinfo=
+07:09:43.7875 [CineViewMLAShowIf] dbg f8e558 changed (3, 5) token=13 literal=HD boolean=True visible=True videoinfo=1920|1080|25000|0|3|-1
+07:09:43.7881 [CineViewMLAShowIf] dbg f8e5d0 changed (3, 5) token=9 literal=UHD boolean=False visible=False videoinfo=1920|1080|25000|0|3|-1
+07:09:43.7893 [CineViewMLAShowIf] dbg f8e648 changed (3, 5) token=29 literal=16:9 boolean=True visible=True videoinfo=1920|1080|25000|0|3|-1
+07:09:43.7920 [CineViewMLAShowIf] dbg f8e4e0 changed (3, 5) token=20 literal=SD boolean=False visible=False videoinfo=1920|1080|25000|0|3|-1
+07:09:44.3059 [CineViewMLAShowIf] dbg f8e558 changed (3, 15) token=13 literal=HD boolean=True visible=True videoinfo=1920|1080|25000|0|3|-1
+07:09:44.3066 [CineViewMLAShowIf] dbg f8e5d0 changed (3, 15) token=9 literal=UHD boolean=False visible=False videoinfo=1920|1080|25000|0|3|-1
+07:09:44.3078 [CineViewMLAShowIf] dbg f8e648 changed (3, 15) token=29 literal=16:9 boolean=True visible=True videoinfo=1920|1080|25000|0|3|-1
+07:09:44.3092 [CineViewMLAShowIf] dbg f8e4e0 changed (3, 15) token=20 literal=SD boolean=False visible=False videoinfo=1920|1080|25000|0|3|-1
+07:09:44.3121 [CineViewMLAShowIf] dbg f8e558 changed (3, 17) token=13 literal=HD boolean=True visible=True videoinfo=1920|1080|25000|1|3|-1
+07:09:44.3127 [CineViewMLAShowIf] dbg f8e5d0 changed (3, 17) token=9 literal=UHD boolean=False visible=False videoinfo=1920|1080|25000|1|3|-1
+07:09:44.3137 [CineViewMLAShowIf] dbg f8e648 changed (3, 17) token=29 literal=16:9 boolean=True visible=True videoinfo=1920|1080|25000|1|3|-1
+07:09:44.3148 [CineViewMLAShowIf] dbg f8e4e0 changed (3, 17) token=20 literal=SD boolean=False visible=False videoinfo=1920|1080|25000|1|3|-1
+07:09:44.8563 [CineViewMLAShowIf] dbg f8e558 changed (3, 5) token=13 literal=HD boolean=True visible=True videoinfo=1920|1080|25000|1|3|-1
+07:09:44.8569 [CineViewMLAShowIf] dbg f8e5d0 changed (3, 5) token=9 literal=UHD boolean=False visible=False videoinfo=1920|1080|25000|1|3|-1
+07:09:44.8581 [CineViewMLAShowIf] dbg f8e648 changed (3, 5) token=29 literal=16:9 boolean=True visible=True videoinfo=1920|1080|25000|1|3|-1
+07:09:44.8604 [CineViewMLAShowIf] dbg f8e4e0 changed (3, 5) token=20 literal=SD boolean=False visible=False videoinfo=1920|1080|25000|1|3|-1
+07:09:45.1373 [CineViewMLAShowIf] dbg f8e558 changed (3, 15) token=13 literal=HD boolean=True visible=True videoinfo=1920|1080|25000|1|3|-1
+07:09:45.1384 [CineViewMLAShowIf] dbg f8e5d0 changed (3, 15) token=9 literal=UHD boolean=False visible=False videoinfo=1920|1080|25000|1|3|-1
+07:09:45.1397 [CineViewMLAShowIf] dbg f8e648 changed (3, 15) token=29 literal=16:9 boolean=True visible=True videoinfo=1920|1080|25000|1|3|-1
+07:09:45.1410 [CineViewMLAShowIf] dbg f8e4e0 changed (3, 15) token=20 literal=SD boolean=False visible=False videoinfo=1920|1080|25000|1|3|-1
+07:09:45.1440 [CineViewMLAShowIf] dbg f8e558 changed (3, 17) token=13 literal=HD boolean=True visible=True videoinfo=1920|1080|25000|0|3|-1
+07:09:45.1446 [CineViewMLAShowIf] dbg f8e5d0 changed (3, 17) token=9 literal=UHD boolean=False visible=False videoinfo=1920|1080|25000|0|3|-1
+07:09:45.1457 [CineViewMLAShowIf] dbg f8e648 changed (3, 17) token=29 literal=16:9 boolean=True visible=True videoinfo=1920|1080|25000|0|3|-1
+07:09:45.1468 [CineViewMLAShowIf] dbg f8e4e0 changed (3, 17) token=20 literal=SD boolean=False visible=False videoinfo=1920|1080|25000|0|3|-1
+07:09:46.3572 [CineViewMLAShowIf] dbg f8e558 changed (1,) token=13 literal=HD boolean=True visible=True videoinfo=1920|1080|25000|0|3|-1
+07:09:46.3585 [CineViewMLAShowIf] dbg f8e5d0 changed (1,) token=9 literal=UHD boolean=False visible=False videoinfo=1920|1080|25000|0|3|-1
+07:09:46.3592 [CineViewMLAShowIf] dbg f8e648 changed (1,) token=29 literal=16:9 boolean=True visible=True videoinfo=1920|1080|25000|0|3|-1
+07:09:46.3609 [CineViewMLAShowIf] dbg f8e4e0 changed (1,) token=20 literal=SD boolean=False visible=False videoinfo=1920|1080|25000|0|3|-1
+07:09:48.8580 [CineViewMLAShowIf] dbg f8e558 changed (1,) token=13 literal=HD boolean=True visible=True videoinfo=1920|1080|25000|0|3|-1
+07:09:48.8591 [CineViewMLAShowIf] dbg f8e5d0 changed (1,) token=9 literal=UHD boolean=False visible=False videoinfo=1920|1080|25000|0|3|-1
+07:09:48.8597 [CineViewMLAShowIf] dbg f8e648 changed (1,) token=29 literal=16:9 boolean=True visible=True videoinfo=1920|1080|25000|0|3|-1
+07:09:48.8613 [CineViewMLAShowIf] dbg f8e4e0 changed (1,) token=20 literal=SD boolean=False visible=False videoinfo=1920|1080|25000|0|3|-1

@@ -1,0 +1,142 @@
+-rw-r--r--    1 root     root          5246 Oct  5 06:30 cineview_mla-state.pre-p6.tgz
+-rw-r--r--    1 root     root       5223595 Oct  5 06:30 mla-files.pre-build48.tgz
+-rw-r--r--    1 root     root          9837 Oct  5 06:30 settings.pre-p6
+paths-ok
+deployed
+new e2 pid=9452 @06:30:54
+webif up @06:31:18
+STATE active=g000000 lkg=g000120 journal=COMMITTED theme=navy gens=['g000000', 'g000117', 'g000118', 'g000119', 'g000120']
+boot.count=1 e2pid=9452 crashlogs=0
+2026-10-05 06:19:28 apply: g000000 -> g000119 trial=False selection={"layouts": {"channelselection": "classic", "epg": "graphicalplus", "eventview": "classic-lines", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-05 06:19:28 commit: lkg=g000119
+2026-10-05 06:29:43 apply: g000119 -> g000120 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic-lines", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-05 06:29:43 commit: lkg=g000120
+06:30:56.2951 [InputDevice] Error: device='mouse0' getInputDevices <ERROR: ioctl(EVIOCGNAME): '[Errno 25] Inappropriate ioctl for device'>
+06:31:16.0286 [CineViewMLA] posters-off names installed for SecondInfoBar
+06:31:16.0287 [CineViewMLA] posters-off names installed for EventViewSimple
+06:31:16.0288 [CineViewMLA] posters-off names installed for EPGSelection
+06:31:16.0289 [CineViewMLA] name clip installed
+06:31:16.0290 [CineViewMLA] EPG event view name installed
+06:31:16.9038 [Skin] Error: Attribute 'progressPercentWidth' with value '70' in object of type 'eListbox' ('AttributeParser' object has no attribute 'progressPercentWidth')!
+06:31:16.9040 [Skin] Error: Attribute 'piconMargin' with value '3' in object of type 'eListbox' ('AttributeParser' object has no attribute 'piconMargin')!
+06:31:16.9307 [Skin] Error: Attribute 'progressPercentWidth' with value '78' in object of type 'eListbox' ('AttributeParser' object has no attribute 'progressPercentWidth')!
+06:31:16.9309 [Skin] Error: Attribute 'piconMargin' with value '3' in object of type 'eListbox' ('AttributeParser' object has no attribute 'piconMargin')!
+new e2 pid=10702 @06:31:45
+webif up @06:32:11
+classic_r1_black HD=1 AR=1 dbg_lines=0
+new e2 pid=12619 @06:33:20
+webif up @06:33:43
+classic_r1_burgundy HD=1 AR=1 dbg_lines=0
+new e2 pid=14409 @06:34:48
+webif up @06:35:12
+classic_r1_graphite HD=1 AR=1 dbg_lines=0
+new e2 pid=16223 @06:36:15
+webif up @06:36:40
+classic_r1_green HD=1 AR=1 dbg_lines=0
+new e2 pid=18079 @06:37:46
+webif up @06:38:10
+classic_r1_purple HD=1 AR=1 dbg_lines=0
+new e2 pid=19825 @06:39:13
+webif up @06:39:39
+classic_r1_navy HD=1 AR=1 dbg_lines=0
+new e2 pid=21508 @06:40:42
+webif up @06:41:08
+classic_r2_black HD=1 AR=1 dbg_lines=0
+new e2 pid=23193 @06:42:14
+webif up @06:42:38
+classic_r2_burgundy HD=1 AR=1 dbg_lines=0
+new e2 pid=24929 @06:43:42
+webif up @06:44:08
+classic_r2_graphite HD=1 AR=1 dbg_lines=0
+new e2 pid=26708 @06:45:15
+webif up @06:45:40
+classic_r2_green HD=1 AR=1 dbg_lines=0
+new e2 pid=28382 @06:46:45
+webif up @06:47:09
+classic_r2_purple HD=1 AR=1 dbg_lines=0
+new e2 pid=30174 @06:48:14
+webif up @06:48:39
+classic_r2_navy HD=1 AR=1 dbg_lines=0
+new e2 pid=31924 @06:49:44
+webif up @06:50:09
+classic_r3_black HD=1 AR=1 dbg_lines=0
+new e2 pid=1322 @06:51:14
+webif up @06:51:39
+classic_r3_burgundy HD=1 AR=1 dbg_lines=0
+new e2 pid=3202 @06:52:45
+webif up @06:53:08
+classic_r3_graphite HD=1 AR=1 dbg_lines=0
+new e2 pid=5038 @06:54:17
+webif up @06:54:42
+classic_r3_green HD=1 AR=1 dbg_lines=0
+new e2 pid=6852 @06:55:46
+webif up @06:56:11
+classic_r3_purple HD=1 AR=1 dbg_lines=0
+new e2 pid=8694 @06:57:15
+webif up @06:57:41
+classic_r3_navy HD=1 AR=1 dbg_lines=0
+new e2 pid=10493 @06:58:47
+webif up @06:59:11
+modern_r1_black HD=1 AR=1 dbg_lines=48
+new e2 pid=12323 @07:00:16
+webif up @07:00:41
+modern_r1_burgundy HD=1 AR=1 dbg_lines=48
+new e2 pid=14164 @07:01:46
+webif up @07:02:11
+modern_r1_graphite HD=1 AR=1 dbg_lines=48
+new e2 pid=16027 @07:03:15
+webif up @07:03:41
+modern_r1_green HD=1 AR=1 dbg_lines=48
+new e2 pid=17926 @07:04:47
+webif up @07:05:11
+modern_r1_purple HD=1 AR=1 dbg_lines=32
+new e2 pid=19814 @07:06:17
+webif up @07:06:41
+modern_r1_navy HD=1 AR=1 dbg_lines=48
+new e2 pid=21604 @07:07:47
+webif up @07:08:10
+modern_r2_black HD=1 AR=1 dbg_lines=48
+new e2 pid=23469 @07:09:18
+webif up @07:09:43
+modern_r2_burgundy HD=1 AR=1 dbg_lines=48
+new e2 pid=25215 @07:10:47
+webif up @07:11:13
+modern_r2_graphite HD=1 AR=1 dbg_lines=32
+new e2 pid=27032 @07:12:17
+webif up @07:12:42
+modern_r2_green HD=1 AR=1 dbg_lines=48
+new e2 pid=28865 @07:13:46
+webif up @07:14:12
+modern_r2_purple HD=1 AR=1 dbg_lines=32
+new e2 pid=30712 @07:15:19
+webif up @07:15:42
+modern_r2_navy HD=1 AR=1 dbg_lines=32
+new e2 pid=32452 @07:16:47
+webif up @07:17:13
+modern_r3_black HD=1 AR=1 dbg_lines=48
+new e2 pid=1831 @07:18:18
+webif up @07:18:44
+modern_r3_burgundy HD=1 AR=1 dbg_lines=48
+new e2 pid=3724 @07:19:48
+webif up @07:20:14
+modern_r3_graphite HD=1 AR=1 dbg_lines=48
+new e2 pid=5572 @07:21:18
+webif up @07:21:44
+modern_r3_green HD=1 AR=1 dbg_lines=48
+new e2 pid=7365 @07:22:49
+webif up @07:23:14
+modern_r3_purple HD=1 AR=1 dbg_lines=48
+new e2 pid=9103 @07:24:19
+webif up @07:24:44
+modern_r3_navy HD=1 AR=1 dbg_lines=52
+SUMMARY samples=36 missing=0
+g000157
+new e2 pid=10939 @07:25:53
+webif up @07:26:17
+STATE active=g000157 lkg=g000157 journal=COMMITTED theme=navy gens=['g000000', 'g000154', 'g000155', 'g000156', 'g000157']
+boot.count=1 e2pid=10939 crashlogs=0
+2026-10-05 07:24:13 apply: g000155 -> g000156 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic-lines", "infobar": "modern", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-05 07:24:13 commit: lkg=g000156
+2026-10-05 07:25:43 apply: g000156 -> g000157 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic-lines", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-05 07:25:43 commit: lkg=g000157
+T56_DONE
