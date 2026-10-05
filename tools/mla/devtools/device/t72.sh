@@ -73,6 +73,10 @@ for l in L:
         u = sum(x[1] for x in dump if x[0] == "used"); fr = [x[1] for x in dump if x[0] == "free"]
         res = collections.Counter(x[2] for x in dump if x[0] == "used")
         print("   FAIL %s: used %dk free %dk largest-free %dk | %s" % (req, u, sum(fr), max(fr or [0]), ", ".join("%sx%d" % (k, v) for k, v in res.most_common(6))))
+_res = collections.Counter(); _u = 0
+for x in dump:
+    if x[0] == "used": _res[x[2]] += x[1]; _u += x[1]
+print("   final pool: used %dk; kB by surface size: %s" % (_u, dict(_res.most_common(10))))
 print("   failures:", nfail, "by requested surface:", dict(fails.most_common(8)))
 if last:
     req, d = last
