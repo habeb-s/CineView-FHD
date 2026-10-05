@@ -239,6 +239,57 @@ def _mla_sized_save(sp, pix):
         _log("sized save: %s" % err)
 
 
+def _mla_sized_make(path, sp, w, h):
+    """Widget-size PNG made from the ORIGINAL cached poster with PIL, without any gPixmap.  Device t81a (build71):
+    ePicLoad.getData() allocates its result accelAuto (lib/gdi/picload.cpp:1348), so every FIRST decode of a poster
+    asked the full accelerated pool for a 300x450 / 240x360 / 160x240 block (3 of 7 warnings, 43 %).  The geometry
+    is exactly that of ePicLoad with setPara((w, h, 1, 1, False, 1, "#00000000")) (picload.cpp 57b7a51 getData):
+    fitted inside w x h with the aspect kept (scrx / scry truncated), offset (max - scr) / 2, borders filled with
+    background ^ 0xFF000000 = OPAQUE black, EXIF orientation ignored.  Resampling: LANCZOS from the original (ePicLoad:
+    box average) - not lower quality.  The original file is only read.  Returns False when PIL is missing or fails
+    -> the ePicLoad path is used as before."""
+    if not sp:
+        return False
+    try:
+        from PIL import Image
+    except Exception:
+        return False
+    try:
+        with Image.open(path) as im:
+            im = im.convert("RGBA")
+            sw, sh = im.size
+            if sw <= 0 or sh <= 0:
+                return False
+            fy = float(sh) * w / sw
+            if fy <= h:
+                nw, nh = w, int(fy)
+            else:
+                nw, nh = int(float(sw) * h / sh), h
+            nw, nh = max(1, nw), max(1, nh)
+            im = im.resize((nw, nh), Image.LANCZOS)
+            if (nw, nh) != (w, h):
+                canvas = Image.new("RGBA", (w, h), (0, 0, 0, 255))
+                canvas.paste(im, ((w - nw) // 2, (h - nh) // 2))
+                im = canvas
+            im.save(sp + ".tmp", "PNG")
+        os.rename(sp + ".tmp", sp)
+        _log("sized make %dx%d (PIL, no gPixmap) %s" % (w, h, os.path.basename(path)))
+        d = os.path.dirname(sp)
+        names = os.listdir(d)
+        if len(names) > _MLA_SZ_MAX:
+            names.sort(key=lambda n: os.path.getmtime(os.path.join(d, n)))
+            for n in names[:len(names) - _MLA_SZ_MAX]:
+                os.remove(os.path.join(d, n))
+        return True
+    except Exception as err:
+        _log("sized make: %s" % err)
+        try:
+            os.remove(sp + ".tmp")
+        except Exception:
+            pass
+        return False
+
+
 _CineViewMLAPosterXBase = CineViewMLAPosterX
 
 
@@ -334,6 +385,8 @@ class _CineViewMLAPosterXIdentity(_CineViewMLAPosterXBase):
                     self.instance.setPixmap(None)
                     sp = _mla_sized_path(path, w, h)
                     pix = _mla_sized_load(sp, path)
+                    if not pix and _mla_sized_make(path, sp, w, h):
+                        pix = _mla_sized_load(sp, path)
                     if pix:
                         self.instance.setPixmap(pix)
                         self.instance.setScale(1)
