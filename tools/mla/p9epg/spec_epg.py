@@ -51,9 +51,11 @@ GRAPHICAL_PLUS = {
 		"title": (1620, 156, 240, 70, 30),  # 2 lines x 35 (device t37: 3 lines left a hole under one-line titles)
 		"times": (1620, 236, 240, 30, 24),
 		"duration": (1620, 272, 240, 28, 22),
-		"genre": (1620, 308, 240, 28, 21),
-		"rating": (1620, 344, 240, 30, 22),
-		"desc": (1620, 388, 240, 525, 22),  # 21 lines x 25, left-aligned (justified 240 px = wide word gaps, t37)
+		# genre / IMDb are empty for most events (device t40): as a footer they no longer leave a hole between the
+		# duration and the description (user 2026-10-05: the panel must use its space evenly)
+		"desc": (1620, 312, 240, 550, 22),  # 22 lines x 25, left-aligned (justified 240 px = wide word gaps, t37)
+		"genre": (1620, 872, 240, 28, 21),
+		"rating": (1620, 902, 240, 30, 22),
 	},
 }
 
