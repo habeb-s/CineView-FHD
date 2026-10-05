@@ -22,9 +22,9 @@ d, p = sys.argv[1], sys.argv[2]
 im = Image.open(p).convert("RGB")
 if d == "modern":
     def pill(x):  # opaque pill colour #344660 inside the chip box
-        r, g, b = im.getpixel((x, 822))
+        r, g, b = im.getpixel((x, 835))  # vertical middle of the 34-px pill, 6 px inside its left edge
         return int(abs(r - 52) < 14 and abs(g - 70) < 14 and abs(b - 96) < 14)
-    print("HD=%d AR=%d" % (pill(1250), pill(1500)))
+    print("HD=%d AR=%d" % (pill(1248), pill(1498)))
 else:
     def icon(x):
         return int(ImageStat.Stat(im.crop((x, 1027, x + 60, 1059)).convert("L")).stddev[0] > 25)
