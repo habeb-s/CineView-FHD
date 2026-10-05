@@ -101,7 +101,7 @@ def main(out):
 	bars = []
 	for i, (lab, note, s) in enumerate(perf):
 		w = 100.0 * s["accel"] / maxacc
-		cls = "bar ref" if "Classic" in lab else ("bar fin" if "v5" in lab else "bar")
+		cls = "bar ref" if "Classic" in lab else ("bar fin" if ("v5" in lab or "current" in lab) else "bar")
 		bars.append('<div class="brow"><div class="blab"><b>%s</b><span>%s</span></div><div class="btrack"><div class="%s" style="width:%.2f%%"></div></div>'
 			'<div class="bval">%d</div><div class="bmeta">%d rounds · RSS %d MB · CPU %.0f s</div></div>' % (lab, note, cls, max(w, 0.4), s["accel"], s["rounds"], s["rss"], s["cpu_s"] or 0))
 	prow = "".join('<tr><td>%s</td><td class="n">%d</td><td class="n">%d</td><td class="n">%d MB</td><td class="n">%.0f s</td></tr>' % (lab, s["rounds"], s["accel"], s["rss"], s["cpu_s"] or 0) for lab, s in phases)
