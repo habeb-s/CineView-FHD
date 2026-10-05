@@ -196,6 +196,95 @@ def secondinfobar(skin):
 	return [G.screen("SecondInfoBar", "Second Infobar", body), G.screen("SecondInfoBarSimple", "Second Infobar", body)]
 
 
+CS_KEY = "config.plugins.cineviewmla.poster_channelselection"
+CS_SRC = "ServiceEvent"
+CS_LIST = (76, 140, 808, 840)  # 14 rows x 60 inside the left card (60,60 840x960)
+CS_ROW = 60
+
+
+def _cs_selection(skin):
+	"""Rounded, theme-neutral selection plate for the native service list (eListbox selectionPixmap: blitted with
+	alpha blending on the selected row of a transparent list, listboxservice.cpp paint())."""
+	from PIL import Image, ImageDraw
+	w, h = CS_LIST[2], CS_ROW
+	name = "modern_cs_sel_%dx%d.png" % (w, h)
+	path = os.path.join(skin, G.FRAME_DIR, name)
+	if not os.path.isfile(path):
+		im = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+		ImageDraw.Draw(im).rounded_rectangle([0, 2, w - 1, h - 3], 14, fill=(255, 255, 255, 46))
+		im.save(path)
+	return "%s/%s" % (G.FRAME_DIR, name)
+
+
+def _classic_list(skin, screen_name):
+	"""The Classic <widget name="list"> of a channel-selection screen (attribute contract kept as is)."""
+	import xml.etree.ElementTree as ET
+	scr = G._classic_screen(skin, "channelselection", screen_name)
+	if not scr:
+		return None
+	for w in ET.fromstring(scr).iter("widget"):
+		if w.get("name") == "list":
+			return dict(w.attrib)
+	return None
+
+
+def _next_times(src, e, font, color):
+	"""'HH:MM – HH:MM' of the NEXT event of the cursor service (EventTime NextStartTime / NextEndTime)."""
+	return [w.replace(">StartTime<", ">NextStartTime<").replace(">EndTime<", ">NextEndTime<") for w in G.times(src, e, font, color)]
+
+
+def channelselection(skin, screen_name, title):
+	la = _classic_list(skin, screen_name)
+	if la is None:
+		return None
+	x = ['\t\t<eLabel position="0,0" size="1920,1080" backgroundColor="#73000000" zPosition="-4" />',
+		'\t\t<eLabel position="60,60" size="840,960" backgroundColor="steThemeCard" cornerRadius="28" zPosition="-2" />',
+		'\t\t<eLabel position="920,60" size="940,960" backgroundColor="steThemeCard" cornerRadius="28" zPosition="-2" />',
+		'\t\t<widget name="Title" position="92,78" size="620,48" font="%s;32" foregroundColor="foreground" backgroundColor="steThemeCard" transparent="1" noWrap="1" zPosition="20" />' % BOLD,
+		'\t\t<widget source="global.CurrentTime" render="Label" position="720,82" size="150,40" font="%s;30" foregroundColor="secondFG" halign="right" transparent="1" zPosition="20">\n\t\t\t<convert type="ClockToText">Format:%%H:%%M</convert>\n\t\t</widget>' % BOLD]
+	la.update({"position": "%d,%d" % CS_LIST[:2], "size": "%d,%d" % CS_LIST[2:], "itemHeight": str(CS_ROW), "serviceItemHeight": str(CS_ROW),
+		"serviceNumberFont": "Regular;24", "serviceNameFont": "%s;27" % BOLD, "serviceInfoFont": "Regular;22", "selectionPixmap": _cs_selection(skin),
+		"transparent": "1", "zPosition": "12", "colorServiceDescription": "secondFG", "colorServiceDescriptionFallback": "secondFG"})
+	la.pop("backgroundColor", None)
+	x.append('\t\t<widget name="list" %s />' % " ".join('%s="%s"' % (k, v) for k, v in la.items() if k != "name"))
+	# right card: the event of the CURSOR service (ServiceEvent), NOW then NEXT
+	pw, ph = 300, 450
+	G.poster(skin, CS_SRC, {"x": 952, "y": 92, "w": pw, "h": ph}, CS_KEY)
+	G.poster(skin, CS_SRC, {"x": 952, "y": 0, "w": 160, "h": 240}, CS_KEY)
+	gate = '<convert type="ConfigEntryTest">%s,False,Invert</convert><convert type="ConditionalShowHide" />' % CS_KEY
+	x.append('\t\t<widget source="session.CurrentService" render="Pixmap" pixmap="mla_assets/poster_default_%dx%d.png" position="952,92" size="%d,%d" cornerRadius="22" zPosition="19">%s</widget>' % (pw, ph, pw, ph, gate))
+	x.append('\t\t<widget source="%s" render="CineViewMLAPosterX" position="952,92" size="%d,%d" cornerRadius="22" zPosition="20" toggle="%s" />' % (CS_SRC, pw, ph, CS_KEY))
+	for x0, inv, ny in ((1280, "", 570), (952, ",Invert", 650)):
+		w = 1828 - x0
+		x.append(_gate('\t\t<widget source="%s" render="Picon" scale="aspect" position="%d,96" size="150,76" alphatest="blend" transparent="1" zPosition="20">\n\t\t\t<convert type="ServiceName">Reference</convert>\n\t\t</widget>' % (CS_SRC, x0), CS_KEY, inv))
+		x.append(_gate('\t\t<widget source="%s" render="RunningText" position="%d,186" size="%d,40" transparent="1" zPosition="20" foregroundColor="foreground" font="%s;28" noWrap="1" options="%s">\n\t\t\t<convert type="ServiceName">NameOnly</convert>\n\t\t</widget>' % (CS_SRC, x0, w, BOLD, G.RUN_OPTS), CS_KEY, inv))
+		x.append('\t\t<widget source="%s" render="Label" position="%d,236" size="84,32" backgroundColor="secondFG" cornerRadius="16" halign="center" valign="center" foregroundColor="#001a1300" font="%s;20" zPosition="20">\n\t\t\t<convert type="EventName">Name</convert>\n\t\t\t<convert type="CineViewMLAShowIf">%s,True%s,text=NOW</convert>\n\t\t</widget>' % (CS_SRC, x0, BOLD, CS_KEY, inv))
+		x += [_gate(t, CS_KEY, inv) for t in G.times(CS_SRC, E(x0 + 100, 236, 160, 32), 23, "secondFG")]
+		x.append(_gate(G.label(CS_SRC, E(x0 + w - 150, 236, 150, 32), [("EventTime", "Duration"), ("ClockToText", "InMinutes")], 22, "grey", ' halign="right"'), CS_KEY, inv))
+		for t in G.text_variants(CS_SRC, [("EventName", "Name")], E(x0, 282, w, 96), None, 38, "foreground", G.T_OPTS, "always"):
+			x.append(t.replace("CineViewMLAShowIf\">always,True,", "CineViewMLAShowIf\">%s,True%s," % (CS_KEY, inv)).replace('font="Regular;38"', 'font="%s;38"' % BOLD))
+		x.append(_gate(G.label(CS_SRC, E(x0, 390, w - 240, 32), [("EventName", "Genre")], 22, "secondFG", ' noWrap="1"'), CS_KEY, inv))
+		x.append(_gate(G.label(CS_SRC, E(x0 + w - 230, 390, 120, 32), [("CineViewMLAIMDb", "Plain,hide")], 22, "foreground", ' halign="right"'), CS_KEY, inv))
+		x.append(_gate(G.label(CS_SRC, E(x0 + w - 100, 392, 100, 32), [("CineViewMLAIMDb", "Stars,hide")], 20, "secondFG", ' halign="right"'), CS_KEY, inv))
+		x.append('\t\t<widget source="%s" render="Progress" position="%d,436" size="%d,6" pixmap="infobar/pbar.png" backgroundColor="%s" cornerRadius="3" zPosition="20">\n\t\t\t<convert type="EventTime">Progress</convert>\n\t\t\t<convert type="CineViewMLAShowIf">%s,True%s</convert>\n\t\t</widget>' % (CS_SRC, x0, w, PILL_BG, CS_KEY, inv))
+		for t in G.text_variants(CS_SRC, [("EventName", "FullDescription")], E(x0, 462, w, ny - 16 - 462), None, 22, "grey", G.D_OPTS, "always"):
+			x.append(t.replace("CineViewMLAShowIf\">always,True,", "CineViewMLAShowIf\">%s,True%s," % (CS_KEY, inv)))
+		x.append('\t\t<widget source="session.CurrentService" render="Label" position="952,%d" size="876,2" backgroundColor="#00283a50" zPosition="20">\n\t\t\t<convert type="CineViewMLAShowIf">%s,True%s,text=</convert>\n\t\t</widget>' % (ny, CS_KEY, inv))
+		# NEXT of the cursor service: ON = small poster at the left of the card, text beside it
+		nx = 1136 if not inv else 952
+		if not inv:
+			x.append('\t\t<widget source="session.CurrentService" render="Pixmap" pixmap="mla_assets/poster_default_160x240.png" position="952,%d" size="160,240" cornerRadius="16" zPosition="19">%s</widget>' % (ny + 24, gate))
+			x.append('\t\t<widget source="%s" render="CineViewMLAPosterX" position="952,%d" size="160,240" cornerRadius="16" zPosition="20" nexts="1" toggle="%s" />' % (CS_SRC, ny + 24, CS_KEY))
+		nw = 1828 - nx
+		x.append('\t\t<widget source="%s" render="Label" position="%d,%d" size="84,32" backgroundColor="%s" cornerRadius="16" halign="center" valign="center" foregroundColor="foreground" font="%s;20" zPosition="20">\n\t\t\t<convert type="EventName">NextNameOnly</convert>\n\t\t\t<convert type="CineViewMLAShowIf">%s,True%s,text=NEXT</convert>\n\t\t</widget>' % (CS_SRC, nx, ny + 26, PILL_BG, BOLD, CS_KEY, inv))
+		x += [_gate(t, CS_KEY, inv) for t in _next_times(CS_SRC, E(nx + 100, ny + 26, 160, 32), 23, "grey")]
+		x.append(_gate('\t\t<widget source="%s" render="RunningText" position="%d,%d" size="%d,40" transparent="1" zPosition="20" foregroundColor="foreground" font="%s;30" noWrap="1" options="%s">\n\t\t\t<convert type="EventName">NextNameOnly</convert>\n\t\t</widget>' % (CS_SRC, nx, ny + 72, nw, BOLD, G.H_OPTS), CS_KEY, inv))
+		nh = 1000 - (ny + 120)
+		x.append(_gate('\t\t<widget source="%s" render="RunningText" position="%d,%d" size="%d,%d" transparent="1" zPosition="20" foregroundColor="grey" font="Regular;22" options="%s">\n\t\t\t<convert type="EventName">NextDescription</convert>\n\t\t</widget>' % (CS_SRC, nx, ny + 120, nw, nh, G.D_OPTS), CS_KEY, inv))
+	x.append('\t\t<panel name="ButtonTemplate" />')
+	return G.screen(screen_name, title, [l for l in x if l])
+
+
 FONTS = '\t<fonts>\n\t\t<font name="%s" filename="LiberationSans-Bold.ttf" scale="100" />\n\t</fonts>' % BOLD
 
 
@@ -239,6 +328,20 @@ def generate(skin):
 	if ecm:
 		parts.append(ecm.strip("\n"))
 	made.append(_write_pack(skin, "secondinfobar", parts, ["SecondInfoBar", "SecondInfoBarSimple"] + (["SecondInfoBarECM"] if ecm else []), "SecondInfoBar"))
+	# channelselection: ChannelSelection (+ the radio / simple variants with the same list contract); others Classic
+	parts, provides = [], []
+	# only ChannelSelection is Modern; Radio (RDS widgets), Simple / Slim (PiG templates) keep their Classic contract
+	for name, title in (("ChannelSelection", "Channel Selection"),):
+		scr = channelselection(skin, name, title)
+		if scr:
+			parts.append(scr)
+			provides.append(name)
+	for name in ("ChannelSelectionRadio", "SimpleChannelSelection", "SlimChannelSelection"):
+		c = G._classic_screen(skin, "channelselection", name)
+		if c:
+			parts.append(c.strip("\n"))
+			provides.append(name)
+	made.append(_write_pack(skin, "channelselection", parts, provides, "Channel Selection"))
 	return made
 
 
