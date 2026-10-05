@@ -1,5 +1,5 @@
 #!/bin/bash
-# t84: No Poster arrangement on the list screens with a fixed layout (build76): GraphicalEPG (Modern, Graphical Plus)
+# t84: No Poster arrangement on the list screens with a fixed layout (build77): GraphicalEPG (Modern, Graphical Plus)
 # and the PVR cards (Modern, Cinema Shelf, Cover Library; EMC + native MovieSelection) follow the poster of the
 # HIGHLIGHTED event / SELECTED recording: poster card with a real poster, No Poster card otherwise; no placeholder.
 # EPG: highlighted event on HBO (film, poster) and on HRT1 (news, generic).  PVR: USB test folder only (tmedia_pvr.sh:
@@ -7,7 +7,7 @@
 # deleted or moved.  Restore: Classic navy, posters ON, movielist folder as before.
 exec 9>~/cineview-mla/t84.lock; flock -n 9 || { echo "t84 already running"; exit 1; }
 . ~/cineview-mla/p6lib.sh
-NEW=${1:-build76}
+NEW=${1:-build77}
 S=~/cineview-mla/shots/t84; rm -rf $S; mkdir -p $S
 E='python3 /usr/share/enigma2/CineView_FHD_MLA/mla/engine/composer.py'
 HBO="1:0:19:784:C6D4:16E:A00000:0:0:0:"
@@ -40,7 +40,12 @@ for m in modern cinema details; do
   op nativemovies 9; ga ${m}_ms_0; for k in 1 2 3 4; do $RC 108; sleep 4; ga ${m}_ms_$k; done; X; sleep 3
   errs
 done
-ap --theme navy $(model classic)
+# Classic EventView strip picon (t68 / t82: no picon on a fresh screen; hidden ON variant drew the default picon)
+echo "== classic navy posters ON: EventView strip picon"; ap --theme navy $(model classic); restart ""; errs
+for s in "1:0:19:784:C6D4:16E:A00000:0:0:0:" "1:0:19:786:C6D4:16E:A00000:0:0:0:" "$HRT1"; do
+  n=$(echo $s | cut -d: -f4); zap $s; X; $RC 358; sleep 6; ga classic_ev_$n; X; sleep 2
+done
+errs
 if [ -n "$OLDDIR" ]; then R2="python3 /tmp/cvmla/setcfg.py config.movielist.last_videodir=$OLDDIR;"; else R2="sed -i '/^config.movielist.last_videodir=/d' /etc/enigma2/settings;"; fi
 $R "rm -rf $P"; restart "$R2"; st; errs
 echo "movielist folder after: '$($R 'grep "^config.movielist.last_videodir=" /etc/enigma2/settings | cut -d= -f2-')'"
