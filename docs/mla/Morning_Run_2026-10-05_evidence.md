@@ -352,3 +352,30 @@ Status: RUNTIME TESTED. 0 tracebacks, 0 skin errors and 0 crash logs in every ru
 - **Development (Slot 8):** runtime.json `poster_cache` points to the USB. A path on the HDD device is refused
   unless `"allow_hdd": true`. No HDD write has been made. `cache_plan_dryrun.py` (t79) shows the choice for
   development and for a release install without creating anything.
+
+## 10. t77 (rc5) and t78 (poster quality / pool A/B)
+
+- **t77 — DEVICE VERIFIED.**
+  - opkg upgrade rc4 → `1.0.0~rc5` (build70) on Slot 8, after a backup in `state/backup-rc5`.
+  - All five models were applied from the installed package; six sections opened per model.
+  - 0 tracebacks, 0 skin errors, 0 crash logs.
+  - End state: `install ok installed`, skin CineView_FHD_MLA, Classic navy.
+  - rc5 is published on dev/mla-openatv in `release/rc` (SHA256 `c8b6220e…64e5`), with `install-mla-rc5.sh`
+    (image / model / Python / space / sha256 checks before installing; `DRYRUN=1`) and `uninstall-mla.sh`.
+    The dry run on Slot 8 passed. Simulated OpenViX 6.6 and OpenATV 7.6 were refused.
+- **t78 — RUNTIME TESTED.** Large build63 vs current build71, same screens and items, minutes apart, gAccel debug on.
+
+| Poster | Mean diff (R,G,B) | PSNR |
+|---|---|---|
+| EMC Harry Potter (local cover) | 0.02 / 0.02 / 0.02 | 57.1 dB |
+| EMC Ples malog pingvina (identity) | 0.01 / 0.01 / 0.01 | 64.3 dB |
+| EventView HBO 3 (poster) | 0 / 0 / 0 | 68.5 dB |
+| EventView HBO / HBO 2 ("no poster" placeholder) | 1.4 / 0.9 / 1.2 | 36.0 dB |
+
+  - Posters are visually identical. The placeholder differs by about 1 level from the old bitmap (stretched
+    gradient); the frame line and icon are the same.
+  - **Accelerated pool after the same steps:**
+    - Large: 5064 kB used, free 319 kB; posters resident (400×600 937 kB, 208×300 729 kB, 304×450 534 kB, …)
+      plus 1955 kB of native picons; 28 accelAlloc failures.
+    - build71: 3830 kB used, free 1551 kB; **no poster surface in the pool**, only native picons (3565 kB) and
+      816×60; 1 failure (the start-up one).
