@@ -171,7 +171,7 @@ def noposter():
 
 def _errs(text):
 	"""(checks, checks with any traceback / skin error / crash log) from errs() lines."""
-	rows = re.findall(r"tracebacks=(\d+) skin_errors_new=(\d+) accel=\d+ e2pid=\S* crashlogs=(\d+)", text)
+	rows = re.findall(r"tracebacks=(\d+) skin_errors_new=(\d+)(?: accel=\d+)? e2pid=\S* crashlogs=(\d+)", text)
 	return len(rows), sum(1 for a, b, c in rows if int(a) or int(b) or int(c))
 
 
