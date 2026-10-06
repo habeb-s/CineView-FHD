@@ -37,6 +37,7 @@ def strip(p, box, lab, tag, good=None):
     """a horizontal band of a grab (e.g. the InfoBar) centred on a dark card"""
     src = Image.open(p).convert("RGB").crop(box); k = min((W - 40) / src.width, (HH - 140) / src.height)
     src = src.resize((int(src.width * k), int(src.height * k)))
+    im = Image.new("RGB", (W, HH), BG); im.paste(src, ((W - src.width) // 2, 80 + (HH - 80 - src.height) // 2)); return caption_img(im, lab, tag, good)
 def C(t, n, lab, tag, good=True, secs=3.2):
     p = S(t, n)
     if os.path.exists(p):
