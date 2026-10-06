@@ -615,3 +615,20 @@ reinst.sh 22:36).
 - Device test t87 is queued (q87): real OSD alpha (`grab?mode=osd`) inside every information widget, five models ×
   six themes, plus the playback InfoBar; composites over red / yellow / white / dark backgrounds. t87a measures
   build79 for the before/after.
+
+**t85b — RUNTIME TESTED (build79).**
+- Named EventView opened from the GraphicalEPG for a LATER event (RIGHT, then INFO), five models:
+  - HBO's next event (Duh lorda Farquaada / Ples malog pingvina 2: cached poster) → `EventViewSimple`, poster shown;
+  - HRT1's next event (TV kalendar, generic) → `EventViewSimple_CVPosterOff` (log: "Processing screen
+    'EventViewSimple_CVPosterOff'"), full-width text, no placeholder.
+- 0 tracebacks, 0 new skin errors, 0 crash logs in every model.
+
+**SecondInfoBarECM — decision basis.**
+- OpenATV uses it only when "show second infobar" = ECM (`config.usage.show_second_infobar == "3"`,
+  `Screens/InfoBarGenerics.py:2072`); not the default.
+- Its texts are named, Python-owned widgets (`channel` Label, `epg_description` ScrollLabel), and the dialog is
+  instantiated once with the InfoBar.
+- Reflowing them per event would need either resizing the native ScrollLabel at runtime or re-instantiating the
+  dialog on every show. Both change Enigma2 behaviour, so it is **not safe**.
+- State in build79: **no placeholder** (poster `underlay`). Without a poster the poster area stays empty; the
+  information is never covered.
