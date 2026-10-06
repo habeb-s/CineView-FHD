@@ -151,6 +151,21 @@ def _open(what):
 		# CineView Designs exactly as the Plugin Browser entry opens it (plugin main())
 		from Plugins.Extensions.CineViewMLA.plugin import main as designs_main
 		designs_main(_session)
+	elif what in ("msg_info", "msg_yesno", "msg_long", "msg_list"):
+		# sample MessageBoxes (display only; closed by the test with EXIT) - texts of CineView Designs / OpenATV
+		from Screens.MessageBox import MessageBox
+		if what == "msg_info":
+			_session.open(MessageBox, _("Settings saved. The design is unchanged."), MessageBox.TYPE_INFO)
+		elif what == "msg_yesno":
+			_session.open(MessageBox, _("The new design is ready as a trial.\nRestart the GUI now to try it? You will be asked to keep it."), MessageBox.TYPE_YESNO)
+		elif what == "msg_long":
+			_session.open(MessageBox, "\n".join(["CineView MLA display test (nothing is changed)."] + ["Line %d of a long message: the window must grow with the text and stay centred." % i for i in range(1, 9)]), MessageBox.TYPE_ERROR)
+		else:
+			_session.open(MessageBox, _("What do you want to do?"), MessageBox.TYPE_YESNO, list=[("Option %d" % i, i) for i in range(1, 5)])
+	elif what == "setup":
+		# a native OpenATV Setup page (display only, nothing is saved: closed with EXIT) - shared Setup look check
+		from Screens.Setup import Setup
+		_session.open(Setup, "UserInterface")
 	elif what == "rows":
 		# CineView Designs rows: label, shown value, current-row marker, description / status texts -> /tmp/cvmla/rows.txt
 		dlg = _session.current_dialog

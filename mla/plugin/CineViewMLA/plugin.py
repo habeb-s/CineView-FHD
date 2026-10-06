@@ -385,7 +385,8 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 			self.session.open(MessageBox, _("The design could not be applied:\n%s") % err, MessageBox.TYPE_ERROR)
 			return
 		self.session.openWithCallback(self._restart, MessageBox,
-			_("Design %s prepared (trial).\nRestart the GUI now to try it? You will be asked to keep it.") % gid, MessageBox.TYPE_YESNO)
+			_("The new design is ready as a trial.\nRestart the GUI now to try it? You will be asked to keep it."), MessageBox.TYPE_YESNO)
+		print("[CineViewMLA] trial generation %s prepared" % gid)
 
 	def _restart(self, answer):
 		if answer:

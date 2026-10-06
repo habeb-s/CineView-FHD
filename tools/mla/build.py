@@ -1082,6 +1082,51 @@ def apply_package_screens(skin):
 	return done
 
 
+MSGBOX_FIT_APPLET = """		<applet type="onLayoutFinish">
+from enigma import eSize, ePoint, getDesktop
+# CineView MessageBox fitted to its text (MLA_MSGBOX_FIT=1): same widgets, same width; the height follows the text
+# and the answer list, so a one-line message is not a 960x520 box.  Pattern of OpenATV's own MessageBoxTemplate applet.
+th = max(64, min(self[&quot;text&quot;].getSize()[1] + 6, 600))
+self[&quot;text&quot;].instance.resize(eSize(790, th))
+y = 35 + th + 30
+rows = len(self.list) if self.list else 0
+if rows:
+	lh = min(rows, 6) * 50
+	self[&quot;list&quot;].instance.move(ePoint(35, y))
+	self[&quot;list&quot;].instance.resize(eSize(890, lh))
+	y += lh + 10
+h = y + 25
+self.instance.resize(eSize(960, h))
+d = getDesktop(0).size()
+self.instance.move(ePoint((d.width() - 960) // 2, (d.height() - h) // 2))
+		</applet>
+"""
+
+
+def apply_messagebox_fit(skin):
+	"""EXPERIMENT for the user's decision (2026-10-06 night, CineView Designs checklist): the CineView MessageBox is a
+	fixed 960x520 box, so a one-line message leaves a large empty area.  MLA_MSGBOX_FIT=1 (default off) makes the
+	window follow the text + answer list (window background colour instead of the fixed background label)."""
+	p = os.path.join(skin, "core", "common.openatv.xml")
+	x = open(p, encoding="utf-8").read()
+	done = []
+
+	def fix(sm):
+		body = sm.group(0)
+		name = re.match(r'<screen name="([^"]+)"', body).group(1)
+		if name not in ("MessageBox", "MessageBoxModal"):
+			return body
+		bg = '<eLabel position="0,0" size="960,520" backgroundColor="steThemePrimary" zPosition="0" />'
+		assert body.count(bg) == 1, name
+		body = body.replace("\t\t" + bg + "\n", "").replace('title="Message">', 'title="Message" backgroundColor="steThemePrimary">', 1)
+		body = body.replace("\t</screen>", MSGBOX_FIT_APPLET + "\t</screen>")
+		done.append(name)
+		return body
+	x = re.sub(r'<screen name="[^"]+".*?</screen>', fix, x, flags=re.S)
+	open(p, "w", encoding="utf-8").write(x)
+	return done
+
+
 MULTIEPG_DESC_OLD = ('<widget source="Event" render="Label" position="1210,260" size="555,455" font="Regular;23" foregroundColor="foreground" transparent="1" valign="top">\n'
 	'\t\t\t<convert type="EventName">FullDescription</convert>\n\t\t</widget>')
 
@@ -1282,6 +1327,8 @@ def main(golden, comps, control, out):
 	for scr, nb in apply_package_screens(skin):
 		print("PACKAGE %-20s %d colour key(s) only with text%s" % (scr, nb, " + mode title" if scr == "PackageAction" else ""))
 	print("PACKAGE Processing (global busy dialog) added to core/common")
+	if os.environ.get("MLA_MSGBOX_FIT", "0") == "1":
+		print("EXPERIMENT MessageBox fitted to its text:", ", ".join(apply_messagebox_fit(skin)))
 
 	# Themes: the original CineView palette() applied to the golden <colors>; navy == golden (verified).
 	theme = load_theme_module(control)
@@ -1394,6 +1441,13 @@ def main(golden, comps, control, out):
 				src = os.path.join(prev, sec + ".png")
 				if os.path.isfile(src):
 					Image.open(src).convert("RGB").resize((720, 405)).save(os.path.join(skin, "layouts", sec, "classic", "preview.png"))
+			# classic-lines = the Classic EventView with the line-by-line description: same still picture
+			# (it was copied before the previews existed -> "No preview" in CineView Designs, t98 2026-10-06)
+			lines_prev = os.path.join(skin, "layouts", "eventview", "classic-lines", "preview.png")
+			classic_prev = os.path.join(skin, "layouts", "eventview", "classic", "preview.png")
+			if not os.path.isfile(lines_prev) and os.path.isfile(classic_prev):
+				shutil.copy2(classic_prev, lines_prev)
+				print("PREVIEW eventview/classic-lines <- eventview/classic")
 		for key in theme.THEMES:
 			pal = theme.palette(key)
 			rgb = lambda h: tuple(int(h[i:i + 2], 16) for i in (3, 5, 7))
