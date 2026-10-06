@@ -958,3 +958,47 @@ reboot / quick five-model check + receiver-captured video, Stage C release only 
   referenced nowhere) - moved to `/media/usb/cineview-mla/state/dev-leftovers-20261006/`; every CineViewMLA file on
   the receiver is now owned by the package; the development screen-open tool is removed.
 - Release notes: `docs/mla/RELEASE_NOTES_1.0.0.md`. Publication (Stage C) waits for the user's approval.
+
+## 18. Plugin / package management screens (user 22:00) — build90, 1.0.0 re-packaged
+**Discovery (receiver, live dialog stack — devtool `stack`, t96/t97 before-run on build88):**
+- Background screen: `Screens.PluginBrowser.PackageAction`, skinName `['PackageAction','PluginAction']`, opened by
+  PluginBrowser (green = MODE_INSTALL "Install Plugins", red = MODE_REMOVE, yellow = MODE_UPDATE). Widgets: Title,
+  description (Label), plugins (List / TemplatedMultiContent), quickselect, key_red 'Close', key_green / key_yellow
+  (empty while busy), key_help 'HELP'.
+- Small window: NOT a MessageBox and not in `dialog_stack` — the global `Screens.Processing.ProcessingScreen`
+  (skinName "Processing", created once by `Processing(session)` in StartEnigma; widgets `progress` ProgressBar,
+  `description` Label, source Title). CineView had no "Processing" screen → OpenATV's embedded 1280×720 fallback with
+  the default window border/title was drawn.
+- Duplicate text: PackageAction puts "Downloading plugin information. Please wait..." in its own `description`
+  (PluginBrowser.py:886) and `layoutFinished` passes the same text to `setWaiting()` (:1019) →
+  `Processing.instance.setDescription(text)` (:1442).
+- Empty green/yellow bars: CineView's always-drawn `cineviewKeyBar_*` eLabels under the conditional key labels.
+- Black background: the user's own theme choice "black" (21:51), not a defect.
+- Other users of the same Processing dialog: feed update / feed reset (PluginBrowser / PluginBrowserSetup),
+  RestartNetwork, ServiceScan, LocaleSelection, NetworkSetup, SkinSelection, WizardStart, SoftcamSetup, NetworkServices.
+
+**Fix (skin + CineView plugin only; no enigma2 file touched):**
+- `tools/mla/build.py` `apply_package_screens`: CineView `<screen name="Processing">` (1000×204, theme panel colour,
+  gold title + accent, gold progress on a track, description last because `setDescription()` grows the window by the
+  text height and re-centres it); PackageAction / PackageActionLog colour keys drawn only while they have a text
+  (bars removed, labels opaque); PackageAction shows its mode (Install / Remove / Update Plugins) in the header.
+- `mla/plugin/CineViewMLA/plugin.py` `_install_package_waiting`: wraps `PackageAction.setWaiting` while CineView MLA is
+  active — while the Processing dialog is up the screen's own description and the HELP label are cleared; on
+  `setWaiting(None)` they come back unless the screen set a new text (package count / error). Display only; action
+  maps, opkg, keys unchanged.
+- **Rounded window rejected by the receiver:** build89 had `cornerRadius="20"` on Processing. Device: PackageAction
+  stayed unpainted (video through; header, background, dividers and Close missing; only widgets that changed later
+  were drawn). Isolation on the receiver: PackageAction XML of build88 + rounded Processing → still broken; same
+  Processing without cornerRadius → complete (exp v1). Cause: the rounded Processing window shown from
+  `PackageAction.layoutFinished` before the screen's first paint. build90 = square window.
+
+**Tests (t97, receiver, Slot 8, theme black; nothing installed or removed — lists only):**
+- before (build88): Install busy = default Processing + duplicated text + empty green/yellow + HELP; Remove / Update /
+  Log: empty bars + HELP; Processing multi-line = default window. 0 tracebacks, 0 skin errors, 0 crash logs.
+- after (build90 package, SHA256 `8fb44a69e9af903ecc197f20828cfcd87448194dc729f11d8ccd31c198242516`): Install busy:
+  stack `description ''`, `key_help ''`, one CineView Processing window; done: "579 packages installable." + HELP back;
+  Remove "66 packages installed."; Update to completion; Plugin Action Log (Close + HELP); Processing one-line and
+  multi-line (feed texts, devtool display only) over Plugin Browser; Plugin Browser intact after hide.
+  0 tracebacks, 0 skin errors, 0 crash logs; hook "package waiting installed" in the log.
+- Test-harness note: the red key opened Remove and its key event closed it at once (red = Close there); Remove is
+  opened through the devtool (native `PackageAction(MODE_REMOVE)`) in t97.
