@@ -156,8 +156,13 @@ def screen(skin, cols, body):
 	for e in els:
 		if not e["r"] or not is_info(e["kind"], e["a"], e["inner"]):
 			continue
-		# an information widget's OWN translucent fill (e.g. a progress track #B0FFFFFF) is left as it is: once an opaque
-		# layer is under it, its blend no longer depends on the video (making it opaque would change its look)
+		# an information widget that paints its OWN background (transparent != "1") REPLACES the pixels under it (no
+		# blending): a translucent theme colour there punches through any opaque card (t87, Classic SIB labels with
+		# backgroundColor="steSecondInfoBG": alpha 135 inside their rectangles on build81) -> its opaque twin.
+		# Literal translucent fills (e.g. a progress track #B0FFFFFF) are only reported.
+		a = e["a"]
+		if a.get("transparent") != "1" and "backgroundColor" in a and (alpha(a["backgroundColor"], cols) or 0) > 0:
+			own.append(e)
 		cx, cy = e["r"][0] + e["r"][2] // 2, e["r"][1] + e["r"][3] // 2
 		opaque, top = False, None
 		for le, kind, al in layers:
@@ -200,8 +205,12 @@ def screen(skin, cols, body):
 				inserts.append((le, dict(r=[x0, y0, x1 - x0, y1 - y0], z=z, color=col, radius="14", before=False)))
 				report.append(("plate", col, "%d,%d %dx%d" % (x0, y0, x1 - x0, y1 - y0)))
 	for e in own:
-		edits[id(e)] = e
-		report.append(("own-bg", e["a"].get("source") or e["a"].get("name"), e["a"]["backgroundColor"]))
+		bg = e["a"]["backgroundColor"]
+		if bg in cols:
+			edits[id(e)] = e
+			report.append(("own-bg", e["a"].get("source") or e["a"].get("name") or "?", bg + " -> Solid"))
+		else:
+			report.append(("own-lit", e["a"].get("source") or e["a"].get("name") or "?", bg + " (kept)"))
 	if not edits and not inserts:
 		return body, report
 	out, last = [], 0

@@ -70,7 +70,7 @@ def main(build, theme="navy"):
 				if name not in SCREENS:
 					continue
 				sa = attrs(m.group(2))
-				layers, info = [], []
+				layers, info, info_bg = [], [], {}
 				for t in TAG.finditer(m.group(3)):
 					kind, a = t.group(1), attrs(t.group(2))
 					r = rect(a)
@@ -91,6 +91,8 @@ def main(build, theme="navy"):
 						if render == "Label" and "text=" in (t.group(4) or "") and not re.search(r'<convert type="(?!CineViewMLAShowIf)', t.group(4) or ""):
 							continue  # empty decoration label
 						info.append((a.get("source") or a.get("name"), r, z))
+						if a.get("transparent") != "1" and a.get("backgroundColor"):
+							info_bg[(a.get("source") or a.get("name"), r)] = a["backgroundColor"]
 				bad = []
 				for nm, r, z in info:
 					cx, cy = r[0] + r[2] // 2, r[1] + r[3] // 2
@@ -108,6 +110,11 @@ def main(build, theme="navy"):
 									opaque = True
 							except Exception:
 								pass
+					own = alpha_of(info_bg.get((nm, r), ""), cols) if info_bg.get((nm, r)) else None
+					if own is not None and own > 0:
+						opaque = False  # its own translucent fill replaces the pixels under it
+						bad.append("%s@%d,%d(own %s)" % (nm, r[0], r[1], info_bg[(nm, r)]))
+						continue
 					bg = alpha_of(sa.get("backgroundColor", ""), cols)
 					if bg == 0:
 						opaque = True
