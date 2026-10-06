@@ -6,7 +6,7 @@ Scope for 1.0.0 (user 06:13): Vu+ Duo 4K SE on OpenATV only. DM900 / other devic
 |---|---|
 | Last build | build79 (placeholder audit: 0 screens); rc7 = build77 is published and installed |
 | Receiver | Slot 8, Vu+ Duo 4K SE, OpenATV 8.0.1; rc7 package + build79 deployed by t85 |
-| Queue on ai-agent | t85 (build79 picons + placeholders, 5 models) → q85b: t85b (named EventView from the EPG, later event) |
+| Queue on ai-agent | t85 → t85b → q86: t81d (build79 attribution) → rc8 (build79) → t86 lifecycle → t77 → q87: t87a / t87 (opaque info areas) |
 
 ## Task list to the final RC (user report 06:13)
 | # | Task | Status |
@@ -20,6 +20,7 @@ Scope for 1.0.0 (user 06:13): Vu+ Duo 4K SE on OpenATV only. DM900 / other devic
 | 7 | Final QA: 5 models × 6 sections × ON/OFF × 6 themes | after rc8 |
 | 8 | 25-min performance run on rc8 | after QA |
 | 9 | Report + video + release files | last |
+| 11 | Opaque information areas on the InfoBar family (user 06:42): `infoplate.py` + `<token>Solid` theme twins; build81. Static audit 0 non-opaque. Device: t87a (build79 before) → t87 (build81, 5 models × 6 themes, real OSD alpha + red/yellow/white/dark composites) | IMPLEMENTED — NOT RUNTIME VERIFIED (q87 queued) |
 | 10 | Explicit poster-cache delete option | DONE (`uninstall-mla.sh cache`, CONFIRM=yes; only MLA's id/ and sz*/), tested on /tmp |
 
 ## Observations (not blocking)
