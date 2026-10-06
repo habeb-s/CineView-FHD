@@ -147,6 +147,23 @@ def _open(what):
 			for r in getattr(dlg, "renderer", []):
 				out.append("   renderer %-20s source=%s" % (r.__class__.__name__, getattr(getattr(r, "source", None), "__class__", type(None)).__name__))
 		open("/tmp/cvmla/stack.txt", "w").write("\n".join(out) + "\n")
+	elif what in ("processing", "processing2"):
+		# display only (2026-10-06): the global Processing dialog with the native texts of the feed update
+		# (one line) / feed reset (several lines - the window grows with the text), shown 6 s then hidden.
+		# No opkg command runs, no feed is touched.
+		from Screens.Processing import Processing
+		text = _("Please wait while feeds are updated...") if what == "processing" else \
+			"%s\n\n%s" % (_("Please wait while the feeds are reset (cleared and reloaded)..."), _("Warning: Canceling this process will leave the feeds in an incomplete and unusable state!"))
+		Processing.instance.setDescription(text)
+		Processing.instance.showProgress(endless=True)
+		t = eTimer()
+
+		def hide_processing():
+			Processing.instance.hideProgress()
+			_keep[:] = []
+		t.callback.append(hide_processing)
+		t.start(6000, True)
+		_keep[:] = [t]
 	elif what in ("accel_on", "accel_off"):
 		from enigma import setACCELDebug
 		setACCELDebug(1 if what == "accel_on" else 0)
