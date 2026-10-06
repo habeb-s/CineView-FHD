@@ -90,6 +90,16 @@ def _open(what):
 		config.movielist.last_videodir.value = "/media/usb/cineview-mla/testmedia/"
 		_session.open(MovieSelection, None)  # the value stays on USB until the test restores it (MovieSelection may
 		# read it after __init__); the test restarts Enigma2 with the saved value
+	elif what == "play":
+		# the native MoviePlayer on the USB test clip, opened exactly as InfoBar.movieSelected opens it (t87: the
+		# playback InfoBar of the skin).  USB test media only; STOP returns (config.usage.on_movie_stop default).
+		import glob
+		from enigma import eServiceReference
+		from Screens.InfoBar import MoviePlayer
+		clips = sorted(glob.glob("/media/usb/cineview-mla/testmedia/*CineView MLA test clip.ts"))
+		if clips:
+			ref = eServiceReference(1, 0, clips[0])
+			_session.open(MoviePlayer, ref, slist=ib.servicelist, lastservice=_session.nav.getCurrentlyPlayingServiceOrGroup())
 	elif what == "movies":
 		ib.showMovies()  # native PVR key path (MovieSelection; listing only, nothing is played)
 	elif what == "vertical":
