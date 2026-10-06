@@ -205,8 +205,37 @@ def screen(skin, cols, body):
 				z = (le["z"] if le else zmin - 1)
 				inserts.append((le, dict(r=[x0, y0, x1 - x0, y1 - y0], z=z, color=col, radius="14", before=False)))
 				report.append(("plate", col, "%d,%d %dx%d" % (x0, y0, x1 - x0, y1 - y0)))
+	def base_under(e):
+		# opaque colour of the region under e's centre after this pass: topmost colour layer / new plate below it;
+		# None when that topmost layer stays translucent (outer design layer, nothing to match)
+		cx, cy = e["r"][0] + e["r"][2] // 2, e["r"][1] + e["r"][3] // 2
+		best = None
+		for le, kind, al in layers:
+			lr = le["r"]
+			if kind == "color" and le["z"] < e["z"] and lr[0] <= cx < lr[0] + lr[2] and lr[1] <= cy < lr[1] + lr[3]:
+				if best is None or le["z"] >= best[1]:
+					tok = le["a"]["backgroundColor"]
+					best = ((solid(tok, cols) if id(le) in edits else tok) if (al == 0 or id(le) in edits) else None, le["z"])
+		for le, p in inserts:
+			lr = p["r"]
+			if p["z"] < e["z"] and lr[0] <= cx < lr[0] + lr[2] and lr[1] <= cy < lr[1] + lr[3]:
+				if best is None or p["z"] >= best[1]:
+					best = (p["color"], p["z"])
+		return best[0] if best else None
+
+	clear = set()  # fully transparent own fills (alpha FF) handled here
 	for e in own:
 		bg = e["a"]["backgroundColor"]
+		if alpha(bg, cols) == 255:
+			# 'transparent' (#FF000000) painted by the widget itself punches a fully transparent hole into the opaque
+			# region under it; its 'Solid' twin would be opaque BLACK (t87c: PVRState 'state' on the playback bar).
+			# -> the region's own opaque colour (same look as the panel, no hole).
+			b = base_under(e)
+			if b:
+				mixes[id(e)] = b
+				clear.add(id(e))
+				report.append(("own-clear", e["a"].get("source") or e["a"].get("name") or "?", "%s -> %s" % (bg, b)))
+			continue
 		if bg in cols:
 			edits[id(e)] = e
 			report.append(("own-bg", e["a"].get("source") or e["a"].get("name") or "?", bg + " -> Solid"))
@@ -237,7 +266,17 @@ def screen(skin, cols, body):
 		if not r or id(e) in edits or "backgroundColor" not in a or a.get("transparent") == "1":
 			continue
 		bg = a["backgroundColor"]
-		if bg not in cols or (alpha(bg, cols) or 0) == 0:
+		if bg not in cols or (alpha(bg, cols) or 0) == 0 or id(e) in mixes:
+			continue
+		if alpha(bg, cols) == 255:
+			# fully transparent fill above an opaque region: a hole -> the region's colour, never the black twin.
+			# Only text-bearing elements: a bare eLabel hole can be a deliberate video window (kept).
+			if e["kind"] == "eLabel" and "text" not in a:
+				continue
+			b = base_under(e)
+			if b and b != bg:
+				mixes[id(e)] = b
+				report.append(("fill-clear", a.get("source") or a.get("name") or e["kind"], "%s -> %s" % (bg, b)))
 			continue
 		cx, cy = r[0] + r[2] // 2, r[1] + r[3] // 2
 		for rr, rz in regions:

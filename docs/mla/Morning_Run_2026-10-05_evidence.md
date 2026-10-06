@@ -712,12 +712,17 @@ reinst.sh 22:36).
       (`mixB0FFFFFF_steThemeOverlay`, same look over the band).
   - The audit now checks own fills too. **build83 static audit: 0 not opaque in every InfoBar-family screen.**
   - t87c (build83, five models × six themes) is queued.
-  - The build81 run was stopped after Classic (6 themes) and Details green/navy, because build83 superseded it. Its
-    results: Classic IB opaque in all six themes; Classic SIB 54 of 56 not opaque in all six (min 135, as above);
-    Details IB/SIB opaque.
-  - **Harness fault found in that run:** the MoviePlayer grabs were empty (OSD alpha 0 everywhere). The t86 reboot
-    had cleared `/tmp/cvmla` on the receiver, so the `play` trigger file was never written and nothing was opened.
-    The directory was recreated before t87c reached its first MoviePlayer step, and `op()` now creates it itself.
+  - **CORRECTION (harness fault): the "build81" run did not run build81.** The t86 reboot had cleared
+    `/tmp/cvmla` on the receiver. `deploy.sh` (set -e) writes its file list there first, so every deploy after the
+    reboot aborted silently, and t87 hid the output. The receiver kept running build79 (rc8). Proof: the deployed
+    Classic SIB XML still had `steSecondInfoBG` where build83 has `steSecondInfoBGSolid` plus plates.
+    - The "build81 Classic SIB still 135" result above is therefore build79 data and says nothing about build81.
+      The build82/83 own-fill fix still stands on its own reasoning (an own translucent fill replaces the pixels),
+      and it is checked on the device now.
+    - The same missing directory explains the empty MoviePlayer grabs (the `play` trigger was never written).
+    - Fixes: `deploy.sh` creates `/tmp/cvmla`; `op()` too; t87 now compares the md5 of a deployed layout file with
+      the build and aborts on a mismatch.
+    - The first t87c start (also affected) was stopped; t87c restarted on build83 with the verified deploy.
 - Playback InfoBar:
   - On this receiver the PVR key opens EMC, whose player uses EMC's own skin file
     (`EnhancedMovieCenter/CoolSkin/EMCMediaCenter_1080.xml`), not a CineView screen.
