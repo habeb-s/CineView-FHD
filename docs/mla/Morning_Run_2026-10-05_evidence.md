@@ -838,6 +838,16 @@ made from the original file, original kept as it is; visible size, quality and l
   - One leak in 216 is a low base rate, so 0 / 216 alone is not strong proof. **t93** (queued) repeats only the
     trigger, A/B: the first opening after an Enigma2 restart, Purple, grabs at 3.6 / 3.9 / 4.2 / 4.5 / 5.0 s,
     15 restarts on build86 vs 15 on build87.
+  - **t93 result:** build86 0 / 75 grabs, build87 0 / 75 grabs, 0 errors. The focused trigger did NOT reproduce the
+    leak on the old layouts either, so the condition is narrower than "first opening after a restart": both real
+    occurrences came early after a cold start (t90: first Purple opening after a receiver REBOOT) or in a long
+    session (t87e). The A/B therefore cannot separate the builds statistically.
+  - **Conclusion (honest):** observed 2 times on rc9 layouts (t87e, t90), 0 times on build87 in 216 + 75 grabs. The
+    fix removes the dependence by construction - the leaking rows lie inside the RunningText rectangle, and with
+    `transparent="0"` + the region colour the widget itself paints that whole rectangle opaque, whatever was drawn
+    below it - but the rarity of the event means its absence on build87 is not, by itself, statistical proof.
+    Status: ROOT CAUSE IDENTIFIED (trigger: RunningText scroll start; Enigma2's internal repaint order not proven),
+    fix IMPLEMENTED and RUNTIME TESTED without regression; event too rare to prove absence by counting.
 
 **3. Poster cache (final policy).**
 - Runtime (unchanged, already shipped): `_mla_cache_plan` = 1. `/media/hdd/poster` when /media/hdd is a real
