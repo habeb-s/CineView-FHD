@@ -147,6 +147,32 @@ def _open(what):
 			for r in getattr(dlg, "renderer", []):
 				out.append("   renderer %-20s source=%s" % (r.__class__.__name__, getattr(getattr(r, "source", None), "__class__", type(None)).__name__))
 		open("/tmp/cvmla/stack.txt", "w").write("\n".join(out) + "\n")
+	elif what == "designs":
+		# CineView Designs exactly as the Plugin Browser entry opens it (plugin main())
+		from Plugins.Extensions.CineViewMLA.plugin import main as designs_main
+		designs_main(_session)
+	elif what == "rows":
+		# CineView Designs rows: label, shown value, current-row marker, description / status texts -> /tmp/cvmla/rows.txt
+		dlg = _session.current_dialog
+		out = ["screen %s.%s" % (dlg.__class__.__module__, dlg.__class__.__name__)]
+		try:
+			lst = dlg["config"].list
+			cur = dlg["config"].getCurrentIndex()
+			for i, e in enumerate(lst):
+				try:
+					val = e[1].getText()
+				except Exception as err:
+					val = "?(%s)" % err
+				out.append("%s%2d  %-40s | %s" % (">" if i == cur else " ", i, e[0], val))
+		except Exception as err:
+			out.append("(no config list: %s)" % err)
+		for k in ("description", "status", "key_red", "key_green", "key_yellow", "key_blue", "key_menu", "key_help", "Title"):
+			if k in dlg:
+				try:
+					out.append("%-12s %r" % (k, dlg[k].getText()))
+				except Exception:
+					pass
+		open("/tmp/cvmla/rows.txt", "w").write("\n".join(out) + "\n")
 	elif what in ("processing", "processing2"):
 		# display only (2026-10-06): the global Processing dialog with the native texts of the feed update
 		# (one line) / feed reset (several lines - the window grows with the text), shown 6 s then hidden.
