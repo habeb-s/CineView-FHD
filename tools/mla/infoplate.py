@@ -175,7 +175,7 @@ def screen(skin, cols, body):
 				al = None if al is None else 255 - al
 			if al == 0:
 				opaque = True
-				covered.append((e, le["z"]))  # info widget already on an opaque layer (pill / card) at that z
+				covered.append((e, le["z"], le["r"]))  # info widget already on an opaque layer (pill / card): its z and rect
 				break
 			if al is not None and (top is None or le["z"] > top[0]["z"]):
 				top = (le, kind)
@@ -208,8 +208,9 @@ def screen(skin, cols, body):
 				grown = True
 				while grown:
 					grown = False
-					for ce, cz in covered:
-						cr = ce["r"]
+					for ce, cz, lrr in covered:
+						# the pill's own rectangle (the caption "SNR" and the value share one pill), else the widget
+						cr = lrr if lrr[3] <= 1.5 * b[3] else ce["r"]
 						ov = min(b[1] + b[3], cr[1] + cr[3]) - max(b[1], cr[1])
 						gap = max(cr[0] - (b[0] + b[2]), b[0] - (cr[0] + cr[2]))
 						inside = b[0] <= cr[0] and cr[0] + cr[2] <= b[0] + b[2]
