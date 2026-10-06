@@ -1,0 +1,135 @@
+== 0. backup /media/usb/cineview-mla/state/backup-t95-final100b
+cineview_mla-state.tgz
+settings
+version
+   package: Version: 1.0.0 Status: install ok installed 
+   skin: config.skin.primary_skin=CineView_FHD_MLA/skin.xml
+   skin dir: /usr/share/enigma2/CineView_FHD_MLA | state dir: /etc/enigma2/cineview_mla | runtime.json: /etc/enigma2/cineview_mla/runtime.json
+   active: generations/g000021 selection: classic
+   poster cache /media/usb/cineview-mla/dev-cache/reference/poster: 1082 files
+   boot: rootsubdir=linuxrootfs8 e2pid=19371
+-rw-r--r--    1 root     root       4650576 Oct  6 21:03 /home/root/cvmla/t95.ipk
+622c69b026eaa8d6fa0e87784ec5321c76e15eab017c3499998e81adbb502545  /home/root/cvmla/t95.ipk
+== 1. install the final 1.0.0 with Enigma2 running
+new e2 pid=26624 @21:04:01
+webif up @21:04:28
+Removing obsolete file /usr/lib/enigma2/python/Components/Renderer/CineViewMLAPosterX.py.
+Removing obsolete file /usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/__init__.py.
+Removing obsolete file /usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/plugin.py.
+Configuring enigma2-plugin-skins-cineview-fhd-mla.
+   enigma2 kept running during opkg
+new e2 pid=27772 @21:05:08
+webif up @21:05:32
+   package: Version: 1.0.0 Status: install ok installed 
+   skin: config.skin.primary_skin=CineView_FHD_MLA/skin.xml
+   skin dir: /usr/share/enigma2/CineView_FHD_MLA | state dir: /etc/enigma2/cineview_mla | runtime.json: /etc/enigma2/cineview_mla/runtime.json
+   active: generations/g000023 selection: classic
+   poster cache /media/usb/cineview-mla/dev-cache/reference/poster: 1082 files
+   boot: rootsubdir=linuxrootfs8 e2pid=27772
+   tracebacks=0 skin_errors_new=0 e2pid=27772 crashlogs=0
+   plugin load errors: 0 (0 CineView)
+== 2. files
+__init__.pyc
+plugin.png
+plugin.pyc
+version.json
+   .py left in plugin / components: 1
+   CineViewMLA .pyc: 14
+{
+ "version": "1.0.0",
+ "build": "build88",
+ "commit": "2b18a7c",
+ "date": "2026-10-06",
+ "python": "3.14",
+ "copyright": "Design & Development by habeb-s (c) 2026"
+}
+Version: 1.0.0
+Status: install ok installed
+== 3. Plugin Browser + CineView Designs
+cap 3_pluginbrowser png-ok
+   frames 3_pluginbrowser: 16
+   frames 3_pb_select: 10
+cap 3_cineviewdesigns png-ok
+   frames 3_cineviewdesigns: 26
+== 4. quick pass, five models
+-- classic
+new e2 pid=29665 @21:06:50
+webif up @21:07:14
+   tracebacks=0 skin_errors_new=0 e2pid=29665 crashlogs=0
+   frames 4_classic_1ib: 15
+   frames 4_classic_2sib: 28
+   frames 4_classic_3cs: 23
+   tracebacks=0 skin_errors_new=0 e2pid=29665 crashlogs=0
+-- details
+new e2 pid=31677 @21:08:44
+webif up @21:09:10
+   tracebacks=0 skin_errors_new=0 e2pid=31677 crashlogs=0
+   frames 4_details_1ib: 18
+   frames 4_details_2sib: 26
+   frames 4_details_3cs: 23
+   tracebacks=0 skin_errors_new=0 e2pid=31677 crashlogs=0
+-- cinema
+new e2 pid=1394 @21:10:42
+webif up @21:11:07
+   tracebacks=0 skin_errors_new=0 e2pid=1394 crashlogs=0
+   frames 4_cinema_1ib: 12
+   frames 4_cinema_2sib: 27
+   frames 4_cinema_3cs: 22
+   tracebacks=0 skin_errors_new=0 e2pid=1394 crashlogs=0
+-- modern
+new e2 pid=3590 @21:12:38
+webif up @21:13:02
+   tracebacks=0 skin_errors_new=0 e2pid=3590 crashlogs=0
+   frames 4_modern_1ib: 17
+   frames 4_modern_2sib: 26
+   frames 4_modern_3cs: 26
+   tracebacks=0 skin_errors_new=0 e2pid=3590 crashlogs=0
+-- minimal
+new e2 pid=5696 @21:14:32
+webif up @21:14:57
+   tracebacks=0 skin_errors_new=0 e2pid=5696 crashlogs=0
+   frames 4_minimal_1ib: 14
+   frames 4_minimal_2sib: 27
+   frames 4_minimal_3cs: 26
+   tracebacks=0 skin_errors_new=0 e2pid=5696 crashlogs=0
+new e2 pid=8018 @21:16:27
+webif up @21:16:53
+== 5. reboot
+rootsubdir=linuxrootfs8
+   reboot issued 18:17:21
+   webif up 18:19:31
+   package: Version: 1.0.0 Status: install ok installed 
+   skin: config.skin.primary_skin=CineView_FHD_MLA/skin.xml
+   skin dir: /usr/share/enigma2/CineView_FHD_MLA | state dir: /etc/enigma2/cineview_mla | runtime.json: /etc/enigma2/cineview_mla/runtime.json
+   active: generations/g000029 selection: classic
+   poster cache /media/usb/cineview-mla/dev-cache/reference/poster: 1085 files
+   boot: rootsubdir=linuxrootfs8 e2pid=2660
+   tracebacks=0 skin_errors_new=0 e2pid=2660 crashlogs=0
+   plugin load errors: 0 (0 CineView)
+new e2 pid=4183 @21:20:02
+webif up @21:20:27
+cap 5_pluginbrowser png-ok
+   frames 5_pluginbrowser: 17
+   frames 5_pb_select: 11
+cap 5_cineviewdesigns png-ok
+   frames 5_cineviewdesigns: 26
+== 6. preinst Python check
+   with python3 = 3.12 (fake, /tmp only):
+CineView MLA: image openatv 8.0.1 on vuduo4kse
+CineView MLA: this package is built for Python 3.14 (OpenATV 8.0.x); this image has Python '3.12'. Stopped - nothing was changed.
+   exit 1
+   with the real python3:
+CineView MLA: image openatv 8.0.1 on vuduo4kse
+   exit 0
+== restore
+new e2 pid=5989 @21:21:45
+webif up @21:22:08
+   package: Version: 1.0.0 Status: install ok installed 
+   skin: config.skin.primary_skin=CineView_FHD_MLA/skin.xml
+   skin dir: /usr/share/enigma2/CineView_FHD_MLA | state dir: /etc/enigma2/cineview_mla | runtime.json: /etc/enigma2/cineview_mla/runtime.json
+   active: generations/g000029 selection: classic
+   poster cache /media/usb/cineview-mla/dev-cache/reference/poster: 1085 files
+   boot: rootsubdir=linuxrootfs8 e2pid=5989
+   tracebacks=0 skin_errors_new=0 e2pid=5989 crashlogs=0
+   plugin load errors: 0 (0 CineView)
+T95_DONE
