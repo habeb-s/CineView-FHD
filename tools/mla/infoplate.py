@@ -16,7 +16,7 @@ decides the fix:
     rectangle is put under it (the PNG keeps its look, nothing shows through);
   * a large translucent layer (scrim / gradient over the whole picture) or no layer at all: the scrim keeps its
     transparency; opaque plates are put only behind the information groups (union of the group's widgets + a margin);
-  * information widgets that paint their own translucent background (transparent="0") get the opaque twin.
+  * an information widget's own translucent fill (progress track, pill) stays: it sits on an opaque layer now.
 Positions and sizes of the approved elements are never changed.
 usage: run(skin) -> [(file, screen, action, detail)]"""
 import os
@@ -90,6 +90,23 @@ def png_alpha_at(skin, px, lr, x, y):
 	return im.getpixel((min(max(sx, 0), im.width - 1), min(max(sy, 0), im.height - 1)))[3]
 
 
+def rows(boxes):
+	"""Plates on one row (vertical overlap > 50 % of the lower one) become one band: no patchwork of small plates."""
+	boxes = sorted(boxes, key=lambda b: b[1])
+	out = []
+	for b in boxes:
+		for o in out:
+			ov = min(o[1] + o[3], b[1] + b[3]) - max(o[1], b[1])
+			if ov > 0.5 * min(o[3], b[3]):
+				x0, y0 = min(o[0], b[0]), min(o[1], b[1])
+				x1, y1 = max(o[0] + o[2], b[0] + b[2]), max(o[1] + o[3], b[1] + b[3])
+				o[:] = [x0, y0, x1 - x0, y1 - y0]
+				break
+		else:
+			out.append(list(b))
+	return out
+
+
 def cluster(rs):
 	boxes = [list(r) for r in rs]
 	changed = True
@@ -139,9 +156,8 @@ def screen(skin, cols, body):
 	for e in els:
 		if not e["r"] or not is_info(e["kind"], e["a"], e["inner"]):
 			continue
-		a = e["a"]
-		if a.get("transparent") != "1" and "backgroundColor" in a and (alpha(a["backgroundColor"], cols) or 0) > 0:
-			own.append(e)
+		# an information widget's OWN translucent fill (e.g. a progress track #B0FFFFFF) is left as it is: once an opaque
+		# layer is under it, its blend no longer depends on the video (making it opaque would change its look)
 		cx, cy = e["r"][0] + e["r"][2] // 2, e["r"][1] + e["r"][3] // 2
 		opaque, top = False, None
 		for le, kind, al in layers:
@@ -177,7 +193,7 @@ def screen(skin, cols, body):
 		else:
 			col = solid(le["a"]["backgroundColor"], cols) if (le and kind == "color") else "steThemePanel"
 			zmin = min(w["z"] for w in ws)
-			for b in cluster([w["r"] for w in ws]):
+			for b in rows(cluster([w["r"] for w in ws])):
 				x0, y0 = max(0, b[0] - MARGIN), max(0, b[1] - MARGIN)
 				x1, y1 = min(W, b[0] + b[2] + MARGIN), min(H, b[1] + b[3] + MARGIN)
 				z = (le["z"] if le else zmin - 1)
