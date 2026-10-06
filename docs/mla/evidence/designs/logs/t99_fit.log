@@ -1,0 +1,10 @@
+cap M_msg_info
+cap M_msg_yesno
+cap M_msg_long
+cap M_msg_list
+cap S_setup_userinterface
+cap D_eventview_row
+cap D_eventview_preview
+cap D_profiles_title
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+T99_DONE

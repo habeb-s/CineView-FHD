@@ -1,0 +1,111 @@
+backup /media/usb/cineview-mla/state/backup-t98b-20261006-232347
+selection before: black channelselection=classic,epg=classic,eventview=classic-lines,infobar=classic,pvr=classic,secondinfobar=classic
+== E1 poster switch (Main InfoBar)
+> 7  Posters - Main InfoBar                   | Yes
+cap E1_row
+   value now: No
+cap E1_saved_msg
+config.plugins.cineviewmla.poster_infobar=False
+cap E1_infobar_noposter
+> 7  Posters - Main InfoBar                   | No
+   value back: Yes
+(poster_infobar: default = Yes)
+cap E1_infobar_poster
+== E2 Second InfoBar timeout
+>16  Second InfoBar timeout                   | 20 Seconds
+   20 Seconds -> No timeout
+cap E2_row
+config.usage.second_infobar_timeout=0
+>16  Second InfoBar timeout                   | No timeout
+   back: 20 Seconds
+config.usage.second_infobar_timeout=20
+== E3 profiles
+cap E3_menu
+cap E3_keyboard
+cap E3_saved
+{
+ "layouts": {
+  "channelselection": "classic",
+  "epg": "classic",
+  "eventview": "classic-lines",
+  "infobar": "classic",
+  "pvr": "classic",
+  "secondinfobar": "classic"
+ },
+ "poster_engine": "identity",
+ "posters": {
+  "channelselection": true,
+  "epg": true,
+  "eventview": true,
+  "infobar": true,
+  "pvr": true,
+  "secondinfobar": true
+ },
+ "schema": 1,
+ "second_infobar_timeout": "20",
+ "servermode": "profile",
+ "show_second_infobar": "2",
+ "theme": "black"
+}cap E3_menu2
+cap E3_pick
+cap E3_loaded
+   after RED: black channelselection=classic,epg=classic,eventview=classic-lines,infobar=classic,pvr=classic,secondinfobar=classic
+cap E3_menu_delete
+cap E3_confirm
+   profile deleted
+== E4 model
+cap E4_models
+cap E4_model_msg
+  1  Design - Main InfoBar                    | CineView Details
+  2  Design - Second InfoBar                  | CineView Details
+  3  Design - Channel Selection               | CineView Poster List
+  4  Design - EPG                             | CineView Graphical Plus
+  5  Design - PVR / Movies                    | CineView Cover Library
+  6  Design - Event View                      | CineView Details Card
+   after RED: black channelselection=classic,epg=classic,eventview=classic-lines,infobar=classic,pvr=classic,secondinfobar=classic
+== E5 factory question
+cap E5_factory_q
+   after default No: black channelselection=classic,epg=classic,eventview=classic-lines,infobar=classic,pvr=classic,secondinfobar=classic
+== E6 trial declined
+> 0  Color theme                              | Black
+   theme -> Burgundy
+cap E6_theme
+cap E6_restart_q
+new e2 pid=22520 @23:29:05
+webif up @23:29:32
+cap E6_keep_prompt
+   trial: burgundy channelselection=classic,epg=classic,eventview=classic-lines,infobar=classic,pvr=classic,secondinfobar=classic
+new e2 pid=24141 @23:30:41
+webif up @23:31:06
+   after No: black channelselection=classic,epg=classic,eventview=classic-lines,infobar=classic,pvr=classic,secondinfobar=classic
+cap E6_after_revert
+2026-10-06 23:28:57 apply: g000033 -> g000034 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic-lines", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "burgundy"}
+2026-10-06 23:29:29 trial: session started on g000034, awaiting confirmation
+2026-10-06 23:30:35 trial: revert (declined by user / prompt timeout)
+2026-10-06 23:30:35 rollback: active -> g000033
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+== E7 trial kept + original theme back
+> 0  Color theme                              | Black
+   theme -> Burgundy
+new e2 pid=25994 @23:32:31
+webif up @23:32:57
+cap E7_next_prompt
+   kept: burgundy channelselection=classic,epg=classic,eventview=classic-lines,infobar=classic,pvr=classic,secondinfobar=classic
+cap E7_next_infobar
+> 0  Color theme                              | Burgundy
+   theme -> Black
+new e2 pid=28369 @23:34:51
+webif up @23:35:15
+cap E7_back_prompt
+   kept: black channelselection=classic,epg=classic,eventview=classic-lines,infobar=classic,pvr=classic,secondinfobar=classic
+cap E7_back_infobar
+2026-10-06 23:32:24 apply: g000033 -> g000035 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic-lines", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "burgundy"}
+2026-10-06 23:32:55 trial: session started on g000035, awaiting confirmation
+2026-10-06 23:34:03 commit: lkg=g000035
+2026-10-06 23:34:41 apply: g000035 -> g000036 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic-lines", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "black"}
+2026-10-06 23:35:13 trial: session started on g000036, awaiting confirmation
+2026-10-06 23:36:20 commit: lkg=g000036
+selection after: black channelselection=classic,epg=classic,eventview=classic-lines,infobar=classic,pvr=classic,secondinfobar=classic
+   restored: yes
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+T98B_DONE

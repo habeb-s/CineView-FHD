@@ -1,0 +1,56 @@
+original: --theme black --set channelselection=classic --set epg=classic --set eventview=classic-lines --set infobar=classic --set pvr=classic --set secondinfobar=classic
+== navy
+g000041
+new e2 pid=9367 @23:49:09
+webif up @23:49:34
+cap navy_1_designs
+cap navy_2_processing
+cap navy_3_msgbox
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+== black
+g000042
+new e2 pid=11085 @23:50:58
+webif up @23:51:23
+cap black_1_designs
+cap black_2_processing
+cap black_3_msgbox
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+== graphite
+g000043
+new e2 pid=12787 @23:52:48
+webif up @23:53:11
+cap graphite_1_designs
+cap graphite_2_processing
+cap graphite_3_msgbox
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+== purple
+g000044
+new e2 pid=14482 @23:54:34
+webif up @23:54:59
+cap purple_1_designs
+cap purple_2_processing
+cap purple_3_msgbox
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+== burgundy
+g000045
+new e2 pid=16210 @23:56:21
+webif up @23:56:46
+cap burgundy_1_designs
+cap burgundy_2_processing
+cap burgundy_3_msgbox
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+== green
+g000046
+new e2 pid=17891 @23:58:08
+webif up @23:58:33
+cap green_1_designs
+cap green_2_processing
+cap green_3_msgbox
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+== restore: --theme black --set channelselection=classic --set epg=classic --set eventview=classic-lines --set infobar=classic --set pvr=classic --set secondinfobar=classic
+g000047
+new e2 pid=19531 @23:59:55
+webif up @00:00:21
+now black {'channelselection': 'classic', 'epg': 'classic', 'eventview': 'classic-lines', 'infobar': 'classic', 'pvr': 'classic', 'secondinfobar': 'classic'}
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+T100_DONE

@@ -1,0 +1,82 @@
+== D0 backup
+cineview_mla.tgz
+settings
+7e77faa46cb3a46e25c4391b37cedbfe  /etc/enigma2/cineview_mla/selection.json
+== D1 open
+cap D1_open
+screen Plugins.Extensions.CineViewMLA.plugin.CineViewMLASetup
+> 0  Color theme                              | Black
+  1  Design - Main InfoBar                    | CineView Classic
+  2  Design - Second InfoBar                  | CineView Classic
+  3  Design - Channel Selection               | CineView Classic
+  4  Design - EPG                             | CineView Classic
+  5  Design - PVR / Movies                    | CineView Classic
+  6  Design - Event View                      | CineView Classic (line by line)
+  7  Posters - Main InfoBar                   | Yes
+  8  Posters - Second InfoBar                 | Yes
+  9  Posters - Channel Selection              | Yes
+ 10  Posters - EPG                            | Yes
+ 11  Posters - PVR / Movies                   | Yes
+ 12  Posters - Event View                     | Yes
+ 13  Poster engine                            | Unified (verified match)
+ 14  Server / CAM information                 | EMU + subscription only
+ 15  Second InfoBar mode                      | 2nd InfoBar INFO
+ 16  Second InfoBar timeout                   | 20 Seconds
+description  'Colour theme\nBlack\n\nThe colours of every CineView screen. GREEN applies it as a trial: the GUI restarts and the design is kept only after you confirm it.'
+status       'Active generation: g000033   Last known good: g000033\nCineView MLA 1.0.0 · build91 · c3e1eba\nDesign & Development by habeb-s © 2026'
+key_red      'Cancel'
+key_green    'Apply (trial)'
+key_yellow   'Preview'
+key_blue     'Factory design'
+key_menu     'MENU'
+Title        'CineView Designs'
+== D2 rows
+cap D2_row01
+> 1  Design - Main InfoBar                    | CineView Classic
+cap D2_row02
+> 2  Design - Second InfoBar                  | CineView Classic
+cap D2_row03
+> 3  Design - Channel Selection               | CineView Classic
+cap D2_row04
+> 4  Design - EPG                             | CineView Classic
+cap D2_row05
+> 5  Design - PVR / Movies                    | CineView Classic
+cap D2_row06
+> 6  Design - Event View                      | CineView Classic (line by line)
+cap D2_row07
+> 7  Posters - Main InfoBar                   | Yes
+cap D2_row08
+> 8  Posters - Second InfoBar                 | Yes
+cap D2_row09
+> 9  Posters - Channel Selection              | Yes
+cap D2_row10
+>10  Posters - EPG                            | Yes
+cap D2_row11
+>11  Posters - PVR / Movies                   | Yes
+cap D2_row12
+>12  Posters - Event View                     | Yes
+cap D2_row13
+>13  Poster engine                            | Unified (verified match)
+cap D2_row14
+>14  Server / CAM information                 | EMU + subscription only
+cap D2_row15
+>15  Second InfoBar mode                      | 2nd InfoBar INFO
+cap D2_row16
+>16  Second InfoBar timeout                   | 20 Seconds
+== D3 preview
+> 0  Color theme                              | Black
+cap D3_preview_theme
+cap D3_preview_infobar
+>16  Second InfoBar timeout                   | 20 Seconds
+cap D3_nopreview_msg
+cap D3_nopreview_gone
+== D4 MENU
+cap D4_profiles_menu
+cap D4_models
+cap D4_back
+== D5 RED
+cap D5_closed
+   selection.json unchanged: yes
+23:21:41.7731 [CineViewMLA] session healthy; guardian counter reset
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+T98_DONE
