@@ -211,6 +211,24 @@ def screen(skin, cols, body):
 			report.append(("own-bg", e["a"].get("source") or e["a"].get("name") or "?", bg + " -> Solid"))
 		else:
 			report.append(("own-lit", e["a"].get("source") or e["a"].get("name") or "?", bg + " (kept)"))
+	# Every element with a translucent THEME fill drawn above an opaque region (existing opaque layer, card made
+	# opaque here, new plate) replaces the pixels there -> its opaque twin as well (caption labels, pills ...).
+	regions = [(le["r"], le["z"]) for le, kind, al in layers if kind == "color" and al == 0]
+	regions += [(le["r"], le["z"]) for k, le in edits.items() if le.get("kind") in ("eLabel", "widget")]
+	regions += [(p["r"], p["z"]) for le, p in inserts]
+	for e in els:
+		a, r = e["a"], e["r"]
+		if not r or id(e) in edits or "backgroundColor" not in a or a.get("transparent") == "1":
+			continue
+		bg = a["backgroundColor"]
+		if bg not in cols or (alpha(bg, cols) or 0) == 0:
+			continue
+		cx, cy = r[0] + r[2] // 2, r[1] + r[3] // 2
+		for rr, rz in regions:
+			if rz <= e["z"] and rr[0] <= cx < rr[0] + rr[2] and rr[1] <= cy < rr[1] + rr[3] and not (rr == r and rz == e["z"]):
+				edits[id(e)] = e
+				report.append(("fill", a.get("source") or a.get("name") or e["kind"], bg + " -> Solid"))
+				break
 	if not edits and not inserts:
 		return body, report
 	out, last = [], 0
