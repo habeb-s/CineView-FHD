@@ -854,3 +854,24 @@ made from the original file, original kept as it is; visible size, quality and l
   - write: ONE new file `.cineview-mla-hddtest-1791287289-14823.jpg` (exclusive create, 8738 bytes, a copy of a USB
     cache poster), write + fsync 3.9 ms, read back identical, removed; the folder empty again as before (only its
     modification time changed). Nothing else listed, deleted, renamed or moved; no mount change; no fsck. PASS.
+
+**t91 (build87 deployed, on top of the rc9 package):** 180 grabs, 0 bad; 31 checks: 0 tracebacks, 0 skin errors,
+0 crash logs; `config.usage.show_second_infobar` restored to its original value ('2') after every model; movie folder
+setting unchanged.
+- **2. SecondInfoBarECM** (setting = ECM only during the test): the five ECM screens have ONE poster element, a
+  `CineViewMLAPosterX underlay="1"` at 1535,28 300×390, with no frame or card around it; without a real poster the
+  renderer hides itself and drops its picture (`_release`). Grabs, five models: HBO (poster) → poster on the
+  right; HRT1 (no poster) and posters OFF → plain panel, no placeholder, no empty frame, no overlap; the text keeps
+  its native width (Enigma2's own named `channel` / `epg_description` widgets are not resized - no runtime resizing
+  in 1.0.0, as decided). Minimal / Classic posters OFF use their `_CVPosterOff` ECM screen (full-width text).
+- **4. No Poster pairs incl. Classic** (navy, posters ON): InfoBar, EPG card, EMC rows, MovieSelection rows on HBO
+  (film, poster) vs HRT1 (news) for all five models (`shots/t91/<model>_{ib,epg}_{hbo,hrt1}`, `_emc_0..4`,
+  `_ms_0..4`). Classic: InfoBar poster + picon with a poster, picon in the poster's place without; EPG description
+  starts at the left without a poster; Classic EMC shows its live-TV preview window (no poster place by design).
+- **5. Picons under fast channel switching:** per model 3 bursts of 8 CH+/CH− zaps + a single zap; grabs 0.3 / 1 /
+  2.5 s after a burst and 0.3 / 1.3 s after the single zap (the zaps really changed channel: Kino TV, HBO 3,
+  Cinemax 2, Cinemax, CineStar Action, CineStar 2); the InfoBar's picon places cut out on one sheet per model
+  (`picons_<model>.png`, `t91_picons.py`): **one picon per place in every grab of Classic, Details, Cinema and
+  Modern (60 grabs)**, no fallback or second logo; Minimal has no picon in its InfoBar (thumbnail + name): its
+  15 grabs show the thumbnail with a poster and the No Poster layout without, never a stray logo. Channel list
+  grabs while the cursor runs: `csfast_<model>.png`.
