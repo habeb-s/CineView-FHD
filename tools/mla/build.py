@@ -1032,7 +1032,7 @@ def apply_zorder_backgrounds(skin):
 	return out
 
 
-PROCESSING_SCREEN = """	<screen name="Processing" title="Processing" position="center,center" size="1000,204" flags="wfNoBorder" zPosition="99" backgroundColor="steThemePanelAlt" cornerRadius="20">
+PROCESSING_SCREEN = """	<screen name="Processing" title="Processing" position="center,center" size="1000,204" flags="wfNoBorder" zPosition="99" backgroundColor="steThemePanelAlt">
 		<widget source="Title" render="Label" position="40,24" size="920,44" font="Regular;32" foregroundColor="secondFG" backgroundColor="steThemePanelAlt" transparent="1" halign="center" valign="center" />
 		<eLabel position="440,78" size="120,3" backgroundColor="steThemeAccent" />
 		<widget name="progress" position="70,104" size="860,10" foregroundColor="steThemeAccent" backgroundColor="steThemeSelectedSolid" borderWidth="0" />
@@ -1048,9 +1048,11 @@ def apply_package_screens(skin):
 	Update Plugins, of the feed update and of every other caller is the GLOBAL dialog Screens.Processing.ProcessingScreen
 	(skinName "Processing", instantiated once at start, widgets 'progress' ProgressBar + 'description' Label, Title).
 	CineView had no "Processing" screen, so OpenATV's built-in 1280x720 fallback with the default window border was
-	drawn over the CineView screens.  Added: a CineView "Processing" (theme colours, rounded window as the approved
-	ShowClock, description LAST because ProcessingScreen.setDescription() grows the window downwards by the text
-	height and re-centres it).  PackageAction / PackageActionLog: the colour keys are drawn only while they have a
+	drawn over the CineView screens.  Added: a CineView "Processing" (theme colours, description LAST because ProcessingScreen.setDescription() grows the window downwards by the text
+	height and re-centres it).  NO cornerRadius on this window: device t97 2026-10-06 22:2x - a rounded Processing
+	window shown from PackageAction.layoutFinished (before the screen's first paint) left the whole PackageAction
+	unpainted (video through, header / background / Close missing; only widgets that changed later were drawn);
+	the same window without cornerRadius: screen complete (exp v1).  PackageAction / PackageActionLog: the colour keys are drawn only while they have a
 	text (the always-on cineviewKeyBar bars showed empty green / yellow keys) and PackageAction shows its mode
 	(Install / Remove / Update Plugins) in the header.  Duplicate text: plugin.py _install_package_waiting()."""
 	p = os.path.join(skin, "core", "common.openatv.xml")

@@ -16,7 +16,7 @@ fr() { local end=$(( $(date +%s) + $2 )) i=0; while [ $(date +%s) -lt $end ]; do
 op() { $R "mkdir -p /tmp/cvmla; echo $1 > /tmp/cvmla/open.txt"; sleep ${2:-5}; }
 stk() { $R 'rm -f /tmp/cvmla/stack.txt; echo stack > /tmp/cvmla/open.txt'; sleep 2; $R 'cat /tmp/cvmla/stack.txt 2>/dev/null' > $S/stack_$1.txt; echo "-- stack $1:"; grep -a "== \|description\|key_\|Title" $S/stack_$1.txt | cut -c1-140; }
 busy() {  # $1 name, $2 key, $3 seconds of frames while busy, $4 wait after
-	$RC $2
+	case $2 in op:*) $R "echo ${2#op:} > /tmp/cvmla/open.txt" ;; *) $RC $2 ;; esac
 	( sleep 1.3; stk ${1}_busy ) &
 	sleep 0.6; ga ${1}_busy_a
 	fr ${1}_busy $3
@@ -29,7 +29,8 @@ LOGLINE0=$($R 'f=/home/root/logs/$(ls -t /home/root/logs | grep debug | head -1)
 X; sleep 1
 op pluginbrowser 6; ga 0_pluginbrowser; stk 0_pluginbrowser
 busy A_install 399 6 10
-busy B_remove 398 3 4
+busy B_remove op:pkgremove 3 4   # devtool = native PackageAction(MODE_REMOVE); the red key's
+# OpenWebif key event can reach the new screen, whose red key is Close (t97 after-run 22:23:29: opened and closed at once)
 busy C_update 400 6 10
 ga 3_back_pluginbrowser
 X; sleep 1
