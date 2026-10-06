@@ -31,6 +31,7 @@ SECTIONS = ("infobar", "secondinfobar", "pvr")
 TAG = re.compile(r'(\t*)<(eLabel|widget|ePixmap)\b([^>]*?)(/>|>(.*?)</widget>)', re.S)
 MARGIN = 14
 LARGE = 0.40
+MIXES = set()  # (literal #AARRGGBB, base theme token): opaque mixed colours build.py adds to every theme
 
 
 def attrs(s):
@@ -181,7 +182,7 @@ def screen(skin, cols, body):
 			continue
 		key = id(top[0]) if top else None
 		groups.setdefault(key, [top, []])[1].append(e)
-	edits, inserts, report = {}, [], []
+	edits, inserts, report, mixes = {}, [], [], {}
 	for key, (top, ws) in groups.items():
 		if top:
 			le, kind = top
@@ -210,7 +211,22 @@ def screen(skin, cols, body):
 			edits[id(e)] = e
 			report.append(("own-bg", e["a"].get("source") or e["a"].get("name") or "?", bg + " -> Solid"))
 		else:
-			report.append(("own-lit", e["a"].get("source") or e["a"].get("name") or "?", bg + " (kept)"))
+			# a literal translucent fill (e.g. progress track #B0FFFFFF) on an opaque region: the same look, opaque =
+			# the literal blended over the region's theme colour ('mix<AARRGGBB>_<token>', added per theme by build.py)
+			base = None
+			cx, cy = e["r"][0] + e["r"][2] // 2, e["r"][1] + e["r"][3] // 2
+			for le, kind, al in layers:
+				lr = le["r"]
+				if kind == "color" and le["z"] < e["z"] and lr[0] <= cx < lr[0] + lr[2] and lr[1] <= cy < lr[1] + lr[3]:
+					tok = le["a"]["backgroundColor"]
+					if tok in cols and (base is None or le["z"] > base[1]):
+						base = (tok, le["z"])
+			if base and bg.startswith("#") and len(bg) == 9:
+				MIXES.add((bg.upper(), base[0]))
+				mixes[id(e)] = "mix%s_%s" % (bg[1:].upper(), base[0])
+				report.append(("own-mix", e["a"].get("source") or e["a"].get("name") or "?", "%s over %s" % (bg, base[0])))
+			else:
+				report.append(("own-lit", e["a"].get("source") or e["a"].get("name") or "?", bg + " (kept)"))
 	# Every element with a translucent THEME fill drawn above an opaque region (existing opaque layer, card made
 	# opaque here, new plate) replaces the pixels there -> its opaque twin as well (caption labels, pills ...).
 	regions = [(le["r"], le["z"]) for le, kind, al in layers if kind == "color" and al == 0]
@@ -229,7 +245,7 @@ def screen(skin, cols, body):
 				edits[id(e)] = e
 				report.append(("fill", a.get("source") or a.get("name") or e["kind"], bg + " -> Solid"))
 				break
-	if not edits and not inserts:
+	if not edits and not inserts and not mixes:
 		return body, report
 	out, last = [], 0
 	plates_after, plates_before, plates_top = {}, {}, []
@@ -253,6 +269,8 @@ def screen(skin, cols, body):
 		if k in edits:
 			bg = e["a"]["backgroundColor"]
 			seg = seg.replace('backgroundColor="%s"' % bg, 'backgroundColor="%s"' % solid(bg, cols), 1)
+		elif k in mixes:
+			seg = seg.replace('backgroundColor="%s"' % e["a"]["backgroundColor"], 'backgroundColor="%s"' % mixes[k], 1)
 		out.append(seg)
 		if k in plates_after:
 			out.append("\n" + "".join(plates_after[k]).rstrip("\n"))
@@ -262,6 +280,33 @@ def screen(skin, cols, body):
 	if plates_top:
 		new = "\n" + "".join(plates_top) + new.lstrip("\n")
 	return new, report
+
+
+def add_mixes(skin):
+	"""Opaque mixed colours for every theme: literal #AARRGGBB (alpha byte AA, 00 = opaque) blended over the theme's
+	value of the base token."""
+	n = 0
+	tdir = os.path.join(skin, "themes")
+	for key in sorted(os.listdir(tdir)):
+		tx = os.path.join(tdir, key, "theme.xml")
+		if key == "golden" or not os.path.isfile(tx):
+			continue
+		x = open(tx, encoding="utf-8").read()
+		cols = dict(re.findall(r'<color name="([^"]+)" value="(#[0-9A-Fa-f]{8})"', x))
+		add = []
+		for lit, tok in sorted(MIXES):
+			if tok not in cols:
+				continue
+			a = 1.0 - int(lit[1:3], 16) / 255.0
+			fg = [int(lit[i:i + 2], 16) for i in (3, 5, 7)]
+			bgc = [int(cols[tok][i:i + 2], 16) for i in (3, 5, 7)]
+			mixed = "".join("%02X" % int(round(f * a + b * (1 - a))) for f, b in zip(fg, bgc))
+			add.append('\t<color name="mix%s_%s" value="#00%s" />\n' % (lit[1:], tok, mixed))
+		if add:
+			x = x.replace("</colors>", "".join(add) + "\t</colors>", 1)
+			open(tx, "w", encoding="utf-8").write(x)
+			n += len(add)
+	return n
 
 
 def run(skin):
@@ -289,4 +334,5 @@ def run(skin):
 				import xml.etree.ElementTree as ET
 				ET.fromstring(new.split("?>", 1)[1] if new.startswith("<?xml") else new)
 				open(p, "w", encoding="utf-8").write(new)
+	add_mixes(skin)
 	return rep
