@@ -53,6 +53,7 @@ PERF = [  # (label, log, sample label, note)
 	("Modern Optimized v5 (build68)", "t74.log", "v5", "final path: settle + RAM posters"),
 	("Classic (build68)", "t75.log", "classic", "reference, same navigation"),
 	("Modern current (build71), 60 min", "t79.log", "long", "stability run, 60 min instead of 25"),
+	("Modern rc9 (build86), 25 min", "t89.log", "rc9", "release candidate, installed package"),
 ]
 MODELS = [("classic", "Classic"), ("details", "Details"), ("cinema", "Cinema"), ("modern", "Modern"), ("minimal", "Minimal")]
 SECTIONS = [("ib", "InfoBar"), ("sib", "SecondInfoBar"), ("cs", "Channel list"), ("epg", "EPG"), ("ev", "EventView"), ("emc", "PVR · EMC"), ("ms", "PVR · MovieSelection")]
@@ -226,7 +227,7 @@ def main(out):
 	bars = []
 	for i, (lab, note, s) in enumerate(perf):
 		w = 100.0 * s["accel"] / maxacc
-		cls = "bar ref" if "Classic" in lab else ("bar fin" if ("v5" in lab or "current" in lab) else "bar")
+		cls = "bar ref" if "Classic" in lab else ("bar fin" if ("v5" in lab or "current" in lab or "rc9" in lab) else "bar")
 		bars.append('<div class="brow"><div class="blab"><b>%s</b><span>%s</span></div><div class="btrack"><div class="%s" style="width:%.2f%%"></div></div>'
 			'<div class="bval">%d</div><div class="bmeta">%d rounds · RSS %d MB · CPU %.0f s</div></div>' % (lab, note, cls, max(w, 0.4), s["accel"], s["rounds"], s["rss"], s["cpu_s"] or 0))
 	prow = "".join('<tr><td>%s</td><td class="n">%d</td><td class="n">%d</td><td class="n">%d MB</td><td class="n">%.0f s</td></tr>' % (lab, s["rounds"], s["accel"], s["rss"], s["cpu_s"] or 0) for lab, s in phases)
