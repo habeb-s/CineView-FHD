@@ -191,6 +191,7 @@ def release_status():
 	t77 = log("t77_rc10.log"); t77c, t77e = _errs(t77)
 	t77g = len(re.findall(r"png-ok", t77))
 	t92 = log("t92_write.log")
+	t95 = log("t95.log"); t95c, t95e = _errs(t95)
 	def st(ok, good="RUNTIME TESTED", bad="NOT RUN"):
 		return '<span class="%s">%s</span>' % ("ok" if ok else "warn", good if ok else bad)
 	rows = [
@@ -208,6 +209,10 @@ def release_status():
 		("Poster cache: HDD real mount → USB → /tmp; never deleted on upgrade / uninstall", st("PASS" in t92, "DEVICE VERIFIED (dedicated test)"), "t92: read-only checks + one test file written / read back / removed on /media/hdd/poster; cache kept in t86"),
 		("Package lifecycle rc10: upgrade (GUI running), reboot, uninstall, fresh install, purge, restore", st("T86_DONE" in t86 and t86e == 0, "DEVICE VERIFIED"), "t86_rc10: %d checks, %d with errors" % (t86c, t86e)),
 		("Short final QA on the installed rc10: 5 models × 6 sections", st("T77_DONE" in t77 and t77e == 0, "DEVICE VERIFIED"), "t77_rc10: %d grabs, %d checks, %d with errors" % (t77g, t77c, t77e)),
+		("Plugin icon + logo: option A (approved 21:01)", st("T95_DONE" in t95 and t95e == 0, "DEVICE VERIFIED"), "icon 160×69 in the Plugin Browser (t95, also after reboot); logo set in docs/mla/brand: full dark / full light / compact"),
+		("Rights: CineView MLA — Design & Development by habeb-s © 2026", st("T95_DONE" in t95 and t95e == 0, "DEVICE VERIFIED"), "CineView Designs status lines, plugin description, package control + version.json; nothing on viewing screens"),
+		("Light protection: .pyc for the 14 sensitive modules, version / build / commit, SHA256", st("T95_DONE" in t95 and t95e == 0 and "exit 1" in t95, "DEVICE VERIFIED"), "compiled by the receiver's Python 3.14; preinst refuses another Python (fake 3.12 → exit 1, real → exit 0); no obfuscation, no activation, no internet dependency"),
+		("Final 1.0.0 package (build88): install with GUI running, five models, reboot", st("T95_DONE" in t95 and t95e == 0, "DEVICE VERIFIED"), "t95: %d checks, %d with errors; plugin load errors 0" % (t95c, t95e)),
 		("Scope", '<span class="ok">Vu+ Duo 4K SE · OpenATV 8.0.1 · Slot 8</span>', "Dreambox and other receivers are outside this release"),
 	]
 	return "".join('<tr><td>%s</td><td>%s</td><td>%s</td></tr>' % r for r in rows)
