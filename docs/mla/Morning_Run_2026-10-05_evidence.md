@@ -712,6 +712,12 @@ reinst.sh 22:36).
       (`mixB0FFFFFF_steThemeOverlay`, same look over the band).
   - The audit now checks own fills too. **build83 static audit: 0 not opaque in every InfoBar-family screen.**
   - t87c (build83, five models × six themes) is queued.
+  - The build81 run was stopped after Classic (6 themes) and Details green/navy, because build83 superseded it. Its
+    results: Classic IB opaque in all six themes; Classic SIB 54 of 56 not opaque in all six (min 135, as above);
+    Details IB/SIB opaque.
+  - **Harness fault found in that run:** the MoviePlayer grabs were empty (OSD alpha 0 everywhere). The t86 reboot
+    had cleared `/tmp/cvmla` on the receiver, so the `play` trigger file was never written and nothing was opened.
+    The directory was recreated before t87c reached its first MoviePlayer step, and `op()` now creates it itself.
 - Playback InfoBar:
   - On this receiver the PVR key opens EMC, whose player uses EMC's own skin file
     (`EnhancedMovieCenter/CoolSkin/EMCMediaCenter_1080.xml`), not a CineView screen.
