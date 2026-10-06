@@ -1,9 +1,7 @@
 #!/bin/bash
-# t84: No Poster arrangement on the list screens with a fixed layout (build77): GraphicalEPG (Modern, Graphical Plus)
-# and the PVR cards (Modern, Cinema Shelf, Cover Library; EMC + native MovieSelection) follow the poster of the
-# HIGHLIGHTED event / SELECTED recording: poster card with a real poster, No Poster card otherwise; no placeholder.
-# EPG: highlighted event on HBO (film, poster) and on HRT1 (news, generic).  PVR: USB test folder only (tmedia_pvr.sh:
-# A identity lookup, B local cover, C generic news); every row of the list is grabbed.  HDD not opened; nothing played,
+# t87: opaque information areas of the InfoBar family (user 2026-10-06 06:42).  Per model x theme: InfoBar, SecondInfoBar
+# and (navy) the MoviePlayer playback bar on the USB test clip; OSD-only grab (real alpha) + full grab.  Analysis:
+# osd_alpha.py.  Env: TAG (shots/t87<TAG>), THEMES, MODELS.  HDD not opened; USB test media only.
 # deleted or moved.  Restore: Classic navy, posters ON, movielist folder as before.
 exec 9>~/cineview-mla/t87.lock; flock -n 9 || { echo "t87 already running"; exit 1; }
 . ~/cineview-mla/p6lib.sh
@@ -38,7 +36,7 @@ echo "deploy verified: $NEW"
 cat ~/cineview-mla/devtools/CineViewMLAScreenOpen/plugin.py | $R "mkdir -p $P && cat > $P/plugin.py && touch $P/__init__.py"
 OLDDIR=$($R 'grep "^config.movielist.last_videodir=" /etc/enigma2/settings | cut -d= -f2-')
 go() { curl -s -m 30 -o $S/$1_osd.png "http://192.168.1.250/grab?format=png&mode=osd&r=1920"; curl -s -m 60 -o $S/$1_all.png "http://192.168.1.250/grab?format=png&mode=all&r=1920"; echo "cap $1 $(ok $S/$1_osd.png && echo osd-ok || echo OSD-BAD) $(ok $S/$1_all.png && echo all-ok || echo ALL-BAD)"; }
-for m in classic details cinema modern minimal; do
+for m in ${MODELS:-classic details cinema modern minimal}; do
   for t in ${THEMES:-navy green burgundy black graphite purple}; do
     echo "== $m $t"; ap --theme $t $(model $m); restart ""; errs
     zap $HBO; X; $RC 352; sleep 2.5; go ${m}_${t}_ib; X; sleep 2
