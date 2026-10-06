@@ -309,7 +309,59 @@ def screen(skin, cols, body):
 				edits[id(e)] = e
 				report.append(("fill", a.get("source") or a.get("name") or e["kind"], bg + " -> Solid"))
 				break
-	if not edits and not inserts and not mixes:
+	# Scrolling text (RunningText) on an opaque region paints its OWN background in exactly that region's colour.
+	# Device t90 (2026-10-06): Minimal SIB, the description RunningText showed the scrim's alpha (210) in its bottom
+	# 31 rows for one frame when it starts to scroll (startdelay 4000 ms) - reproduced on the first opening after a
+	# restart.  With its own opaque fill the widget no longer depends on how the area under it is repainted while it
+	# scrolls; the look is identical (same colour as the plate).  Only when the whole widget lies inside ONE opaque
+	# region and nothing else is drawn under it inside its rectangle.
+	def region_under(e):
+		cx, cy = e["r"][0] + e["r"][2] // 2, e["r"][1] + e["r"][3] // 2
+		best = None
+		for le, kind, al in layers:
+			lr = le["r"]
+			if kind == "color" and le["z"] < e["z"] and lr[0] <= cx < lr[0] + lr[2] and lr[1] <= cy < lr[1] + lr[3]:
+				if best is None or le["z"] >= best[2]:
+					tok = le["a"]["backgroundColor"]
+					col = (solid(tok, cols) if id(le) in edits else tok) if (al == 0 or id(le) in edits) else None
+					best = (col, lr, le["z"], id(le))
+		for le, p in inserts:
+			lr = p["r"]
+			if p["z"] < e["z"] and lr[0] <= cx < lr[0] + lr[2] and lr[1] <= cy < lr[1] + lr[3]:
+				if best is None or p["z"] >= best[2]:
+					best = (p["color"], lr, p["z"], None)
+		return best
+
+	scrollfix = {}
+	for e in els:
+		a, r = e["a"], e["r"]
+		if not r or a.get("render") != "RunningText" or a.get("transparent") != "1" or not is_info(e["kind"], a, e["inner"]):
+			continue
+		reg = region_under(e)
+		if not reg or not reg[0]:
+			continue
+		col, rr, rz, rid = reg
+		if not (rr[0] <= r[0] and rr[1] <= r[1] and r[0] + r[2] <= rr[0] + rr[2] and r[1] + r[3] <= rr[1] + rr[3]):
+			continue
+		blocked = False
+		for o in els:
+			orr = o["r"]
+			if o is e or not orr or id(o) == rid or is_info(o["kind"], o["a"], o["inner"]):
+				continue
+			if o["z"] > e["z"] or (o["z"] == e["z"] and o["m"].start() > e["m"].start()) or o["z"] < rz:
+				continue  # drawn above the text, or below the region (covered by it)
+			if orr[0] < r[0] + r[2] and r[0] < orr[0] + orr[2] and orr[1] < r[1] + r[3] and r[1] < orr[1] + orr[3]:
+				contains = orr[0] <= r[0] and orr[1] <= r[1] and r[0] + r[2] <= orr[0] + orr[2] and r[1] + r[3] <= orr[1] + orr[3]
+				if not (contains and o["kind"] == "eLabel" and "text" not in o["a"]):
+					blocked = True
+					break
+		if blocked:
+			report.append(("scroll-kept", a.get("source") or "?", "%d,%d: other element under it" % (r[0], r[1])))
+			continue
+		scrollfix[id(e)] = col
+		report.append(("scroll-fill", a.get("source") or "?", "%d,%d %dx%d -> %s" % (r[0], r[1], r[2], r[3], col)))
+
+	if not edits and not inserts and not mixes and not scrollfix:
 		return body, report
 	out, last = [], 0
 	plates_after, plates_before, plates_top = {}, {}, []
@@ -335,6 +387,15 @@ def screen(skin, cols, body):
 			seg = seg.replace('backgroundColor="%s"' % bg, 'backgroundColor="%s"' % solid(bg, cols), 1)
 		elif k in mixes:
 			seg = seg.replace('backgroundColor="%s"' % e["a"]["backgroundColor"], 'backgroundColor="%s"' % mixes[k], 1)
+		if k in scrollfix:
+			tag_end = seg.index(">")
+			head, rest = seg[:tag_end], seg[tag_end:]
+			head = head.replace(' transparent="1"', ' transparent="0"', 1)
+			if 'backgroundColor="' in head:
+				head = re.sub(r'backgroundColor="[^"]*"', 'backgroundColor="%s"' % scrollfix[k], head, 1)
+			else:
+				head = head.replace('render="RunningText"', 'render="RunningText" backgroundColor="%s"' % scrollfix[k], 1)
+			seg = head + rest
 		out.append(seg)
 		if k in plates_after:
 			out.append("\n" + "".join(plates_after[k]).rstrip("\n"))
