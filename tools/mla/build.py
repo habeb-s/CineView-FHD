@@ -1259,7 +1259,16 @@ def main(golden, comps, control, out):
 		m = re.search(r'<color\s+name="steThemePanel"\s+value="#[0-9A-Fa-f]{2}([0-9A-Fa-f]{6})"', x)
 		assert m, "steThemePanel missing in %s" % key
 		x = x.replace(anchor, '\t<color name="steThemeCard" value="#14%s" />\n\t%s' % (m.group(1), anchor))
+		# Opaque twins (user 2026-10-06 06:42, tools/mla/infoplate.py): '<name>Solid' = the same RGB with alpha 00 for
+		# every translucent theme colour, so information areas can be fully opaque in the theme colour.
+		for cname, cval in re.findall(r'<color\s+name="([^"]+)"\s+value="#([0-9A-Fa-f]{8})"', x):
+			if cval[:2] != "00" and not cname.endswith("Solid") and '"%sSolid"' % cname not in x:
+				x = x.replace(anchor, '\t<color name="%sSolid" value="#00%s" />\n\t%s' % (cname, cval[2:], anchor))
 		open(tx, "w", encoding="utf-8").write(x)
+	# Opaque information areas on the InfoBar family (tools/mla/infoplate.py, user 2026-10-06 06:42)
+	import infoplate
+	for f, scr, act, what, where in infoplate.run(skin):
+		print("INFO-OPAQUE %-50s %-28s %-9s %-26s %s" % (f, scr, act, what, where))
 	n_epg = 0
 	ep = os.path.join(skin, "layouts", "epg", "classic", "screens.openatv.xml")
 	x = open(ep, encoding="utf-8").read()
