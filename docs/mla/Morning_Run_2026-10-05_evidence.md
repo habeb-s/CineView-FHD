@@ -673,3 +673,14 @@ reinst.sh 22:36).
     0 skin errors, 0 crash logs.
   - The script is fixed: the package is kept in `/home/root/cvmla` and `FROM=<step>` resumes.
   - Steps 3–6 are re-run as t86 rc8b, followed by t77 rc8 and t87a / t87.
+- **t86 rc8b (steps 3–6) — DEVICE VERIFIED.**
+  3. Normal uninstall: image default skin; package and skin directory gone; `/etc/enigma2/cineview_mla` +
+     runtime.json kept; poster cache 850 files; 0 errors.
+  4. Fresh install: postinst "factory design (Classic, Navy) active"; skin selected → GUI restart:
+     `install ok installed`, generation g000000; 0 errors.
+  5. Purge: package, skin directory, `/etc/enigma2/cineview_mla` and runtime.json gone; **poster cache unchanged
+     (850)**; 0 errors.
+  6. Restore: rc8 + settings + MLA state from the USB backup, Classic navy, skin selected; 0 errors; boot slot
+     linuxrootfs8.
+- **Lifecycle result (rc8):** upgrade with GUI running ✓, reboot ✓, uninstall ✓, fresh install ✓, purge ✓, poster
+  cache never touched ✓.
