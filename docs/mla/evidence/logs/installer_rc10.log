@@ -1,0 +1,13 @@
+# CineView FHD MLA 1.0.0~rc10 — test install on an OpenATV 7.6 / 8.0 receiver, any model (release 
+== CineView MLA 1.0.0~rc10: compatibility checks
+   image: openatv 8.0.1 | model: vuduo4kse | architecture: cortexa15hf-neon-vfpv4
+   free on /: 53879592 kB, /tmp: 804764 kB - OK
+   installed now: 1.0.0~rc10
+== download + checksum
+   sha256 OK
+== backup of the current state (for rollback)
+   /tmp/cineview-mla-backup-20261006184611 (settings + MLA state)
+== install
+error: opkg_solver_install: No candidates to install /tmp/cineview-mla-rc10.ipk (null)!
+Refusing to load file '/tmp/cineview-mla-rc10.ipk' as it matches the installed version of enigma2-plugin-skins-cineview-fhd-mla (1.0.0~rc10).
+CineView MLA rc10: NOT installed - opkg refused the package (see the lines above); nothing was changed by this script.

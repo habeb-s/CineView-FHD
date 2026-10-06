@@ -1,0 +1,5 @@
+   poster dir exists            True
+   poster dir writable          True  OK
+   renderer                     /usr/lib/enigma2/python/Components/Renderer/CineViewMLAPosterX.py  OK
+   release plan (no pin)        /media/hdd/poster (HDD (real mount /dev/sda1))  OK
+== t92 check: PASS

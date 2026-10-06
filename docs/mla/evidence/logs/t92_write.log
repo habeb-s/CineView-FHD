@@ -1,0 +1,19 @@
+== t92 mode=write 2026-10-06 14:48:09
+   /proc/mounts entry           /dev/sda1 /media/hdd ext4 rw,relatime,data=ordered  OK
+   read-write                   rw  OK
+   block device                 /dev/sda1  OK
+   filesystem                   ext4  OK
+   os.path.ismount              True  OK
+   not the root filesystem      dev 2049 vs root 2065  OK
+   free space                   657094 MB  OK
+   writable by enigma2 (root)   True  OK
+   poster dir exists            True
+   poster dir writable          True  OK
+   renderer                     /usr/lib/enigma2/python/Components/Renderer/CineViewMLAPosterX.py  OK
+   release plan (no pin)        /media/hdd/poster (HDD (real mount /dev/sda1))  OK
+   test file                    /media/hdd/poster/.cineview-mla-hddtest-1791287289-14823.jpg (8738 bytes, from /media/usb/cineview-mla/dev-cache/reference/poster/2012 film.jpg)
+   write + fsync                3.9 ms
+   read back identical          True  OK
+   test file removed            True  OK
+   poster dir                   existed before: kept as it was
+== t92 write: PASS

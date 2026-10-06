@@ -1,0 +1,11 @@
+-- 1. existing pin (copy of the real runtime.json)
+   kept: /media/usb/cineview-mla/dev-cache/reference/poster (runtime.json)
+-- 2. no pin, default (release)
+   /media/hdd/poster (HDD /dev/sda1, read-write mount) - created by the skin when it first needs it
+ls: /tmp/rt2.json: No such file or directory
+-- 3. no pin, HDD_CACHE=0
+   HDD_CACHE=0: pinned /tmp/CINEVIEW-MLA/poster (no USB stick: /tmp, lost at reboot)
+{
+ "poster_cache": "/tmp/CINEVIEW-MLA/poster"
+}
+drwxr-xr-x    2 root     root          4096 2026-10-06 14:48:09 +0300 .
