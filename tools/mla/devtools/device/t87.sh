@@ -31,6 +31,10 @@ model() {
 }
 $R 'sh -s' < ~/cineview-mla/repo/tools/mla/devtools/device/tmedia_pvr.sh | tail -1
 ~/cineview-mla/deploy_b.sh $NEW >/dev/null 2>&1
+# the deployed tree must be the build under test (2026-10-06: a silent deploy failure made a run measure the old build)
+CK=usr/share/enigma2/CineView_FHD_MLA/layouts/secondinfobar/classic/screens.openatv.xml
+[ "$($R "md5sum /$CK" | cut -d' ' -f1)" = "$(md5sum ~/cineview-mla/$NEW/$CK | cut -d' ' -f1)" ] || { echo "DEPLOY MISMATCH: receiver does not run $NEW - abort"; exit 2; }
+echo "deploy verified: $NEW"
 cat ~/cineview-mla/devtools/CineViewMLAScreenOpen/plugin.py | $R "mkdir -p $P && cat > $P/plugin.py && touch $P/__init__.py"
 OLDDIR=$($R 'grep "^config.movielist.last_videodir=" /etc/enigma2/settings | cut -d= -f2-')
 go() { curl -s -m 30 -o $S/$1_osd.png "http://192.168.1.250/grab?format=png&mode=osd&r=1920"; curl -s -m 60 -o $S/$1_all.png "http://192.168.1.250/grab?format=png&mode=all&r=1920"; echo "cap $1 $(ok $S/$1_osd.png && echo osd-ok || echo OSD-BAD) $(ok $S/$1_all.png && echo all-ok || echo ALL-BAD)"; }
