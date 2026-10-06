@@ -777,7 +777,18 @@ reinst.sh 22:36).
       Guards: no tall widgets; never under a translucent layer it must cover.
     - The band now spans 46–1850 at z −2, under the pills (z −1), so the pills keep their look.
     - Only the Modern SIB layout changes; static audit 0.
-- **t87f: build86, Modern × six themes** — queued after t88.
+- **t87f: build86, Modern × six themes (+ playback bar):** 0 REAL not-opaque in 13 grabs; 0 tracebacks / skin
+  errors / crash logs; the status band spans the whole row (white-video check).
+- **Release candidate 1.0.0~rc9 = build86** — SHA256 `0d2336dab8047ba8c1a699cd1d06fa68f21e51e1f94e4e29c856d5c221ee8946`.
+  - Maintainer scripts identical to rc8 (control differs only in Version / Source), so the rc8 lifecycle (t86)
+    covers rc9's install / upgrade / uninstall / purge logic.
+  - **t77 rc9:** upgrade rc8 → rc9 with the GUI running (`install ok installed`), then the five models from the
+    installed package, six sections each: 29 grabs, 0 tracebacks, 0 skin errors, 0 crash logs.
+  - Published in release/rc (install-mla.sh → rc9; install-mla-rc8.sh keeps rc8). Raw download SHA verified;
+    DRYRUN on the receiver passes.
+  - Before / after sheets (navy, five models × IB / SIB, real OSD over red / yellow / white / dark):
+    `docs/mla/evidence/opaque_<model>_<ib|sib>.jpg`. Visual approval by the user pending.
+  - Status: RUNTIME TESTED on Slot 8. NOT final.
 - Playback InfoBar:
   - On this receiver the PVR key opens EMC, whose player uses EMC's own skin file
     (`EnhancedMovieCenter/CoolSkin/EMCMediaCenter_1080.xml`), not a CineView screen.

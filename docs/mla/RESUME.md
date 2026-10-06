@@ -1,12 +1,12 @@
-# CineView MLA: resume point (updated 2026-10-06 09:10 Riyadh)
+# CineView MLA: resume point (updated 2026-10-06 11:30 Riyadh)
 
 Scope for 1.0.0 (user 06:13): Vu+ Duo 4K SE on OpenATV only. DM900 / other devices are out of the current release.
 
 | Item | Value |
 |---|---|
-| Last build | build84 (= build83 + PVRState fix); **rc8 = build79 published** (SHA256 cd3bfbe5…59bc1), installed on Slot 8 |
-| Receiver | Slot 8, Vu+ Duo 4K SE, OpenATV 8.0.1; rc8 installed (t86 + t77), Classic navy |
-| Queue on ai-agent | q90: t87c (build83, 5 models × 6 themes) + osd_alpha → q91: t87d (build84, navy, playback bar) |
+| Last build | **rc9 = build86 published** (SHA256 0d2336da…8ee8946, raw-verified, DRYRUN ok); installed on Slot 8 by t77 rc9 |
+| Receiver | Slot 8, Vu+ Duo 4K SE, OpenATV 8.0.1; rc9 installed (t77 rc9: upgrade rc8→rc9 + five models, 0 errors), Classic navy |
+| Queue on ai-agent | next: t68 final QA on rc9 (NO_DEPLOY=1) → 25-min performance run → report/video |
 
 ## Task list to the final RC (user report 06:13)
 | # | Task | Status |
@@ -17,10 +17,10 @@ Scope for 1.0.0 (user 06:13): Vu+ Duo 4K SE on OpenATV only. DM900 / other devic
 | 4 | Named EventView screens when the poster fails | DONE in build78/79 (placeholder removed, underlay, frames follow the real poster) |
 | 5 | rc8 (build79) + t77 install test | DONE, published |
 | 6 | t86 package lifecycle | DONE on rc8 (run 1: harness fault in step 4, /tmp cleared by reboot, repaired; rc8b steps 3-6 pass) |
-| 7 | Final QA: 5 models × 6 sections × ON/OFF × 6 themes | after rc8 |
-| 8 | 25-min performance run on rc8 | after QA |
+| 7 | Final QA: 5 models × 6 sections × ON/OFF × 6 themes | on rc9 (next) |
+| 8 | 25-min performance run on rc9 | after QA |
 | 9 | Report + video + release files | last |
-| 11 | Opaque information areas on the InfoBar family (user 06:42): `infoplate.py` + `<token>Solid` twins + per-theme mixes; build83/84. Static audit 0. Device: t87a (build79 before: 201 not opaque); "build81" run INVALID (silent deploy failure, see below); t87c build83 Classic navy: IB 0/40, SIB 0/56 not opaque, panels identical over red/yellow/white/dark. PVRState black box found → build84 | RUNTIME TESTED in progress (t87c, t87d) |
+| 11 | Opaque information areas on the InfoBar family (user 06:42): infoplate.py; build86 = rc9. Device t87e (build85, 5 models × 6 themes) + t87f (build86 Modern × 6): 0 REAL not-opaque, 0 errors; scrims kept; PVRState black box and Modern SIB band fixed; t88: one Minimal/Purple capture not reproducible (24/24 opaque). Sheets: docs/mla/evidence/opaque_*.jpg | RUNTIME TESTED — visual approval by the user pending |
 | 10 | Explicit poster-cache delete option | DONE (`uninstall-mla.sh cache`, CONFIRM=yes; only MLA's id/ and sz*/), tested on /tmp |
 
 ## Harness fault 2026-10-06 (fixed)
