@@ -903,3 +903,14 @@ setting unchanged.
 - `/media/hdd/poster` after all tests: empty, mtime 2026-10-06 14:48:09 (t92) - no other test wrote there.
 - Report "CineView MLA Model Review" version 3 = the 1.0.0 review (release status table first).
 - Status: RELEASE CANDIDATE on Slot 8 - **not released**; waiting for the user's approval.
+
+**User 19:25:** approved visually - the rc10 scrolling-text fill, and SecondInfoBarECM without a poster in Classic,
+Modern and Minimal. Classic No Poster approval pending on one PVR/EMC grab (HRT1 news selected, preview area empty;
+HBO poster recording for comparison).
+- Finding (no new test; t91 grabs of build87 = rc10): in Classic, the PVR box at the top left is NOT a poster area.
+  With Classic active CineView defines no EMC screen, so EMC uses its own skin (`CoolSkin/EMCSelection_left_pig_1080.xml`:
+  `render="Pig"` live TV 70,100 438×220, plus EMC's native `Cover` widget used only with EMC's own cover option);
+  Classic's native MovieSelection uses `PigTemplate` (live TV) too. Both show the LIVE channel whatever recording is
+  selected (HBO "Ples malog pingvina" and HRT1 "Dnevnik" alike); no poster and no placeholder in either.
+  An empty box there would mean hiding EMC's live preview / a new Classic EMC screen = a Classic design change,
+  not done without the user's decision. Sheet: `docs/mla/evidence/classic_pvr_hbo_vs_hrt1.jpg`.
