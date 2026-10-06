@@ -794,6 +794,13 @@ reinst.sh 22:36).
   (navy), and every model in the six themes (InfoBar, channel list, EventView).
   - 145 grabs, 0 bad; 71 checks: **0 tracebacks, 0 skin errors, 0 crash logs**; movie folder setting unchanged.
   - Grabs: ai-agent `shots/t68_rc9/` (in the rc9 report).
+- **t89 — 25-min performance run on the installed rc9 (Modern, navy, posters ON, same round as t67):** 11 rounds;
+  RSS 136 → 143 MiB (flat from round 5); threads 12; open files 96 (stable); 0 tracebacks, 0 skin errors, 0 crash
+  logs; 4 accelAlloc warnings including the start-up one (no debug attribution in this run; earlier runs
+  attributed the remainder to Enigma2's picon cache and DVB subtitles). Classic + native MovieSelection afterwards:
+  0 errors.
+- Report "CineView MLA Model Review" republished for rc9 (opaque section, t68_rc9 grabs, t89 row);
+  video `docs/mla/evidence/video/CineView_MLA_rc9_2026-10-06.mp4`.
 - Playback InfoBar:
   - On this receiver the PVR key opens EMC, whose player uses EMC's own skin file
     (`EnhancedMovieCenter/CoolSkin/EMCMediaCenter_1080.xml`), not a CineView screen.
