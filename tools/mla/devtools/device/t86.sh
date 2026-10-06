@@ -31,12 +31,14 @@ B=/media/usb/cineview-mla/state/backup-t86-$TAG
 echo "== 0. backup $B"
 $R "mkdir -p $B && cp -p /etc/enigma2/settings $B/settings && tar -C /etc/enigma2 -czf $B/cineview_mla-state.tgz cineview_mla && opkg status $PKG | grep Version > $B/version && ls $B"
 state
-cat $IPK | $R 'cat > /tmp/t86.ipk'; $R 'ls -l /tmp/t86.ipk; sha256sum /tmp/t86.ipk'
+cat $IPK | $R 'mkdir -p /home/root/cvmla && cat > /home/root/cvmla/t86.ipk'  # not /tmp: cleared by the reboot (t86 rc8 run 1); $R 'ls -l /home/root/cvmla/t86.ipk; sha256sum /home/root/cvmla/t86.ipk'
 
+FROM=${FROM:-1}
+if [ $FROM -le 1 ]; then
 echo "== 1. upgrade with Enigma2 running (selection Modern first)"
 ap --theme navy --set infobar=modern --set secondinfobar=modern --set channelselection=modern --set epg=modern --set pvr=modern --set eventview=modern
 restart ""
-$R 'opkg install /tmp/t86.ipk 2>&1 | tail -4; pidof enigma2 >/dev/null && echo "   enigma2 kept running during opkg"'
+$R 'opkg install /home/root/cvmla/t86.ipk 2>&1 | tail -4; pidof enigma2 >/dev/null && echo "   enigma2 kept running during opkg"'
 restart ""; state; errs
 curl -s -m 8 -o /dev/null "http://192.168.1.250/api/zap?sRef=1:0:19:784:C6D4:16E:A00000:0:0:0:"; sleep 8; X; $RC 352; sleep 2.5; ga 1_upgrade_ib
 
@@ -47,13 +49,14 @@ waitup; state; errs
 $R 'uptime; ls -l /usr/bin/enigma2_pre_start.sh; grep -a "CineView MLA guardian" /home/root/logs/*.log 2>/dev/null | tail -1 | cut -c1-150'
 X; $RC 352; sleep 2.5; ga 2_reboot_ib
 
+fi
 echo "== 3. uninstall (normal)"
 cat ~/cineview-mla/repo/release/rc/uninstall-mla.sh | $R 'cat > /tmp/uninstall-mla.sh'
 o=$(pid); $R 'sh /tmp/uninstall-mla.sh 2>&1 | tail -4'; newe2 $o; sleep 30; state; errs
 X; $RC 352; sleep 2.5; ga 3_uninstalled_ib
 
 echo "== 4. fresh install + skin selected"
-$R 'opkg install /tmp/t86.ipk 2>&1 | tail -4'
+$R 'opkg install /home/root/cvmla/t86.ipk 2>&1 | tail -4'
 restart 'grep -q "^config.skin.primary_skin=" /etc/enigma2/settings && sed -i "s#^config.skin.primary_skin=.*#config.skin.primary_skin=CineView_FHD_MLA/skin.xml#" /etc/enigma2/settings || echo "config.skin.primary_skin=CineView_FHD_MLA/skin.xml" >> /etc/enigma2/settings;'
 state; errs
 X; $RC 352; sleep 2.5; ga 4_fresh_ib
@@ -62,10 +65,10 @@ echo "== 5. purge"
 o=$(pid); $R 'sh /tmp/uninstall-mla.sh purge 2>&1 | tail -4'; newe2 $o; sleep 30; state; errs
 
 echo "== 6. restore"
-$R 'opkg install /tmp/t86.ipk 2>&1 | tail -2'
+$R 'opkg install /home/root/cvmla/t86.ipk 2>&1 | tail -2'
 restart "tar -C /etc/enigma2 -xzf $B/cineview_mla-state.tgz; cp -p $B/settings /etc/enigma2/settings;"
 ap --theme navy --set infobar=classic --set secondinfobar=classic --set channelselection=classic --set epg=classic --set pvr=classic --set eventview=classic-lines
 restart ""; state; errs
 X; $RC 352; sleep 2.5; ga 6_restored_ib
-$R 'rm -f /tmp/t86.ipk /tmp/uninstall-mla.sh'
+$R 'rm -f /home/root/cvmla/t86.ipk /tmp/uninstall-mla.sh; rmdir /home/root/cvmla 2>/dev/null'
 echo T86_DONE
