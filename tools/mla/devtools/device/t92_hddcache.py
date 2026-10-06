@@ -59,7 +59,14 @@ plan = None
 if rend:
     tree = ast.parse(open(rend, errors="replace").read())
     want = {"_mla_cache_plan", "_cineview_mounts", "_cineview_is_multiboot_mount"}
-    funcs = [n for n in tree.body if isinstance(n, (ast.Import, ast.ImportFrom))]  # imports only, no other module code
+    funcs = []
+    for n in tree.body:  # standard-library imports only (no Enigma2 module, no other module code)
+        if isinstance(n, (ast.Import, ast.ImportFrom)):
+            try:
+                exec(compile(ast.Module(body=[n], type_ignores=[]), "imp", "exec"), {})
+                funcs.append(n)
+            except Exception:
+                pass
     funcs += [n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name in want]
     ns = {"os": os}
     real_open = open
