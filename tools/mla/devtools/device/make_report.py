@@ -40,6 +40,11 @@ def img(path, w=800, q=68):
 	return "data:image/jpeg;base64," + base64.b64encode(b.getvalue()).decode()
 
 
+T68 = os.environ.get("T68", "t68")          # shots dir of the model QA run (t68_rc9 = final QA on rc9)
+T68LOG = os.environ.get("T68LOG", "t68.log")
+BUILD = os.environ.get("BUILD", "build69")
+CURRENT = os.environ.get("CURRENT", "build86 / rc9")
+
 PERF = [  # (label, log, sample label, note)
 	("Modern Large (build63)", "t67.log", "large", "before"),
 	("Modern Optimized v1 (build64)", "t67.log", "opt", "default posters without large PNGs"),
@@ -162,6 +167,34 @@ def noposter():
 	return "".join(out) or '<p class="note">t82 / t84 not run yet.</p>'
 
 
+def opaque():
+	"""t87a (rc8, before) vs t87e/t87f (rc9): real OSD alpha over red / yellow / white / dark, osd_alpha counts."""
+	stats = {}
+	for lg in ("t87e_alpha.log", "t87f_alpha.log"):
+		for m in re.finditer(r"^(\w+?)_(\w+?)_(ib|sib|mp)_osd\.png\s+checked\s+(\d+)\s+REAL not-opaque\s+(\d+)\s+edge/corner-only\s+(\d+)", log(lg), re.M):
+			stats[(m.group(1), m.group(2), m.group(3))] = tuple(int(x) for x in m.groups()[3:])  # t87f (Modern, build86) overrides t87e
+	rows = []
+	for mm, mlab in MODELS:
+		for sc, slab in (("ib", "InfoBar"), ("sib", "SecondInfoBar"), ("mp", "Playback bar")):
+			v = [stats.get((mm, t, sc)) for t in THEMES]
+			v = [x for x in v if x]
+			if not v:
+				continue
+			rows.append('<tr><td>%s</td><td>%s</td><td class="n">%d</td><td class="n">%d</td><td class="n %s">%d</td><td class="n">%d</td></tr>' % (
+				mlab, slab, len(v), sum(x[0] for x in v), "ok" if sum(x[1] for x in v) == 0 else "warn", sum(x[1] for x in v), sum(x[2] for x in v)))
+	figs = []
+	for mm, mlab in MODELS:
+		src = "t87f" if mm == "modern" else "t87e"
+		for sc, slab in (("sib", "SecondInfoBar"), ("ib", "InfoBar")):
+			a = img(os.path.join(S, "t87a", "%s_navy_%s_bg.png" % (mm, sc)), 560, 70)
+			b = img(os.path.join(S, src, "%s_navy_%s_bg.png" % (mm, sc)), 560, 70)
+			if a and b:
+				figs.append('<details class="np"%s><summary>%s · %s</summary><div class="pair"><figure><div class="tag off">rc8 before</div><img loading="lazy" alt="%s %s before" src="%s"></figure>'
+					'<figure><div class="tag on">rc9 after</div><img loading="lazy" alt="%s %s after" src="%s"></figure></div></details>' % (
+					" open" if (mm, sc) == ("classic", "sib") else "", mlab, slab, mlab, slab, a, mlab, slab, b))
+	return "".join(rows) or '<tr><td colspan="6">t87e not run</td></tr>', "".join(figs)
+
+
 def main(out):
 	perf = []
 	for lab, lg, key, note in PERF:
@@ -184,7 +217,7 @@ def main(out):
 			'<img loading="lazy" alt="%s" src="%s">' % (lab, pic) if pic else "", lab, mean, psnr))
 	pools = re.findall(r"^== (A|B) = (\S+).*?^\s+pool: (.*?)$", t78, re.M | re.S)
 	pool_rows = "".join('<tr><td>%s</td><td>%s</td></tr>' % ("Modern Large " + b if a == "A" else "Current " + b, p) for a, b, p in pools)
-	errs = model_errs(log("t68.log"))
+	errs = model_errs(log(T68LOG))
 	tb = sum(v[0] for vs in errs.values() for v in vs)
 	se = sum(v[1] for vs in errs.values() for v in vs)
 	cl = max([v[3] for vs in errs.values() for v in vs] or [0])
@@ -203,8 +236,8 @@ def main(out):
 		tabs.append('<button class="tab" role="tab" id="tab-%s" aria-controls="pane-%s" aria-selected="%s">%s</button>' % (m, m, "true" if mi == 0 else "false", mlab))
 		rows = []
 		for sk, slab in SECTIONS:
-			on = img(os.path.join(S, "t68", "%s_navy_on_%s.png" % (m, sk)))
-			off = img(os.path.join(S, "t68", "%s_navy_off_%s.png" % (m, sk)))
+			on = img(os.path.join(S, T68, "%s_navy_on_%s.png" % (m, sk)))
+			off = img(os.path.join(S, T68, "%s_navy_off_%s.png" % (m, sk)))
 			cells = []
 			for tag, src in (("Posters ON", on), ("Posters OFF", off)):
 				cells.append('<figure><div class="tag %s">%s</div>%s</figure>' % ("on" if tag.endswith("ON") else "off", tag,
@@ -215,7 +248,7 @@ def main(out):
 			cells = []
 			for sk, slab in THEME_SECTIONS:
 				name = "%s_%s_on_%s.png" % (m, t, sk)
-				src = img(os.path.join(S, "t68", name), 420, 62)
+				src = img(os.path.join(S, T68, name), 420, 62)
 				cells.append('<figure>%s<figcaption>%s</figcaption></figure>' % ('<img loading="lazy" alt="%s %s %s" src="%s">' % (mlab, t, slab, src) if src else '<div class="miss">no grab</div>', slab))
 			th.append('<div class="theme"><div class="tname"><i class="sw sw-%s"></i>%s</div><div class="trow">%s</div></div>' % (t, t, "".join(cells)))
 		e_on = errs.get((m, "navy", "posters ON"), [])
@@ -225,9 +258,10 @@ def main(out):
 		panes.append('<div class="pane" role="tabpanel" id="pane-%s" aria-labelledby="tab-%s"%s><div class="pmeta">%s</div>%s<h3 class="th">Six themes · posters ON</h3>%s</div>' % (
 			m, m, "" if mi == 0 else " hidden", chip, "".join(rows), "".join(th)))
 
+	orows, ofigs = opaque()
 	ahead, arows = attribution()
 	abnote, abfigs = pil_ab()
-	html = TEMPLATE.replace("%ATTRH%", ahead).replace("%ATTR%", arows).replace("%PILNOTE%", abnote).replace("%PILAB%", abfigs).replace("%NOPOSTER%", noposter()).replace("%BARS%", "".join(bars)).replace("%PHASES%", prow or '<tr><td colspan="5">t76 not run</td></tr>') \
+	html = TEMPLATE.replace("%OROWS%", orows).replace("%OFIGS%", ofigs).replace("%BUILD%", BUILD).replace("%CURRENT%", CURRENT).replace("%ATTRH%", ahead).replace("%ATTR%", arows).replace("%PILNOTE%", abnote).replace("%PILAB%", abfigs).replace("%NOPOSTER%", noposter()).replace("%BARS%", "".join(bars)).replace("%PHASES%", prow or '<tr><td colspan="5">t76 not run</td></tr>') \
 		.replace("%AB%", "".join(ab_rows) or '<p class="note">t78 not run yet.</p>').replace("%POOL%", pool_rows or '<tr><td colspan="2">t78 not run yet</td></tr>') \
 		.replace("%TABS%", "".join(tabs)).replace("%PANES%", "".join(panes)).replace("%TB%", str(tb)).replace("%SE%", str(se)).replace("%SECLS%", "ok" if se == 0 else "warn") \
 		.replace("%SENOTE%", "" if se == 0 else '<span class="fn">(Classic MovieSelection: list attributes enigma2 rejects; removed in build70 / rc5)</span>').replace("%CL%", str(cl))
@@ -302,7 +336,7 @@ details.np summary{font:600 20px var(--display);cursor:pointer}
 </style>
 <div class="wrap">
 <header>
-  <div class="kicker">Slot 8 · Vu+ Duo 4K SE · OpenATV 8.0.1 · dev/mla-openatv · model grabs build69 · current build77 / rc7</div>
+  <div class="kicker">Slot 8 · Vu+ Duo 4K SE · OpenATV 8.0.1 · dev/mla-openatv · model grabs %BUILD% · current %CURRENT%</div>
   <h1>CineView MLA Model Review</h1>
   <p class="lede">The five design models on all six sections, as the receiver drew them: posters on and off in the navy theme, and every model in the six themes. Every picture below is a screen grab from the receiver; every number comes from a test log.</p>
   <div class="facts"><span>Tracebacks <b class="ok">%TB%</b></span><span>New skin errors <b class="%SECLS%">%SE%</b>%SENOTE%</span><span>Crash logs <b class="ok">%CL%</b></span><span>Test media <b>USB only, HDD not opened</b></span></div>
@@ -335,8 +369,15 @@ details.np summary{font:600 20px var(--display);cursor:pointer}
   %NOPOSTER%
 </section>
 <section class="block">
+  <h2>Information areas stay opaque over any picture</h2>
+  <p class="note">rc9: every area that carries information on the InfoBar, the SecondInfoBar and the playback bar has a fully opaque background in the theme colour; the decorative scrims around them stay translucent. Measured from the receiver’s real OSD alpha inside every information widget, six themes. “Edge / corner only”: anti-aliased edges of rounded pills (alpha ≥ 250) or their corners outside the rounded shape, never under text.</p>
+  <div class="tw"><table><thead><tr><th>Model</th><th>Screen</th><th>Themes</th><th>Widgets checked</th><th>Not opaque</th><th>Edge / corner only</th></tr></thead><tbody>%OROWS%</tbody></table></div>
+  <p class="note">The same OSD over red, yellow, white and dark (navy theme): before (rc8) and after (rc9).</p>
+  %OFIGS%
+</section>
+<section class="block">
   <h2>The five models</h2>
-  <p class="note">Grabs from build69 (t68). build71 differs only where no poster exists: its placeholder is drawn back to the exact original look (inner frame line and full-size icon), see the comparison above.</p>
+  <p class="note">Grabs from %BUILD% (the final QA run, the package installed on the receiver).</p>
   <div class="tabs" role="tablist">%TABS%</div>
   %PANES%
 </section>
