@@ -723,6 +723,30 @@ reinst.sh 22:36).
     - Fixes: `deploy.sh` creates `/tmp/cvmla`; `op()` too; t87 now compares the md5 of a deployed layout file with
       the build and aborts on a mismatch.
     - The first t87c start (also affected) was stopped; t87c restarted on build83 with the verified deploy.
+- **t87c (build83, deploy verified) — Classic, Details (all six themes) and Cinema (four themes) measured before it
+  was replaced by t87e:**
+  - not opaque: **0** in every InfoBar / SecondInfoBar grab (Classic IB 40, SIB 56; Details IB 46, SIB 89; Cinema IB
+    34, SIB 44 information widgets checked per grab); 0 tracebacks, 0 skin errors, 0 crash logs.
+  - Classic SIB composites: before (build79) the cards turn red / olive with the video; after they stay navy over
+    red / yellow / white / dark. Positions unchanged.
+  - **Playback bar (MoviePlayer, USB test clip):** opaque, but PVRState showed a **black box** on the bar's third
+    row. Cause: infoplate turned its `backgroundColor="transparent"` (#FF000000) into the "Solid" twin #00000000 =
+    black. Fixed in build84: a fully transparent own fill takes the colour of the opaque region under it
+    (steThemePanel); a bare transparent eLabel (possible video window) is never changed.
+  - **Decorative transparency check (share of the screen that stays translucent, before → after, navy):**
+
+| Screen | before | after (build83) |
+|---|---|---|
+| Classic IB / Details IB / Cinema IB | 0 % (already opaque panels) | unchanged |
+| Classic SIB | 46.8 % (the cards themselves) | 0 %; clear area 41.5 % unchanged |
+| Cinema SIB | 55.6 % (full-screen scrim) | **0 %: the whole screen became opaque — wrong** |
+
+  - Cause: the full-screen scrim (z 1) got a plate inserted right after it at the same z. Enigma2 draws equal z in
+    document order, so the plate is above the scrim, but the "fill" pass compared z only and made the scrim
+    opaque. The same affected the SecondInfoBarECM backgrounds of all packs and the Minimal SIB scrim.
+  - Fixed in **build85**: equal-z layers use document order. Only those scrims change back (diff: 5 SIB layout
+    files); static audit still 0.
+- **t87e: build85 (rc9 candidate), five models × six themes**, deploy verified — running.
 - Playback InfoBar:
   - On this receiver the PVR key opens EMC, whose player uses EMC's own skin file
     (`EnhancedMovieCenter/CoolSkin/EMCMediaCenter_1080.xml`), not a CineView screen.
