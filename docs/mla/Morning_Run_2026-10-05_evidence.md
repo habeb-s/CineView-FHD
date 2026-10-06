@@ -684,3 +684,36 @@ reinst.sh 22:36).
      linuxrootfs8.
 - **Lifecycle result (rc8):** upgrade with GUI running ✓, reboot ✓, uninstall ✓, fresh install ✓, purge ✓, poster
   cache never touched ✓.
+
+**Opaque information areas — measurements.**
+- Method (t87 + `osd_alpha.py`): `grab?mode=osd` returns the real framebuffer RGBA. Inside every information
+  widget of the screen (rectangle from the deployed XML), every pixel must have alpha 255.
+- Composites of the real OSD over solid red / yellow / white / dark backgrounds are saved as `<name>_bg.png`.
+- **t87a (build79, before, navy):**
+
+| Model | InfoBar | SecondInfoBar |
+|---|---|---|
+| Classic | opaque | 54 of 56 not opaque (min alpha 135) |
+| Details | opaque | opaque |
+| Cinema | opaque | 21 of 44 (min 210) |
+| Modern | 25 of 28 (min 235 = the 0x14 card) | 56 of 58 |
+| Minimal | 14 of 14 (min 210) | 31 of 33 |
+
+  - Total: 201 information widgets not opaque.
+  - The composites show the Classic SIB panels turning red / olive / grey with the background.
+- **t87 (build81) on Classic: the SIB was still not opaque (min 135).**
+  - Classic's SIB labels paint their own background (`transparent="0"`, steSecondInfoBG). In Enigma2 that fill
+    REPLACES the pixels (no blend), so a translucent fill punches through an opaque card.
+  - The static audit had only checked the layers under each widget.
+  - Fixed in build82/83:
+    - an information widget's own translucent theme fill → opaque twin;
+    - any translucent theme fill above an opaque region → opaque twin;
+    - literal translucent fills (Minimal progress track #B0FFFFFF) → a per-theme mixed opaque colour
+      (`mixB0FFFFFF_steThemeOverlay`, same look over the band).
+  - The audit now checks own fills too. **build83 static audit: 0 not opaque in every InfoBar-family screen.**
+  - t87c (build83, five models × six themes) is queued.
+- Playback InfoBar:
+  - On this receiver the PVR key opens EMC, whose player uses EMC's own skin file
+    (`EnhancedMovieCenter/CoolSkin/EMCMediaCenter_1080.xml`), not a CineView screen.
+  - The native MoviePlayer screens of the CineView packs are covered statically. From t87 on, the device check
+    opens the native MoviePlayer on the USB test clip (devtool `play`, the same call as InfoBar.movieSelected).
