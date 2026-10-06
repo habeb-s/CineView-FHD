@@ -372,6 +372,7 @@ details.np summary{font:600 20px var(--display);cursor:pointer}
   <h2>Information areas stay opaque over any picture</h2>
   <p class="note">rc9: every area that carries information on the InfoBar, the SecondInfoBar and the playback bar has a fully opaque background in the theme colour; the decorative scrims around them stay translucent. Measured from the receiver’s real OSD alpha inside every information widget, six themes. “Edge / corner only”: anti-aliased edges of rounded pills (alpha ≥ 250) or their corners outside the rounded shape, never under text.</p>
   <div class="tw"><table><thead><tr><th>Model</th><th>Screen</th><th>Themes</th><th>Widgets checked</th><th>Not opaque</th><th>Edge / corner only</th></tr></thead><tbody>%OROWS%</tbody></table></div>
+  <p class="note">Minimal SecondInfoBar: the 4 come from one Purple grab (description area, y 796–848). It was not reproducible: 24 retakes in Purple and Navy, 2 to 12 seconds after opening (t88), were all fully opaque there. It is listed, not explained.</p>
   <p class="note">The same OSD over red, yellow, white and dark (navy theme): before (rc8) and after (rc9).</p>
   %OFIGS%
 </section>
