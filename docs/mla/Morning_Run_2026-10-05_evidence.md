@@ -885,3 +885,21 @@ setting unchanged.
   Modern (60 grabs)**, no fallback or second logo; Minimal has no picon in its InfoBar (thumbnail + name): its
   15 grabs show the thumbnail with a poster and the No Poster layout without, never a stray logo. Channel list
   grabs while the cursor runs: `csfast_<model>.png`.
+
+**Release candidate 1.0.0~rc10 = build87** — SHA256 `d90ea53515e9fb9ec3e262c700786ac094a515e24f4a5a4060d208afee86387c`
+(published in release/rc; `install-mla.sh` = rc10 with the final cache policy; `install-mla-rc9.sh` keeps rc9).
+- **t87g** (build87, five models × navy / purple + playback bar): 889 information widgets checked, **0 real
+  not-opaque**, 74 edge / corner-only; 0 errors.
+- **t86_rc10 lifecycle:** upgrade rc9 → rc10 with the GUI running (Modern kept, selection rebuilt g000176) → reboot
+  (linuxrootfs8) → normal uninstall (image skin; state kept) → fresh install (factory Classic) → purge → restore:
+  every step 0 tracebacks / skin errors / crash logs; poster cache 1035 files throughout.
+- **t77_rc10 short final QA** (installed rc10): five models × six sections, 30 grabs, 12 checks, 0 errors.
+- **Real installer from GitHub** on the receiver: compatibility checks, download, sha256 OK, backup; opkg then
+  refused because the same version was already installed ("nothing was changed by this script") - correct.
+- **Installer cache step** (the block exactly as shipped, pointed at a scratch runtime.json in /tmp; the real setting
+  untouched): existing pin → kept; no pin → `/media/hdd/poster (HDD /dev/sda1, read-write mount)`, nothing written;
+  no pin + `HDD_CACHE=0` → pinned off the HDD (/tmp on this receiver: its USB stick is Slot 8's root device and is
+  excluded on purpose).
+- `/media/hdd/poster` after all tests: empty, mtime 2026-10-06 14:48:09 (t92) - no other test wrote there.
+- Report "CineView MLA Model Review" version 3 = the 1.0.0 review (release status table first).
+- Status: RELEASE CANDIDATE on Slot 8 - **not released**; waiting for the user's approval.

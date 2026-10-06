@@ -1,12 +1,12 @@
-# CineView MLA: resume point (updated 2026-10-06 13:40 Riyadh)
+# CineView MLA: resume point (updated 2026-10-06 19:00 Riyadh)
 
 Scope for 1.0.0 (user 06:13): Vu+ Duo 4K SE on OpenATV only. DM900 / other devices are out of the current release.
 
 | Item | Value |
 |---|---|
-| Last build | **rc9 = build86 published** (SHA256 0d2336da…8ee8946, raw-verified, DRYRUN ok); installed on Slot 8 by t77 rc9 |
-| Receiver | Slot 8, Vu+ Duo 4K SE, OpenATV 8.0.1; rc9 installed (t77 rc9: upgrade rc8→rc9 + five models, 0 errors), Classic navy |
-| Queue on ai-agent | empty. Receiver: rc9 installed, Classic navy, posters ON |
+| Last build | **rc10 = build87 published** (SHA256 d90ea535…ee86387c), installed on Slot 8 (t86_rc10 / t77_rc10) |
+| Receiver | Slot 8 (linuxrootfs8), rc10 installed, Classic navy, posters ON, cache pinned to USB dev cache |
+| Queue on ai-agent | empty |
 
 ## Task list to the final RC (user report 06:13)
 | # | Task | Status |
@@ -45,3 +45,12 @@ Scope for 1.0.0 (user 06:13): Vu+ Duo 4K SE on OpenATV only. DM900 / other devic
   arrangements, PIL poster sharpness, final look of the five models.
 - Decisions: installer HDD cache default (HDD_CACHE); dedicated HDD cache test only after the user's OK;
   SecondInfoBarECM (no placeholder now; moving its text needs Python resizing of named widgets).
+
+## User list 2026-10-06 14:31 - all items closed on rc10
+1. Minimal/Purple SIB leak: reproduced (t90), fixed (build87 scroll-fill), t90b 0/216, t93 0/75 (rare event; see evidence 15).
+2. SecondInfoBarECM: no placeholder / no frame without a poster, five models (t91); no runtime resizing.
+3. Poster cache: HDD real mount -> USB -> /tmp in runtime + rc10 installer; t92 dedicated HDD test PASS.
+4. Classic No Poster: InfoBar / EPG / EMC / MovieSelection pairs (t91).
+5. Picons: one per place under fast zapping (t91).
+Final: rc10 built from the tested build87; t86 lifecycle + t77 short QA pass; 1.0.0 review report published.
+Waiting: the user's approval for 1.0.0 (no final release / no main without it).
