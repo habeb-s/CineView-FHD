@@ -632,3 +632,24 @@ reinst.sh 22:36).
   dialog on every show. Both change Enigma2 behaviour, so it is **not safe**.
 - State in build79: **no placeholder** (poster `underlay`). Without a poster the poster area stays empty; the
   information is never covered.
+
+**t81d — RUNTIME TESTED (build79, same steps as t81a/b and t83, pool debug on).**
+- 46 warnings: **0 CineView**; 42 = 720×45:8 (91.3 %), 3 = list picons 220×132, 1 = 1536×1024 at start-up.
+- **720×45:8 = DVB subtitle regions (native Enigma2):**
+  - `lib/dvb/subtitle.cpp:449` `region->buffer = new gPixmap(eSize(w, h), 8, 1)`: 8-bit regions, accelAlways;
+  - they start with `eDVBSubtitleParser start on pid 0x0d75` (HBO's DVB subtitles) and each is freed about 1.5 s
+    later.
+- The same surface appears in every run; only the failures change with fragmentation:
+
+| Run | 720×45 allocations | failures |
+|---|---|---|
+| t81a | 594 | 7 |
+| t81b | 249 | 8 |
+| t81c (t83) | 186 | 4 |
+| t81d | 546 | 46 |
+
+- In t81d the pool held one more native 192×49 surface, and the largest free block fell to 30 kB, below the 35.5 kB
+  a subtitle region needs.
+- The cause is native: the list picon cache (43 × 115 kB resident) plus the DVB subtitle regions.
+- Not a CineView regression. The t85 Modern figure (46) is the same mechanism (HBO subtitles at that hour).
+- Documented, not changed: it lies in Enigma2's own picon caching and subtitle rendering.
