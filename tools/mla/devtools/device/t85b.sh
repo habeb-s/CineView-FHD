@@ -8,7 +8,7 @@
 exec 9>~/cineview-mla/t85b.lock; flock -n 9 || { echo "t85b already running"; exit 1; }
 . ~/cineview-mla/p6lib.sh
 NEW=${1:-build79}
-S=~/cineview-mla/shots/t85bb; rm -rf $S; mkdir -p $S
+S=~/cineview-mla/shots/t85b; rm -rf $S; mkdir -p $S
 E='python3 /usr/share/enigma2/CineView_FHD_MLA/mla/engine/composer.py'
 HBO="1:0:19:784:C6D4:16E:A00000:0:0:0:"
 HRT1="1:0:19:D49:C738:16E:A00000:0:0:0:"
@@ -33,6 +33,7 @@ $R 'sh -s' < ~/cineview-mla/repo/tools/mla/devtools/device/tmedia_pvr.sh | tail 
 ~/cineview-mla/deploy_b.sh $NEW >/dev/null 2>&1
 cat ~/cineview-mla/devtools/CineViewMLAScreenOpen/plugin.py | $R "mkdir -p $P && cat > $P/plugin.py && touch $P/__init__.py"
 OLDDIR=$($R 'grep "^config.movielist.last_videodir=" /etc/enigma2/settings | cut -d= -f2-'); echo "movielist folder before: '$OLDDIR'"
+cat ~/cineview-mla/devtools/CineViewMLAScreenOpen/plugin.py | $R "mkdir -p $P && cat > $P/plugin.py && touch $P/__init__.py"
 for m in classic modern cinema details minimal; do
   echo "== $m"; ap --theme navy $(model $m); restart ""; errs
   for s in $HBO $HRT1; do
