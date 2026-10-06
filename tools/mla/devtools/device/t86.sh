@@ -31,7 +31,8 @@ B=/media/usb/cineview-mla/state/backup-t86-$TAG
 echo "== 0. backup $B"
 $R "mkdir -p $B && cp -p /etc/enigma2/settings $B/settings && tar -C /etc/enigma2 -czf $B/cineview_mla-state.tgz cineview_mla && opkg status $PKG | grep Version > $B/version && ls $B"
 state
-cat $IPK | $R 'mkdir -p /home/root/cvmla && cat > /home/root/cvmla/t86.ipk'  # not /tmp: cleared by the reboot (t86 rc8 run 1); $R 'ls -l /home/root/cvmla/t86.ipk; sha256sum /home/root/cvmla/t86.ipk'
+# the package is kept in /home/root/cvmla, not /tmp: /tmp is cleared by the reboot (t86 rc8 run 1)
+cat $IPK | $R 'mkdir -p /home/root/cvmla && cat > /home/root/cvmla/t86.ipk'; $R 'ls -l /home/root/cvmla/t86.ipk; sha256sum /home/root/cvmla/t86.ipk'
 
 FROM=${FROM:-1}
 if [ $FROM -le 1 ]; then
