@@ -826,7 +826,18 @@ made from the original file, original kept as it is; visible size, quality and l
   longer depends on how the area below is repainted while it scrolls. Same look. Only when nothing else is drawn
   under it inside its rectangle; a No Poster text variant is not blocked by the poster widget of the same toggle
   (that poster is hidden / released in exactly the states the variant is shown). 261 widgets in the InfoBar family.
-- t90b (same long test on build87) follows t90.
+- **Results** (216 grabs each: 3 reboots × 2 themes × posters ON/OFF × 6 openings × 3 grab times):
+
+| Run | Build | Leaks | Errors | Boot slot after each reboot |
+|---|---|---|---|---|
+| t90 | rc9 (build86 layouts) | **1 / 216** (reboot 1, Purple, posters ON, opening 1, 4 s) | 0 | linuxrootfs8 ×3 |
+| t90b | build87 (scroll-fill) | **0 / 216** | 0 | linuxrootfs8 ×3 |
+
+  - build87 was verified active after the reboots (layout md5; active generation carries `transparent="0"
+    backgroundColor="steThemeOverlaySolid"` on the description RunningText). Look unchanged (composite check).
+  - One leak in 216 is a low base rate, so 0 / 216 alone is not strong proof. **t93** (queued) repeats only the
+    trigger, A/B: the first opening after an Enigma2 restart, Purple, grabs at 3.6 / 3.9 / 4.2 / 4.5 / 5.0 s,
+    15 restarts on build86 vs 15 on build87.
 
 **3. Poster cache (final policy).**
 - Runtime (unchanged, already shipped): `_mla_cache_plan` = 1. `/media/hdd/poster` when /media/hdd is a real
