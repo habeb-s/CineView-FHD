@@ -6,7 +6,7 @@ Scope for 1.0.0 (user 06:13): Vu+ Duo 4K SE on OpenATV only. DM900 / other devic
 |---|---|
 | Last build | **rc9 = build86 published** (SHA256 0d2336da…8ee8946, raw-verified, DRYRUN ok); installed on Slot 8 by t77 rc9 |
 | Receiver | Slot 8, Vu+ Duo 4K SE, OpenATV 8.0.1; rc9 installed (t77 rc9: upgrade rc8→rc9 + five models, 0 errors), Classic navy |
-| Queue on ai-agent | next: t68 final QA on rc9 (NO_DEPLOY=1) → 25-min performance run → report/video |
+| Queue on ai-agent | t68_rc9 (final QA on the installed rc9, NO_DEPLOY, ~2 h) → q94: t89 (25-min Modern on rc9) → report_rc9.html |
 
 ## Task list to the final RC (user report 06:13)
 | # | Task | Status |
@@ -24,6 +24,8 @@ Scope for 1.0.0 (user 06:13): Vu+ Duo 4K SE on OpenATV only. DM900 / other devic
 | 10 | Explicit poster-cache delete option | DONE (`uninstall-mla.sh cache`, CONFIRM=yes; only MLA's id/ and sz*/), tested on /tmp |
 
 ## Harness fault 2026-10-06 (fixed)
+- Also gone from /tmp after the reboot: `/tmp/cvmla/setcfg.py`. Effect checked: t87 only re-set the movie folder to
+  its own value (no change; the receiver has no folder override). Scripts now push setcfg.py themselves.
 - The t86 reboot cleared `/tmp/cvmla` on the receiver; `deploy.sh` (set -e) writes there first, so every deploy
   after the reboot aborted silently until 09:00. Affected: the t87 "build81" run (measured build79) and the first
   t87c start. Not affected: t77 rc8 / t86 (package installs), t87a (build79 was installed anyway).
