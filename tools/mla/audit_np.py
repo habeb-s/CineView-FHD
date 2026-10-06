@@ -60,6 +60,9 @@ def main(root):
 				if n_ph:
 					keys = sorted(set(re.findall(r'toggle="([^"]+)"', body)))
 					ph.append((rel, name, n_ph, dyn, ",".join(k.split(".")[-1] for k in keys)))
+				for w in WIDGET.findall(body):
+					if 'render="CineViewMLAPosterX"' in w and 'underlay="1"' not in w:
+						ph.append((rel, name, 0, dyn, "RENDERER-DEFAULT (poster widget without underlay: draws the default image itself)"))
 				ws = [w for w in WIDGET.findall(body) if 'render="Picon"' in w]
 				for i in range(len(ws)):
 					for j in range(i + 1, len(ws)):

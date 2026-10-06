@@ -35,7 +35,14 @@ def _inside(r, outer, pad=8):
 	return r and outer and r[0] >= outer[0] - pad and r[1] >= outer[1] - pad and r[2] <= outer[2] + pad and r[3] <= outer[3] + pad
 
 
-def screen_body(body):
+# Named EventView screens whose ON / OFF version the CineView MLA plugin picks when the screen OPENS (cached poster ->
+# ON, none -> '<name>_CVPosterOff').  They have no per-event variants, but the ON version must not show a placeholder
+# either if its poster then cannot be shown: placeholder removed, poster underlay="1", frames follow the poster.
+# (static audit 2026-10-06, tools/mla/audit_np.py: 11 such screens kept the placeholder)
+PLUGIN_SWITCHED = ("EventView", "EventViewSimple", "InfoBarEventView")
+
+
+def screen_body(body, force=False):
 	posters = []
 	for m in WIDGET.finditer(body):
 		w = m.group(0)
@@ -48,7 +55,7 @@ def screen_body(body):
 	if not keys:
 		return body, 0, False
 	variants = sum(len(re.findall(r'CineViewMLAShowIf">%s,True' % re.escape(k), body)) for k in keys)
-	if not variants:
+	if not variants and not force:
 		return body, 0, False
 	has_next = set(k for k, n, _ in posters if n == 1)
 
@@ -116,7 +123,7 @@ def run(skin):
 			out = []
 			last = 0
 			for m in re.finditer(r'(<screen name="([^"]+)"[^>]*>)(.*?)(</screen>)', src, re.S):
-				body, nvar, dyn = screen_body(m.group(3))
+				body, nvar, dyn = screen_body(m.group(3), force=(sec == "eventview" and m.group(2) in PLUGIN_SWITCHED))
 				rel = os.path.relpath(p, skin)
 				if 'render="CineViewMLAPosterX"' in m.group(3):
 					(dynamic if dyn else static).append((rel, m.group(2), nvar) if dyn else (rel, m.group(2)))
