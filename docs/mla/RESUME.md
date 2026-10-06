@@ -6,7 +6,7 @@ Scope for 1.0.0 (user 06:13): Vu+ Duo 4K SE on OpenATV only. DM900 / other devic
 |---|---|
 | Last build | **rc9 = build86 published** (SHA256 0d2336da…8ee8946, raw-verified, DRYRUN ok); installed on Slot 8 by t77 rc9 |
 | Receiver | Slot 8, Vu+ Duo 4K SE, OpenATV 8.0.1; rc9 installed (t77 rc9: upgrade rc8→rc9 + five models, 0 errors), Classic navy |
-| Queue on ai-agent | t68_rc9 (final QA on the installed rc9, NO_DEPLOY, ~2 h) → q94: t89 (25-min Modern on rc9) → report_rc9.html |
+| Queue on ai-agent | q94: t89 (25-min Modern on rc9, started 12:57) → report_rc9.html |
 
 ## Task list to the final RC (user report 06:13)
 | # | Task | Status |
@@ -17,7 +17,7 @@ Scope for 1.0.0 (user 06:13): Vu+ Duo 4K SE on OpenATV only. DM900 / other devic
 | 4 | Named EventView screens when the poster fails | DONE in build78/79 (placeholder removed, underlay, frames follow the real poster) |
 | 5 | rc8 (build79) + t77 install test | DONE, published |
 | 6 | t86 package lifecycle | DONE on rc8 (run 1: harness fault in step 4, /tmp cleared by reboot, repaired; rc8b steps 3-6 pass) |
-| 7 | Final QA: 5 models × 6 sections × ON/OFF × 6 themes | on rc9 (next) |
+| 7 | Final QA: 5 models × 6 sections × ON/OFF × 6 themes | DONE on installed rc9 (t68_rc9): 145 grabs, 0 errors |
 | 8 | 25-min performance run on rc9 | after QA |
 | 9 | Report + video + release files | last |
 | 11 | Opaque information areas on the InfoBar family (user 06:42): infoplate.py; build86 = rc9. Device t87e (build85, 5 models × 6 themes) + t87f (build86 Modern × 6): 0 REAL not-opaque, 0 errors; scrims kept; PVRState black box and Modern SIB band fixed; t88: one Minimal/Purple capture not reproducible (24/24 opaque). Sheets: docs/mla/evidence/opaque_*.jpg | RUNTIME TESTED — visual approval by the user pending |

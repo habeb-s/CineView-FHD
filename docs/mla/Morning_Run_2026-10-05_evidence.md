@@ -789,6 +789,11 @@ reinst.sh 22:36).
   - Before / after sheets (navy, five models × IB / SIB, real OSD over red / yellow / white / dark):
     `docs/mla/evidence/opaque_<model>_<ib|sib>.jpg`. Visual approval by the user pending.
   - Status: RUNTIME TESTED on Slot 8. NOT final.
+- **t68_rc9 — final QA on the INSTALLED rc9 (NO_DEPLOY=1, package 1.0.0~rc9):** five models × six sections
+  (InfoBar, SecondInfoBar, channel list, EPG, EventView, PVR: EMC + native MovieSelection) with posters ON and OFF
+  (navy), and every model in the six themes (InfoBar, channel list, EventView).
+  - 145 grabs, 0 bad; 71 checks: **0 tracebacks, 0 skin errors, 0 crash logs**; movie folder setting unchanged.
+  - Grabs: ai-agent `shots/t68_rc9/` (in the rc9 report).
 - Playback InfoBar:
   - On this receiver the PVR key opens EMC, whose player uses EMC's own skin file
     (`EnhancedMovieCenter/CoolSkin/EMCMediaCenter_1080.xml`), not a CineView screen.
