@@ -91,9 +91,15 @@ if MODE == "write":
         created = True
         say("created", TARGET + " (the skin does the same on first use)")
     src_poster = None
-    for root in ("/media/usb/cineview-mla/poster", "/media/usb/poster"):
+    roots = []
+    try:
+        import json
+        roots.append(json.load(open("/etc/enigma2/cineview_mla/runtime.json")).get("poster_cache") or "")
+    except Exception:
+        pass
+    for root in [r for r in roots if r and not r.startswith(HDD)] + ["/media/usb/cineview-mla/poster", "/media/usb/poster"]:
         for dp, dn, fn in os.walk(root):
-            for f in fn:
+            for f in sorted(fn):
                 if f.lower().endswith(".jpg"):
                     src_poster = os.path.join(dp, f)
                     break
