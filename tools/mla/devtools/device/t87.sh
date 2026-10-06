@@ -8,7 +8,7 @@
 exec 9>~/cineview-mla/t87.lock; flock -n 9 || { echo "t87 already running"; exit 1; }
 . ~/cineview-mla/p6lib.sh
 NEW=${1:-build81}
-S=~/cineview-mla/shots/t87; rm -rf $S; mkdir -p $S
+S=~/cineview-mla/shots/t87${TAG:-}; rm -rf $S; mkdir -p $S
 E='python3 /usr/share/enigma2/CineView_FHD_MLA/mla/engine/composer.py'
 HBO="1:0:19:784:C6D4:16E:A00000:0:0:0:"
 HRT1="1:0:19:D49:C738:16E:A00000:0:0:0:"
@@ -35,7 +35,7 @@ cat ~/cineview-mla/devtools/CineViewMLAScreenOpen/plugin.py | $R "mkdir -p $P &&
 OLDDIR=$($R 'grep "^config.movielist.last_videodir=" /etc/enigma2/settings | cut -d= -f2-')
 go() { curl -s -m 30 -o $S/$1_osd.png "http://192.168.1.250/grab?format=png&mode=osd&r=1920"; curl -s -m 60 -o $S/$1_all.png "http://192.168.1.250/grab?format=png&mode=all&r=1920"; echo "cap $1 $(ok $S/$1_osd.png && echo osd-ok || echo OSD-BAD) $(ok $S/$1_all.png && echo all-ok || echo ALL-BAD)"; }
 for m in classic details cinema modern minimal; do
-  for t in navy green burgundy black graphite purple; do
+  for t in ${THEMES:-navy green burgundy black graphite purple}; do
     echo "== $m $t"; ap --theme $t $(model $m); restart ""; errs
     zap $HBO; X; $RC 352; sleep 2.5; go ${m}_${t}_ib; X; sleep 2
     $RC 352; sleep 1.5; $RC 352; sleep 4; go ${m}_${t}_sib; X; sleep 2
