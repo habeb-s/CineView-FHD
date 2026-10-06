@@ -7,7 +7,7 @@
 exec 9>~/cineview-mla/t68.lock; flock -n 9 || { echo "t68 already running"; exit 1; }
 . ~/cineview-mla/p6lib.sh
 NEW=${1:-build69}
-S=~/cineview-mla/shots/t68; rm -rf $S; mkdir -p $S
+S=~/cineview-mla/shots/t68${TAG:-}; rm -rf $S; mkdir -p $S
 E='python3 /usr/share/enigma2/CineView_FHD_MLA/mla/engine/composer.py'
 HBO="1:0:19:784:C6D4:16E:A00000:0:0:0:"
 P=/usr/lib/enigma2/python/Plugins/Extensions/CineViewMLAScreenOpen
@@ -44,7 +44,7 @@ three() {  # $1 tag: theme strip
   $RC 358; sleep 5; ga ${1}_ev; X; sleep 2
 }
 $R 'sh -s' < ~/cineview-mla/repo/tools/mla/devtools/device/tmedia_pvr.sh
-~/cineview-mla/deploy_b.sh $NEW
+if [ "${NO_DEPLOY:-0}" = 1 ]; then echo "== using the INSTALLED package: $($R "opkg status enigma2-plugin-skins-cineview-fhd-mla | grep Version")"; else ~/cineview-mla/deploy_b.sh $NEW; fi
 cat ~/cineview-mla/devtools/CineViewMLAScreenOpen/plugin.py | $R "mkdir -p $P && cat > $P/plugin.py && touch $P/__init__.py"
 OLDDIR=$($R 'grep "^config.movielist.last_videodir=" /etc/enigma2/settings | cut -d= -f2-'); echo "movielist folder before: '$OLDDIR'"
 for m in ${MODELS_LIST:-classic details cinema modern minimal}; do
