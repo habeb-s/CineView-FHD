@@ -40,7 +40,7 @@ for m in classic details cinema modern minimal; do
     zap $HBO; X; $RC 352; sleep 2.5; go ${m}_${t}_ib; X; sleep 2
     $RC 352; sleep 1.5; $RC 352; sleep 4; go ${m}_${t}_sib; X; sleep 2
     if [ $t = navy ]; then
-      op play 6; $RC 352; sleep 2.5; go ${m}_${t}_mp; $RC 128; sleep 5; X; sleep 3; X; sleep 2
+      op play 3; go ${m}_${t}_mp; $RC 128; sleep 5; X; sleep 3; X; sleep 2
     fi
   done
   errs
