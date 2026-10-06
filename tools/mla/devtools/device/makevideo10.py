@@ -86,7 +86,8 @@ still(card("1. تسرب Minimal / Purple في SecondInfoBar", "اختبار طو
            ["rc9: تسرب %d مرة في %d لقطة — أول فتح بعد إعادة التشغيل، لحظة بدء تمرير النص (4 ث)" % (t90[1], t90[0]),
             "السبب المثبت: بداية تمرير RunningText · الإصلاح: النص المتحرك يرسم خلفيته بلون اللوحة نفسه",
             "build87: %d تسرب في %d لقطة · اختبار مركّز t93: %d / %d و %d / %d" % (t90b[1], t90b[0], l93, a93, l93, b93)]), 9)
-lk = glob.glob(os.path.join(H, "shots", "t90", "b1_purple_*_o1_t4_osd.png"))
+lkn = re.search(r"^\s+(\S+)\s+band opaque.*LEAK", log("t90.log"), re.M)  # the grab that actually leaked
+lk = [os.path.join(H, "shots", "t90", lkn.group(1) + "_osd.png")] if lkn else []
 fx = sorted(glob.glob(os.path.join(H, "shots", "t90b", "b1_purple_pTrue_o1_t4_osd.png")))
 if lk and fx:
     box = (0, 600, 1920, 1000)
