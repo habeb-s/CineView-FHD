@@ -6,6 +6,7 @@
 # Nothing is played, deleted or moved.  Restore: Classic, navy, posters ON, movielist folder as before.
 exec 9>~/cineview-mla/t68.lock; flock -n 9 || { echo "t68 already running"; exit 1; }
 . ~/cineview-mla/p6lib.sh
+cat ~/cineview-mla/repo/tools/mla/devtools/device/setcfg.py | $R "mkdir -p /tmp/cvmla && cat > /tmp/cvmla/setcfg.py"  # /tmp is cleared by a reboot
 NEW=${1:-build69}
 S=~/cineview-mla/shots/t68${TAG:-}; rm -rf $S; mkdir -p $S
 E='python3 /usr/share/enigma2/CineView_FHD_MLA/mla/engine/composer.py'
