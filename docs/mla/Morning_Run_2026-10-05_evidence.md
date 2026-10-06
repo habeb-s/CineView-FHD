@@ -806,3 +806,40 @@ reinst.sh 22:36).
     (`EnhancedMovieCenter/CoolSkin/EMCMediaCenter_1080.xml`), not a CineView screen.
   - The native MoviePlayer screens of the CineView packs are covered statically. From t87 on, the device check
     opens the native MoviePlayer on the USB test clip (devtool `play`, the same call as InfoBar.movieSelected).
+
+## 15. User list 2026-10-06 14:31 (approved: opaque information areas, PIL poster sizing) — remaining items
+
+**Approved by the user (14:31):** the opaque information panels (Main InfoBar, SecondInfoBar, playback bar; video does
+not tint them; decorative transparency kept; no position / size change) and the PIL poster method (widget-size copy
+made from the original file, original kept as it is; visible size, quality and layout must not change).
+
+**1. Minimal / SecondInfoBar description leak (t87e, once).**
+- **t90 (rc9, installed):** 3 receiver reboots (Slot 8 rootsubdir checked before / after); after each reboot
+  Purple and Navy × posters ON / OFF; SIB opened and closed 6 times each, OSD grabbed 2 / 4 / 6 s after opening;
+  the description band (60..1860 × 780..920) must be alpha 255 everywhere.
+- **Reproduced:** reboot 1, Purple, posters ON, FIRST opening after the restart, 4 s: 19 % of the band (rows
+  889–919 of the 310,780 1550×140 RunningText, i.e. its bottom 31 rows) showed the scrim's alpha 210. Not on the
+  later openings; not on reboot 2's first Purple opening. Trigger proven: RunningText starts to scroll at 4 s
+  (`startdelay=4000`). The exact repaint path inside Enigma2 is not proven, and Enigma2 is not modified.
+- **Fix (build87):** a scrolling text widget (RunningText) that lies entirely inside one opaque region paints its
+  own background in exactly that region's colour (`transparent="0"`, `backgroundColor=<region colour>`), so it no
+  longer depends on how the area below is repainted while it scrolls. Same look. Only when nothing else is drawn
+  under it inside its rectangle; a No Poster text variant is not blocked by the poster widget of the same toggle
+  (that poster is hidden / released in exactly the states the variant is shown). 261 widgets in the InfoBar family.
+- t90b (same long test on build87) follows t90.
+
+**3. Poster cache (final policy).**
+- Runtime (unchanged, already shipped): `_mla_cache_plan` = 1. `/media/hdd/poster` when /media/hdd is a real
+  read-write block-device mount other than the root filesystem; 2. persistent USB (multiboot media excluded);
+  3. `/tmp/CINEVIEW-MLA/poster`. One cache for every design and screen; never deleted by upgrade / remove / purge;
+  explicit deletion only with `uninstall-mla.sh cache` + `CONFIRM=yes` (MLA's own `id/` and `sz*/` only).
+- Installer for the next RC: no pin by default (release order, HDD first); `HDD_CACHE=0` opts out (pins USB / /tmp);
+  an existing setting is kept — this receiver stays pinned to its USB development cache during tests.
+- **t92 dedicated HDD test** (user informed before the write):
+  - check (read-only): `/dev/sda1` ext4 rw, block device, not the root filesystem, 657 GB free, writable;
+    `/media/hdd/poster` already existed, empty, dated 2026-10-03 (kept). The skin's own plan, extracted from the
+    installed renderer without importing it and without the development pin: `/media/hdd/poster (HDD (real mount
+    /dev/sda1))`. PASS.
+  - write: ONE new file `.cineview-mla-hddtest-1791287289-14823.jpg` (exclusive create, 8738 bytes, a copy of a USB
+    cache poster), write + fsync 3.9 ms, read back identical, removed; the folder empty again as before (only its
+    modification time changed). Nothing else listed, deleted, renamed or moved; no mount change; no fsck. PASS.
