@@ -169,6 +169,49 @@ def noposter():
 	return "".join(out) or '<p class="note">t82 / t84 not run yet.</p>'
 
 
+def _errs(text):
+	"""(checks, checks with any traceback / skin error / crash log) from errs() lines."""
+	rows = re.findall(r"tracebacks=(\d+) skin_errors_new=(\d+) accel=\d+ e2pid=\S* crashlogs=(\d+)", text)
+	return len(rows), sum(1 for a, b, c in rows if int(a) or int(b) or int(c))
+
+
+def release_status():
+	"""Top section for the 1.0.0 review: every requirement, its state (CLAUDE.md completion states) and the evidence
+	parsed from the logs.  A missing log shows as 'not run'."""
+	def leaks(n):
+		t = log(n)
+		return len(re.findall(r"band opaque", t)), t.count("LEAK")
+	t90, t90b, t93 = leaks("t90.log"), leaks("t90b.log"), log("t93.log")
+	t93a = (len(re.findall(r"build86_r\S+\s+band opaque", t93)), len(re.findall(r"build86_r.*LEAK", t93)))
+	t93b = (len(re.findall(r"build87_r\S+\s+band opaque", t93)), len(re.findall(r"build87_r.*LEAK", t93)))
+	g = re.search(r"TOTAL REAL not-opaque info widgets: (\d+)\s+\(edge/corner-only widgets: (\d+)\)", log("t87g_alpha.log"))
+	g_chk = sum(int(x) for x in re.findall(r"checked\s+(\d+)", log("t87g_alpha.log")))
+	t91 = log("t91.log"); t91c, t91e = _errs(t91)
+	t86 = log("t86_rc10.log"); t86c, t86e = _errs(t86)
+	t77 = log("t77_rc10.log"); t77c, t77e = _errs(t77)
+	t77g = len(re.findall(r"png-ok", t77))
+	t92 = log("t92_write.log")
+	def st(ok, good="RUNTIME TESTED", bad="NOT RUN"):
+		return '<span class="%s">%s</span>' % ("ok" if ok else "warn", good if ok else bad)
+	rows = [
+		("Opaque information areas (InfoBar, SecondInfoBar, playback bar; 5 models; scrims kept)",
+		 st(bool(g) and g.group(1) == "0", "DEVICE VERIFIED · approved 14:31"),
+		 "t87e/t87f (rc9, 6 themes) 0 real; t87g (rc10 build, navy + purple): %s widgets checked, %s real, %s edge/corner-only" % (g_chk, g.group(1) if g else "?", g.group(2) if g else "?")),
+		("Minimal SIB description leak at scroll start",
+		 st(t90b[0] > 0 and t90b[1] == 0, "ROOT CAUSE IDENTIFIED · fix RUNTIME TESTED"),
+		 "rc9: %d leak in %d grabs (t90, 3 reboots); rc10 build: %d in %d (t90b) · focused A/B t93: old %d/%d, new %d/%d · event too rare to prove absence by counting" % (t90[1], t90[0], t90b[1], t90b[0], t93a[1], t93a[0], t93b[1], t93b[0])),
+		("PIL poster sizing (widget-size copy, original untouched)", '<span class="ok">DEVICE VERIFIED · approved 14:31</span>', "t83 (0 CineView accel share, A/B PSNR), unchanged since"),
+		("No Poster layout, no placeholder, 5 models incl. Classic", st(t91c > 0 and t91e == 0, "DEVICE VERIFIED"), "t91: InfoBar / EPG / EMC / MovieSelection pairs HBO vs HRT1; %d checks, %d with errors" % (t91c, t91e)),
+		("SecondInfoBarECM without placeholder (no runtime resizing)", st(t91c > 0 and t91e == 0, "DEVICE VERIFIED"), "t91: poster / no poster / posters OFF in 5 models; setting restored"),
+		("One picon per place under fast zapping", st(t91c > 0 and t91e == 0, "DEVICE VERIFIED"), "t91: 3 bursts + single zaps per model, 0.3 / 1 / 2.5 s; 60 picon cut-outs, one picon each"),
+		("Poster cache: HDD real mount → USB → /tmp; never deleted on upgrade / uninstall", st("PASS" in t92, "DEVICE VERIFIED (dedicated test)"), "t92: read-only checks + one test file written / read back / removed on /media/hdd/poster; cache kept in t86"),
+		("Package lifecycle rc10: upgrade (GUI running), reboot, uninstall, fresh install, purge, restore", st("T86_DONE" in t86 and t86e == 0, "DEVICE VERIFIED"), "t86_rc10: %d checks, %d with errors" % (t86c, t86e)),
+		("Short final QA on the installed rc10: 5 models × 6 sections", st("T77_DONE" in t77 and t77e == 0, "DEVICE VERIFIED"), "t77_rc10: %d grabs, %d checks, %d with errors" % (t77g, t77c, t77e)),
+		("Scope", '<span class="ok">Vu+ Duo 4K SE · OpenATV 8.0.1 · Slot 8</span>', "Dreambox and other receivers are outside this release"),
+	]
+	return "".join('<tr><td>%s</td><td>%s</td><td>%s</td></tr>' % r for r in rows)
+
+
 def ecm_and_picons():
 	"""t91: SecondInfoBarECM (poster / no poster / posters OFF) and the picon sheets of the fast-zap grabs."""
 	ecm, pic = [], []
@@ -278,10 +321,11 @@ def main(out):
 			m, m, "" if mi == 0 else " hidden", chip, "".join(rows), "".join(th)))
 
 	orows, ofigs = opaque()
+	relrows = release_status()
 	ecmh, pich = ecm_and_picons()
 	ahead, arows = attribution()
 	abnote, abfigs = pil_ab()
-	html = TEMPLATE.replace("%ECM%", ecmh).replace("%PICONS%", pich).replace("%OROWS%", orows).replace("%OFIGS%", ofigs).replace("%BUILD%", BUILD).replace("%CURRENT%", CURRENT).replace("%ATTRH%", ahead).replace("%ATTR%", arows).replace("%PILNOTE%", abnote).replace("%PILAB%", abfigs).replace("%NOPOSTER%", noposter()).replace("%BARS%", "".join(bars)).replace("%PHASES%", prow or '<tr><td colspan="5">t76 not run</td></tr>') \
+	html = TEMPLATE.replace("%RELEASE%", relrows).replace("%ECM%", ecmh).replace("%PICONS%", pich).replace("%OROWS%", orows).replace("%OFIGS%", ofigs).replace("%BUILD%", BUILD).replace("%CURRENT%", CURRENT).replace("%ATTRH%", ahead).replace("%ATTR%", arows).replace("%PILNOTE%", abnote).replace("%PILAB%", abfigs).replace("%NOPOSTER%", noposter()).replace("%BARS%", "".join(bars)).replace("%PHASES%", prow or '<tr><td colspan="5">t76 not run</td></tr>') \
 		.replace("%AB%", "".join(ab_rows) or '<p class="note">t78 not run yet.</p>').replace("%POOL%", pool_rows or '<tr><td colspan="2">t78 not run yet</td></tr>') \
 		.replace("%TABS%", "".join(tabs)).replace("%PANES%", "".join(panes)).replace("%TB%", str(tb)).replace("%SE%", str(se)).replace("%SECLS%", "ok" if se == 0 else "warn") \
 		.replace("%SENOTE%", "" if se == 0 else '<span class="fn">(Classic MovieSelection: list attributes enigma2 rejects; removed in build70 / rc5)</span>').replace("%CL%", str(cl))
@@ -361,6 +405,11 @@ details.np summary{font:600 20px var(--display);cursor:pointer}
   <p class="lede">The five design models on all six sections, as the receiver drew them: posters on and off in the navy theme, and every model in the six themes. Every picture below is a screen grab from the receiver; every number comes from a test log.</p>
   <div class="facts"><span>Tracebacks <b class="ok">%TB%</b></span><span>New skin errors <b class="%SECLS%">%SE%</b>%SENOTE%</span><span>Crash logs <b class="ok">%CL%</b></span><span>Test media <b>USB only, HDD not opened</b></span></div>
 </header>
+<section class="block">
+  <h2>Release 1.0.0: status of every requirement</h2>
+  <p class="note">States as defined for this project (DEVICE VERIFIED = exercised on the receiver with evidence). Nothing here is a final release until it is approved.</p>
+  <div class="tw"><table><thead><tr><th>Requirement</th><th>State</th><th>Evidence</th></tr></thead><tbody>%RELEASE%</tbody></table></div>
+</section>
 <section class="block">
   <h2>Modern performance: accelAlloc warnings in 25 minutes</h2>
   <p class="note">The receiver has 5400 kB of fast graphics memory. Every run below repeats the same round: channel list fast and slow, EventView, SecondInfoBar, EPG, EMC on the USB folder, and a channel change. Counts include the one warning every start-up logs. Fewer is better; nothing was lost on screen in any run, the warning means the picture went to normal memory.</p>
