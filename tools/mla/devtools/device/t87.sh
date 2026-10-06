@@ -2,7 +2,7 @@
 # t87: opaque information areas of the InfoBar family (user 2026-10-06 06:42).  Per model x theme: InfoBar, SecondInfoBar
 # and (navy) the MoviePlayer playback bar on the USB test clip; OSD-only grab (real alpha) + full grab.  Analysis:
 # osd_alpha.py.  Env: TAG (shots/t87<TAG>), THEMES, MODELS.  HDD not opened; USB test media only.
-# deleted or moved.  Restore: Classic navy, posters ON, movielist folder as before.
+# Nothing on the receiver is deleted or moved.  Restore: Classic navy, posters ON, movielist folder as before.
 exec 9>~/cineview-mla/t87.lock; flock -n 9 || { echo "t87 already running"; exit 1; }
 . ~/cineview-mla/p6lib.sh
 NEW=${1:-build81}
