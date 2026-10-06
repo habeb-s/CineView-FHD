@@ -7,7 +7,7 @@
 exec 9>~/cineview-mla/t87.lock; flock -n 9 || { echo "t87 already running"; exit 1; }
 . ~/cineview-mla/p6lib.sh
 NEW=${1:-rc9}
-S=~/cineview-mla/shots/t90; rm -rf $S; mkdir -p $S
+S=~/cineview-mla/shots/t90${TAG:-}; rm -rf $S; mkdir -p $S
 E='python3 /usr/share/enigma2/CineView_FHD_MLA/mla/engine/composer.py'
 HBO="1:0:19:784:C6D4:16E:A00000:0:0:0:"
 HRT1="1:0:19:D49:C738:16E:A00000:0:0:0:"
@@ -50,12 +50,12 @@ for b in 1 2 3; do
   waitup; $R 'grep -o "rootsubdir=[^ ]*" /proc/cmdline'; errs
   cat ~/cineview-mla/repo/tools/mla/devtools/device/setcfg.py | $R "mkdir -p /tmp/cvmla && cat > /tmp/cvmla/setcfg.py"
   for t in purple navy; do
-    for p in True False; do
-      echo "== reboot $b minimal $t posters $p"; ap --theme $t $(model minimal); restart "$(pset $p)"; errs
+    for pv in True False; do
+      echo "== reboot $b minimal $t posters $pv"; ap --theme $t $(model minimal); restart "$(pset $pv)"; errs
       zap $HBO; X; sleep 2
       for o in 1 2 3 4 5 6; do
         $RC 352; sleep 1.5; $RC 352; T0=$(date +%s.%N)
-        for d in 2 4 6; do now=$(date +%s.%N); w=$(echo "$T0 + $d - $now" | bc); [ "${w:0:1}" != "-" ] && sleep $w; g b${b}_${t}_p${p}_o${o}_t$d; done
+        for d in 2 4 6; do now=$(date +%s.%N); w=$(echo "$T0 + $d - $now" | bc); [ "${w:0:1}" != "-" ] && sleep $w; g b${b}_${t}_p${pv}_o${o}_t$d; done
         X; sleep 2
       done
       errs
