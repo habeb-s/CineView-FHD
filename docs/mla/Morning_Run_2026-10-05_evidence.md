@@ -653,3 +653,23 @@ reinst.sh 22:36).
 - The cause is native: the list picon cache (43 × 115 kB resident) plus the DVB subtitle regions.
 - Not a CineView regression. The t85 Modern figure (46) is the same mechanism (HBO subtitles at that hour).
 - Documented, not changed: it lies in Enigma2's own picon caching and subtitle rendering.
+
+**rc8 (build79) and t86 package lifecycle.**
+- rc8 SHA256: `cd3bfbe59889d3cbedfa55b1583eebb8492c95a2cc7162a50f1c0aa439459bc1` (ai-agent `rc8/`, not published yet).
+- **t86 run 1:**
+  1. Upgrade rc7 → rc8 with Enigma2 RUNNING, Modern selected: `install ok installed`; postinst rebuilt the
+     selection ("your design selection was rebuilt", g000331); after the GUI restart the selection was still
+     Modern. 0 errors. **PASS.**
+  2. Full receiver reboot: back on `rootsubdir=linuxrootfs8` (Slot 8; STARTUP only read); skin, selection Modern,
+     guardian hook and poster cache (850 files) unchanged; 0 tracebacks / skin errors / crash logs. **PASS.**
+  3. Normal uninstall (`uninstall-mla.sh`): skin selection removed first; package and skin directory gone;
+     Enigma2 restarted on the image's default skin; `/etc/enigma2/cineview_mla` and runtime.json kept; poster
+     cache unchanged (850). **PASS.**
+  4. Fresh install: **test-harness fault.** The script had put the package in `/tmp`, which the reboot in step 2
+     cleared ("No candidates to install"). The skin was selected without the package, so Enigma2 started with
+     34 skin errors (missing images) and no crash.
+  - Repaired by hand right away: rc8 installed from persistent storage (this is the fresh-install path: postinst
+    activated factory), settings + MLA state restored from the USB backup, Classic navy. Result: 0 tracebacks,
+    0 skin errors, 0 crash logs.
+  - The script is fixed: the package is kept in `/home/root/cvmla` and `FROM=<step>` resumes.
+  - Steps 3–6 are re-run as t86 rc8b, followed by t77 rc8 and t87a / t87.
