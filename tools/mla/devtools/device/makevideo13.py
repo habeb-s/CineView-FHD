@@ -93,12 +93,12 @@ still(card("CineView MLA 1.0.0 — اللمسات الأخيرة", "build88 · �
             "حماية خفيفة: ملفات Python الحساسة ‎.pyc‎ (Python 3.14 الخاص بالرسيفر) · version.json · بلا تشفير ولا تفعيل"]), 8)
 still(card("1. التثبيت والواجهة تعمل", "opkg أزال ملفات ‎.py‎ القديمة وثبّت ‎.pyc‎",
            ["ملفات CineViewMLA ‎.pyc‎: %s" % (pc[0] if pc else "?"), "أخطاء تحميل البلجنات: %s" % (pl[0] if pl else "?"),
-            "ملف ‎.py‎ متبقٍ واحد: CineViewMLAPicon.py من نشر تطوير قديم — ليس في الحزمة ولا يستخدمه أي سكين (نُقل للنسخة الاحتياطية)"]), 7)
+            "بقايا تطوير قديمة (CineViewMLAPicon.py) خارج الحزمة — نُقلت للنسخة الاحتياطية"]), 7)
 motion("3_pluginbrowser", "Plugin Browser — أيقونة CineView Designs الجديدة (A)", "ICON", 3)
 motion("3_cineviewdesigns", "CineView Designs — سطر الإصدار والحقوق أسفل الحالة", "RIGHTS", 4)
 P = os.path.join(H, "shots", "t95_final100b", "3_cineviewdesigns.png")
 if os.path.exists(P):
-    still(strip(P, (0, 860, 960, 1000), "تكبير — CineView MLA 1.0.0 · build88 · Design & Development by habeb-s © 2026", "RIGHTS", True), 4)
+    still(strip(P, (0, 860, 960, 1000), "تكبير — سطر الإصدار والحقوق", "RIGHTS", True), 4)
 P = os.path.join(H, "shots", "t95_final100b", "3_pluginbrowser.png")
 if os.path.exists(P):
     still(strip(P, (1040, 100, 1400, 280), "تكبير — الأيقونة في Plugin Browser", "ICON", True), 3.5)
