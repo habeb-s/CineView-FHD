@@ -1,0 +1,76 @@
+#!/usr/bin/env python3
+"""t87 analysis: are the information areas of the InfoBar family fully opaque on the receiver?
+Input: OSD-only grabs (grab?mode=osd, RGBA = the real framebuffer alpha) named <model>_<theme>_<screen>.png and the
+deployed build (screen XML).  For every information widget of that screen (same rule as tools/mla/infoplate.py) the
+pixels inside its rectangle are checked: alpha must be 255 everywhere (video cannot show through or tint it).
+A widget whose rectangle is fully transparent in the grab (alpha 0: hidden variant / empty) is skipped.
+Also writes composites of the real OSD over solid red / yellow / white / dark: <name>_bg.png (2x2 sheet).
+usage: osd_alpha.py <build root> <shots dir>"""
+import os
+import re
+import sys
+
+from PIL import Image
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(HERE, "..", ".."))
+import infoplate as IP  # noqa: E402
+
+PACK = {  # model -> (infobar pack, secondinfobar pack, pvr pack)
+	"classic": ("classic", "classic", "classic"), "details": ("details", "details", "cover"), "cinema": ("cinema", "cinema", "cinema"),
+	"modern": ("modern", "modern", "modern"), "minimal": ("minimal", "minimal", "minimal")}
+SCREEN = {"ib": ("infobar", 0, "InfoBar"), "sib": ("secondinfobar", 1, "SecondInfoBar"), "mp": ("pvr", 2, "MoviePlayer")}
+BGS = (("red", (200, 20, 20)), ("yellow", (240, 220, 30)), ("white", (250, 250, 250)), ("dark", (12, 12, 14)))
+
+
+def info_rects(skin, sec, pack, name):
+	p = os.path.join(skin, "layouts", sec, pack, "screens.openatv.xml")
+	src = open(p, encoding="utf-8").read()
+	m = re.search(r'<screen name="%s"[^>]*>(.*?)</screen>' % re.escape(name), src, re.S)
+	out = []
+	for t in IP.TAG.finditer(m.group(1) if m else ""):
+		a = IP.attrs(t.group(3))
+		r = IP.rect(a)
+		if r and IP.is_info(t.group(2), a, t.group(5) or ""):
+			out.append(((a.get("source") or a.get("name") or "?"), r))
+	return out
+
+
+def main(build, shots):
+	skin = os.path.join(build, "usr/share/enigma2/CineView_FHD_MLA")
+	total_fail = 0
+	for f in sorted(os.listdir(shots)):
+		m = re.match(r"(\w+?)_(\w+?)_(ib|sib|mp)_osd\.png$", f)
+		if not m:
+			continue
+		model, theme, scr = m.groups()
+		sec, idx, name = SCREEN[scr]
+		im = Image.open(os.path.join(shots, f)).convert("RGBA")
+		a = im.getchannel("A")
+		checked, fails = 0, []
+		for src, r in info_rects(skin, sec, PACK[model][idx], name):
+			box = (max(0, r[0]), max(0, r[1]), min(1920, r[0] + r[2]), min(1080, r[1] + r[3]))
+			if box[2] <= box[0] or box[3] <= box[1]:
+				continue
+			reg = a.crop(box)
+			hist = reg.histogram()
+			n = sum(hist)
+			if hist[0] == n:
+				continue  # nothing drawn there (hidden variant / empty field)
+			checked += 1
+			bad = n - hist[255]
+			if bad > 0:
+				fails.append("%s@%d,%d %.1f%%(min %d)" % (src.split(".")[-1], r[0], r[1], 100.0 * bad / n, reg.getextrema()[0]))
+		total_fail += len(fails)
+		print("%-34s checked %3d  not-opaque %3d  %s" % (f, checked, len(fails), " ".join(fails[:6])))
+		sheet = Image.new("RGB", (1920, 1080))
+		for i, (lab, col) in enumerate(BGS):
+			bg = Image.new("RGBA", im.size, col + (255,))
+			comp = Image.alpha_composite(bg, im).convert("RGB").resize((960, 540))
+			sheet.paste(comp, ((i % 2) * 960, (i // 2) * 540))
+		sheet.save(os.path.join(shots, f.replace("_osd.png", "_bg.png")))
+	print("TOTAL not-opaque info widgets:", total_fail)
+
+
+if __name__ == "__main__":
+	main(sys.argv[1], sys.argv[2])
