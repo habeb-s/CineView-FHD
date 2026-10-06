@@ -118,6 +118,35 @@ def _open(what):
 	elif what == "pkglog":
 		from Screens.PluginBrowser import PackageActionLog
 		_session.open(PackageActionLog, "\n".join(["CineView MLA display test (no opkg command was run)"] + ["Line %02d: Removing package enigma2-plugin-example-%02d from root..." % (i, i) for i in range(1, 31)]))
+	elif what == "stack":
+		# the LIVE dialog stack (2026-10-06 22:00, plugin-download screen): class, module, skinName actually used,
+		# parent, every widget / source with its type and text -> /tmp/cvmla/stack.txt (read-only; nothing changes)
+		out = []
+		stack = [(s, "dialog_stack") for s, shown in getattr(_session, "dialog_stack", [])] + [(_session.current_dialog, "current")]
+		for dlg, tag in stack:
+			if dlg is None:
+				continue
+			sk = getattr(dlg, "skinName", None)
+			out.append("== %s %s.%s skinName=%r applied=%r parent=%r shown=%r" % (tag, dlg.__class__.__module__, dlg.__class__.__name__,
+				sk, getattr(dlg, "skinAttributes", None) and "yes", getattr(getattr(dlg, "parent", None), "__class__", type(None)).__name__, getattr(dlg, "shown", None)))
+			try:
+				for k in sorted(dlg.keys()):
+					w = dlg[k]
+					txt = ""
+					for attr in ("getText", "text"):
+						v = getattr(w, attr, None)
+						try:
+							txt = v() if callable(v) else (v or "")
+						except Exception:
+							pass
+						if txt:
+							break
+					out.append("   %-24s %-28s %r" % (k, w.__class__.__name__, (str(txt) or "")[:90]))
+			except Exception as err:
+				out.append("   (widgets: %s)" % err)
+			for r in getattr(dlg, "renderer", []):
+				out.append("   renderer %-20s source=%s" % (r.__class__.__name__, getattr(getattr(r, "source", None), "__class__", type(None)).__name__))
+		open("/tmp/cvmla/stack.txt", "w").write("\n".join(out) + "\n")
 	elif what in ("accel_on", "accel_off"):
 		from enigma import setACCELDebug
 		setACCELDebug(1 if what == "accel_on" else 0)
