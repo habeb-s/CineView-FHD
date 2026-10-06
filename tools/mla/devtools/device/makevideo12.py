@@ -67,9 +67,10 @@ def log(n):
 
 import re, glob
 L = log("t94.log")
+L2 = log("t94b.log")  # SIB frames re-recorded (t94 pressed OK while the InfoBar was open)
 F = os.path.join(H, "shots", "t94_final100", "frames")
 def errs():
-    rows = re.findall(r"tracebacks=(\d+) skin_errors_new=(\d+)(?: accel=\d+)? e2pid=\S* crashlogs=(\d+)", L)
+    rows = re.findall(r"tracebacks=(\d+) skin_errors_new=(\d+)(?: accel=\d+)? e2pid=\S* crashlogs=(\d+)", L + L2)
     return len(rows), sum(1 for a, b, c in rows if int(a) or int(b) or int(c))
 def motion(prefix, lab, tag, secs):
     fs = sorted(glob.glob(os.path.join(F, prefix + "_*.jpg")))
@@ -102,7 +103,8 @@ for m, lab in (("classic", "Classic"), ("details", "Details"), ("cinema", "Cinem
     motion("3_%s_2sib" % m, lab + " — SecondInfoBar", "1.0.0", 6)
     motion("3_%s_3cs" % m, lab + " — قائمة القنوات", "1.0.0", 5)
 still(card("النتيجة", "1.0.0 على Slot 8 · Classic Navy",
-           ["فحوص الأخطاء: %d · فيها traceback أو skin error أو crash: %d" % (chk, bad),
+           ["فحوص الأخطاء (t94 + t94b): %d · فيها traceback أو skin error أو crash: %d" % (chk, bad),
+            "لقطات SecondInfoBar أعيد تسجيلها (t94b): t94 ضغط OK والـ InfoBar مفتوح فلم يُفتح SIB",
             "المتبقي: المرحلة C فقط — النشر و main بعد موافقتك الصريحة"]), 7)
 
 lst = os.path.join(T, "all.txt")
