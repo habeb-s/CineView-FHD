@@ -914,3 +914,8 @@ HBO poster recording for comparison).
   selected (HBO "Ples malog pingvina" and HRT1 "Dnevnik" alike); no poster and no placeholder in either.
   An empty box there would mean hiding EMC's live preview / a new Classic EMC screen = a Classic design change,
   not done without the user's decision. Sheet: `docs/mla/evidence/classic_pvr_hbo_vs_hrt1.jpg`.
+
+**User 19:54 - final decisions (not to be reopened):** scrolling-text fill APPROVED; SecondInfoBarECM without a poster
+APPROVED; Classic PVR / EMC APPROVED AS IT IS (native live-TV preview, no poster box). No further design change to
+these. Remaining: Stage A documentation, Stage B 1.0.0 package from the build87 files (version only) + upgrade /
+reboot / quick five-model check + receiver-captured video, Stage C release only after the user's explicit approval.

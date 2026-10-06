@@ -1,4 +1,4 @@
-# CineView MLA: resume point (updated 2026-10-06 19:00 Riyadh)
+# CineView MLA: resume point (updated 2026-10-06 20:00 Riyadh)
 
 Scope for 1.0.0 (user 06:13): Vu+ Duo 4K SE on OpenATV only. DM900 / other devices are out of the current release.
 
@@ -54,3 +54,9 @@ Scope for 1.0.0 (user 06:13): Vu+ Duo 4K SE on OpenATV only. DM900 / other devic
 5. Picons: one per place under fast zapping (t91).
 Final: rc10 built from the tested build87; t86 lifecycle + t77 short QA pass; 1.0.0 review report published.
 Waiting: the user's approval for 1.0.0 (no final release / no main without it).
+
+## Decisions 19:25 / 19:54 (final, do not reopen)
+- Approved: scrolling-text fill (rc10), SecondInfoBarECM without a poster, Classic PVR/EMC as is (live preview, no poster box).
+## Plan (status 19:54)
+- Stage A docs/report (no receiver) -> Stage B 1.0.0 package = build87 files, version only; upgrade rc10->1.0.0, reboot,
+  quick 5-model check, receiver-captured video -> Stage C release (publish, installer, main) ONLY after explicit approval.
