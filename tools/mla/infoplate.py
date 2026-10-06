@@ -344,9 +344,17 @@ def screen(skin, cols, body):
 		if not (rr[0] <= r[0] and rr[1] <= r[1] and r[0] + r[2] <= rr[0] + rr[2] and r[1] + r[3] <= rr[1] + rr[3]):
 			continue
 		blocked = False
+		# a No Poster variant (ShowIf "<key>,True,Invert,...,posterN": shown when posters are OFF or no real poster is
+		# on the screen) never shares the screen with a drawn poster of the same toggle key: that poster widget does
+		# not block (it is hidden / released in exactly the states this text is shown)
+		sm = re.search(r'CineViewMLAShowIf">([^<]*)<', e["inner"])
+		sp = sm.group(1).split(",") if sm else []
+		np_key = sp[0] if (len(sp) > 2 and sp[1] == "True" and "Invert" in sp[2:] and any(x in ("poster0", "poster1") for x in sp[2:])) else None
 		for o in els:
 			orr = o["r"]
 			if o is e or not orr or id(o) == rid or is_info(o["kind"], o["a"], o["inner"]):
+				continue
+			if np_key and o["a"].get("render") == "CineViewMLAPosterX" and o["a"].get("toggle") == np_key:
 				continue
 			if o["z"] > e["z"] or (o["z"] == e["z"] and o["m"].start() > e["m"].start()) or o["z"] < rz:
 				continue  # drawn above the text, or below the region (covered by it)
