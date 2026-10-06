@@ -592,7 +592,7 @@ reinst.sh 22:36).
   everywhere. "Kraljica ringa (2024)" has a negative identity (`.none`): the reliable-only policy refused the
   Croatian title.
 - Classic EPG, EventView and PVR (EMC / MovieSelection): as approved, no placeholder.
-- accel per model: Classic 18, Modern 46, Cinema –, Details 3, Minimal 2. t85 has no pool debug; t81d (build79,
+- accel per model: Classic 18, Modern 46, Cinema 2, Details 3, Minimal 2. t85 has no pool debug; t81d (build79,
   debug, same steps as t83) attributes them.
 - Visual note, not changed: the Cinema InfoBar channel name is a 152-px RunningText, so longer names start
   scrolling at 2.5 s (approved geometry).
