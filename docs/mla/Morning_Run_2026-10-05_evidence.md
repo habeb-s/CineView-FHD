@@ -746,7 +746,38 @@ reinst.sh 22:36).
     opaque. The same affected the SecondInfoBarECM backgrounds of all packs and the Minimal SIB scrim.
   - Fixed in **build85**: equal-z layers use document order. Only those scrims change back (diff: 5 SIB layout
     files); static audit still 0.
-- **t87e: build85 (rc9 candidate), five models × six themes**, deploy verified — running.
+- **t87e: build85, five models × six themes (+ playback bar in navy), deploy verified.**
+  - 30 restarts: 0 tracebacks, 0 skin errors, 0 crash logs.
+  - osd_alpha now classifies every non-opaque pixel inside an information rectangle:
+    - *edge*: alpha ≥ 250, the anti-aliased edge of a rounded shape over an opaque base (under 2 % video; invisible);
+    - *corner*: inside the 17 px corner squares, outside a rounded pill / card;
+    - *REAL*: anything else = a failure.
+  - **Result: 0 REAL in 54 of 55 grabs.** 192 widgets have edge/corner pixels only (Modern / Minimal pills).
+  - The one failure: Minimal / Purple SIB, description area (y 796–848, alpha 210 = the overlay scrim showing
+    through).
+    - **t88** re-tested it: Minimal SIB in Purple and Navy, grabbed 2 / 4 / 5 / 6 / 8 / 12 s after opening
+      (RunningText starts scrolling at 4 s), two openings each.
+    - Result: 24 of 24 grabs 100 % opaque in that area. **Not reproducible.**
+    - Most likely the grab read the framebuffer during a repaint (scrim drawn, plate not yet).
+    - Recorded as an unexplained single capture, not as a pass.
+  - Playback bar (MoviePlayer) on build85: opaque in all five models; the PVRState black box is gone.
+  - **Decorative transparency kept (navy, share of the screen):**
+
+| Screen | translucent before | translucent after | clear (unchanged) |
+|---|---|---|---|
+| Classic SIB | 46.8 % (cards) | 0 % | 41.5 % |
+| Cinema SIB | 55.6 % | 21.2 % (scrim around the panel) | 0 % |
+| Modern IB / SIB | 31.1 / 49.7 % | 13.2 / 12.8 % (gradients) | 65.2 / 39.5 % |
+| Minimal IB / SIB | 23.1 / 50.9 % | 10.9 / 17.3 % | 76.1 / 42.8 % |
+| Classic / Details / Cinema IB, Details SIB | 0 % | 0 % | unchanged |
+
+  - **Visual flaw found in the composites:** the new Modern SIB status-row band ended at x 1580, so the SNR / dB
+    pills hung past it over the gradient (clear on white video).
+    - build86: a row band absorbs the opaque pills of the same row next to it, measured on the pill rectangle.
+      Guards: no tall widgets; never under a translucent layer it must cover.
+    - The band now spans 46–1850 at z −2, under the pills (z −1), so the pills keep their look.
+    - Only the Modern SIB layout changes; static audit 0.
+- **t87f: build86, Modern × six themes** — queued after t88.
 - Playback InfoBar:
   - On this receiver the PVR key opens EMC, whose player uses EMC's own skin file
     (`EnhancedMovieCenter/CoolSkin/EMCMediaCenter_1080.xml`), not a CineView screen.
