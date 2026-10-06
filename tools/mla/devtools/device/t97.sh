@@ -31,7 +31,7 @@ op pluginbrowser 6; ga 0_pluginbrowser; stk 0_pluginbrowser
 busy A_install 399 6 10
 busy B_remove op:pkgremove 3 4   # devtool = native PackageAction(MODE_REMOVE); the red key's
 # OpenWebif key event can reach the new screen, whose red key is Close (t97 after-run 22:23:29: opened and closed at once)
-busy C_update 400 6 10
+busy C_update 400 6 30   # 23 updates on this receiver: the list takes longer
 ga 3_back_pluginbrowser
 X; sleep 1
 op pkglog 4; ga D_log; stk D_log; fr D_log 2; X; sleep 1
