@@ -26,13 +26,21 @@ BGS = (("red", (200, 20, 20)), ("yellow", (240, 220, 30)), ("white", (250, 250, 
 def info_rects(skin, sec, pack, name):
 	p = os.path.join(skin, "layouts", sec, pack, "screens.openatv.xml")
 	src = open(p, encoding="utf-8").read()
-	m = re.search(r'<screen name="%s"[^>]*>(.*?)</screen>' % re.escape(name), src, re.S)
+	m = re.search(r'<screen name="%s"([^>]*)>(.*?)</screen>' % re.escape(name), src, re.S)
 	out = []
-	for t in IP.TAG.finditer(m.group(1) if m else ""):
+	# widget positions are relative to the screen's own position (MoviePlayer bar at 150,67)
+	sp = re.search(r'position="(\d+),(\d+)"', m.group(1)) if m else None
+	ox, oy = (int(sp.group(1)), int(sp.group(2))) if sp else (0, 0)
+	for t in IP.TAG.finditer(m.group(2) if m else ""):
 		a = IP.attrs(t.group(3))
 		r = IP.rect(a)
 		if r and IP.is_info(t.group(2), a, t.group(5) or ""):
-			out.append(((a.get("source") or a.get("name") or "?"), r))
+			out.append(((a.get("source") or a.get("name") or "?"), [r[0] + ox, r[1] + oy, r[2], r[3]]))
+	# a bar-type screen (not full screen, e.g. MoviePlayer 150,67 1620x150 with its widgets in <panel
+	# name="PlayerTemplate"/>): the whole bar is information and must be opaque
+	sz = re.search(r'size="(\d+),(\d+)"', m.group(1)) if m else None
+	if sz and (int(sz.group(1)), int(sz.group(2))) != (1920, 1080):
+		out.append(("screen:" + name, [ox, oy, int(sz.group(1)), int(sz.group(2))]))
 	return out
 
 
