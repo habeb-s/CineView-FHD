@@ -20,6 +20,7 @@ PACK = {  # model -> (infobar pack, secondinfobar pack, pvr pack)
 	"classic": ("classic", "classic", "classic"), "details": ("details", "details", "cover"), "cinema": ("cinema", "cinema", "cinema"),
 	"modern": ("modern", "modern", "modern"), "minimal": ("minimal", "minimal", "minimal")}
 SCREEN = {"ib": ("infobar", 0, "InfoBar"), "sib": ("secondinfobar", 1, "SecondInfoBar"), "mp": ("pvr", 2, "MoviePlayer")}
+CORNER = 17  # largest pill radius of the InfoBar family
 BGS = (("red", (200, 20, 20)), ("yellow", (240, 220, 30)), ("white", (250, 250, 250)), ("dark", (12, 12, 14)))
 
 
@@ -46,7 +47,7 @@ def info_rects(skin, sec, pack, name):
 
 def main(build, shots):
 	skin = os.path.join(build, "usr/share/enigma2/CineView_FHD_MLA")
-	total_fail = 0
+	total_fail, total_edge = 0, 0
 	for f in sorted(os.listdir(shots)):
 		m = re.match(r"(\w+?)_(\w+?)_(ib|sib|mp)_osd\.png$", f)
 		if not m:
@@ -55,7 +56,8 @@ def main(build, shots):
 		sec, idx, name = SCREEN[scr]
 		im = Image.open(os.path.join(shots, f)).convert("RGBA")
 		a = im.getchannel("A")
-		checked, fails = 0, []
+		px = a.load()
+		checked, fails, edges = 0, [], 0
 		for src, r in info_rects(skin, sec, PACK[model][idx], name):
 			box = (max(0, r[0]), max(0, r[1]), min(1920, r[0] + r[2]), min(1080, r[1] + r[3]))
 			if box[2] <= box[0] or box[3] <= box[1]:
@@ -66,18 +68,39 @@ def main(build, shots):
 			if hist[0] == n:
 				continue  # nothing drawn there (hidden variant / empty field)
 			checked += 1
-			bad = n - hist[255]
-			if bad > 0:
-				fails.append("%s@%d,%d %.1f%%(min %d)" % (src.split(".")[-1], r[0], r[1], 100.0 * bad / n, reg.getextrema()[0]))
+			if hist[255] == n:
+				continue
+			# classify every non-opaque pixel (2026-10-06, t87e Modern):
+			#   edge  = alpha >= 250: anti-aliased edge of a rounded shape over an opaque base (<2 % video, invisible)
+			#   corner = inside the CORNER x CORNER corner squares of the rectangle: outside a rounded pill / card shape
+			#   REAL  = anything else -> video shows through or tints the information area (failure)
+			real, corner, edge = 0, 0, 0
+			for y in range(box[1], box[3]):
+				for x in range(box[0], box[2]):
+					v = px[x, y]
+					if v == 255:
+						continue
+					dx = min(x - r[0], r[0] + r[2] - 1 - x)
+					dy = min(y - r[1], r[1] + r[3] - 1 - y)
+					if v >= 250:
+						edge += 1
+					elif dx < CORNER and dy < CORNER:
+						corner += 1
+					else:
+						real += 1
+			edges += 1 if (edge or corner) and not real else 0
+			if real:
+				fails.append("%s@%d,%d real %.1f%%(min %d)" % (src.split(".")[-1], r[0], r[1], 100.0 * real / n, reg.getextrema()[0]))
 		total_fail += len(fails)
-		print("%-34s checked %3d  not-opaque %3d  %s" % (f, checked, len(fails), " ".join(fails[:6])))
+		total_edge += edges
+		print("%-34s checked %3d  REAL not-opaque %3d  edge/corner-only %3d  %s" % (f, checked, len(fails), edges, " ".join(fails[:6])))
 		sheet = Image.new("RGB", (1920, 1080))
 		for i, (lab, col) in enumerate(BGS):
 			bg = Image.new("RGBA", im.size, col + (255,))
 			comp = Image.alpha_composite(bg, im).convert("RGB").resize((960, 540))
 			sheet.paste(comp, ((i % 2) * 960, (i // 2) * 540))
 		sheet.save(os.path.join(shots, f.replace("_osd.png", "_bg.png")))
-	print("TOTAL not-opaque info widgets:", total_fail)
+	print("TOTAL REAL not-opaque info widgets:", total_fail, " (edge/corner-only widgets: %d)" % total_edge)
 
 
 if __name__ == "__main__":
