@@ -565,3 +565,53 @@ reinst.sh 22:36).
   - `HDD_CACHE=1` → left to the skin;
   - existing setting → kept.
 - Raw download from GitHub: SHA256 matches. The published installer with `DRYRUN=1` on Slot 8: all checks passed.
+
+## 14. Remaining work before 1.0.0 (user list 2026-10-06 06:13 / 06:42)
+
+**Static audit — `tools/mla/audit_np.py`.**
+- build77: 11 named EventView ON screens (Details Card, Feature, Minimal, Modern) still carried the placeholder,
+  shown if the poster picked at open could not be displayed.
+- Classic `EventViewSimple` / `InfoBarEventView` `_CVPosterOff` and Classic SecondInfoBarECM had poster widgets
+  without `underlay`, which draw the default image themselves. The plugin now opens `_CVPosterOff` with the switch
+  ON for an event without a cached poster, so the default image would appear there.
+- Fixes:
+  - build78: the plugin-switched EventView screens are handled like dynamic screens (placeholder removed,
+    underlay, frames follow the real poster);
+  - build79: `_CVPosterOff` screens carry no poster widget; every other poster widget is underlay.
+- **build79: 0 screens with a placeholder** (static). The picon pairs are in 7 screens (Classic InfoBar / SIB / EV,
+  Cinema InfoBar, Modern InfoBar / channel list), all mutually exclusive by condition.
+
+**t85 — RUNTIME TESTED (build79).**
+- Five models, channels HBO HD / Cinemax HD / HRT1: InfoBar (2.5 s after OK), SIB, live EventView, channel list,
+  GraphicalEPG + INFO. Classic also EPG and PVR (EMC + MovieSelection on USB).
+- Every model: 0 tracebacks, 0 new skin errors, 0 crash logs.
+- **One picon per place in every grab; no default picon next to a real one** (Classic InfoBar / SIB / EV strip
+  zoomed; Cinema InfoBar; Modern channel list).
+- **No placeholder in any grab.**
+- At this hour HBO's and Cinemax's current films had no poster, so the No Poster arrangement was exercised
+  everywhere. "Kraljica ringa (2024)" has a negative identity (`.none`): the reliable-only policy refused the
+  Croatian title.
+- Classic EPG, EventView and PVR (EMC / MovieSelection): as approved, no placeholder.
+- accel per model: Classic 18, Modern 46, Cinema –, Details 3, Minimal 2. t85 has no pool debug; t81d (build79,
+  debug, same steps as t83) attributes them.
+- Visual note, not changed: the Cinema InfoBar channel name is a 152-px RunningText, so longer names start
+  scrolling at 2.5 s (approved geometry).
+
+**Explicit poster-cache deletion — IMPLEMENTED, tested on /tmp.**
+- `sh uninstall-mla.sh cache` shows the folder; `CONFIRM=yes` deletes.
+- Only MLA's `id/` and `sz*/` are deleted. Files directly in the folder (original CineView FHD posters) are kept.
+- The package is not touched.
+
+**Opaque information areas on the InfoBar family — IMPLEMENTED (build81), NOT RUNTIME VERIFIED.**
+- `tools/mla/infoplate.py` covers InfoBar, RadioInfoBar, SecondInfoBar(Simple/ECM), MoviePlayer, PVRState and
+  TimeshiftState in every pack.
+- Opaque twins `<token>Solid` (same RGB, alpha 00) are added to all six themes:
+  - translucent cards → opaque twin, same geometry;
+  - translucent PNG panels → an opaque plate under them;
+  - full-screen scrims keep their transparency, with opaque plates only behind the information groups (one band
+    per row).
+- Static audit `tools/mla/audit_infobg.py`: build79 had non-opaque information in the Minimal InfoBar, the
+  Classic / Cinema / Minimal SIB and every SecondInfoBarECM; build81 has 0.
+- Device test t87 is queued (q87): real OSD alpha (`grab?mode=osd`) inside every information widget, five models ×
+  six themes, plus the playback InfoBar; composites over red / yellow / white / dark backgrounds. t87a measures
+  build79 for the before/after.
