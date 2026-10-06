@@ -8,7 +8,7 @@ set -e
 . ~/cineview-mla/p6lib.sh
 B=${1:?build}; O=${2:?out}
 rm -rf "$O"; mkdir -p "$O"
-LIST=$(cd "$B" && find usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA -name '*.py'; cd "$B" && find usr/lib/enigma2/python/Components -name 'CineViewMLA*.py')
+LIST=$(cd "$B" && find usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA -name '*.py' && find usr/lib/enigma2/python/Components -name 'CineViewMLA*.py')
 ( cd "$B" && tar -czf - $LIST ) | $R 'rm -rf /tmp/cvmla/pyc && mkdir -p /tmp/cvmla/pyc && tar -C /tmp/cvmla/pyc -xzf -'
 $R 'cd /tmp/cvmla/pyc && python3 - <<EOF
 import os, sys, py_compile
