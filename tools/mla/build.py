@@ -1327,6 +1327,16 @@ def main(golden, comps, control, out):
 	for scr, nb in apply_package_screens(skin):
 		print("PACKAGE %-20s %d colour key(s) only with text%s" % (scr, nb, " + mode title" if scr == "PackageAction" else ""))
 	print("PACKAGE Processing (global busy dialog) added to core/common")
+	if os.environ.get("MLA_SETUP_VALUEFONT", "0") == "1":
+		# EXPERIMENT for the user's decision: every Setup page (ConfigTemplate) draws its values with the image default
+		# value font (~18 px on 1920x1080, t99 OSD Settings); CineView Designs already has 27 px (own list)
+		cp = os.path.join(skin, "core", "common.openatv.xml")
+		cx = open(cp, encoding="utf-8").read()
+		old = '<widget name="config" conditional="config" position="790,115" size="1090,855" itemHeight="64" font="Regular;30" scrollbarMode="showOnDemand" />'
+		assert cx.count(old) == 1, "ConfigTemplate config widget"
+		cx = cx.replace(old, old.replace('font="Regular;30"', 'font="Regular;30" valueFont="Regular;27"'))
+		open(cp, "w", encoding="utf-8").write(cx)
+		print("EXPERIMENT Setup pages: value font 27 px (ConfigTemplate)")
 	if os.environ.get("MLA_MSGBOX_FIT", "0") == "1":
 		print("EXPERIMENT MessageBox fitted to its text:", ", ".join(apply_messagebox_fit(skin)))
 
