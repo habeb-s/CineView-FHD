@@ -33,6 +33,19 @@ TRIAL_CONFIRM_SECONDS = 20
 TRIAL_GRACE_SECONDS = 40  # deadline = healthy (60 s) + prompt (20 s) + grace
 _timer = None
 _session = None
+# version / build / commit written by the package (tools/mla/package_ipk.py); a development deploy has none
+VERSION_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "version.json")
+COPYRIGHT = "Design & Development by habeb-s \u00a9 2026"
+
+
+def about():
+	"""'CineView MLA 1.0.0 · build87 · d71db9d' + the rights line; never raises (missing file -> 'development')."""
+	try:
+		v = json.load(open(VERSION_FILE))
+		ver = "CineView MLA %s \u00b7 %s \u00b7 %s" % (v.get("version", "?"), v.get("build", "?"), v.get("commit", "?"))
+	except Exception:
+		ver = "CineView MLA (development)"
+	return "%s\n%s" % (ver, COPYRIGHT)
 
 
 # ------------------------------------------------------------------ state helpers
@@ -329,7 +342,7 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 			desc = (desc + "\n\n" + note) if desc else note
 		self["description"].setText(desc)
 		st = self.eng.status()
-		self["status"].setText(_("Active generation: %s   Last known good: %s") % (st.get("active"), st.get("lkg")))
+		self["status"].setText(_("Active generation: %s   Last known good: %s") % (st.get("active"), st.get("lkg")) + "\n" + about())
 
 	def _selection(self):
 		return {"theme": self.cfgTheme.value, "layouts": {s: c.value for s, c in self.cfgLayouts.items()}}
@@ -789,5 +802,5 @@ def sessionstart(reason, session=None, **kwargs):
 def Plugins(**kwargs):
 	return [
 		PluginDescriptor(where=PluginDescriptor.WHERE_SESSIONSTART, fnc=sessionstart),
-		PluginDescriptor(name=_("CineView Designs"), description=_("Choose and preview CineView designs, themes and options"), where=PluginDescriptor.WHERE_PLUGINMENU, icon="plugin.png", fnc=main),
+		PluginDescriptor(name=_("CineView Designs"), description=_("Choose and preview CineView designs, themes and options") + " \u00b7 by habeb-s", where=PluginDescriptor.WHERE_PLUGINMENU, icon="plugin.png", fnc=main),
 	]

@@ -1,7 +1,14 @@
 #!/usr/bin/env python3
 """P8: package a built MLA tree (tools/mla/build.py output) as an opkg .ipk for OpenATV 8.0.x.
 
-usage: package_ipk.py <build root> <version> <out dir>
+usage: package_ipk.py <build root> <version> <out dir> [--pyc <dir>]
+
+Light protection (user 2026-10-06 20:51, no obfuscation, no licence check, nothing at runtime depends on it):
+  --pyc <dir>: the importable Python modules (Components/CineViewMLA*, Plugins/Extensions/CineViewMLA/*) are shipped as
+  sourceless .pyc compiled by the RECEIVER's own Python (tools/mla/devtools/device/mkpyc.sh; <dir>/PYVER holds its
+  version); preinst then refuses any other Python version with a clear message.  The engine (composer.py, run by path
+  by postinst and the plugin) and the guardian scripts stay as they are.  The full source stays in the repository.
+  Every package also carries Plugins/Extensions/CineViewMLA/version.json (version, build, commit, date).
 
 Package contents (data.tar.gz, owner root:root, files 0644 / dirs+scripts 0755):
   usr/share/enigma2/CineView_FHD_MLA/...     skin, layout packs, themes, engine, guardian, factory generation g000000
@@ -35,7 +42,7 @@ REPO = os.path.abspath(os.path.join(HERE, "..", ".."))
 
 CONTROL = """Package: {pkg}
 Version: {ver}
-Description: CineView FHD MLA skin for OpenATV 7.6 / 8.0 (layout packs, six themes, CineView Designs control UI)
+Description: CineView FHD MLA skin for OpenATV{target} (layout packs, six themes, CineView Designs control UI) - Design & Development by habeb-s (c) 2026
 Section: skins
 Priority: optional
 Maintainer: habeb-s
@@ -65,6 +72,11 @@ case "$VER" in
   7.[0-5]|7.[0-5].*|6.*|5.*) echo "CineView MLA: OpenATV '$VER' lacks skin features this package needs ('addon' widgets, MovieInfo FullDescription); OpenATV 7.6 or 8.0 required. Stopped."; exit 1;;
   *) echo "CineView MLA: OpenATV '$VER' has not been checked against this package yet (checked: 7.6, 8.0). Stopped."; exit 1;;
 esac
+PYNEED="@PYNEED@"
+if [ -n "$PYNEED" ]; then
+  PYV=$(python3 -c 'import sys; print("%d.%d" % sys.version_info[:2])' 2>/dev/null)
+  if [ "$PYV" != "$PYNEED" ]; then echo "CineView MLA: this package is built for Python $PYNEED (OpenATV 8.0.x); this image has Python '$PYV'. Stopped - nothing was changed."; exit 1; fi
+fi
 H=/usr/bin/enigma2_pre_start.sh
 if [ -e "$H" ] && ! grep -q "CineView MLA guardian" "$H"; then
   echo "CineView MLA: $H belongs to something else - not replacing it. Stopped."; exit 1
@@ -183,16 +195,45 @@ def data_members(build):
 	return out
 
 
-def build_ipk(build, ver, outdir):
+PYC_DIRS = ("usr/lib/enigma2/python/Components/", "usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/")
+PLUGIN_DIR = "usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA"
+
+
+def _pyc_target(rel):
+	if not rel.endswith(".py"):
+		return False
+	if rel.startswith(PLUGIN_DIR + "/"):
+		return True
+	return rel.startswith(PYC_DIRS[0]) and os.path.basename(rel).startswith("CineViewMLA")
+
+
+def build_ipk(build, ver, outdir, pyc_dir=None):
+	import json
 	import subprocess
 	commit = subprocess.run(["git", "-C", REPO, "rev-parse", "--short", "HEAD"], capture_output=True, text=True).stdout.strip()
 	members = data_members(build)
+	pyneed = ""
+	if pyc_dir:
+		pyneed = open(os.path.join(pyc_dir, "PYVER")).read().strip()
+		swapped = []
+		for i, (name, data, mode, kind, target) in enumerate(members):
+			rel = name[2:]
+			if kind == "file" and _pyc_target(rel):
+				blob = open(os.path.join(pyc_dir, rel + "c"), "rb").read()
+				members[i] = ("./" + rel + "c", blob, 0o644, "file", None)
+				swapped.append(rel)
+		assert swapped, "no module compiled"
+		print("pyc (Python %s): %d modules -> %s" % (pyneed, len(swapped), ", ".join(os.path.basename(x) for x in swapped)))
+	info = {"version": ver, "build": os.path.basename(os.path.normpath(build)), "commit": commit,
+		"date": time.strftime("%Y-%m-%d"), "python": pyneed or "source", "copyright": "Design & Development by habeb-s (c) 2026"}
+	members.append(("./" + PLUGIN_DIR + "/version.json", json.dumps(info, indent=1).encode(), 0o644, "file", None))
 	assert any(m[0].endswith(SKIN + "/generations/g000000/selection.json") for m in members), "factory generation missing"
 	data = io.BytesIO()
 	_tar(members, data)
 	ctrl = io.BytesIO()
-	_tar([("./control", CONTROL.format(pkg=PKG, ver=ver, commit=commit).encode(), 0o644, "file", None),
-		("./preinst", PREINST.encode(), 0o755, "file", None), ("./postinst", POSTINST.encode(), 0o755, "file", None),
+	target = " 8.0 (Python %s)" % pyneed if pyneed else " 7.6 / 8.0"
+	_tar([("./control", CONTROL.format(pkg=PKG, ver=ver, commit=commit, target=target).encode(), 0o644, "file", None),
+		("./preinst", PREINST.replace("@PYNEED@", pyneed).encode(), 0o755, "file", None), ("./postinst", POSTINST.encode(), 0o755, "file", None),
 		("./prerm", PRERM.encode(), 0o755, "file", None), ("./postrm", POSTRM.encode(), 0o755, "file", None)], ctrl)
 	os.makedirs(outdir, exist_ok=True)
 	path = os.path.join(outdir, "%s_%s_all.ipk" % (PKG, ver))
@@ -210,7 +251,13 @@ def build_ipk(build, ver, outdir):
 
 
 if __name__ == "__main__":
-	if len(sys.argv) != 4:
+	a = sys.argv[1:]
+	pyc = None
+	if "--pyc" in a:
+		i = a.index("--pyc")
+		pyc = a[i + 1]
+		del a[i:i + 2]
+	if len(a) != 3:
 		print(__doc__)
 		sys.exit(2)
-	build_ipk(sys.argv[1], sys.argv[2], sys.argv[3])
+	build_ipk(a[0], a[1], a[2], pyc)

@@ -1406,6 +1406,11 @@ def main(golden, comps, control, out):
 	# Runtime plugin + native pre-start hook (installed by the deploy step, not by the build).
 	shutil.copytree(os.path.join(REPO, "mla", "plugin", "CineViewMLA"), os.path.join(out, "usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA"), ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
 	open(os.path.join(out, "usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA", "__init__.py"), "w").close()
+	# plugin icon (user 2026-10-06 20:51): docs/mla/brand/plugin_<MLA_ICON>.png, 160x69 (Plugin Browser slot 185x80;
+	# 44 160 bytes < the 48 000-byte fast-memory threshold).  Default A (monogram); B / C are the other approved options.
+	icon = os.path.join(REPO, "docs", "mla", "brand", "plugin_%s.png" % os.environ.get("MLA_ICON", "A"))
+	shutil.copy(icon, os.path.join(out, "usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA", "plugin.png"))
+	print("PLUGIN-ICON %s" % os.path.basename(icon))
 
 	# Factory generation g000000 (= classic everywhere, navy) built by the real engine.
 	os.makedirs(os.path.join(skin, "generations"), exist_ok=True)
