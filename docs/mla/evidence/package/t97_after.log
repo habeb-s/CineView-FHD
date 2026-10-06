@@ -1,0 +1,196 @@
+cap 0_pluginbrowser @19:41:57
+-- stack 0_pluginbrowser:
+== dialog_stack Screens.InfoBar.InfoBar skinName='InfoBar' applied='yes' parent='NoneType' shown=False
+   Title                    StaticText                   'InfoBar'
+   key_blue                 Label                        'Extensions'
+   key_green                Label                        ''
+   key_help                 StaticText                   'HELP'
+   key_red                  Label                        ''
+   key_yellow               Label                        ''
+== current Screens.PluginBrowser.PluginBrowser skinName=['PluginBrowserList', 'PluginBrowser'] applied='yes' parent='NoneType' shown=True
+   Title                    StaticText                   'Plugin Browser'
+   description              Label                        'Enigma2 Tools'
+   key_blue                 StaticText                   'Edit Mode On'
+   key_green                StaticText                   'Install Plugins'
+   key_help                 StaticText                   'HELP'
+   key_menu                 StaticText                   'MENU'
+   key_red                  StaticText                   'Remove Plugins'
+   key_yellow               StaticText                   'Update Plugins'
+cap A_install_busy_a @19:42:02
+-- stack A_install_busy:
+== dialog_stack Screens.InfoBar.InfoBar skinName='InfoBar' applied='yes' parent='NoneType' shown=False
+   Title                    StaticText                   'InfoBar'
+   key_blue                 Label                        'Extensions'
+   key_green                Label                        ''
+   key_help                 StaticText                   'HELP'
+   key_red                  Label                        ''
+   key_yellow               Label                        ''
+== dialog_stack Screens.PluginBrowser.PluginBrowser skinName=['PluginBrowserList', 'PluginBrowser'] applied='yes' parent='NoneType' shown=Fa
+   Title                    StaticText                   'Plugin Browser'
+   description              Label                        'Enigma2 Tools'
+   key_blue                 StaticText                   'Edit Mode On'
+   key_green                StaticText                   'Install Plugins'
+   key_help                 StaticText                   'HELP'
+   key_menu                 StaticText                   'MENU'
+   key_red                  StaticText                   'Remove Plugins'
+   key_yellow               StaticText                   'Update Plugins'
+== current Screens.PluginBrowser.PackageAction skinName=['PackageAction', 'PluginAction'] applied='yes' parent='NoneType' shown=True
+   Title                    StaticText                   'Install Plugins'
+   description              Label                        ''
+   key_green                StaticText                   ''
+   key_help                 StaticText                   ''
+   key_red                  StaticText                   'Close'
+   key_yellow               StaticText                   ''
+   frames A_install_busy: 38
+cap A_install_done @19:42:18
+-- stack A_install_done:
+== dialog_stack Screens.InfoBar.InfoBar skinName='InfoBar' applied='yes' parent='NoneType' shown=False
+   Title                    StaticText                   'InfoBar'
+   key_blue                 Label                        'Extensions'
+   key_green                Label                        ''
+   key_help                 StaticText                   'HELP'
+   key_red                  Label                        ''
+   key_yellow               Label                        ''
+== dialog_stack Screens.PluginBrowser.PluginBrowser skinName=['PluginBrowserList', 'PluginBrowser'] applied='yes' parent='NoneType' shown=Fa
+   Title                    StaticText                   'Plugin Browser'
+   description              Label                        'Enigma2 Tools'
+   key_blue                 StaticText                   'Edit Mode On'
+   key_green                StaticText                   'Install Plugins'
+   key_help                 StaticText                   'HELP'
+   key_menu                 StaticText                   'MENU'
+   key_red                  StaticText                   'Remove Plugins'
+   key_yellow               StaticText                   'Update Plugins'
+== current Screens.PluginBrowser.PackageAction skinName=['PackageAction', 'PluginAction'] applied='yes' parent='NoneType' shown=True
+   Title                    StaticText                   'Install Plugins'
+   description              Label                        '579 packages installable.'
+   key_green                StaticText                   ''
+   key_help                 StaticText                   'HELP'
+   key_red                  StaticText                   'Close'
+   key_yellow               StaticText                   ''
+   frames A_install_done: 8
+cap B_remove_busy_a @19:42:27
+-- stack B_remove_busy:
+== dialog_stack Screens.InfoBar.InfoBar skinName='InfoBar' applied='yes' parent='NoneType' shown=False
+   Title                    StaticText                   'InfoBar'
+   key_blue                 Label                        'Extensions'
+   key_green                Label                        ''
+   key_help                 StaticText                   'HELP'
+   key_red                  Label                        ''
+   key_yellow               Label                        ''
+== dialog_stack Screens.PluginBrowser.PluginBrowser skinName=['PluginBrowserList', 'PluginBrowser'] applied='yes' parent='NoneType' shown=Fa
+   Title                    StaticText                   'Plugin Browser'
+   description              Label                        'Enigma2 Tools'
+   key_blue                 StaticText                   'Edit Mode On'
+   key_green                StaticText                   'Install Plugins'
+   key_help                 StaticText                   'HELP'
+   key_menu                 StaticText                   'MENU'
+   key_red                  StaticText                   'Remove Plugins'
+   key_yellow               StaticText                   'Update Plugins'
+== current Screens.PluginBrowser.PackageAction skinName=['PackageAction', 'PluginAction'] applied='yes' parent='NoneType' shown=True
+   Title                    StaticText                   'Remove Plugins'
+   description              Label                        '66 packages installed.'
+   key_green                StaticText                   ''
+   key_help                 StaticText                   'HELP'
+   key_red                  StaticText                   'Close'
+   key_yellow               StaticText                   ''
+   frames B_remove_busy: 21
+cap B_remove_done @19:42:34
+-- stack B_remove_done:
+== dialog_stack Screens.InfoBar.InfoBar skinName='InfoBar' applied='yes' parent='NoneType' shown=False
+   Title                    StaticText                   'InfoBar'
+   key_blue                 Label                        'Extensions'
+   key_green                Label                        ''
+   key_help                 StaticText                   'HELP'
+   key_red                  Label                        ''
+   key_yellow               Label                        ''
+== dialog_stack Screens.PluginBrowser.PluginBrowser skinName=['PluginBrowserList', 'PluginBrowser'] applied='yes' parent='NoneType' shown=Fa
+   Title                    StaticText                   'Plugin Browser'
+   description              Label                        'Enigma2 Tools'
+   key_blue                 StaticText                   'Edit Mode On'
+   key_green                StaticText                   'Install Plugins'
+   key_help                 StaticText                   'HELP'
+   key_menu                 StaticText                   'MENU'
+   key_red                  StaticText                   'Remove Plugins'
+   key_yellow               StaticText                   'Update Plugins'
+== current Screens.PluginBrowser.PackageAction skinName=['PackageAction', 'PluginAction'] applied='yes' parent='NoneType' shown=True
+   Title                    StaticText                   'Remove Plugins'
+   description              Label                        '66 packages installed.'
+   key_green                StaticText                   ''
+   key_help                 StaticText                   'HELP'
+   key_red                  StaticText                   'Close'
+   key_yellow               StaticText                   ''
+   frames B_remove_done: 8
+cap C_update_busy_a @19:42:43
+-- stack C_update_busy:
+== dialog_stack Screens.InfoBar.InfoBar skinName='InfoBar' applied='yes' parent='NoneType' shown=False
+   Title                    StaticText                   'InfoBar'
+   key_blue                 Label                        'Extensions'
+   key_green                Label                        ''
+   key_help                 StaticText                   'HELP'
+   key_red                  Label                        ''
+   key_yellow               Label                        ''
+== dialog_stack Screens.PluginBrowser.PluginBrowser skinName=['PluginBrowserList', 'PluginBrowser'] applied='yes' parent='NoneType' shown=Fa
+   Title                    StaticText                   'Plugin Browser'
+   description              Label                        'Enigma2 Tools'
+   key_blue                 StaticText                   'Edit Mode On'
+   key_green                StaticText                   'Install Plugins'
+   key_help                 StaticText                   'HELP'
+   key_menu                 StaticText                   'MENU'
+   key_red                  StaticText                   'Remove Plugins'
+   key_yellow               StaticText                   'Update Plugins'
+== current Screens.PluginBrowser.PackageAction skinName=['PackageAction', 'PluginAction'] applied='yes' parent='NoneType' shown=True
+   Title                    StaticText                   'Update Plugins'
+   description              Label                        ''
+   key_green                StaticText                   ''
+   key_help                 StaticText                   ''
+   key_red                  StaticText                   'Close'
+   key_yellow               StaticText                   ''
+   frames C_update_busy: 37
+cap C_update_done @19:43:19
+-- stack C_update_done:
+== dialog_stack Screens.InfoBar.InfoBar skinName='InfoBar' applied='yes' parent='NoneType' shown=False
+   Title                    StaticText                   'InfoBar'
+   key_blue                 Label                        'Extensions'
+   key_green                Label                        ''
+   key_help                 StaticText                   'HELP'
+   key_red                  Label                        ''
+   key_yellow               Label                        ''
+== dialog_stack Screens.PluginBrowser.PluginBrowser skinName=['PluginBrowserList', 'PluginBrowser'] applied='yes' parent='NoneType' shown=Fa
+   Title                    StaticText                   'Plugin Browser'
+   description              Label                        'Enigma2 Tools'
+   key_blue                 StaticText                   'Edit Mode On'
+   key_green                StaticText                   'Install Plugins'
+   key_help                 StaticText                   'HELP'
+   key_menu                 StaticText                   'MENU'
+   key_red                  StaticText                   'Remove Plugins'
+   key_yellow               StaticText                   'Update Plugins'
+== current Screens.PluginBrowser.PackageAction skinName=['PackageAction', 'PluginAction'] applied='yes' parent='NoneType' shown=True
+   Title                    StaticText                   'Update Plugins'
+   description              Label                        '23 packages have updates.'
+   key_green                StaticText                   ''
+   key_help                 StaticText                   'HELP'
+   key_red                  StaticText                   'Close'
+   key_yellow               StaticText                   ''
+   frames C_update_done: 8
+cap 3_back_pluginbrowser @19:43:27
+cap D_log @19:43:39
+-- stack D_log:
+== dialog_stack Screens.InfoBar.InfoBar skinName='InfoBar' applied='yes' parent='NoneType' shown=False
+   Title                    StaticText                   'InfoBar'
+   key_blue                 Label                        'Extensions'
+   key_green                Label                        ''
+   key_help                 StaticText                   'HELP'
+   key_red                  Label                        ''
+   key_yellow               Label                        ''
+== current Screens.PluginBrowser.PackageActionLog skinName=['PackageActionLog', 'PluginActionLog'] applied='yes' parent='NoneType' shown=Tru
+   Title                    StaticText                   'Plugin Action Log'
+   key_help                 StaticText                   'HELP'
+   key_red                  StaticText                   'Close'
+   frames D_log: 9
+cap E1_processing @19:43:58
+   frames E1_processing: 9
+cap E2_processing_multiline @19:44:06
+   frames E2_processing_multiline: 11
+cap E3_after_hide @19:44:12
+   tracebacks=0 skin_errors_new=0 crashlogs=0 package_waiting_hook=1
+T97_DONE
