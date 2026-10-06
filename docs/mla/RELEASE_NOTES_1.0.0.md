@@ -1,0 +1,62 @@
+# CineView MLA 1.0.0 — release notes
+
+**CineView MLA — Design & Development by habeb-s © 2026**
+
+| | |
+|---|---|
+| Package | `enigma2-plugin-skins-cineview-fhd-mla_1.0.0_all.ipk` |
+| SHA256 | `622c69b026eaa8d6fa0e87784ec5321c76e15eab017c3499998e81adbb502545` |
+| Build | build88 (branch `dev/mla-openatv`) — `version.json` in the plugin folder carries version / build / commit |
+| Target | Vu+ Duo 4K SE, OpenATV 8.0.1 (Python 3.14) — the receiver this release was verified on |
+| Status | RELEASE CANDIDATE until the owner approves the release |
+
+## What is in 1.0.0
+- Five design models (Classic, Details, Cinema, Modern, Minimal) on six sections (InfoBar, SecondInfoBar, channel
+  list, EPG, EventView, PVR), six colour themes, chosen in **CineView Designs** (Plugins menu).
+- Posters: widget-size copy made from the original file (original untouched); a real No Poster layout when an event
+  has no poster — never a placeholder.
+- Information areas of the InfoBar, SecondInfoBar and playback bar are fully opaque in the theme colour; the decorative
+  scrims around them stay translucent.
+- SecondInfoBarECM without a poster: plain panel, no placeholder.
+- Classic PVR / EMC keeps its native live-TV preview (no poster box) by design.
+- Plugin icon and logo (option A); rights line in CineView Designs and the package data.
+
+## Install
+On the receiver (telnet / ssh):
+
+```
+wget -q -O /tmp/install-mla.sh "https://raw.githubusercontent.com/habeb-s/CineView-FHD/dev/mla-openatv/release/rc/install-mla.sh" && sh /tmp/install-mla.sh
+```
+
+- Checks only: `DRYRUN=1 sh /tmp/install-mla.sh`. Every check runs before anything is installed.
+- Then select **CineView_FHD_MLA** in Menu > Setup > User Interface > Skin and restart the GUI.
+- The package refuses images other than OpenATV 8.0.x with Python 3.14 (clear message, nothing changed).
+
+## Poster cache
+One cache for every design and screen, chosen at Enigma2 start:
+1. `/media/hdd/poster` when `/media/hdd` is a real read-write mount of a block device;
+2. persistent USB;
+3. `/tmp` (last resort, lost at reboot).
+
+`HDD_CACHE=0 sh /tmp/install-mla.sh` keeps it off the HDD. The cache is never deleted by an upgrade or a normal
+removal; `CONFIRM=yes sh /tmp/uninstall-mla.sh cache` deletes only CineView MLA's own cache folders.
+
+## Uninstall / rollback
+- Select another skin first, then `sh /tmp/uninstall-mla.sh` (keeps `/etc/enigma2/cineview_mla`) or
+  `sh /tmp/uninstall-mla.sh purge` (removes it too).
+- Earlier release candidates stay installable: `install-mla-rc10.sh`, `install-mla-rc9.sh` in `release/rc/`.
+- Inside CineView Designs: **Factory design** restores Classic / Navy; every applied design is a sealed generation
+  with automatic rollback to the last known good one.
+
+## Verified on the receiver (Slot 8)
+Final package t95: install with the GUI running, five models, reboot, Plugin Browser + CineView Designs, Python check —
+0 tracebacks, 0 skin errors, 0 crash logs, 0 plugin load errors. Earlier on the same skin files: full lifecycle
+(upgrade / reboot / uninstall / fresh install / purge / restore), final QA of five models × six sections, opaque
+information areas over red / yellow / white / dark video, picons under fast zapping, No Poster pairs, 25-minute
+performance run, dedicated HDD cache test. Evidence: `docs/mla/Morning_Run_2026-10-05_evidence.md`.
+
+## Known limits
+- Built and verified for OpenATV 8.0.1 / Python 3.14 on the Vu+ Duo 4K SE; other receivers and images are outside 1.0.0.
+- Minimal SecondInfoBar: a one-frame description leak seen twice on rc9 at the moment the text starts to scroll was
+  fixed in rc10 (the scrolling text paints its own background); not seen since, but the event was too rare to prove
+  its absence by counting.

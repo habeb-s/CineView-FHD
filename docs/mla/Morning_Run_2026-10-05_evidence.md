@@ -934,3 +934,27 @@ reboot / quick five-model check + receiver-captured video, Stage C release only 
   1.0.0; all five SIBs captured; 0 errors. (A test-script sequencing fault, not a skin issue.)
 - Video `CineView_MLA_1.0.0_stageB_2026-10-06.mp4`: the receiver's own frames (grab jpg 1280×720, 5–7 fps as captured)
   of every step, with build / commit / change / test / remaining on the cards.
+
+## 17. Final touches (user 20:51 / 21:01) — build88, final 1.0.0 package
+- **Icon / logo: option A approved (21:01).** `tools/mla/brand/make_brand.py` → `docs/mla/brand/` (plugin_A.png 160×69,
+  under the 48 000-byte fast-memory threshold; logo_A_full_dark / full_light / compact / mark; options B / C kept for
+  the record). The build copies the icon to the plugin folder (`MLA_ICON`, default A).
+- **Rights** "Design & Development by habeb-s © 2026": CineView Designs status field (two extra lines, layout
+  unchanged), plugin description (" · by habeb-s"), package control Description + Maintainer, `version.json`. The
+  image's native About screen is not modified; nothing on viewing screens.
+- **Light protection:** the 14 importable modules (plugin + Components CineViewMLA*) shipped as sourceless .pyc,
+  compiled by the receiver's own Python 3.14.7 (`devtools/device/mkpyc.sh`, unchecked-hash pyc, install path as file
+  name); engine `composer.py` and the guardian scripts unchanged; preinst refuses another Python version;
+  `version.json` (version, build, commit, date). No obfuscation, no licence check, no internet dependency, no XML /
+  runtime logic change for protection. Package audited: no development / debug files.
+- Final package `..._1.0.0_all.ipk` SHA256 `622c69b026eaa8d6fa0e87784ec5321c76e15eab017c3499998e81adbb502545`.
+- **t95 (receiver):** install over the staged 1.0.0 with Enigma2 RUNNING (`--force-reinstall`; opkg removed the old
+  .py files) → files: plugin `__init__.pyc plugin.pyc plugin.png version.json`, 14 CineViewMLA .pyc → Plugin Browser
+  shows icon A; CineView Designs shows "CineView MLA 1.0.0 · build88 · 2b18a7c" / "Design & Development by habeb-s ©
+  2026" → five models (InfoBar / SIB / channel list) on the .pyc components → reboot (linuxrootfs8) → Plugin Browser +
+  CineView Designs again → preinst with a fake python3 3.12 in /tmp: refused (exit 1, clear message); real: exit 0.
+  Every check: 0 tracebacks, 0 skin errors, 0 crash logs, 0 plugin load errors.
+- One unowned development leftover found (`Components/Renderer/CineViewMLAPicon.py`, 2026-10-05, not in any package,
+  referenced nowhere) - moved to `/media/usb/cineview-mla/state/dev-leftovers-20261006/`; every CineViewMLA file on
+  the receiver is now owned by the package; the development screen-open tool is removed.
+- Release notes: `docs/mla/RELEASE_NOTES_1.0.0.md`. Publication (Stage C) waits for the user's approval.
