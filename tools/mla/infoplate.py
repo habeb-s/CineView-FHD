@@ -153,7 +153,7 @@ def screen(skin, cols, body):
 				layers.append((e, "color", al))
 		elif (e["kind"] == "ePixmap" or a.get("render") == "Pixmap") and a.get("pixmap"):
 			layers.append((e, "png", None))
-	groups, own = {}, []
+	groups, own, covered = {}, [], []
 	for e in els:
 		if not e["r"] or not is_info(e["kind"], e["a"], e["inner"]):
 			continue
@@ -175,6 +175,7 @@ def screen(skin, cols, body):
 				al = None if al is None else 255 - al
 			if al == 0:
 				opaque = True
+				covered.append((e, le["z"]))  # info widget already on an opaque layer (pill / card) at that z
 				break
 			if al is not None and (top is None or le["z"] > top[0]["z"]):
 				top = (le, kind)
@@ -200,9 +201,29 @@ def screen(skin, cols, body):
 			col = solid(le["a"]["backgroundColor"], cols) if (le and kind == "color") else "steThemePanel"
 			zmin = min(w["z"] for w in ws)
 			for b in rows(cluster([w["r"] for w in ws])):
+				# a row band absorbs the information pills of the SAME row right next to it (already opaque, so not in
+				# the cluster): otherwise the band ends mid-row and those pills hang over the scrim (t87e, Modern SIB
+				# status row: SNR / dB pills past x 1580).  The band then goes under those pills' own layer.
+				zcap = None
+				grown = True
+				while grown:
+					grown = False
+					for ce, cz in covered:
+						cr = ce["r"]
+						ov = min(b[1] + b[3], cr[1] + cr[3]) - max(b[1], cr[1])
+						gap = max(cr[0] - (b[0] + b[2]), b[0] - (cr[0] + cr[2]))
+						inside = b[0] <= cr[0] and cr[0] + cr[2] <= b[0] + b[2]
+						if (ov > 0.5 * min(b[3], cr[3]) and gap <= 2 * MARGIN and not inside and cr[3] <= 1.5 * b[3]
+								and (le is None or le["z"] < cz - 1)):
+							nx0, nx1 = min(b[0], cr[0]), max(b[0] + b[2], cr[0] + cr[2])
+							b = [nx0, b[1], nx1 - nx0, b[3]]
+							zcap = cz if zcap is None else min(zcap, cz)
+							grown = True
 				x0, y0 = max(0, b[0] - MARGIN), max(0, b[1] - MARGIN)
 				x1, y1 = min(W, b[0] + b[2] + MARGIN), min(H, b[1] + b[3] + MARGIN)
 				z = (le["z"] if le else zmin - 1)
+				if zcap is not None and z >= zcap:
+					z = zcap - 1
 				inserts.append((le, dict(r=[x0, y0, x1 - x0, y1 - y0], z=z, color=col, radius="14", before=False)))
 				report.append(("plate", col, "%d,%d %dx%d" % (x0, y0, x1 - x0, y1 - y0)))
 	def base_under(e):
