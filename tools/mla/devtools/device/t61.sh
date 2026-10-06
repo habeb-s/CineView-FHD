@@ -23,7 +23,7 @@ ap() {  # apply through the engine; a refused selection is reported loudly (t61:
   local out; out=$($R "$E apply $* 2>&1 | tail -4"); echo "$out" | sed "s/^/   apply: /"
   echo "$out" | grep -q "failed\|not defined\|Error\|rror:" && echo "   APPLY FAILED: $*"
 }
-op() { $R "echo $1 > /tmp/cvmla/open.txt"; sleep ${2:-5}; }
+op() { $R "mkdir -p /tmp/cvmla; echo $1 > /tmp/cvmla/open.txt"; sleep ${2:-5}; }
 emc() {  # $1 tag: EMC through the PVR path (InfoBar.showMovies), cursor down over every entry, up
   zap $HBO; X; op movies 9; ga emc_$1_open; for k in 1 2 3 4 5; do $RC 108; sleep 4; ga emc_$1_down$k; done; $RC 103; sleep 4; ga emc_$1_up1; X; sleep 3
 }

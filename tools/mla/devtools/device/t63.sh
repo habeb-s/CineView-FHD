@@ -22,7 +22,7 @@ ap() {  # apply through the engine; a refused selection is reported loudly (t61:
   local out; out=$($R "$E apply $* 2>&1 | tail -4"); echo "$out" | sed "s/^/   apply: /"
   echo "$out" | grep -q "failed\|not defined\|Error\|rror:" && echo "   APPLY FAILED: $*"
 }
-op() { $R "echo $1 > /tmp/cvmla/open.txt"; sleep ${2:-5}; }
+op() { $R "mkdir -p /tmp/cvmla; echo $1 > /tmp/cvmla/open.txt"; sleep ${2:-5}; }
 bars() {  # $1 tag
   zap $HRT1; X; sleep 2; $RC 352; sleep 2.5; ga ib_$1; X; sleep 2
   $RC 352; sleep 1.5; $RC 352; sleep 4; ga sib_$1; X; sleep 2

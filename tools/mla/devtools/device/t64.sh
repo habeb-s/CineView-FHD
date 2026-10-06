@@ -14,7 +14,7 @@ ga() { for a in 1 2 3; do curl -s -m 60 -o $S/$1.png "http://192.168.1.250/grab?
 restart() { o=$(pid); $R 'init 4; for i in $(seq 1 25); do pidof enigma2 >/dev/null || break; sleep 1; done; '"$1"' init 3'; newe2 $o; sleep 28; }
 errs() { $R 'f=/home/root/logs/$(ls -t /home/root/logs | grep debug | head -1); echo "   tracebacks=$(grep -a -c Traceback $f) skin_errors_new=$(grep -a "Skin\] Error" $f | grep -v -c "progressPercentWidth\|piconMargin") e2pid=$(pidof enigma2) crashlogs=$(ls /home/root/logs | grep -c crash)"; grep -a "Traceback\|Skin\] Error\|Processing screen .MovieSelection\|CineViewMLAPosterX.*Service\|posters-off names" $f | grep -v "progressPercentWidth\|piconMargin\|Summary" | tail -6 | cut -c1-170'; }
 zap() { curl -s -m 8 -o /dev/null "http://192.168.1.250/api/zap?sRef=$1"; sleep 8; }
-op() { $R "echo $1 > /tmp/cvmla/open.txt"; sleep ${2:-5}; }
+op() { $R "mkdir -p /tmp/cvmla; echo $1 > /tmp/cvmla/open.txt"; sleep ${2:-5}; }
 mov() {  # $1 tag: open the recordings list, move down 3 x 1, up 1; EXIT
   zap $HBO; X; op movies 8; ga pvr_$1_open; for k in 1 2 3; do $RC 108; sleep 4; ga pvr_$1_down$k; done; $RC 103; sleep 4; ga pvr_$1_up1; X; sleep 3
 }

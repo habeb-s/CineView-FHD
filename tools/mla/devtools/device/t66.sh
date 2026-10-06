@@ -22,7 +22,7 @@ ap() {
   local out; out=$($R "$E apply $* 2>&1 | tail -4"); echo "$out" | sed "s/^/   apply: /"
   echo "$out" | grep -q "failed\|not defined\|Error\|rror:" && echo "   APPLY FAILED: $*"
 }
-op() { $R "echo $1 > /tmp/cvmla/open.txt"; sleep ${2:-5}; }
+op() { $R "mkdir -p /tmp/cvmla; echo $1 > /tmp/cvmla/open.txt"; sleep ${2:-5}; }
 evs() {
   zap $HBO; X; $RC 358; sleep 5; ga ev_$1_live; $RC 109; sleep 3; ga ev_$1_live_pagedown; X; sleep 2
   op vertical 9; $RC 106; sleep 3; $RC 108; sleep 3; $RC 358; sleep 5; ga ev_$1_simple; X; sleep 2; X; sleep 2; X; sleep 2

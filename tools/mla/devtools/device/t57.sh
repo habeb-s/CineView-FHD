@@ -15,7 +15,7 @@ ga() { for a in 1 2 3; do curl -s -m 60 -o $S/$1.png "http://192.168.1.250/grab?
 restart() { o=$(pid); $R 'init 4; for i in $(seq 1 25); do pidof enigma2 >/dev/null || break; sleep 1; done; '"$1"' init 3'; newe2 $o; sleep 28; }
 errs() { $R 'f=/home/root/logs/$(ls -t /home/root/logs | grep debug | head -1); echo "   tracebacks=$(grep -a -c Traceback $f) skin_errors_new=$(grep -a "Skin\] Error" $f | grep -v -c "progressPercentWidth\|piconMargin") e2pid=$(pidof enigma2) crashlogs=$(ls /home/root/logs | grep -c crash)"; grep -a "Traceback\|Skin\] Error\|rror" $f | grep -v "progressPercentWidth\|piconMargin\|Summary\|accelAlloc" | tail -6 | cut -c1-170'; }
 P=/usr/lib/enigma2/python/Plugins/Extensions/CineViewMLAScreenOpen
-op() { $R "echo $1 > /tmp/cvmla/open.txt"; sleep ${2:-5}; }
+op() { $R "mkdir -p /tmp/cvmla; echo $1 > /tmp/cvmla/open.txt"; sleep ${2:-5}; }
 evs() {  # $1 tag: live INFO (EventView), vertical EPG other event -> INFO (EventViewSimple), InfoBar EPG -> INFO
   zap $HBO; X; $RC 358; sleep 5; ga ev_$1_live; X; sleep 2
   op vertical 9; $RC 106; sleep 3; $RC 108; sleep 3; $RC 358; sleep 5; ga ev_$1_simple; X; sleep 2; X; sleep 2; X; sleep 2

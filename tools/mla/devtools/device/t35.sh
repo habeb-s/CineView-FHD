@@ -17,7 +17,7 @@ cpu() { $R 'p=$(pidof enigma2); set -- $(cut -d" " -f14,15 /proc/$p/stat); echo 
 navloop() { for r in $(seq 1 $1); do $RC 108; sleep 3; for i in 1 2 3 4 5 6; do $RC 108; sleep 0.6; done; for i in 1 2 3 4 5 6; do $RC 103; sleep 0.6; done; X; done; }
 fails() { $R 'f=/home/root/logs/$(ls -t /home/root/logs | grep debug | head -1); grep -a -c "accelAlloc failed" $f'; }
 zap() { curl -s -m 8 -o /dev/null "http://192.168.1.250/api/zap?sRef=$1"; sleep 8; }
-op() { $R "echo $1 > /tmp/cvmla/open.txt"; sleep ${2:-5}; }
+op() { $R "mkdir -p /tmp/cvmla; echo $1 > /tmp/cvmla/open.txt"; sleep ${2:-5}; }
 ~/cineview-mla/deploy_b.sh $NEW
 cat ~/cineview-mla/devtools/CineViewMLAScreenOpen/plugin.py | $R "mkdir -p $P && cat > $P/plugin.py && touch $P/__init__.py"
 for d in videofirst videofirst-right posterlist; do
