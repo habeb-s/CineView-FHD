@@ -779,6 +779,52 @@ def _install_service_name_clip():
 	print("[CineViewMLA] name clip installed")
 
 
+def _install_package_waiting():
+	"""Plugin Browser -> Install / Remove / Update Plugins (device t96 2026-10-06, live stack): while opkg runs,
+	PackageAction.setWaiting(text) shows the global Processing dialog with `text` AND the screen keeps the same text
+	in its own 'description' label ("Downloading plugin information. Please wait..." twice on the TV).  While the
+	Processing dialog is up, the screen's copy is cleared (and the HELP label, whose key opens help behind the busy
+	dialog); both come back when setWaiting(None) ends the wait, unless the screen has set a new text meanwhile
+	(the package count / an error message - those are kept).  Display only: the action maps, opkg and every key stay
+	native.  Nothing changes while another skin is active; no enigma2 file is touched."""
+	try:
+		from Screens.PluginBrowser import PackageAction
+	except Exception as err:
+		print("[CineViewMLA] package waiting: unavailable: %s" % err)
+		return
+	orig = PackageAction.setWaiting
+	if getattr(orig, "_cvmla_pkg_wait", False):
+		return
+
+	def setWaiting(self, text, _orig=orig):
+		if not mla_active():
+			return _orig(self, text)
+		if text:
+			try:
+				if getattr(self, "_cvmla_wait", None) is None:
+					self._cvmla_wait = (self["description"].getText(), self["key_help"].getText() if "key_help" in self else None)
+			except Exception as err:
+				print("[CineViewMLA] package waiting: %s" % err)
+		_orig(self, text)
+		try:
+			saved = getattr(self, "_cvmla_wait", None)
+			if text and saved is not None:
+				self["description"].setText("")
+				if saved[1] is not None:
+					self["key_help"].setText("")
+			elif not text and saved is not None:
+				self._cvmla_wait = None
+				if self["description"].getText() == "":
+					self["description"].setText(saved[0])
+				if saved[1] is not None:
+					self["key_help"].setText(saved[1])
+		except Exception as err:
+			print("[CineViewMLA] package waiting: %s" % err)
+	setWaiting._cvmla_pkg_wait = True
+	PackageAction.setWaiting = setWaiting
+	print("[CineViewMLA] package waiting installed")
+
+
 def sessionstart(reason, session=None, **kwargs):
 	global _timer, _session
 	if reason != 0 or session is None:
@@ -797,6 +843,7 @@ def sessionstart(reason, session=None, **kwargs):
 		_install_poster_off_names()
 		_install_service_name_clip()
 		_install_epg_eventview_name()
+		_install_package_waiting()
 
 
 def Plugins(**kwargs):

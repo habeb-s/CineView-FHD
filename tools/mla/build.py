@@ -1032,6 +1032,54 @@ def apply_zorder_backgrounds(skin):
 	return out
 
 
+PROCESSING_SCREEN = """	<screen name="Processing" title="Processing" position="center,center" size="1000,204" flags="wfNoBorder" zPosition="99" backgroundColor="steThemePanelAlt" cornerRadius="20">
+		<widget source="Title" render="Label" position="40,24" size="920,44" font="Regular;32" foregroundColor="secondFG" backgroundColor="steThemePanelAlt" transparent="1" halign="center" valign="center" />
+		<eLabel position="440,78" size="120,3" backgroundColor="steThemeAccent" />
+		<widget name="progress" position="70,104" size="860,10" foregroundColor="steThemeAccent" backgroundColor="steThemeSelectedSolid" borderWidth="0" />
+		<widget name="description" position="40,134" size="920,40" font="Regular;28" foregroundColor="steThemeText" backgroundColor="steThemePanelAlt" transparent="1" halign="center" valign="top" />
+	</screen>
+"""
+PACKAGE_TITLE = ('\t\t<widget source="Title" render="Label" position="1075,24" size="800,52" font="Regular;30" foregroundColor="steThemeMuted" '
+	'backgroundColor="steThemePrimary" transparent="1" halign="right" valign="center" zPosition="3" />\n')
+
+
+def apply_package_screens(skin):
+	"""Plugin / package management (user 2026-10-06 22:00; live stack t96): the busy window of Install / Remove /
+	Update Plugins, of the feed update and of every other caller is the GLOBAL dialog Screens.Processing.ProcessingScreen
+	(skinName "Processing", instantiated once at start, widgets 'progress' ProgressBar + 'description' Label, Title).
+	CineView had no "Processing" screen, so OpenATV's built-in 1280x720 fallback with the default window border was
+	drawn over the CineView screens.  Added: a CineView "Processing" (theme colours, rounded window as the approved
+	ShowClock, description LAST because ProcessingScreen.setDescription() grows the window downwards by the text
+	height and re-centres it).  PackageAction / PackageActionLog: the colour keys are drawn only while they have a
+	text (the always-on cineviewKeyBar bars showed empty green / yellow keys) and PackageAction shows its mode
+	(Install / Remove / Update Plugins) in the header.  Duplicate text: plugin.py _install_package_waiting()."""
+	p = os.path.join(skin, "core", "common.openatv.xml")
+	x = open(p, encoding="utf-8").read()
+	assert '<screen name="Processing"' not in x, "Processing already defined in core/common"
+	done = []
+
+	def fix(sm):
+		body = sm.group(0)
+		name = re.match(r'<screen name="([^"]+)"', body).group(1)
+		if name not in ("PackageAction", "PackageActionLog"):
+			return body
+		body, nb = re.subn(r'\t*<eLabel name="cineviewKeyBar_[a-z]+"[^>]*/>\n', "", body)
+		body, nt = re.subn(r'(<widget zPosition="2") transparent="1"( source="key_(?:red|green|yellow|blue)")', r'\1\2', body)
+		assert nb == nt and nb in (1, 3), "%s: %d bars / %d key labels" % (name, nb, nt)
+		if name == "PackageAction":
+			anchor = '<eLabel position="35,88" size="1850,2"'
+			assert body.count(anchor) == 1, "PackageAction header anchor"
+			body = body.replace("\t\t" + anchor, PACKAGE_TITLE + "\t\t" + anchor, 1)
+		done.append((name, nb))
+		return body
+	x = re.sub(r'<screen name="[^"]+".*?</screen>', fix, x, flags=re.S)
+	assert [d[0] for d in done] == ["PackageAction", "PackageActionLog"], done
+	end = x.rindex("</skin>")
+	x = x[:end] + PROCESSING_SCREEN + x[end:]
+	open(p, "w", encoding="utf-8").write(x)
+	return done
+
+
 MULTIEPG_DESC_OLD = ('<widget source="Event" render="Label" position="1210,260" size="555,455" font="Regular;23" foregroundColor="foreground" transparent="1" valign="top">\n'
 	'\t\t\t<convert type="EventName">FullDescription</convert>\n\t\t</widget>')
 
@@ -1229,6 +1277,9 @@ def main(golden, comps, control, out):
 	print("SERVICEINFO video tokens -> CineViewMLAServiceInfo:", apply_serviceinfo_video(skin))
 	for f, scr, pos, size in apply_zorder_backgrounds(skin):
 		print("Z-ORDER %-45s %-28s background eLabel %s %s -> zPosition -1" % (f, scr, pos, size))
+	for scr, nb in apply_package_screens(skin):
+		print("PACKAGE %-20s %d colour key(s) only with text%s" % (scr, nb, " + mode title" if scr == "PackageAction" else ""))
+	print("PACKAGE Processing (global busy dialog) added to core/common")
 
 	# Themes: the original CineView palette() applied to the golden <colors>; navy == golden (verified).
 	theme = load_theme_module(control)
