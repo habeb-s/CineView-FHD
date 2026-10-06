@@ -271,13 +271,14 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 			entries.append(getConfigListEntry(_("Design") + " - " + _(spec.get("label", sec)), self.cfgLayouts[sec], "layout", sec))
 		for sec, cfg in self.cfgPosters.items():
 			entries.append(getConfigListEntry(_("Posters") + " - " + _(self.secs.get(sec, {}).get("label", sec)), cfg, "poster", sec))
+		# Row values are drawn in the list's value font: short labels; the details are in the description (t98).
 		self.cfgEngine = ConfigSelection(default=runtime().get("poster_engine", "identity") if runtime().get("poster_engine", "identity") in ("identity", "legacy") else "identity",
-			choices=[("identity", _("Unified (verified match, default image when unsure)")), ("legacy", _("Legacy (title search only)"))])
+			choices=[("identity", _("Unified (verified match)")), ("legacy", _("Legacy (title search)"))])
 		entries += [
 			getConfigListEntry(_("Poster engine"), self.cfgEngine, "engine", ""),
-			getConfigListEntry(_("Server / CAM information"), self.mla.servermode, "native", ""),
-			getConfigListEntry(_("Second InfoBar mode"), config.usage.show_second_infobar, "native", ""),
-			getConfigListEntry(_("Second InfoBar timeout"), config.usage.second_infobar_timeout, "native", ""),
+			getConfigListEntry(_("Server / CAM information"), self.mla.servermode, "native", "servermode"),
+			getConfigListEntry(_("Second InfoBar mode"), config.usage.show_second_infobar, "native", "show_second_infobar"),
+			getConfigListEntry(_("Second InfoBar timeout"), config.usage.second_infobar_timeout, "native", "second_infobar_timeout"),
 		]
 		ConfigListScreen.__init__(self, entries, session=session, on_change=self.updatePreview)
 		self["preview"] = Pixmap()
@@ -330,17 +331,30 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 			else:
 				self["preview"].hide()
 		desc = ""
-		if kind == "layout":
+		trial = _("GREEN applies it as a trial: the GUI restarts and the design is kept only after you confirm it.")
+		if kind == "theme":
+			desc = "%s\n%s\n\n%s" % (_("Colour theme"), cfg.getText(), _("The colours of every CineView screen.") + " " + trial)
+		elif kind == "layout":
 			m = self.layouts.get(sec, {}).get(cfg.value, {})
-			desc = "%s\n%s %s" % (m.get("name", cfg.value), _("Version"), m.get("version", ""))
+			desc = "%s\n%s %s\n\n%s" % (m.get("name", cfg.value), _("Version"), m.get("version", ""), trial)
 		elif kind == "poster":
 			desc = _("Applied without a restart, from the next channel or event change.")
 		elif kind == "engine":
 			desc = _("Unified: a poster only when title, type and year are confirmed, otherwise the CineView default image.\nLegacy: the original title search (may show posters of other works).\nTakes effect after the next GUI restart.")
-		if not p:
-			note = _("No preview is available for this item.") if kind in ("layout", "theme") else _("This option has no visual preview.")
+		elif kind == "native":
+			desc = {
+				"servermode": _("What the InfoBar shows about the CAM / server: full details, only the EMU and the subscription, or nothing."),
+				"show_second_infobar": _("What the INFO key opens after the InfoBar (OpenATV setting)."),
+				"second_infobar_timeout": _("How long the Second InfoBar stays on screen (OpenATV setting)."),
+			}.get(sec, "")
+			if desc:
+				desc += "\n\n" + _("Saved with GREEN, no restart needed.")
+		if not p and kind in ("layout", "theme"):
+			note = _("No preview is available for this item.")
 			desc = (desc + "\n\n" + note) if desc else note
 		self["description"].setText(desc)
+		# YELLOW / OK only where they do something: the Preview key is shown only when this row has a preview
+		self["key_yellow"].setText(_("Preview") if p else "")
 		st = self.eng.status()
 		self["status"].setText(_("Active generation: %s   Last known good: %s") % (st.get("active"), st.get("lkg")) + "\n" + about())
 
@@ -396,7 +410,7 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 		choices = [(_("Apply a design model to every section"), "model"), (_("Save current settings as a profile"), "save")]
 		if self._profile_names():
 			choices += [(_("Load a profile"), "load"), (_("Delete a profile"), "delete")]
-		self.session.openWithCallback(self._profileAction, ChoiceBox, text=_("CineView profiles"), choiceList=choices)
+		self.session.openWithCallback(self._profileAction, ChoiceBox, text=_("CineView profiles"), choiceList=choices, windowTitle=_("CineView Designs"))
 
 	def _profileAction(self, choice):
 		from Screens.ChoiceBox import ChoiceBox
@@ -404,7 +418,7 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 			return
 		if choice[1] == "model":
 			models = [(_(MODELS[m]["label"]), m) for m in MODEL_ORDER]
-			self.session.openWithCallback(self._modelLoad, ChoiceBox, text=_("Design model"), choiceList=models)
+			self.session.openWithCallback(self._modelLoad, ChoiceBox, text=_("Design model"), choiceList=models, windowTitle=_("CineView Designs"))
 			return
 		if choice[1] == "save":
 			from Screens.VirtualKeyBoard import VirtualKeyBoard
@@ -412,7 +426,7 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 		else:
 			names = [(n, n) for n in self._profile_names()]
 			cb = self._profileLoad if choice[1] == "load" else self._profileDelete
-			self.session.openWithCallback(cb, ChoiceBox, text=_("Select a profile"), choiceList=names)
+			self.session.openWithCallback(cb, ChoiceBox, text=_("Select a profile"), choiceList=names, windowTitle=_("CineView Designs"))
 
 	def _profile_data(self):
 		return {"schema": 1, "theme": self.cfgTheme.value, "layouts": {s: c.value for s, c in self.cfgLayouts.items()},
@@ -509,10 +523,8 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 
 	def keyPreview(self):
 		p = self._preview_path()
-		if p:
+		if p:  # no preview: the key has no label and does nothing (no empty message window)
 			self.session.open(CineViewMLAPreview, p)
-		else:
-			self.session.open(MessageBox, _("No preview is available for this item."), MessageBox.TYPE_INFO, timeout=4)
 
 	def keyFactory(self):
 		self.session.openWithCallback(self._factory, MessageBox, _("Return to the factory CineView Classic design?"), MessageBox.TYPE_YESNO, default=False)
