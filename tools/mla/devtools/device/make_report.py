@@ -40,6 +40,7 @@ def img(path, w=800, q=68):
 	return "data:image/jpeg;base64," + base64.b64encode(b.getvalue()).decode()
 
 
+NPDIR = os.environ.get("NPDIR", "t84")    # No Poster pairs: t91 = all five models incl. Classic
 T68 = os.environ.get("T68", "t68")          # shots dir of the model QA run (t68_rc9 = final QA on rc9)
 T68LOG = os.environ.get("T68LOG", "t68.log")
 BUILD = os.environ.get("BUILD", "build69")
@@ -131,10 +132,10 @@ def noposter():
 		for sk, slab in (("ib", "InfoBar"), ("sib", "SecondInfoBar"), ("ev", "EventView"), ("cs", "Channel list")):
 			a = img(os.path.join(S, "t82", "%s_hbo_%s.png" % (m, sk)), 520, 60)
 			b = img(os.path.join(S, "t82", "%s_hrt1_%s.png" % (m, sk)), 520, 60)
-			if sk == "ib" and os.path.exists(os.path.join(S, "t84", "%s_ib_hbo.png" % m)):
+			if sk == "ib" and os.path.exists(os.path.join(S, NPDIR, "%s_ib_hbo.png" % m)):
 				# t82 grabbed 5 s after OK, when the InfoBar had already timed out; t84 grabbed at 2.5 s
-				a = img(os.path.join(S, "t84", "%s_ib_hbo.png" % m), 520, 60)
-				b = img(os.path.join(S, "t84", "%s_ib_hrt1.png" % m), 520, 60)
+				a = img(os.path.join(S, NPDIR, "%s_ib_hbo.png" % m), 520, 60)
+				b = img(os.path.join(S, NPDIR, "%s_ib_hrt1.png" % m), 520, 60)
 			elif sk == "ib":
 				continue
 			if not (a or b):
@@ -142,8 +143,8 @@ def noposter():
 			rows.append('<section class="sec"><h3>%s</h3><div class="pair">%s%s</div></section>' % (slab,
 				'<figure><div class="tag on">HBO · poster</div>%s</figure>' % ('<img loading="lazy" alt="%s %s with poster" src="%s">' % (lab, slab, a) if a else '<div class="miss">no grab</div>'),
 				'<figure><div class="tag off">HRT1 · no poster</div>%s</figure>' % ('<img loading="lazy" alt="%s %s without poster" src="%s">' % (lab, slab, b) if b else '<div class="miss">no grab</div>')))
-		a = img(os.path.join(S, "t84", "%s_epg_hbo.png" % m), 520, 60)
-		b = img(os.path.join(S, "t84", "%s_epg_hrt1.png" % m), 520, 60)
+		a = img(os.path.join(S, NPDIR, "%s_epg_hbo.png" % m), 520, 60)
+		b = img(os.path.join(S, NPDIR, "%s_epg_hrt1.png" % m), 520, 60)
 		if a or b:
 			rows.append('<section class="sec"><h3>EPG card</h3><div class="pair">%s%s</div></section>' % (
 				'<figure><div class="tag on">HBO</div>%s</figure>' % ('<img loading="lazy" alt="%s EPG HBO" src="%s">' % (lab, a) if a else '<div class="miss">no grab</div>'),
@@ -151,7 +152,7 @@ def noposter():
 		for kind, klab in (("emc", "PVR · EMC rows"), ("ms", "PVR · MovieSelection rows")):
 			cells = []
 			for k in range(5):
-				pic = img(os.path.join(S, "t84", "%s_%s_%d.png" % (m, kind, k)), 420, 58)
+				pic = img(os.path.join(S, NPDIR, "%s_%s_%d.png" % (m, kind, k)), 420, 58)
 				if pic:
 					cells.append('<figure><img loading="lazy" alt="%s %s row %d" src="%s"><figcaption>row %d</figcaption></figure>' % (lab, klab, k, pic, k))
 			if cells:
@@ -166,6 +167,23 @@ def noposter():
 	if ev:
 		out.append('<details class="np"><summary>Classic · EventView strip picon (fixed)</summary><div class="pane"><p class="note">Before: no picon on a freshly opened EventView (also in the approved t68 grabs), and a hidden variant could draw the default picon. Now the picon shows in its place with and without a poster.</p><div class="rowgrid">%s</div></div></details>' % "".join(ev))
 	return "".join(out) or '<p class="note">t82 / t84 not run yet.</p>'
+
+
+def ecm_and_picons():
+	"""t91: SecondInfoBarECM (poster / no poster / posters OFF) and the picon sheets of the fast-zap grabs."""
+	ecm, pic = [], []
+	for m, lab in MODELS:
+		cells = []
+		for k, klab in (("hbo", "HBO · poster"), ("hrt1", "HRT1 · no poster"), ("off", "posters OFF")):
+			p = img(os.path.join(S, NPDIR, "%s_ecm_%s.png" % (m, k)), 420, 60)
+			if p:
+				cells.append('<figure><img loading="lazy" alt="%s ECM %s" src="%s"><figcaption>%s</figcaption></figure>' % (lab, klab, p, klab))
+		if cells:
+			ecm.append('<section class="sec"><h3>%s</h3><div class="rowgrid">%s</div></section>' % (lab, "".join(cells)))
+		sh = img(os.path.join(S, NPDIR, "picons_%s.png" % m), 1100, 70)
+		if sh:
+			pic.append('<details class="np"><summary>%s · picon area after fast zaps</summary><div class="pane"><img loading="lazy" alt="%s picons" src="%s" style="width:100%%;border-radius:6px"></div></details>' % (lab, lab, sh))
+	return "".join(ecm) or '<p class="note">t91 not run yet.</p>', "".join(pic) or '<p class="note">t91 not run yet.</p>'
 
 
 def opaque():
@@ -260,9 +278,10 @@ def main(out):
 			m, m, "" if mi == 0 else " hidden", chip, "".join(rows), "".join(th)))
 
 	orows, ofigs = opaque()
+	ecmh, pich = ecm_and_picons()
 	ahead, arows = attribution()
 	abnote, abfigs = pil_ab()
-	html = TEMPLATE.replace("%OROWS%", orows).replace("%OFIGS%", ofigs).replace("%BUILD%", BUILD).replace("%CURRENT%", CURRENT).replace("%ATTRH%", ahead).replace("%ATTR%", arows).replace("%PILNOTE%", abnote).replace("%PILAB%", abfigs).replace("%NOPOSTER%", noposter()).replace("%BARS%", "".join(bars)).replace("%PHASES%", prow or '<tr><td colspan="5">t76 not run</td></tr>') \
+	html = TEMPLATE.replace("%ECM%", ecmh).replace("%PICONS%", pich).replace("%OROWS%", orows).replace("%OFIGS%", ofigs).replace("%BUILD%", BUILD).replace("%CURRENT%", CURRENT).replace("%ATTRH%", ahead).replace("%ATTR%", arows).replace("%PILNOTE%", abnote).replace("%PILAB%", abfigs).replace("%NOPOSTER%", noposter()).replace("%BARS%", "".join(bars)).replace("%PHASES%", prow or '<tr><td colspan="5">t76 not run</td></tr>') \
 		.replace("%AB%", "".join(ab_rows) or '<p class="note">t78 not run yet.</p>').replace("%POOL%", pool_rows or '<tr><td colspan="2">t78 not run yet</td></tr>') \
 		.replace("%TABS%", "".join(tabs)).replace("%PANES%", "".join(panes)).replace("%TB%", str(tb)).replace("%SE%", str(se)).replace("%SECLS%", "ok" if se == 0 else "warn") \
 		.replace("%SENOTE%", "" if se == 0 else '<span class="fn">(Classic MovieSelection: list attributes enigma2 rejects; removed in build70 / rc5)</span>').replace("%CL%", str(cl))
@@ -368,6 +387,12 @@ details.np summary{font:600 20px var(--display);cursor:pointer}
   <h2>No poster: the real layout instead of a placeholder</h2>
   <p class="note">Posters on. Left: an event or recording that has a poster. Right: one without (news, generic programme), which now gets the screen’s posters-off arrangement for that moment instead of the default picture. Screens whose layout is fixed when they open (named EventView designs) choose their No Poster screen when they open.</p>
   %NOPOSTER%
+  <h3>SecondInfoBarECM</h3>
+  <p class="note">The ECM variant of the SecondInfoBar (Menu setting “Second InfoBar: ECM”) keeps Enigma2’s own named text widgets, so its text is not moved. Without a real poster nothing is drawn in the poster place: no placeholder and no empty frame.</p>
+  %ECM%
+  <h3>One picon per place while zapping fast</h3>
+  <p class="note">CH+ / CH− bursts; grabs 0.3, 1 and 2.5 seconds after a burst and after a single zap. The InfoBar’s picon places are cut out of every grab.</p>
+  %PICONS%
 </section>
 <section class="block">
   <h2>Information areas stay opaque over any picture</h2>
