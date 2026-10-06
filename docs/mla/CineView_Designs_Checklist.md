@@ -32,5 +32,26 @@ receiver; **DECISION** = works, a visual choice is waiting for the user (evidenc
 | 20 | Settings file after the tests = backup (except counters) | PASS | diff in t98b log |
 | 21 | Message boxes of CineView Designs are fixed 960×520 boxes (one line of text in a large empty box) | **DECISION** — experiment `MLA_MSGBOX_FIT=1` sizes the CineView MessageBox to its text and answers; it changes every message box of the skin, so it is off until approved | t99 fit vs base |
 | 22 | Values of all other Setup pages also ~18 px | **DECISION** — experiment `MLA_SETUP_VALUEFONT=1` (27 px in the shared ConfigTemplate); changes every Setup page | t99 fitfont |
-| 23 | CineView Designs / Processing / MessageBox in the six themes | see t100 | t100 |
+| 23 | CineView Designs / Processing / MessageBox in the six themes (navy, black, graphite, purple, burgundy, green; engine apply + restart each) | PASS — same layout and readable text in all six; original selection restored | t100, evidence/designs/themes_*.jpg |
 | 24 | Arabic UI language | NOT TESTED — changing the system language is a user setting; CineView Designs strings are English gettext ids (no Arabic catalogue in the package) |  |
+
+## Observation (not changed, for the user)
+- Burgundy theme: the red "Cancel" key text of the shared colour-key template has low contrast on the burgundy key
+  bar (themes_designs.jpg). It is the same template on every Setup page; a change would be a theme-wide decision.
+
+## Decisions waiting for the user (evidence: docs/mla/evidence/designs/decision_*.jpg, video)
+1. **MessageBox fitted to its text** (`MLA_MSGBOX_FIT=1`): every message box of the skin becomes as tall as its text +
+   answers (same width, same colours, centred). Device: info / yes-no / 9-line error / 4-answer list, 0 errors.
+2. **Value font 27 px on every Setup page** (`MLA_SETUP_VALUEFONT=1`, shared ConfigTemplate). Device: OSD Settings, 0 errors.
+Both are off in build92; switching one on = one build flag, then the package is rebuilt and the screens re-checked.
+
+## Builds
+- build91 (c3e1eba): first CineView Designs fixes - t98 p1b + t98b.
+- build92 (b719a97): + EventView line-by-line preview, trial question text. Package 1.0.0 SHA256
+  `b85220f59614a4287336560eec5091cb69dd4d7f55c96cd9f3608a2bac8ef978`, installed on Slot 8, theme black, devtool removed.
+- build92x / build92y: experiments only (installed for the captures, then build92 installed again).
+
+## Receiver state at the end (00:04)
+1.0.0 build92 installed (`version.json` build92 / b719a97), active = lkg = g000047, theme black, every section Classic
+(EventView line by line), journal COMMITTED, 0 tracebacks, 0 skin errors, 0 crash logs, development tool removed.
+Backups: /media/usb/cineview-mla/state/backup-t98-20261006-231320, -232105, backup-t98b-20261006-232347.

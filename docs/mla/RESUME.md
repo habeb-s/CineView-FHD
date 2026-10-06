@@ -66,3 +66,8 @@ Waiting: the user's approval for 1.0.0 (no final release / no main without it).
 - Final 1.0.0 re-packaged from build90 (commit ac29f6f): agent ~/cineview-mla/final100d, SHA256 8fb44a69...242516,
   installed on Slot 8 (theme black kept); development screen-open tool removed from the receiver.
 - NOT published. Stage C (release/rc + installer + main) waits for the user's approval.
+
+## Night 2026-10-06/07 - CineView Designs checklist (docs/mla/CineView_Designs_Checklist.md)
+- build92 (b719a97) installed on Slot 8 (package SHA256 b85220f5...ef978); 24 items: 12 PASS, 10 FIXED + re-tested,
+  2 DECISIONS (MessageBox fit, Setup value font: build flags, off), Arabic UI not tested (system language).
+- Next: the user's two decisions -> (flags on/off) -> final package -> approval -> Stage C (publish, installer, main).

@@ -1002,3 +1002,11 @@ reboot / quick five-model check + receiver-captured video, Stage C release only 
   0 tracebacks, 0 skin errors, 0 crash logs; hook "package waiting installed" in the log.
 - Test-harness note: the red key opened Remove and its key event closed it at once (red = Close there); Remove is
   opened through the devtool (native `PackageAction(MODE_REMOVE)`) in t97.
+
+## 19. CineView Designs checklist (night 2026-10-06/07) — build91/92
+Full list, results and decisions: `docs/mla/CineView_Designs_Checklist.md`. Tests on the receiver: t98 (open, every
+row with grab + live row dump, preview, profiles menu, cancel), t98b (poster switch, SIB timeout, profile save / load
+/ delete, model, factory question, trial declined -> automatic revert, trial kept -> commit, original restored), t99
+(MessageBox and Setup look; experiments `MLA_MSGBOX_FIT`, `MLA_SETUP_VALUEFONT`), t100 (six themes). Every run:
+0 tracebacks, 0 skin errors, 0 crash logs; settings equal to the backup except counters. Evidence:
+`docs/mla/evidence/designs/`, video `docs/mla/evidence/video/CineView_MLA_Designs_checklist_2026-10-07.mp4`.

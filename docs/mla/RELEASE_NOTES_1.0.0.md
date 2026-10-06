@@ -5,8 +5,8 @@
 | | |
 |---|---|
 | Package | `enigma2-plugin-skins-cineview-fhd-mla_1.0.0_all.ipk` |
-| SHA256 | `8fb44a69e9af903ecc197f20828cfcd87448194dc729f11d8ccd31c198242516` |
-| Build | build90, commit ac29f6f (branch `dev/mla-openatv`) — `version.json` in the plugin folder carries version / build / commit |
+| SHA256 | `b85220f59614a4287336560eec5091cb69dd4d7f55c96cd9f3608a2bac8ef978` |
+| Build | build92, commit b719a97 (branch `dev/mla-openatv`) — `version.json` in the plugin folder carries version / build / commit |
 | Target | Vu+ Duo 4K SE, OpenATV 8.0.1 (Python 3.14) — the receiver this release was verified on |
 | Status | RELEASE CANDIDATE until the owner approves the release |
 
@@ -22,6 +22,8 @@
 - Plugin icon and logo (option A); rights line in CineView Designs and the package data.
 - Plugin / package management: the busy dialog (Processing) in CineView style, one wait message instead of two,
   colour keys only when they have a function, mode title (Install / Remove / Update Plugins) in Plugin Manager.
+- CineView Designs: readable values, whole rows, a description for every row, Preview only where a preview exists,
+  preview for EventView line by line, clearer trial question (checklist: docs/mla/CineView_Designs_Checklist.md).
 
 ## Install
 On the receiver (telnet / ssh):
