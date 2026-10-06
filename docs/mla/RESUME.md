@@ -60,3 +60,9 @@ Waiting: the user's approval for 1.0.0 (no final release / no main without it).
 ## Plan (status 19:54)
 - Stage A docs/report (no receiver) -> Stage B 1.0.0 package = build87 files, version only; upgrade rc10->1.0.0, reboot,
   quick 5-model check, receiver-captured video -> Stage C release (publish, installer, main) ONLY after explicit approval.
+
+## 2026-10-06 22:00 request - package management screens: DONE (RUNTIME TESTED, build90)
+- Root cause / fix / tests: evidence section 18; video docs/mla/evidence/video/CineView_MLA_package_screens_2026-10-06.mp4.
+- Final 1.0.0 re-packaged from build90 (commit ac29f6f): agent ~/cineview-mla/final100d, SHA256 8fb44a69...242516,
+  installed on Slot 8 (theme black kept); development screen-open tool removed from the receiver.
+- NOT published. Stage C (release/rc + installer + main) waits for the user's approval.

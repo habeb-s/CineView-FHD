@@ -5,8 +5,8 @@
 | | |
 |---|---|
 | Package | `enigma2-plugin-skins-cineview-fhd-mla_1.0.0_all.ipk` |
-| SHA256 | `622c69b026eaa8d6fa0e87784ec5321c76e15eab017c3499998e81adbb502545` |
-| Build | build88 (branch `dev/mla-openatv`) — `version.json` in the plugin folder carries version / build / commit |
+| SHA256 | `8fb44a69e9af903ecc197f20828cfcd87448194dc729f11d8ccd31c198242516` |
+| Build | build90, commit ac29f6f (branch `dev/mla-openatv`) — `version.json` in the plugin folder carries version / build / commit |
 | Target | Vu+ Duo 4K SE, OpenATV 8.0.1 (Python 3.14) — the receiver this release was verified on |
 | Status | RELEASE CANDIDATE until the owner approves the release |
 
@@ -20,6 +20,8 @@
 - SecondInfoBarECM without a poster: plain panel, no placeholder.
 - Classic PVR / EMC keeps its native live-TV preview (no poster box) by design.
 - Plugin icon and logo (option A); rights line in CineView Designs and the package data.
+- Plugin / package management: the busy dialog (Processing) in CineView style, one wait message instead of two,
+  colour keys only when they have a function, mode title (Install / Remove / Update Plugins) in Plugin Manager.
 
 ## Install
 On the receiver (telnet / ssh):
@@ -49,13 +51,16 @@ removal; `CONFIRM=yes sh /tmp/uninstall-mla.sh cache` deletes only CineView MLA'
   with automatic rollback to the last known good one.
 
 ## Verified on the receiver (Slot 8)
-Final package t95: install with the GUI running, five models, reboot, Plugin Browser + CineView Designs, Python check —
+Package screens t97 (build90): Install / Remove / Update Plugins lists, Plugin Action Log, Processing (one and several
+lines) before/after - 0 tracebacks, 0 skin errors. Final package t95 (build88): install with the GUI running, five models, reboot, Plugin Browser + CineView Designs, Python check —
 0 tracebacks, 0 skin errors, 0 crash logs, 0 plugin load errors. Earlier on the same skin files: full lifecycle
 (upgrade / reboot / uninstall / fresh install / purge / restore), final QA of five models × six sections, opaque
 information areas over red / yellow / white / dark video, picons under fast zapping, No Poster pairs, 25-minute
 performance run, dedicated HDD cache test. Evidence: `docs/mla/Morning_Run_2026-10-05_evidence.md`.
 
 ## Known limits
+- The Processing dialog has square corners: a rounded window broke the redraw of the screen behind it on the
+  receiver (evidence section 18).
 - Built and verified for OpenATV 8.0.1 / Python 3.14 on the Vu+ Duo 4K SE; other receivers and images are outside 1.0.0.
 - Minimal SecondInfoBar: a one-frame description leak seen twice on rc9 at the moment the text starts to scroll was
   fixed in rc10 (the scrolling text paints its own background); not seen since, but the event was too rare to prove
