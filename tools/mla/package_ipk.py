@@ -231,7 +231,7 @@ def build_ipk(build, ver, outdir, pyc_dir=None):
 	data = io.BytesIO()
 	_tar(members, data)
 	ctrl = io.BytesIO()
-	target = " 8.0 (Python %s)" % pyneed if pyneed else " 7.6 / 8.0"
+	target = " 8.0 / Python %s" % pyneed if pyneed else " 7.6 / 8.0"
 	_tar([("./control", CONTROL.format(pkg=PKG, ver=ver, commit=commit, target=target).encode(), 0o644, "file", None),
 		("./preinst", PREINST.replace("@PYNEED@", pyneed).encode(), 0o755, "file", None), ("./postinst", POSTINST.encode(), 0o755, "file", None),
 		("./prerm", PRERM.encode(), 0o755, "file", None), ("./postrm", POSTRM.encode(), 0o755, "file", None)], ctrl)
