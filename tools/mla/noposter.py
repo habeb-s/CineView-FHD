@@ -111,6 +111,20 @@ def gate(lines, key, with_poster, n=0):
 	return out
 
 
+POSTERX = re.compile(r'\t*<widget\b[^>]*render="CineViewMLAPosterX"[^>]*?(?:/>|>.*?</widget>)\n?', re.S)
+
+
+def no_default(name, body):
+	"""No poster widget may draw the default image (static audit 2026-10-06):
+	* '<name>_CVPosterOff' screens are No Poster screens: the plugin now also opens them with the switch ON for an event
+	  without a cached poster, where the renderer would draw the default image (and a poster downloaded later would
+	  cover the posters-off text) -> the poster widget is removed;
+	* any other poster widget gets underlay="1" (nothing drawn without a real poster)."""
+	if name.endswith("_CVPosterOff"):
+		return POSTERX.sub("", body)
+	return POSTERX.sub(lambda m: m.group(0) if 'underlay="1"' in m.group(0) else m.group(0).replace('render="CineViewMLAPosterX"', 'render="CineViewMLAPosterX" underlay="1"', 1), body)
+
+
 def run(skin):
 	dynamic, static = [], []
 	base = os.path.join(skin, "layouts")
@@ -124,6 +138,7 @@ def run(skin):
 			last = 0
 			for m in re.finditer(r'(<screen name="([^"]+)"[^>]*>)(.*?)(</screen>)', src, re.S):
 				body, nvar, dyn = screen_body(m.group(3), force=(sec == "eventview" and m.group(2) in PLUGIN_SWITCHED))
+				body = no_default(m.group(2), body)
 				rel = os.path.relpath(p, skin)
 				if 'render="CineViewMLAPosterX"' in m.group(3):
 					(dynamic if dyn else static).append((rel, m.group(2), nvar) if dyn else (rel, m.group(2)))
