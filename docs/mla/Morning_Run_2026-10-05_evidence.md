@@ -919,3 +919,18 @@ HBO poster recording for comparison).
 APPROVED; Classic PVR / EMC APPROVED AS IT IS (native live-TV preview, no poster box). No further design change to
 these. Remaining: Stage A documentation, Stage B 1.0.0 package from the build87 files (version only) + upgrade /
 reboot / quick five-model check + receiver-captured video, Stage C release only after the user's explicit approval.
+
+## 16. Stage B — 1.0.0 package (2026-10-06 20:00–20:40)
+- `enigma2-plugin-skins-cineview-fhd-mla_1.0.0_all.ipk`, SHA256 `33ac3843a668b03c35f3163abbdf5aecd7d2edc1e72fc5cb9505ea5597c007a8`,
+  packaged from build87 (commit bf30b71). Compared with rc10: data payload identical (590 files + symlinks, `diff -r
+  --no-dereference`), the 4 maintainer scripts identical; control differs only in `Version` (1.0.0~rc10 → 1.0.0) and
+  `Source`. Staged on ai-agent `final100/` - NOT published (Stage C needs the user's approval).
+- **t94 (receiver):** package copied to persistent storage (SHA verified there) → Modern selected → `opkg install`
+  with Enigma2 RUNNING ("your design selection was rebuilt", g000009; enigma2 kept running) → GUI restart: `1.0.0 install
+  ok installed`, selection Modern → receiver REBOOT: linuxrootfs8, 1.0.0, Modern → quick pass Classic / Details / Cinema /
+  Modern / Minimal (InfoBar, channel list) → restore Classic navy. 13 checks: 0 tracebacks, 0 skin errors, 0 crash logs.
+- **t94b:** t94's SecondInfoBar step pressed OK while the InfoBar was still open (it closed the InfoBar, the SIB never
+  opened), so those frames showed only video. Re-recorded the SIB step alone for the five models on the installed
+  1.0.0; all five SIBs captured; 0 errors. (A test-script sequencing fault, not a skin issue.)
+- Video `CineView_MLA_1.0.0_stageB_2026-10-06.mp4`: the receiver's own frames (grab jpg 1280×720, 5–7 fps as captured)
+  of every step, with build / commit / change / test / remaining on the cards.
