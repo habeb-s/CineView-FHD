@@ -88,6 +88,9 @@ def _open(what):
 		# the native MovieSelection, opened on the USB test folder (never the HDD); the previous folder value is
 		# kept in /tmp/cvmla/last_videodir for the test's restore step
 		from Screens.MovieSelection import MovieSelection
+		# never let MovieSelection fall back to its default folder (/media/hdd/movie/): the test folder must exist
+		if not os.path.isdir(TESTMEDIA):
+			os.makedirs(TESTMEDIA)
 		old = config.movielist.last_videodir.value
 		open("/tmp/cvmla/last_videodir", "w").write(old)
 		config.movielist.last_videodir.value = TESTMEDIA
