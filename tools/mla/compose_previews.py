@@ -11,7 +11,8 @@ import sys
 from PIL import Image, ImageDraw, ImageFont
 
 MODELS = {
-	"classic": {"infobar": "classic", "secondinfobar": "classic", "channelselection": "classic", "epg": "classic", "pvr": "classic", "eventview": ["classic-lines", "classic"]},
+	# Classic PVR keeps the native live picture without a poster area (approved 2026-10-06 19:54): no On/Off picture
+	"classic": {"infobar": "classic", "secondinfobar": "classic", "channelselection": "classic", "epg": "classic", "eventview": ["classic-lines", "classic"]},
 	"details": {"infobar": "details", "secondinfobar": "details", "channelselection": "posterlist", "epg": "graphicalplus", "pvr": "cover", "eventview": "detailscard"},
 	"cinema": {"infobar": "cinema", "secondinfobar": "cinema", "channelselection": "videofirst", "pvr": "cinema", "eventview": "feature"},
 	"modern": {s: "modern" for s in ("infobar", "secondinfobar", "channelselection", "epg", "pvr", "eventview")},

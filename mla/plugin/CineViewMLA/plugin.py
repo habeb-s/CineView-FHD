@@ -375,7 +375,7 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 		label = self._current()[0] or ""
 		no_restart = _("No restart needed - saved with GREEN.")
 		if kind == "poster":
-			return (label, _("Shows or hides the poster in this section; the other elements move to use the space."), _("No restart needed - changes from the next channel or event."))
+			return (label, _("Shows or hides the poster in this section, in the designs that have a poster area here."), _("No restart needed - changes from the next channel or event."))
 		if kind == "engine":
 			return (label, _("How CineView finds posters: Unified shows a poster only when title, type and year match."), _("Restart needed - after the next GUI restart."))
 		if kind == "native":
