@@ -96,6 +96,14 @@ def _open(what):
 		config.movielist.last_videodir.value = TESTMEDIA
 		_session.open(MovieSelection, None)  # the value stays on USB until the test restores it (MovieSelection may
 		# read it after __init__); the test restarts Enigma2 with the saved value
+	elif what == "nativepvr":
+		# the PVR key path itself (InfoBar.showMovies -> MovieSelection with InfoBar.movieSelected as callback, so OK
+		# plays the recording in the native MoviePlayer), on the slot-local test folder (never the HDD)
+		if not os.path.isdir(TESTMEDIA):
+			os.makedirs(TESTMEDIA)
+		open("/tmp/cvmla/last_videodir", "w").write(config.movielist.last_videodir.value)
+		config.movielist.last_videodir.value = TESTMEDIA
+		ib.showMovies()
 	elif what == "play":
 		# the native MoviePlayer on the USB test clip, opened exactly as InfoBar.movieSelected opens it (t87: the
 		# playback InfoBar of the skin).  USB test media only; STOP returns (config.usage.on_movie_stop default).

@@ -31,19 +31,20 @@ W=$((E - $(date +%s) + 20)); [ $W -gt 0 ] && sleep $W
 echo "   files: $($R "ls -la $D")"
 $R "ls $D | grep -c '\.ts$'" | grep -q '^0$' && { echo "NO RECORDING"; }
 echo "== native PVR"
-X; op nativemovies 7; ga 01_list
+X; op nativepvr 7; ga 01_list
 $RC 358; sleep 3; ga 02_info; $RC 174; sleep 1.5
 $RC 108; sleep 1; ga 03_down; $RC 103; sleep 1; ga 04_up
 # 04_up is back on the recording row (the list opens on the newest recording; DOWN goes to '..')
 ga 05_select
-$RC 352; sleep 8; ga 06_playing; $RC 358; sleep 2; ga 07_player_info; $RC 174; sleep 1.5
+$RC 352; sleep 8; ga 06_playing; $R 'grep -a "Processing screen .MoviePlayer" $(ls -t /home/root/logs/Enigma2_debug_*.log | head -1) | tail -1 | cut -c1-120'
+$RC 358; sleep 2; ga 07_player_info; $RC 174; sleep 1.5
 $RC 352; sleep 1.5; ga 07b_player_infobar
 $RC 128; sleep 3; ga 08_after_stop
 X; X; errs
 # poster / cover designs of the PVR section on the same recording (layout applied by the engine, GUI restarted)
 E2='python3 /usr/share/enigma2/CineView_FHD_MLA/mla/engine/composer.py'
 P0=$($R "python3 -c \"import json;print(json.load(open('/etc/enigma2/cineview_mla/selection.json'))['layouts']['pvr'])\"")
-for lay in ${PVR_LAYOUTS:-cover cinema modern minimal}; do
+for lay in ${PVR_LAYOUTS-cover cinema modern minimal}; do
 	o=$($R pidof enigma2); $R "$E2 apply --set pvr=$lay 2>&1 | tail -1; init 4; for i in \$(seq 1 30); do pidof enigma2 >/dev/null || break; sleep 1; done; init 3"
 	for i in $(seq 1 90); do p=$($R 'pidof enigma2' 2>/dev/null); [ -n "$p" ] && [ "$p" != "$o" ] && break; sleep 2; done
 	for i in $(seq 1 60); do curl -s -m 3 -o /dev/null -w "%{http_code}" http://192.168.1.250/api/statusinfo 2>/dev/null | grep -q 200 && break; sleep 3; done; sleep 30
