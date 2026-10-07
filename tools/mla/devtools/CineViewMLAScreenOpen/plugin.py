@@ -112,6 +112,9 @@ def _open(what):
 	elif what == "single":
 		ib.openSingleServiceEPG()
 	elif what == "eventview":
+		evt, ref = _now_event(_session)
+		cache = ref and eEPGCache.getInstance().lookupEventTime(ref, -1)
+		print("[CineViewMLAScreenOpen] eventview diag: ref=%s now=%s cache_now=%s" % (ref and ref.toString(), evt and evt.getEventName(), cache and cache.getEventName()))
 		ib.openEventView()
 	elif what == "pluginbrowser":
 		from Screens.PluginBrowser import PluginBrowser
