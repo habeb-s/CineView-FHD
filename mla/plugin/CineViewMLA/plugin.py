@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# CineView MLA runtime plugin (OpenATV 8.0.1).
+# CineView MLA runtime plugin (OpenATV 8.0.1; other images through image_adapter.py).
 #  - Guardian signals: "healthy" 60 s after session start; "clean_exit" on session shutdown.
 #  - Design selector: theme + one layout per section (built dynamically from the engine registry),
 #    live preview image, trial apply with automatic revert, runtime options (posters, info).
@@ -21,6 +21,8 @@ from Plugins.Plugin import PluginDescriptor
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Tools.LoadPixmap import LoadPixmap
+
+from . import image_adapter  # image-specific native settings and hooks (OpenATV, OpenBH, ...)
 
 SKIN_DIR = "/usr/share/enigma2/CineView_FHD_MLA"
 STATE = "/etc/enigma2/cineview_mla"
@@ -322,9 +324,10 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 		entries += [
 			getConfigListEntry(_("Poster engine"), self.cfgEngine, "engine", ""),
 			getConfigListEntry(_("Server / CAM information"), self.mla.servermode, "native", "servermode"),
-			getConfigListEntry(_("Second InfoBar mode"), config.usage.show_second_infobar, "native", "show_second_infobar"),
-			getConfigListEntry(_("Second InfoBar timeout"), config.usage.second_infobar_timeout, "native", "second_infobar_timeout"),
 		]
+		# the image's own settings (OpenATV: Second InfoBar mode + timeout; OpenBH: one combined Second InfoBar setting)
+		self.nativeRows = image_adapter.native_rows(config.usage)
+		entries += [getConfigListEntry(_(label), cfg, "native", key) for key, cfg, label, card, desc in self.nativeRows]
 		ConfigListScreen.__init__(self, entries, session=session, on_change=self.updatePreview)
 		self["preview"] = Pixmap()
 		# CineView Info Card (user 2026-10-07): rows without a real visual preview show a card in the preview area -
@@ -379,11 +382,9 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 		if kind == "engine":
 			return (label, _("How CineView finds posters: Unified shows a poster only when title, type and year match."), _("Restart needed - after the next GUI restart."))
 		if kind == "native":
-			return {
-				"servermode": (label, _("What the InfoBar shows about the CAM / server."), no_restart),
-				"show_second_infobar": (label, _("What the INFO key opens after the InfoBar (OpenATV setting)."), no_restart),
-				"second_infobar_timeout": (label, _("How long the Second InfoBar stays on screen (OpenATV setting)."), no_restart),
-			}.get(sec, (label, "", no_restart))
+			cards = {"servermode": (label, _("What the InfoBar shows about the CAM / server."), no_restart)}
+			cards.update({key: (label, _(card), no_restart) for key, cfg, lbl, card, desc in self.nativeRows})
+			return cards.get(sec, (label, "", no_restart))
 		if kind == "theme":
 			return (label, _("The colours of every CineView screen."), _("The GUI restarts and asks you to keep the new design."))
 		m = self.layouts.get(sec, {}).get(getattr(cfg, "value", None), {}) if kind == "layout" else {}
@@ -428,11 +429,9 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 		elif kind == "engine":
 			desc = _("Unified: a poster only when title, type and year are confirmed, otherwise the CineView default image.\nLegacy: the original title search (may show posters of other works).\nTakes effect after the next GUI restart.")
 		elif kind == "native":
-			desc = {
-				"servermode": _("Full server details, only the EMU and the subscription, or nothing."),
-				"show_second_infobar": _("Second InfoBar, event information or nothing when INFO is pressed again."),
-				"second_infobar_timeout": _("After this time the Second InfoBar closes by itself."),
-			}.get(sec, "")
+			descs = {"servermode": _("Full server details, only the EMU and the subscription, or nothing.")}
+			descs.update({key: _(text) for key, c, lbl, card, text in self.nativeRows})
+			desc = descs.get(sec, "")
 		self["description"].setText(desc)
 		# YELLOW / OK only where they do something: the Preview key is shown only when this row has a preview
 		self["key_yellow"].setText(_("Preview") if p else "")
@@ -442,7 +441,7 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 		return {"theme": self.cfgTheme.value, "layouts": {s: c.value for s, c in self.cfgLayouts.items()}}
 
 	def _save_runtime_and_native(self):
-		for cfg in [self.mla.servermode, config.usage.show_second_infobar, config.usage.second_infobar_timeout] + list(self.cfgPosters.values()):
+		for cfg in [self.mla.servermode] + [r[1] for r in self.nativeRows] + list(self.cfgPosters.values()):
 			cfg.save()
 		configfile.save()
 		self._engine_changed = runtime().get("poster_engine", "identity") != self.cfgEngine.value
@@ -510,10 +509,11 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 			self.session.openWithCallback(cb, ChoiceBox, text=_("Select a profile"), choiceList=names, windowTitle=_("CineView Designs"))
 
 	def _profile_data(self):
-		return {"schema": 1, "theme": self.cfgTheme.value, "layouts": {s: c.value for s, c in self.cfgLayouts.items()},
+		data = {"schema": 1, "theme": self.cfgTheme.value, "layouts": {s: c.value for s, c in self.cfgLayouts.items()},
 			"posters": {s: bool(c.value) for s, c in self.cfgPosters.items()}, "servermode": self.mla.servermode.value,
-			"show_second_infobar": config.usage.show_second_infobar.value, "second_infobar_timeout": config.usage.second_infobar_timeout.value,
 			"poster_engine": self.cfgEngine.value}
+		data.update({key: cfg.value for key, cfg, label, card, desc in self.nativeRows})  # the image's own settings
+		return data
 
 	def _profileSave(self, name):
 		import re as _re
@@ -557,8 +557,8 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 				self.cfgPosters[sec].value = bool(v)
 		setc(self.mla.servermode, data.get("servermode"), "servermode")
 		setc(self.cfgEngine, data.get("poster_engine"), "poster engine")
-		setc(config.usage.show_second_infobar, data.get("show_second_infobar"), "second infobar mode")
-		setc(config.usage.second_infobar_timeout, data.get("second_infobar_timeout"), "second infobar timeout")
+		for key, cfg, label, card, desc in self.nativeRows:  # settings of another image in the profile are ignored
+			setc(cfg, data.get(key), label.lower())
 		self["config"].l.invalidate()
 		self.updatePreview()
 		msg = _("Profile '%s' loaded. Press GREEN to apply it.") % choice[1]
@@ -616,7 +616,7 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 			self._restart(True)
 
 	def keyCancel(self):
-		for c in [self.mla.servermode, config.usage.show_second_infobar, config.usage.second_infobar_timeout] + list(self.cfgPosters.values()):
+		for c in [self.mla.servermode] + [r[1] for r in self.nativeRows] + list(self.cfgPosters.values()):
 			c.cancel()
 		self.close()
 
@@ -924,10 +924,11 @@ def sessionstart(reason, session=None, **kwargs):
 		return
 	_session = session
 	_build_config()
-	try:
-		session.onShutdown.append(_clean_exit)
-	except Exception as err:
-		print("[CineViewMLA] onShutdown hook unavailable: %s" % err)
+	if image_adapter.shutdown_hook() == "session":
+		try:
+			session.onShutdown.append(_clean_exit)
+		except Exception as err:
+			print("[CineViewMLA] onShutdown hook unavailable: %s" % err)
 	_timer = eTimer()
 	_timer.callback.append(_healthy)
 	_timer.start(HEALTHY_AFTER_MS, True)
@@ -939,8 +940,18 @@ def sessionstart(reason, session=None, **kwargs):
 		_install_package_waiting()
 
 
+def autostart(reason, **kwargs):
+	"""OpenBH / OpenViX family: PluginComponent.removePlugin calls WHERE_AUTOSTART plugins with reason=1 from
+	plugins.shutdown() when Enigma2 quits normally - the native equivalent of OpenATV's session.onShutdown."""
+	if reason == 1:
+		_clean_exit()
+
+
 def Plugins(**kwargs):
-	return [
+	descriptors = [
 		PluginDescriptor(where=PluginDescriptor.WHERE_SESSIONSTART, fnc=sessionstart),
 		PluginDescriptor(name=_("CineView Designs"), description=_("Choose and preview CineView designs, themes and options") + " \u00b7 by habeb-s", where=PluginDescriptor.WHERE_PLUGINMENU, icon="plugin.png", fnc=main),
 	]
+	if image_adapter.shutdown_hook() == "autostart":
+		descriptors.append(PluginDescriptor(where=PluginDescriptor.WHERE_AUTOSTART, fnc=autostart))
+	return descriptors
