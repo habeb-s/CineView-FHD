@@ -50,6 +50,11 @@ def epg(text):
 				w.set("name", w.get("source"))
 				del w.attrib["source"]
 				del w.attrib["render"]
+			if w.get("name") in KEYS:
+				# OpenBH's own colour-key texts can be much longer than OpenATV's in some languages (Arabic
+				# key_red "IMDb Search" = 50 characters): eLabel wraps them into a 2nd line that the 45 px bar
+				# clips (t106 Arabic run).  One line, as in English; skin.py noWrap -> eLabel::setNoWrap.
+				w.attrib.setdefault("noWrap", "1")
 			if w.get("name") != "list":
 				continue
 			if name in GRID_SCREENS or name in INFOBAR_GRID_SCREENS:
