@@ -2,13 +2,20 @@
 # CineView MLA - uninstall.  Design & Development by habeb-s (c) 2026
 #   wget -qO /tmp/cineview-uninstall.sh "<raw url of this file>" && sh /tmp/cineview-uninstall.sh
 #   sh /tmp/cineview-uninstall.sh            remove the skin; keeps your profiles, settings and the poster cache
-#   sh /tmp/cineview-uninstall.sh purge      also deletes the CineView MLA settings and profiles
+#   sh /tmp/cineview-uninstall.sh purge      also deletes the CineView MLA settings and profiles (the backup folder
+#                                            /etc/enigma2/cineview_mla/backup is kept)
 #   sh /tmp/cineview-uninstall.sh cache      shows the poster cache; CONFIRM=yes ... cache deletes only CineView's
 #                                            own folders in it (other skins' posters are kept)
 # If CineView MLA is the selected skin, the GUI is stopped, the image's default skin is selected and the GUI restarts.
 SELF="$0"; trap 'case "$SELF" in /tmp/cineview-uninstall*.sh) rm -f "$SELF" 2>/dev/null ;; esac' EXIT
 PKG=enigma2-plugin-skins-cineview-fhd-mla
 MODE=${1:-remove}
+purge_state() {  # settings and profiles go; backups (restore points, settings copies) stay
+  for f in /etc/enigma2/cineview_mla/* /etc/enigma2/cineview_mla/.[!.]*; do
+    [ -e "$f" ] || continue
+    [ "${f##*/}" = backup ] || rm -rf "$f"
+  done
+}
 if [ "$MODE" = "cache" ]; then
   python3 - "${CONFIRM:-no}" "${CACHE_PATH:-}" <<'PYEOF'
 import json, os, shutil, sys
@@ -62,10 +69,11 @@ if grep -q "^config.skin.primary_skin=CineView_FHD_MLA/" /etc/enigma2/settings 2
   echo "CineView MLA is the selected skin: stopping Enigma2 to switch back to the image default skin."
   init 4; for i in $(seq 1 25); do pidof enigma2 >/dev/null || break; sleep 1; done
   sed -i '/^config.skin.primary_skin=CineView_FHD_MLA\//d' /etc/enigma2/settings
-  if [ "$MODE" = "purge" ]; then opkg remove $PKG && rm -rf /etc/enigma2/cineview_mla; else opkg remove $PKG; fi
+  if [ "$MODE" = "purge" ]; then opkg remove $PKG && purge_state; else opkg remove $PKG; fi
   init 3
 else
-  if [ "$MODE" = "purge" ]; then opkg remove $PKG && rm -rf /etc/enigma2/cineview_mla; else opkg remove $PKG; fi
+  if [ "$MODE" = "purge" ]; then opkg remove $PKG && purge_state; else opkg remove $PKG; fi
 fi
 if opkg status $PKG 2>/dev/null | grep -q "^Status: install"; then echo "CineView MLA could not be removed (see the lines above)."; exit 1; fi
-echo "CineView MLA removed. Your poster cache is kept."
+if [ "$MODE" = "purge" ]; then echo "CineView MLA removed. Your poster cache and backups (/etc/enigma2/cineview_mla/backup) are kept."
+else echo "CineView MLA removed. Your poster cache is kept."; fi
