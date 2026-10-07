@@ -1,0 +1,9 @@
+{
+ "note": "OpenBH replacements of section requirements (composer.sections()).  OpenBH 5.6 / 6.0 have no vertical EPG (EPGvertical, EPGverticalPIG) and no GraphMultiEPG plugin screens - BlackHole/enigma2 52dedddc314a / c06a87ef4c09 Screens/EpgSelection*.py.",
+ "sections": {
+  "epg": {
+   "required": ["EPGSelection", "EPGSelectionMulti", "QuickEPG", "GraphicalEPG", "GraphicalEPGPIG", "GraphicalInfoBarEPG"],
+   "optional": []
+  }
+ }
+}

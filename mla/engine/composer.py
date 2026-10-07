@@ -134,7 +134,15 @@ def _sha(path):
 
 # ---------------------------------------------------------------- registry
 def sections():
-	return json.load(open(_p("mla", "sections.json")))["sections"]
+	"""Section definitions; an image package may ship mla/sections.<image>.json with per-section replacements of
+	"required"/"optional" (screens that image's native contract has / lacks)."""
+	secs = json.load(open(_p("mla", "sections.json")))["sections"]
+	extra = _p("mla", "sections.%s.json" % image())
+	if image() != DEFAULT_IMAGE and os.path.isfile(extra):
+		for sec, over in json.load(open(extra)).get("sections", {}).items():
+			if sec in secs:
+				secs[sec].update({k: v for k, v in over.items() if k in ("required", "optional")})
+	return secs
 
 
 def layouts():

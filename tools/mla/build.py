@@ -1212,6 +1212,32 @@ def apply_image_overlay(skin, img):
 			d["targets"][img] = {"file": name}
 			json.dump(d, open(mf, "w"), indent=1)
 			n += 1
+	# generated screen files: mla/images/<image>/transform.py epg() turns each EPG pack's shared file into the image's
+	# native EPG contract (one design source; explicit layouts/ overrides above take precedence)
+	tf = os.path.join(base, "transform.py")
+	if os.path.isfile(tf):
+		spec = importlib.util.spec_from_file_location("mla_transform_%s" % img, tf)
+		mod = importlib.util.module_from_spec(spec)
+		spec.loader.exec_module(mod)
+		epgdir = os.path.join(skin, "layouts", "epg")
+		for pack in sorted(os.listdir(epgdir)):
+			dst = os.path.join(epgdir, pack)
+			name = "screens.%s.xml" % img
+			if os.path.isfile(os.path.join(dst, name)):
+				continue
+			mf = os.path.join(dst, "manifest.json")
+			d = json.load(open(mf))
+			txt = mod.epg(open(os.path.join(dst, d["targets"]["openatv"]["file"]), encoding="utf-8").read())
+			problems = mod.check(txt)
+			assert not problems, "epg/%s %s: %s" % (pack, img, problems)
+			open(os.path.join(dst, name), "w", encoding="utf-8").write(txt)
+			d["targets"][img] = {"file": name}
+			json.dump(d, open(mf, "w"), indent=1)
+			n += 1
+	sj = os.path.join(base, "sections.%s.json" % img)
+	if os.path.isfile(sj):
+		shutil.copy2(sj, os.path.join(skin, "mla", "sections.%s.json" % img))
+		n += 1
 	print("IMAGE-OVERLAY %s: %d files" % (img, n))
 
 
