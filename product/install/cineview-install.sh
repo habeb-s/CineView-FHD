@@ -59,7 +59,7 @@ ok "OpenATV $IVER detected"
 section "Version"
 case "$IVER" in
 	8.0|8.0.*) ok "OpenATV $IVER is supported (fully tested on OpenATV 8.0)" ;;
-	7.6|7.6.*) warn "OpenATV $IVER: the screens are compatible; the Python check below decides" ;;
+	7.6|7.6.*) fail "OpenATV $IVER is not supported by CineView MLA $VERSION yet (released for OpenATV 8.0)." ;;
 	7.[0-5]|7.[0-5].*|6.*|5.*) fail "OpenATV $IVER is too old: it lacks skin features CineView MLA needs. Please update to OpenATV 8.0." ;;
 	*) fail "OpenATV $IVER has not been checked with CineView MLA $VERSION yet." ;;
 esac

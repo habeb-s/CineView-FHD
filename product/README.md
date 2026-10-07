@@ -64,7 +64,7 @@ never delete the cache.
 ```sh
 wget -qO /tmp/cineview-uninstall.sh "https://raw.githubusercontent.com/habeb-s/CineView-MLA/main/install/cineview-uninstall.sh" && sh /tmp/cineview-uninstall.sh
 ```
-Keeps your profiles, settings and poster cache (`purge` also removes the settings and profiles).
+Keeps your profiles, settings and poster cache (`purge` also removes the settings and profiles; backups are kept).
 To go back to an earlier release, install its package from the Releases page (`release/<version>/`). Inside CineView Designs,
 **Restore Factory Design** returns to Classic + Navy at any time.
 
