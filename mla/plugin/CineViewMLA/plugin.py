@@ -423,7 +423,7 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 			m = self.layouts.get(sec, {}).get(cfg.value, {})
 			desc = "%s\n\n%s" % (m.get("name", cfg.value), applied)
 		elif kind == "poster":
-			desc = _("Left: posters on. Right: posters off - the other elements move to use the space.") if p else ""
+			desc = _("The picture shows this section with posters on and with posters off - the other elements move to use the space.") if p else ""
 			desc = (desc + "\n\n" if desc else "") + _("Applied without a restart, from the next channel or event change.")
 		elif kind == "engine":
 			desc = _("Unified: a poster only when title, type and year are confirmed, otherwise the CineView default image.\nLegacy: the original title search (may show posters of other works).\nTakes effect after the next GUI restart.")
