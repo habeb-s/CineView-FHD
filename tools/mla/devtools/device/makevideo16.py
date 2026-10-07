@@ -80,7 +80,7 @@ for n, lab in (("F1_menu", "MENU — الملفات الشخصية"), ("F1_saved
                ("F5_processing", "Processing"), ("F5_processing2", "Processing — عدة أسطر")):
     G(n, lab, "FUNC", 3, SH2)
 for t in ("navy", "black", "graphite", "purple", "burgundy", "green"):
-    for i, lab in (("1_preview", "CineView Designs"), ("2_infocard", "Info Card"), ("3_processing", "Processing"), ("4_yesno", "MessageBox"), ("6_setup", "Setup")):
+    for i, lab in (("1_preview", "CineView Designs"), ("2_infocard", "Info Card"), ("3_processing", "Processing"), ("5_long", "MessageBox"), ("6_setup", "Setup")):
         G("T_%s_%s" % (t, i), "%s — %s" % (t, lab), "THEMES", 1.8, SH2)
 still(card("النتيجة", "فحوص الأخطاء: %d · فيها traceback أو skin error أو crash: %d" % (len(errs), bad),
            ["كلمات التطوير على الشاشة: %s" % (forb[0] if forb else "?"), "الاختيار والإعدادات أُعيدت كما كانت", "المتبقي: اعتمادك ثم النشر وmain"]), 7)

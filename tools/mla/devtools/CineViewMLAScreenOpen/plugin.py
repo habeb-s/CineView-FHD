@@ -157,7 +157,7 @@ def _open(what):
 		if what == "msg_info":
 			_session.open(MessageBox, _("Settings saved. The design is unchanged."), MessageBox.TYPE_INFO)
 		elif what == "msg_yesno":
-			_session.open(MessageBox, _("The new design is ready as a trial.\nRestart the GUI now to try it? You will be asked to keep it."), MessageBox.TYPE_YESNO)
+			_session.open(MessageBox, "Apply Classic design with Black theme?\nThe GUI restarts and you will be asked to keep the new design.", MessageBox.TYPE_YESNO)
 		elif what == "msg_long":
 			_session.open(MessageBox, "\n".join(["CineView MLA display test (nothing is changed)."] + ["Line %d of a long message: the window must grow with the text and stay centred." % i for i in range(1, 9)]), MessageBox.TYPE_ERROR)
 		else:
