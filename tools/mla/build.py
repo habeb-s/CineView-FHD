@@ -1337,9 +1337,10 @@ def main(golden, comps, control, out):
 		cx = open(cp, encoding="utf-8").read()
 		old = '<widget name="config" conditional="config" position="790,115" size="1090,855" itemHeight="64" font="Regular;30" scrollbarMode="showOnDemand" />'
 		assert cx.count(old) == 1, "ConfigTemplate config widget"
-		cx = cx.replace(old, old.replace('font="Regular;30"', 'font="Regular;30" valueFont="Regular;27"'))
+		# + 832 = 13 whole rows of 64 (855 left a half-drawn row at the bottom of every Setup page, t102 2026-10-07)
+		cx = cx.replace(old, old.replace('font="Regular;30"', 'font="Regular;30" valueFont="Regular;27"').replace('size="1090,855"', 'size="1090,832"'))
 		open(cp, "w", encoding="utf-8").write(cx)
-		print("SETUP pages: value font 27 px (ConfigTemplate)")
+		print("SETUP pages: value font 27 px, 13 whole rows (ConfigTemplate)")
 	if os.environ.get("MLA_MSGBOX_FIT", "1") == "1":  # approved by the user 2026-10-07 (default on)
 		print("MSGBOX fitted to its content:", ", ".join(apply_messagebox_fit(skin)))
 

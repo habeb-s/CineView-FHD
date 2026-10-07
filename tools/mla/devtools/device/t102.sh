@@ -33,6 +33,8 @@ ORIG=$($R "python3 -c \"import json;d=json.load(open('/etc/enigma2/cineview_mla/
 SEL0=$(sel); echo "selection before: $SEL0"
 X; sleep 1
 
+part() { case " ${PARTS:-W M S F T} " in *" $1 "*) return 0;; esac; return 1; }
+if part W; then
 echo "== W slow walk"
 op designs 5; rows W00; ga W00; fr W00 3
 N=$(grep -c "^[ >] *[0-9]" $S/rows_W00.txt)
@@ -42,16 +44,22 @@ echo "   rows: $N"
 echo "   forbidden words on screen (status/keys/description): $(cat $S/rows_W*.txt | grep -v '^[ >] *[0-9]' | grep -ci 'g0000\|build[0-9]\|commit\|trial\|generation\|last known')"
 grep -h "key_green\|key_blue\|status" $S/rows_W00.txt
 $RC 398; sleep 2; X
+fi
 
+if part M; then
 echo "== M MessageBox"
 for m in msg_info msg_yesno msg_list msg_long; do op $m 2.5; ga M_$m; fr M_$m 2; $RC 174; sleep 1.5; done
+fi
 
+if part S; then
 echo "== S Setup pages"
 for k in UserInterface Usage Time EPG Recording Audio Subtitle Playback ChannelSelection Logs; do
 	op setup:$k 4; ga S_${k}_top; for n in $(seq 1 13); do $RC 108; sleep 0.25; done; sleep 1.5; ga S_${k}_scrolled; $RC 174; sleep 1.5; X
 done
 errs
+fi
 
+if part F; then
 echo "== F1 profiles"
 HAVE=$($R "ls '/etc/enigma2/cineview_mla/profiles/My CineView.json' 2>/dev/null")
 if [ -z "$HAVE" ]; then
@@ -78,7 +86,9 @@ op designs 5; ga F4_designs_factory; rows F4; grep status $S/rows_F4.txt; X; err
 
 echo "== F5 Processing"
 op pluginbrowser 5; op processing 1.5; ga F5_processing; sleep 5; op processing2 1.5; ga F5_processing2; sleep 5; X
+fi
 
+if part T; then
 echo "== T six themes"
 for t in navy black graphite purple burgundy green; do
 	$R "$E apply --theme $t 2>&1 | tail -1"; restart ""
@@ -87,9 +97,12 @@ for t in navy black graphite purple burgundy green; do
 	op msg_yesno 2.5; ga T_${t}_4_yesno; $RC 174; sleep 1; op msg_long 2.5; ga T_${t}_5_long; $RC 174; sleep 1
 	op setup:UserInterface 4; ga T_${t}_6_setup; $RC 174; sleep 1; X; errs
 done
+fi
 
+if part F || part T; then
 echo "== restore: $ORIG"
 $R "$E apply $ORIG 2>&1 | tail -1"; restart ""
+fi
 SEL1=$(sel); echo "selection after: $SEL1"; echo "   restored: $([ "$SEL0" = "$SEL1" ] && echo yes || echo NO)"
 $R "B=\$(ls -d /media/usb/cineview-mla/state/backup-t102-* | tail -1); diff \$B/settings /etc/enigma2/settings | grep '^[<>]' | grep -v 'nextWakeup\|startCounter\|shutdownOK' || echo '   settings: same as the backup (counters aside)'"
 errs

@@ -6,6 +6,8 @@ from PIL import Image, ImageDraw, ImageFont
 H = os.path.expanduser("~/cineview-mla")
 RUN = os.environ.get("RUN", "t102_final")
 SH = os.path.join(H, "shots", RUN)
+RUN2 = os.environ.get("RUN2", RUN)  # functions + themes may come from an earlier run of the same build line
+SH2 = os.path.join(H, "shots", RUN2)
 T = os.path.join(H, "video16_tmp"); shutil.rmtree(T, ignore_errors=True); os.makedirs(T)
 OUT = os.path.join(H, "CineView_MLA_Designs_final_2026-10-07.mp4")
 BUILD = os.environ.get("BUILD", "?"); COMMIT = os.environ.get("COMMIT", "?")
@@ -46,13 +48,13 @@ def motion(prefix, lab, tag, secs):
         cap(Image.open(p), lab, tag).save(os.path.join(d, "f%04d.png" % i))
     o = os.path.join(T, "seg%03d.mp4" % len(segs))
     ff("-framerate", "%.3f" % max(1.0, len(fs) / float(secs)), "-i", os.path.join(d, "f%04d.png"), "-vf", "scale=%d:%d,fps=25" % (W, HH), *ENC, o); segs.append(o)
-def G(n, lab, tag, secs=3.0):
-    p = os.path.join(SH, n + ".png")
+def G(n, lab, tag, secs=3.0, sh=None):
+    p = os.path.join(sh or SH, n + ".png")
     if good(p):
         still(cap(Image.open(p), lab, tag), secs)
     else:
         print("missing", n)
-log = open(os.path.join(H, RUN.replace("t102_", "t102_") + ".log"), errors="replace").read() if os.path.exists(os.path.join(H, RUN + ".log")) else ""
+log = "".join(open(os.path.join(H, r + ".log"), errors="replace").read() for r in sorted({RUN, RUN2}) if os.path.exists(os.path.join(H, r + ".log")))
 errs = re.findall(r"tracebacks=(\d+) skin_errors_new=(\d+) crashlogs=(\d+)", log)
 bad = sum(1 for e in errs if any(int(v) for v in e))
 forb = re.findall(r"forbidden words on screen.*?: (\d+)", log)
@@ -76,10 +78,10 @@ for n, lab in (("F1_menu", "MENU — الملفات الشخصية"), ("F1_saved
                ("F2_apply_q", "Apply Design — السؤال باسم التصميم والثيم"), ("F2_keep_prompt", "بعد إعادة التشغيل: الإبقاء على التصميم؟ → Yes"),
                ("F3_keep_prompt", "بلا إجابة → رجوع تلقائي"), ("F4_factory_q", "Restore Factory Design"), ("F4_designs_factory", "بعد المصنع: Classic · Navy"),
                ("F5_processing", "Processing"), ("F5_processing2", "Processing — عدة أسطر")):
-    G(n, lab, "FUNC", 3)
+    G(n, lab, "FUNC", 3, SH2)
 for t in ("navy", "black", "graphite", "purple", "burgundy", "green"):
     for i, lab in (("1_preview", "CineView Designs"), ("2_infocard", "Info Card"), ("3_processing", "Processing"), ("4_yesno", "MessageBox"), ("6_setup", "Setup")):
-        G("T_%s_%s" % (t, i), "%s — %s" % (t, lab), "THEMES", 1.8)
+        G("T_%s_%s" % (t, i), "%s — %s" % (t, lab), "THEMES", 1.8, SH2)
 still(card("النتيجة", "فحوص الأخطاء: %d · فيها traceback أو skin error أو crash: %d" % (len(errs), bad),
            ["كلمات التطوير على الشاشة: %s" % (forb[0] if forb else "?"), "الاختيار والإعدادات أُعيدت كما كانت", "المتبقي: اعتمادك ثم النشر وmain"]), 7)
 lst = os.path.join(T, "all.txt")
