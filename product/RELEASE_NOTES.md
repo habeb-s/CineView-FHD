@@ -16,12 +16,13 @@ The first release of CineView MLA — a multi-layout Full-HD skin for OpenATV 8.
 - Fitted message boxes, readable setup values, CineView style for plugin and package management screens.
 
 ## Compatibility
-- OpenATV 8.0 (Python 3.14) on Enigma2 receivers. Fully tested on Vu+ Duo 4K SE / OpenATV 8.0.1.
+- OpenATV 8.0 (Python 3.14) on Enigma2 receivers. Primary device used for full hardware QA: Vu+ Duo 4K SE
+  (OpenATV 8.0.1).
 - The Smart Installer checks the receiver first and changes nothing when something does not fit.
 
 ## Install / update
 ```sh
-wget -qO /tmp/cineview-install.sh "@INSTALLER_URL@" && sh /tmp/cineview-install.sh
+wget -qO /tmp/cineview-install.sh "https://raw.githubusercontent.com/habeb-s/CineView-MLA/main/install/cineview-install.sh" && sh /tmp/cineview-install.sh
 ```
 Running it again updates in place and keeps your design, theme, profiles, settings and poster cache.
 

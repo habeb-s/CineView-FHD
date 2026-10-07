@@ -4,8 +4,6 @@
 <p align="center">A multi-layout Full-HD skin for OpenATV — five design models, six themes, one control screen.</p>
 <p align="center"><b>Design &amp; Development by habeb-s © 2026</b></p>
 
-<p align="center"><img src="images/hero.jpg" alt="CineView MLA designs" width="100%"></p>
-
 ## Highlights
 - **Five design models** — Classic, Details, Cinema, Modern and Minimal.
 - **Every section on its own** — InfoBar, Second InfoBar, Channel Selection, EPG, PVR and Event View can each use a
@@ -20,32 +18,31 @@
 - **Safe apply with automatic rollback** — a new design is kept only after you confirm it; without confirmation, or
   after a problem at start, the previous design comes back by itself.
 
-<p align="center"><img src="images/cineview-designs.jpg" alt="CineView Designs" width="80%"></p>
-
+## Screenshots
 | Classic | Details | Cinema |
 |---|---|---|
 | <img src="images/model-classic.jpg"> | <img src="images/model-details.jpg"> | <img src="images/model-cinema.jpg"> |
 | **Modern** | **Minimal** | **Posters On / Off** |
 | <img src="images/model-modern.jpg"> | <img src="images/model-minimal.jpg"> | <img src="images/posters-on-off.jpg"> |
 
-<p align="center"><img src="images/themes.jpg" alt="Six themes" width="90%"></p>
+<p align="center"><img src="images/cineview-designs.jpg" alt="CineView Designs" width="80%"><br><sub>CineView Designs</sub></p>
 
 ## Compatibility
 | | |
 |---|---|
 | Image | OpenATV 8.0 (Python 3.14) on Enigma2 receivers |
-| Full device QA | Vu+ Duo 4K SE / OpenATV 8.0.1 |
+| Primary device used for full hardware QA | Vu+ Duo 4K SE (OpenATV 8.0.1) |
 | Architecture | any (the package is architecture-independent) |
 | Needs | python3-pillow, python3-requests (installed from the image feed when missing) |
 
-The installer checks the receiver first and stops — without changing anything — when the image, version, Python,
-free space or an existing add-on does not fit.
+CineView MLA is not tied to a receiver model: the installer checks the image, its version, Python, the required
+components, the architecture and the free space, and stops — without changing anything — when something does not fit.
 
 ## Install
 On the receiver (telnet / ssh):
 
 ```sh
-wget -qO /tmp/cineview-install.sh "@INSTALLER_URL@" && sh /tmp/cineview-install.sh
+wget -qO /tmp/cineview-install.sh "https://raw.githubusercontent.com/habeb-s/CineView-MLA/main/install/cineview-install.sh" && sh /tmp/cineview-install.sh
 ```
 
 Then select **CineView_FHD_MLA** in *Menu › Setup › User Interface › Skin* and restart the GUI.
@@ -65,10 +62,10 @@ never delete the cache.
 
 ## Uninstall / rollback
 ```sh
-wget -qO /tmp/cineview-uninstall.sh "@UNINSTALLER_URL@" && sh /tmp/cineview-uninstall.sh
+wget -qO /tmp/cineview-uninstall.sh "https://raw.githubusercontent.com/habeb-s/CineView-MLA/main/install/cineview-uninstall.sh" && sh /tmp/cineview-uninstall.sh
 ```
 Keeps your profiles, settings and poster cache (`purge` also removes the settings and profiles).
-To go back to an earlier release, install its package from the Releases page. Inside CineView Designs,
+To go back to an earlier release, install its package from the Releases page (`release/<version>/`). Inside CineView Designs,
 **Restore Factory Design** returns to Classic + Navy at any time.
 
 ## Notes

@@ -105,8 +105,6 @@ try:
     pinned = json.load(open("/etc/enigma2/cineview_mla/runtime.json")).get("poster_cache")
 except Exception:
     pinned = None
-if pinned:
-    print("kept|" + pinned); sys.exit(0)
 mounts = [l.split()[:4] for l in open("/proc/mounts") if len(l.split()) >= 4]
 root = os.stat("/").st_dev
 def real(mp, src, opts):
@@ -114,6 +112,16 @@ def real(mp, src, opts):
         return "rw" in opts.split(",") and os.path.ismount(mp) and os.stat(mp).st_dev != root and src.startswith("/dev/")
     except OSError:
         return False
+def on_storage(path):  # a pinned cache is shown only when it is on /tmp or on real external storage, never the flash
+    if path.startswith("/tmp/"):
+        return True
+    best = None
+    for src, mp, fs, opts in mounts:
+        if (path == mp or path.startswith(mp.rstrip("/") + "/")) and (best is None or len(mp) > len(best[1])):
+            best = (src, mp, opts)
+    return bool(best) and best[1] != "/" and real(best[1], best[0], best[2])
+if pinned and on_storage(pinned):
+    print("kept|" + pinned); sys.exit(0)
 if sys.argv[1] != "0":
     for src, mp, fs, opts in mounts:
         if mp == "/media/hdd" and real(mp, src, opts):
@@ -127,13 +135,14 @@ for src, mp, fs, opts in mounts:
         if "STARTUP" in names or any(n.startswith("linuxrootfs") for n in names):
             continue  # multiboot media
         print("usb|" + os.path.join(mp, "cineview-mla", "poster")); sys.exit(0)
-print("tmp|/tmp/CINEVIEW-MLA/poster")
+print(("tmpopt|" if sys.argv[1] == "0" else "tmp|") + "/tmp/CINEVIEW-MLA/poster")
 PYEOF
 )
 case "$CACHE" in
 	hdd\|*) ok "Poster cache: ${CACHE#*|} (hard disk)" ;;
 	usb\|*) ok "Poster cache: ${CACHE#*|} (USB storage)" ;;
 	kept\|*) ok "Poster cache: ${CACHE#*|} (your setting, kept)" ;;
+	tmpopt\|*) warn "Poster cache: /tmp (HDD_CACHE=0 and no USB storage - posters are fetched again after a reboot)" ;;
 	*) warn "Poster cache: /tmp (no hard disk or USB storage found - posters are fetched again after a reboot)" ;;
 esac
 
