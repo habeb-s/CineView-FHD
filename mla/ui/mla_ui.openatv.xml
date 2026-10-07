@@ -7,6 +7,14 @@
 		<panel name="BasicTemplate" />
 		<eLabel position="26,116" size="728,413" backgroundColor="#007c7c7c" zPosition="0" />
 		<widget name="preview" position="30,120" size="720,405" zPosition="1" alphatest="blend" scale="1" />
+		<!-- CineView Info Card (user 2026-10-07): shown instead of the preview for rows without a visual preview -->
+		<widget name="info_bg" position="30,120" size="720,405" zPosition="2" backgroundColor="steThemePanel" />
+		<widget name="info_accent" position="30,120" size="720,6" zPosition="3" backgroundColor="steThemeAccent" />
+		<widget name="info_icon" position="60,150" size="160,69" zPosition="3" alphatest="blend" />
+		<widget name="info_title" position="60,238" size="660,44" zPosition="3" font="Regular;32" foregroundColor="secondFG" backgroundColor="steThemePanel" transparent="1" valign="center" noWrap="1" />
+		<widget name="info_text" position="60,288" size="660,110" zPosition="3" font="Regular;26" foregroundColor="steThemeText" backgroundColor="steThemePanel" transparent="1" valign="top" />
+		<widget name="info_value" position="60,404" size="660,40" zPosition="3" font="Regular;26" foregroundColor="steThemeText" backgroundColor="steThemePanel" transparent="1" valign="center" noWrap="1" />
+		<widget name="info_restart" position="60,450" size="660,60" zPosition="3" font="Regular;23" foregroundColor="steThemeMuted" backgroundColor="steThemePanel" transparent="1" valign="top" />
 		<!-- ConfigTemplate's frame, with its own list: 13 whole rows (832 = 13 x 64, no half-drawn row at the bottom)
 		     and a readable value font (the image default draws the values at ~18 px).  t98 2026-10-06. -->
 		<eLabel position="770,95" size="1120,905" backgroundColor="steThemePanelAlt" zPosition="-2" />

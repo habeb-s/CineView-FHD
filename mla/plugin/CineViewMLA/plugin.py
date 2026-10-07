@@ -36,6 +36,7 @@ _session = None
 # version / build / commit written by the package (tools/mla/package_ipk.py); a development deploy has none
 VERSION_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "version.json")
 COPYRIGHT = "Design & Development by habeb-s \u00a9 2026"
+PLUGIN_ICON = os.path.join(os.path.dirname(os.path.abspath(__file__)), "plugin.png")
 
 
 def about():
@@ -111,7 +112,7 @@ def _healthy():
 	_dump_live_config()
 	if _trial.running and _session is not None and mla_active():
 		_trial.prompt = _session.openWithCallback(_trialAnswer, MessageBox,
-			_("CineView: keep the new design?\nIt will be reverted automatically if you do not confirm."),
+			_("Keep the %s design with %s theme?\nCineView returns to the previous design automatically if you do not confirm.") % _active_names(),
 			MessageBox.TYPE_YESNO, timeout=TRIAL_CONFIRM_SECONDS, default=False)
 
 
@@ -243,6 +244,45 @@ def _build_config():
 _build_config()
 
 
+def theme_label(key):
+	try:
+		return json.load(open(os.path.join(SKIN_DIR, "themes", key, "theme.json")))["label"]
+	except Exception:
+		return key
+
+
+def design_name(layouts):
+	"""The design model whose layouts are selected in every section (EventView: Classic or Classic line by line),
+	otherwise "Custom" - for the user-facing texts (no generation ids)."""
+	for mid in MODEL_ORDER:
+		want = dict(MODELS[mid]["layouts"])
+		got = dict(layouts or {})
+		if mid == "classic" and got.get("eventview") == "classic-lines":
+			got["eventview"] = "classic"
+		if all(got.get(s) == l for s, l in want.items()):
+			return _(MODELS[mid]["label"])
+	return _("Custom")
+
+
+def _active_names():
+	try:
+		sel = engine().current_selection()
+		return (design_name(sel.get("layouts")), theme_label(sel.get("theme", "navy")))
+	except Exception:
+		return (_("the new"), "")
+
+
+def status_text(sel):
+	"""What the user sees: product + version, design, theme, rights.  Generation / build / commit stay in the log
+	and in version.json (user 2026-10-07)."""
+	ver = "1.0.0"
+	try:
+		ver = json.load(open(VERSION_FILE)).get("version", ver)
+	except Exception:
+		pass
+	return "CineView MLA %s\n%s: %s   %s: %s\n%s" % (ver, _("Design"), design_name(sel.get("layouts")), _("Theme"), theme_label(sel.get("theme", "navy")), COPYRIGHT)
+
+
 class CineViewMLASetup(Screen, ConfigListScreen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -250,6 +290,11 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 		self.setTitle(_("CineView Designs"))
 		self.eng = engine()
 		self.sel = self.eng.current_selection()
+		try:  # development details: log only (not on screen)
+			st = self.eng.status()
+			print("[CineViewMLA] CineView Designs: active %s, last known good %s; %s" % (st.get("active"), st.get("lkg"), about().replace("\n", " / ")))
+		except Exception as err:
+			print("[CineViewMLA] status: %s" % err)
 		self.layouts = self.eng.layouts()
 		self.secs = self.eng.sections()
 		themes = self.eng.themes()
@@ -282,12 +327,17 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 		]
 		ConfigListScreen.__init__(self, entries, session=session, on_change=self.updatePreview)
 		self["preview"] = Pixmap()
+		# CineView Info Card (user 2026-10-07): rows without a real visual preview show a card in the preview area -
+		# CineView icon, option name, short explanation, current value, restart or not.  Never a placeholder image.
+		for k in ("info_bg", "info_accent", "info_title", "info_text", "info_value", "info_restart"):
+			self[k] = Label("")
+		self["info_icon"] = Pixmap()
 		self["description"] = Label("")
 		self["status"] = Label("")
 		self["key_red"] = StaticText(_("Cancel"))
-		self["key_green"] = StaticText(_("Apply (trial)"))
+		self["key_green"] = StaticText(_("Apply Design"))
 		self["key_yellow"] = StaticText(_("Preview"))
-		self["key_blue"] = StaticText(_("Factory design"))
+		self["key_blue"] = StaticText(_("Restore Factory Design"))
 		self["mlaActions"] = ActionMap(["OkCancelActions", "ColorActions", "MenuActions"], {
 			"cancel": self.keyCancel, "red": self.keyCancel, "green": self.keyApply,
 			"yellow": self.keyPreview, "blue": self.keyFactory, "ok": self.keyPreview,
@@ -314,49 +364,79 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 		elif kind == "theme":
 			p = os.path.join(SKIN_DIR, "themes", cfg.value, "preview.png")
 		elif kind == "poster" and sec in self.cfgLayouts:
-			p = os.path.join(SKIN_DIR, "layouts", sec, self.cfgLayouts[sec].value, "preview.png")
+			# Posters On / Off side by side, captured on the receiver for this section's selected design
+			p = os.path.join(SKIN_DIR, "layouts", sec, self.cfgLayouts[sec].value, "preview_posters.png")
 		else:
 			p = None
 		return p if p and os.path.isfile(p) else None
+
+	def _card(self, kind, sec, cfg):
+		"""(title, short explanation, restart text) of the Info Card for a row without a visual preview."""
+		label = self._current()[0] or ""
+		no_restart = _("No restart needed - saved with GREEN.")
+		if kind == "poster":
+			return (label, _("Shows or hides the poster in this section; the other elements move to use the space."), _("No restart needed - changes from the next channel or event."))
+		if kind == "engine":
+			return (label, _("How CineView finds posters: Unified shows a poster only when title, type and year match."), _("Restart needed - after the next GUI restart."))
+		if kind == "native":
+			return {
+				"servermode": (label, _("What the InfoBar shows about the CAM / server."), no_restart),
+				"show_second_infobar": (label, _("What the INFO key opens after the InfoBar (OpenATV setting)."), no_restart),
+				"second_infobar_timeout": (label, _("How long the Second InfoBar stays on screen (OpenATV setting)."), no_restart),
+			}.get(sec, (label, "", no_restart))
+		if kind == "theme":
+			return (label, _("The colours of every CineView screen."), _("The GUI restarts and asks you to keep the new design."))
+		m = self.layouts.get(sec, {}).get(getattr(cfg, "value", None), {}) if kind == "layout" else {}
+		return (label, m.get("name", ""), _("The GUI restarts and asks you to keep the new design."))
+
+	def _show_card(self, show, kind=None, sec=None, cfg=None):
+		names = ("info_bg", "info_accent", "info_title", "info_text", "info_value", "info_restart", "info_icon")
+		if not show:
+			for k in names:
+				self[k].hide()
+			return
+		title, text, restart = self._card(kind, sec, cfg)
+		self["info_title"].setText(title)
+		self["info_text"].setText(text)
+		self["info_value"].setText("%s: %s" % (_("Current value"), cfg.getText() if cfg is not None else ""))
+		self["info_restart"].setText(restart)
+		if self["info_icon"].instance and os.path.isfile(PLUGIN_ICON):
+			self["info_icon"].instance.setPixmap(LoadPixmap(PLUGIN_ICON))
+		for k in names:
+			self[k].show()
 
 	def updatePreview(self):
 		cfg, kind, sec = self._current()[1:]  # never bind "_": it is gettext here
 		p = self._preview_path()
 		if self["preview"].instance:
-			# Never an empty grey frame: items without a preview show the neutral placeholder (P6 review).
-			shown = p or (PREVIEW_NONE if os.path.isfile(PREVIEW_NONE) else None)
-			if shown:
-				self["preview"].instance.setPixmap(LoadPixmap(shown))
+			if p:
+				self["preview"].instance.setPixmap(LoadPixmap(p))
 				self["preview"].show()
 			else:
 				self["preview"].hide()
+		self._show_card(not p and kind is not None, kind, sec, cfg)
 		desc = ""
-		trial = _("GREEN applies it as a trial: the GUI restarts and the design is kept only after you confirm it.")
+		applied = _("GREEN applies it: the GUI restarts and the new design is kept only after you confirm it.")
 		if kind == "theme":
-			desc = "%s\n%s\n\n%s" % (_("Colour theme"), cfg.getText(), _("The colours of every CineView screen.") + " " + trial)
+			desc = "%s\n%s\n\n%s" % (_("Colour theme"), cfg.getText(), _("The colours of every CineView screen.") + " " + applied)
 		elif kind == "layout":
 			m = self.layouts.get(sec, {}).get(cfg.value, {})
-			desc = "%s\n%s %s\n\n%s" % (m.get("name", cfg.value), _("Version"), m.get("version", ""), trial)
+			desc = "%s\n\n%s" % (m.get("name", cfg.value), applied)
 		elif kind == "poster":
-			desc = _("Applied without a restart, from the next channel or event change.")
+			desc = _("Left: posters on. Right: posters off - the other elements move to use the space.") if p else ""
+			desc = (desc + "\n\n" if desc else "") + _("Applied without a restart, from the next channel or event change.")
 		elif kind == "engine":
 			desc = _("Unified: a poster only when title, type and year are confirmed, otherwise the CineView default image.\nLegacy: the original title search (may show posters of other works).\nTakes effect after the next GUI restart.")
 		elif kind == "native":
 			desc = {
-				"servermode": _("What the InfoBar shows about the CAM / server: full details, only the EMU and the subscription, or nothing."),
-				"show_second_infobar": _("What the INFO key opens after the InfoBar (OpenATV setting)."),
-				"second_infobar_timeout": _("How long the Second InfoBar stays on screen (OpenATV setting)."),
+				"servermode": _("Full server details, only the EMU and the subscription, or nothing."),
+				"show_second_infobar": _("Second InfoBar, event information or nothing when INFO is pressed again."),
+				"second_infobar_timeout": _("After this time the Second InfoBar closes by itself."),
 			}.get(sec, "")
-			if desc:
-				desc += "\n\n" + _("Saved with GREEN, no restart needed.")
-		if not p and kind in ("layout", "theme"):
-			note = _("No preview is available for this item.")
-			desc = (desc + "\n\n" + note) if desc else note
 		self["description"].setText(desc)
 		# YELLOW / OK only where they do something: the Preview key is shown only when this row has a preview
 		self["key_yellow"].setText(_("Preview") if p else "")
-		st = self.eng.status()
-		self["status"].setText(_("Active generation: %s   Last known good: %s") % (st.get("active"), st.get("lkg")) + "\n" + about())
+		self["status"].setText(status_text(self.sel))
 
 	def _selection(self):
 		return {"theme": self.cfgTheme.value, "layouts": {s: c.value for s, c in self.cfgLayouts.items()}}
@@ -385,7 +465,7 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 			self.session.open(MessageBox, _("The design could not be applied:\n%s") % err, MessageBox.TYPE_ERROR)
 			return
 		self.session.openWithCallback(self._restart, MessageBox,
-			_("The new design is ready as a trial.\nRestart the GUI now to try it? You will be asked to keep it."), MessageBox.TYPE_YESNO)
+			_("Apply %s design with %s theme?\nThe GUI restarts and you will be asked to keep the new design.") % (design_name(new["layouts"]), theme_label(new["theme"])), MessageBox.TYPE_YESNO)
 		print("[CineViewMLA] trial generation %s prepared" % gid)
 
 	def _restart(self, answer):
@@ -528,7 +608,7 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 			self.session.open(CineViewMLAPreview, p)
 
 	def keyFactory(self):
-		self.session.openWithCallback(self._factory, MessageBox, _("Return to the factory CineView Classic design?"), MessageBox.TYPE_YESNO, default=False)
+		self.session.openWithCallback(self._factory, MessageBox, _("Restore Factory Design?\nRestores Classic + Navy and the default CineView layout settings."), MessageBox.TYPE_YESNO, default=False)
 
 	def _factory(self, answer):
 		if answer:

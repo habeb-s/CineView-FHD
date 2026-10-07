@@ -1084,18 +1084,21 @@ def apply_package_screens(skin):
 
 MSGBOX_FIT_APPLET = """		<applet type="onLayoutFinish">
 from enigma import eSize, ePoint, getDesktop
-# CineView MessageBox fitted to its text (MLA_MSGBOX_FIT=1): same widgets, same width; the height follows the text
-# and the answer list, so a one-line message is not a 960x520 box.  Pattern of OpenATV's own MessageBoxTemplate applet.
-th = max(64, min(self[&quot;text&quot;].getSize()[1] + 6, 600))
-self[&quot;text&quot;].instance.resize(eSize(790, th))
-y = 35 + th + 30
+# CineView MessageBox fitted to its content (user approval 2026-10-07): same widgets, same width (960); the height
+# follows the text and the answer list, between MIN and MAX.  Text taller than the room left under MAX is cut at the
+# bottom exactly like the fixed box always did (MessageBox text is a plain Label in 57b7a51: no scrolling).
+MIN_H, MAX_H, TOP, GAP, BOTTOM, ROW = 180, 900, 35, 30, 25, 50
 rows = len(self.list) if self.list else 0
+lh = min(rows, 6) * ROW if rows else 0
+room = MAX_H - TOP - GAP - BOTTOM - (lh + 10 if rows else 0)
+th = max(64, min(self[&quot;text&quot;].getSize()[1] + 6, room))
+self[&quot;text&quot;].instance.resize(eSize(790, th))
+y = TOP + th + GAP
 if rows:
-	lh = min(rows, 6) * 50
 	self[&quot;list&quot;].instance.move(ePoint(35, y))
 	self[&quot;list&quot;].instance.resize(eSize(890, lh))
 	y += lh + 10
-h = y + 25
+h = max(MIN_H, y + BOTTOM)
 self.instance.resize(eSize(960, h))
 d = getDesktop(0).size()
 self.instance.move(ePoint((d.width() - 960) // 2, (d.height() - h) // 2))
@@ -1104,9 +1107,9 @@ self.instance.move(ePoint((d.width() - 960) // 2, (d.height() - h) // 2))
 
 
 def apply_messagebox_fit(skin):
-	"""EXPERIMENT for the user's decision (2026-10-06 night, CineView Designs checklist): the CineView MessageBox is a
-	fixed 960x520 box, so a one-line message leaves a large empty area.  MLA_MSGBOX_FIT=1 (default off) makes the
-	window follow the text + answer list (window background colour instead of the fixed background label)."""
+	"""User decision 2026-10-07 (approved after the t99 comparison): the CineView MessageBox was a fixed 960x520 box, so a
+	one-line message left a large empty area.  The window follows the text + answer list (min 180, max 900 px; window
+	background colour instead of the fixed background label).  MLA_MSGBOX_FIT=0 builds the old fixed box."""
 	p = os.path.join(skin, "core", "common.openatv.xml")
 	x = open(p, encoding="utf-8").read()
 	done = []
@@ -1327,7 +1330,7 @@ def main(golden, comps, control, out):
 	for scr, nb in apply_package_screens(skin):
 		print("PACKAGE %-20s %d colour key(s) only with text%s" % (scr, nb, " + mode title" if scr == "PackageAction" else ""))
 	print("PACKAGE Processing (global busy dialog) added to core/common")
-	if os.environ.get("MLA_SETUP_VALUEFONT", "0") == "1":
+	if os.environ.get("MLA_SETUP_VALUEFONT", "1") == "1":  # approved by the user 2026-10-07 (default on)
 		# EXPERIMENT for the user's decision: every Setup page (ConfigTemplate) draws its values with the image default
 		# value font (~18 px on 1920x1080, t99 OSD Settings); CineView Designs already has 27 px (own list)
 		cp = os.path.join(skin, "core", "common.openatv.xml")
@@ -1336,9 +1339,9 @@ def main(golden, comps, control, out):
 		assert cx.count(old) == 1, "ConfigTemplate config widget"
 		cx = cx.replace(old, old.replace('font="Regular;30"', 'font="Regular;30" valueFont="Regular;27"'))
 		open(cp, "w", encoding="utf-8").write(cx)
-		print("EXPERIMENT Setup pages: value font 27 px (ConfigTemplate)")
-	if os.environ.get("MLA_MSGBOX_FIT", "0") == "1":
-		print("EXPERIMENT MessageBox fitted to its text:", ", ".join(apply_messagebox_fit(skin)))
+		print("SETUP pages: value font 27 px (ConfigTemplate)")
+	if os.environ.get("MLA_MSGBOX_FIT", "1") == "1":  # approved by the user 2026-10-07 (default on)
+		print("MSGBOX fitted to its content:", ", ".join(apply_messagebox_fit(skin)))
 
 	# Themes: the original CineView palette() applied to the golden <colors>; navy == golden (verified).
 	theme = load_theme_module(control)
@@ -1374,6 +1377,11 @@ def main(golden, comps, control, out):
 		for cname, cval in re.findall(r'<color\s+name="([^"]+)"\s+value="#([0-9A-Fa-f]{8})"', x):
 			if cval[:2] != "00" and not cname.endswith("Solid") and '"%sSolid"' % cname not in x:
 				x = x.replace(anchor, '\t<color name="%sSolid" value="#00%s" />\n\t%s' % (cname, cval[2:], anchor))
+		if key == "burgundy":
+			# user 2026-10-07: the red key text (buttonred #FF0808, text colour only) is hard to read on the burgundy
+			# panels (red on red).  Burgundy only: a lighter red, contrast ~7:1 on steThemePanelAlt like the others.
+			x, nb = re.subn(r'(<color\s+name="buttonred"\s+value=")#[0-9A-Fa-f]{8}(")', r'\g<1>#00FF8585\2', x)
+			assert nb == 1, "buttonred in burgundy"
 		open(tx, "w", encoding="utf-8").write(x)
 	# Opaque information areas on the InfoBar family (tools/mla/infoplate.py, user 2026-10-06 06:42)
 	import infoplate
