@@ -31,6 +31,9 @@ from Plugins.Plugin import PluginDescriptor
 from ServiceReference import ServiceReference
 
 TRIGGER = "/tmp/cvmla/open.txt"
+# PVR test folder: the USB test folder on Slot 8 (OpenATV); on other slots a folder on the slot's own filesystem.
+# Never the HDD.
+TESTMEDIA = "/media/usb/cineview-mla/testmedia/" if os.path.isdir("/media/usb/cineview-mla/testmedia") else "/home/root/cvmla-testmedia/"
 _session = None
 _timer = None
 _keep = []
@@ -87,7 +90,7 @@ def _open(what):
 		from Screens.MovieSelection import MovieSelection
 		old = config.movielist.last_videodir.value
 		open("/tmp/cvmla/last_videodir", "w").write(old)
-		config.movielist.last_videodir.value = "/media/usb/cineview-mla/testmedia/"
+		config.movielist.last_videodir.value = TESTMEDIA
 		_session.open(MovieSelection, None)  # the value stays on USB until the test restores it (MovieSelection may
 		# read it after __init__); the test restarts Enigma2 with the saved value
 	elif what == "play":
@@ -96,7 +99,7 @@ def _open(what):
 		import glob
 		from enigma import eServiceReference
 		from Screens.InfoBar import MoviePlayer
-		clips = sorted(glob.glob("/media/usb/cineview-mla/testmedia/*CineView MLA test clip.ts"))
+		clips = sorted(glob.glob(TESTMEDIA + "*CineView MLA test clip.ts"))
 		if clips:
 			ref = eServiceReference(1, 0, clips[0])
 			_session.open(MoviePlayer, ref, slist=ib.servicelist, lastservice=_session.nav.getCurrentlyPlayingServiceOrGroup())
@@ -105,7 +108,11 @@ def _open(what):
 	elif what == "vertical":
 		ib.openVerticalEPG()
 	elif what == "graph":
-		ib.openGraphEPG()
+		(getattr(ib, "openGraphEPG", None) or ib.openGridEPG)()  # OpenATV GraphicalEPG / OpenBH-ViX grid EPG
+	elif what == "single":
+		ib.openSingleServiceEPG()
+	elif what == "eventview":
+		ib.openEventView()
 	elif what == "pluginbrowser":
 		from Screens.PluginBrowser import PluginBrowser
 		_session.open(PluginBrowser)
