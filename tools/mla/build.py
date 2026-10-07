@@ -1183,6 +1183,38 @@ def load_theme_module(control_dir):
 	return m
 
 
+def apply_image_overlay(skin, img):
+	import xml.etree.ElementTree as ET
+	base = os.path.join(REPO, "mla", "images", img)
+	assert os.path.isdir(base), "no overlay for image %s" % img
+	n = 0
+	core = os.path.join(base, "core")
+	for f in sorted(os.listdir(core)) if os.path.isdir(core) else []:
+		assert f == "common.%s.xml" % img, "unexpected core overlay %s" % f
+		shutil.copy2(os.path.join(core, f), os.path.join(skin, "core", f))
+		sk = open(os.path.join(skin, "skin.xml"), encoding="utf-8").read()
+		anchor = '<include filename="core/mla_ui.openatv.xml" />'
+		assert sk.count(anchor) == 1, "mla_ui include anchor missing"
+		sk = sk.replace(anchor, anchor + '\n\t<include filename="core/%s" />' % f)
+		open(os.path.join(skin, "skin.xml"), "w", encoding="utf-8").write(sk)
+		n += 1
+	lays = os.path.join(base, "layouts")
+	for sec in sorted(os.listdir(lays)) if os.path.isdir(lays) else []:
+		for pack in sorted(os.listdir(os.path.join(lays, sec))):
+			name = "screens.%s.xml" % img
+			src = os.path.join(lays, sec, pack, name)
+			dst = os.path.join(skin, "layouts", sec, pack)
+			assert os.path.isfile(src) and os.path.isdir(dst), "overlay %s/%s: pack or file missing" % (sec, pack)
+			ET.parse(src)
+			shutil.copy2(src, os.path.join(dst, name))
+			mf = os.path.join(dst, "manifest.json")
+			d = json.load(open(mf))
+			d["targets"][img] = {"file": name}
+			json.dump(d, open(mf, "w"), indent=1)
+			n += 1
+	print("IMAGE-OVERLAY %s: %d files" % (img, n))
+
+
 def main(golden, comps, control, out):
 	sys.dont_write_bytecode = True  # the engine is imported from the output tree below
 	skin = os.path.join(out, SKIN)
@@ -1559,6 +1591,15 @@ def main(golden, comps, control, out):
 	icon = os.path.join(REPO, "docs", "mla", "brand", "plugin_%s.png" % os.environ.get("MLA_ICON", "A"))
 	shutil.copy(icon, os.path.join(out, "usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA", "plugin.png"))
 	print("PLUGIN-ICON %s" % os.path.basename(icon))
+
+	# Image overlay (multi-image, env MLA_IMAGE; default = OpenATV, nothing added): mla/images/<image>/ holds ONLY
+	# what differs from the shared skin because that image's native contract differs -
+	#   core/common.<image>.xml                          included after the shared core (last definition wins)
+	#   layouts/<sec>/<pack>/screens.<image>.xml         the pack's file for that image (manifest targets.<image>)
+	# The composer picks targets.<image> on that image (enigma.info distro) and the shared file everywhere else.
+	img = os.environ.get("MLA_IMAGE", "openatv")
+	if img != "openatv":
+		apply_image_overlay(skin, img)
 
 	# Factory generation g000000 (= classic everywhere, navy) built by the real engine.
 	os.makedirs(os.path.join(skin, "generations"), exist_ok=True)

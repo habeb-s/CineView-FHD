@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- CineView MLA - OpenBH overrides of core screens whose NATIVE contract differs from OpenATV.
+     Loaded after core/common.openatv.xml in the OpenBH package only (OpenBH skin.py: the last definition of a screen
+     wins), so every screen not listed here is the shared CineView screen.  Sources: BlackHole/enigma2 52dedddc314a
+     (OpenBH 5.6.008) and c06a87ef4c09 (6.0.003) - identical for these screens. -->
+<skin>
+	<!-- Components/PluginList.py builds the rows in Python from these names (fonts PluginBrowser0/1, parameters
+	     PluginBrowserIcon/Name/Descr); the values reproduce the CineView OpenATV row: 185x80 icon at 12,4, name
+	     31 px at 220,5, description 22 px at 220,43, row height 88. -->
+	<fonts>
+		<alias name="PluginBrowser0" font="Regular" size="31" height="88" />
+		<alias name="PluginBrowser1" font="Regular" size="22" />
+	</fonts>
+	<parameters>
+		<parameter name="PluginBrowserIcon" value="12,4,185,80" />
+		<parameter name="PluginBrowserName" value="220,5,38" />
+		<parameter name="PluginBrowserDescr" value="220,43,29" />
+	</parameters>
+	<!-- Screens/PluginBrowser.py PluginBrowser: list (PluginList), key_red/green/yellow (Button widgets),
+	     key_menu / key_0 / key_previous / key_next (StaticText), key_help (HelpableScreen).  No description,
+	     quickselect or blue key in OpenBH, so none is drawn. -->
+	<screen name="PluginBrowser" position="0,0" size="1920,1080" flags="wfNoBorder" title="Plugin Browser">
+		<eLabel position="0,0" size="1920,1080" backgroundColor="steThemePrimary" zPosition="-1" />
+		<eLabel text="Plugins" position="45,24" size="1830,52" font="Regular;38" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1" zPosition="3" />
+		<eLabel position="35,88" size="1850,2" backgroundColor="steThemePanelAlt" zPosition="2" />
+		<widget name="list" position="45,110" size="1830,880" scrollbarMode="showOnDemand" enableWrapAround="1" foregroundColor="foreground" backgroundColor="steThemePrimary" foregroundColorSelected="selectedFG" backgroundColorSelected="selectedBG" transparent="1" zPosition="5" />
+		<eLabel position="35,995" size="1850,2" backgroundColor="steThemePanelAlt" zPosition="2" />
+		<eLabel name="cineviewKeyBar_red" position="55,1010" size="310,45" backgroundColor="key_red" zPosition="1" />
+		<widget name="key_red" position="55,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1" backgroundColor="key_red" foregroundColor="key_text" zPosition="2" />
+		<eLabel name="cineviewKeyBar_green" position="385,1010" size="310,45" backgroundColor="key_green" zPosition="1" />
+		<widget name="key_green" position="385,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1" backgroundColor="key_green" foregroundColor="key_text" zPosition="2" />
+		<eLabel name="cineviewKeyBar_yellow" position="715,1010" size="310,45" backgroundColor="key_yellow" zPosition="1" />
+		<widget name="key_yellow" position="715,1010" size="310,45" font="Regular;25" halign="center" valign="center" transparent="1" backgroundColor="key_yellow" foregroundColor="key_text" zPosition="2" />
+		<widget source="key_menu" render="Label" position="1390,1010" size="170,45" font="Regular;23" halign="center" valign="center" foregroundColor="grey" transparent="1" />
+		<widget source="key_help" render="Label" position="1580,1010" size="170,45" font="Regular;23" halign="center" valign="center" foregroundColor="grey" transparent="1" />
+	</screen>
+</skin>

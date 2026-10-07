@@ -25,6 +25,8 @@ import xml.etree.ElementTree as ET
 SKIN_DIR = os.environ.get("MLA_SKIN_DIR", "/usr/share/enigma2/CineView_FHD_MLA")
 STATE_DIR = os.environ.get("MLA_STATE_DIR", "/etc/enigma2/cineview_mla")
 FACTORY = "g000000"
+ENIGMA_INFO = "/usr/lib/enigma.info"
+DEFAULT_IMAGE = "openatv"  # the image every layout pack provides a screen file for (targets.openatv)
 # Bitmaps that differ per colour theme (the original CineView theme engine swapped exactly these).
 THEME_ASSETS = ("infobar/hd.png", "infobar/bl80.png", "extensions/transblack.png", "infobar/pbar.png",
 	"window/progress.png", "dvr/position_pointer1.png", "epg/CurrentEvent.png")  # skin paths are symlinks to active/assets
@@ -35,6 +37,38 @@ BUILTIN_COLORS = {"key_back", "key_blue", "key_green", "key_red", "key_text", "k
 
 class MLAError(Exception):
 	pass
+
+
+def image():
+	"""Target image of the screen files: MLA_IMAGE (package build) or the receiver's /usr/lib/enigma.info distro;
+	openatv when neither is available.  Never derived from a receiver model."""
+	img = os.environ.get("MLA_IMAGE")
+	if not img:
+		try:
+			for line in open(ENIGMA_INFO):
+				if line.startswith("distro="):
+					img = line.split("=", 1)[1].strip().strip("'\"").lower()
+					break
+		except OSError:
+			pass
+	return img or DEFAULT_IMAGE
+
+
+def target_file(layout):
+	"""The layout pack's screen file for this image: its own override when the native contract differs
+	(targets.<image>), otherwise the shared file (targets.openatv)."""
+	t = layout["targets"]
+	return (t.get(image()) or t[DEFAULT_IMAGE])["file"]
+
+
+def core_files():
+	"""Core screen files in load order; an image override (core/common.<image>.xml, shipped only in that image's
+	package) follows the shared files - the last definition of a screen wins in the skin loader."""
+	files = [_p("core", "base.openatv.xml"), _p("core", "common.openatv.xml")]
+	extra = _p("core", "common.%s.xml" % image())
+	if image() != DEFAULT_IMAGE and os.path.isfile(extra):
+		files.append(extra)
+	return files
 
 
 def _p(*a):
@@ -143,13 +177,13 @@ def validate(selection, components=None, warnings=None):
 	secs, lays = sections(), layouts()
 	if selection["theme"] not in themes():
 		problems.append(f"unknown theme {selection['theme']}")
-	files = [_p("core", "base.openatv.xml"), _p("core", "common.openatv.xml")]
+	files = core_files()
 	for sec, spec in secs.items():
 		lid = selection["layouts"].get(sec)
 		if lid not in lays.get(sec, {}):
 			problems.append(f"{sec}: unknown layout {lid}")
 			continue
-		f = _p("layouts", sec, lid, lays[sec][lid]["targets"]["openatv"]["file"])
+		f = _p("layouts", sec, lid, target_file(lays[sec][lid]))
 		names = set(_screens(f))
 		for req in spec["required"]:
 			if req not in names:
@@ -267,7 +301,7 @@ def build_generation(selection, gid):
 	files = {"theme.xml": _p("themes", selection["theme"], "theme.xml")}
 	for sec in sections():
 		lid = selection["layouts"][sec]
-		files[f"{sec}.xml"] = _p("layouts", sec, lid, lays[sec][lid]["targets"]["openatv"]["file"])
+		files[f"{sec}.xml"] = _p("layouts", sec, lid, target_file(lays[sec][lid]))
 	# Theme bitmaps travel WITH the generation (G-1): the skin paths are symlinks to active/assets/<rel>,
 	# so colours and bitmaps switch together, atomically, and are covered by the manifest.
 	for rel in THEME_ASSETS:
