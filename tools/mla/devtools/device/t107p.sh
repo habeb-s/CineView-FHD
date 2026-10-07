@@ -16,13 +16,18 @@ op() { $R "mkdir -p /tmp/cvmla; echo $1 > /tmp/cvmla/open.txt"; sleep ${2:-5}; }
 enc() { python3 -c "import urllib.parse,sys;print(urllib.parse.quote(sys.argv[1]))" "$1"; }
 errs() { $R 'f=$(ls -t /home/root/logs/Enigma2_debug_*.log | head -1); echo "   tracebacks=$(grep -a -c Traceback $f) skin_errors=$(grep -a -c "\[Skin\] Error\|SkinError" $f)"'; }
 case "$D" in /media/hdd*) echo "refusing HDD path"; exit 1;; esac
-$R "mkdir -p $D; cp -p /etc/enigma2/timers.xml /tmp/timers.xml.before-t107p; df -h / | tail -1"
+if [ -z "$B" ]; then $R "mkdir -p $D; cp -p /etc/enigma2/timers.xml /tmp/timers.xml.before-t107p; df -h / | tail -1"; fi
 curl -s -m 10 -o /dev/null "http://192.168.1.250/api/zap?sRef=$ZAP"; sleep 8
-NOW=$(date +%s); B=$((NOW + 20)); E=$((NOW + 110))
 NAME="CineView MLA PVR test"
-echo "== timer $B..$E -> $D"
-curl -s -m 15 "http://192.168.1.250/api/timeradd?sRef=$(enc "$ZAP")&begin=$B&end=$E&name=$(enc "$NAME")&description=$(enc "short real recording, deleted after the test")&disabled=0&justplay=0&afterevent=0&dirname=$(enc "$D")" | python3 -c "import json,sys;d=json.load(sys.stdin);print('   timeradd:', d.get('result'), d.get('message'))"
-sleep $((E - $(date +%s) + 20))
+if [ -n "$B" ] && [ -n "$E" ]; then
+	echo "== existing test timer $B..$E (recording already made by this tool)"
+	[ -s /tmp/timers.xml.before-t107p ] || true
+else
+	NOW=$(date +%s); B=$((NOW + 20)); E=$((NOW + 110))
+	echo "== timer $B..$E -> $D"
+	curl -s -m 15 "http://192.168.1.250/api/timeradd?sRef=$(enc "$ZAP")&begin=$B&end=$E&name=$(enc "$NAME")&description=$(enc "short real recording, deleted after the test")&disabled=0&justplay=0&afterevent=0&dirname=$(enc "$D")" | python3 -c "import json,sys;d=json.load(sys.stdin);print('   timeradd:', d.get('result'), d.get('message'))"
+fi
+W=$((E - $(date +%s) + 20)); [ $W -gt 0 ] && sleep $W
 echo "   files: $($R "ls -la $D")"
 $R "ls $D | grep -c '\.ts$'" | grep -q '^0$' && { echo "NO RECORDING"; }
 echo "== native PVR"
