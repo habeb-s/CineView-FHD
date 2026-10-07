@@ -45,9 +45,20 @@ put "$STATE/boot.count" "$n"
 
 if [ "$n" -ge 7 ]; then
 	prev=$(cat "$STATE/previous_skin" 2>/dev/null)
-	[ -n "$prev" ] || prev="MetrixHD/skin.xml"
+	# no recorded previous skin: OpenATV -> MetrixHD (1.0.0 behaviour); any other image -> remove the setting so
+	# Enigma2 starts with that image's OWN default skin (OpenBH 5.6/6.0 skin.py DEFAULT_SKIN = MX_Slim-Line_NP;
+	# MetrixHD does not exist there).  Image from /usr/lib/enigma.info distro, never from a model list.
+	distro=$(sed -n "s/^distro=['\"]\{0,1\}\([^'\"]*\).*/\1/p" /usr/lib/enigma.info 2>/dev/null | head -1)
+	if [ -z "$prev" ]; then
+		if [ -z "$distro" ] || [ "$distro" = "openatv" ]; then
+			prev="MetrixHD/skin.xml"
+		fi
+	fi
 	cp -p "$SETTINGS" "$STATE/settings.before-guardian-skin-switch" 2>/dev/null
-	if grep -q '^config.skin.primary_skin=' "$SETTINGS"; then
+	if [ -z "$prev" ]; then
+		sed "/^config.skin.primary_skin=/d" "$SETTINGS" > "$SETTINGS.mla.tmp" && sync && mv -f "$SETTINGS.mla.tmp" "$SETTINGS"
+		prev="(image default)"
+	elif grep -q '^config.skin.primary_skin=' "$SETTINGS"; then
 		sed "s|^config.skin.primary_skin=.*|config.skin.primary_skin=$prev|" "$SETTINGS" > "$SETTINGS.mla.tmp" && sync && mv -f "$SETTINGS.mla.tmp" "$SETTINGS"
 	fi
 	put "$STATE/boot.count" 0

@@ -15,7 +15,8 @@ ALLOWED='usr/lib/enigma2/python/Components/Converter/CineViewMLAServiceInfo.py
 usr/lib/enigma2/python/Components/Converter/CineViewMLAShowIf.py
 usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/plugin.py
 usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/image_adapter.py
-usr/share/enigma2/CineView_FHD_MLA/mla/engine/composer.py'
+usr/share/enigma2/CineView_FHD_MLA/mla/engine/composer.py
+usr/share/enigma2/CineView_FHD_MLA/mla/guardian/guardian.sh'
 diff -rq build94 "$OUT" | sed -e "s|^Files build94/\([^ ]*\) and .* differ$|\1|" -e "s|^Only in $OUT/*\([^:]*\): \(.*\)$|\1/\2|" \
 	-e "s|^Only in build94/*\([^:]*\): \(.*\)$|REMOVED \1/\2|" | sed 's|//|/|g' > "$OUT.diff"
 BAD=$(grep -v -x -F "$ALLOWED" "$OUT.diff")
