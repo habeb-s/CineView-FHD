@@ -89,3 +89,30 @@ Waiting: the user's approval for 1.0.0 (no final release / no main without it).
 - Waiting for the user: (1) repository: new private habeb-s/CineView-MLA (recommended) or CineView-FHD main;
   (2) compatibility wording (evidence: OpenATV 8.0 only; 7.5 lacks skin features; 7.6 needs its own Python build);
   (3) LICENSE text; (4) final approval -> repo public, Release 1.0.0, tag v1.0.0, main, installer link live.
+
+## 2026-10-07 08:23 -> 09:00 - private product repo habeb-s/CineView-MLA (READY, PRIVATE, NOT PUBLISHED)
+- Repo main: b24ce53 (1.0.0) + 3afda9d (installer: 7.6 stops; uninstaller purge keeps backup/). Draft release v1.0.0
+  (no tag yet) with the ipk + SHA256SUMS. Tree assembled by tools/mla/assemble_product_repo.sh (guards: no
+  placeholders, no dev paths).
+- Package enigma2-plugin-skins-cineview-fhd-mla_1.0.0_all.ipk SHA256 4709881b66ae9e5b8cc8dfa7f5b7e3fafdfb57d779431709b8c5c1b48c4cb0a8
+  = build94 code (same data as the tested pkg_final except version.json build stamp; homepage CineView-MLA).
+  SHA verified: main raw file (agent gh api + session clone), release asset (sha256sum -c), installer embedded value.
+- Receiver validation with those exact bytes (t104, t104b; HDD_CACHE=0): fresh install (after official purge),
+  reinstall, upgrade rc10 -> 1.0.0, damaged package (stops, unchanged), reboot (Slot 8), Plugin Browser + CineView
+  Designs, final installer DRYRUN + verify: all pass, 0 tracebacks / skin errors / crashes. Evidence:
+  evidence/installer_github/.
+- INCIDENT (t104 scenario 1, my test error): opkg remove was refused by the package's prerm guard (selected skin -
+  correct behaviour), the test still moved the state folder away and started the GUI without a cache pin for ~70 s;
+  the poster engine followed the release policy (HDD first) and wrote 3 files (one poster, ~167 KB) to
+  /media/hdd/poster/id and /sz at 08:35:34. NOT deleted (HDD rule) - waiting for the user's decision.
+  Listing: evidence/installer_github/t104_hdd_listing.txt. t104b proved nothing else was written.
+- Fixed found during validation: uninstaller purge deleted backup/ (settings copy + restore points) -> now kept;
+  installer let OpenATV 7.6 continue to the Python check -> now stops (not declared).
+- Clean README shots: model-* single real grabs (Classic=EPG, Details=Channel Selection, Cinema=Event View,
+  Modern/Minimal=Second InfoBar), posters-on-off (Classic Channel Selection), cineview-designs. Shots with the
+  softcam reader line avoided. NOTE: the Classic InfoBar preview INSIDE the package (CineView Designs) shows the
+  receiver's softcam reader line in small text - user to decide.
+- 7.5/7.6 report: docs/mla/OpenATV_75_76_Compatibility.md.
+- Receiver state: Black + Classic (EventView line by line), runtime.json dev pin restored, devtool removed.
+- Waiting for the user: LICENSE approval, HDD 3 files decision, public approval -> make public, run the real
+  GitHub-link install (wget raw URL on the receiver), publish release (tag v1.0.0).
