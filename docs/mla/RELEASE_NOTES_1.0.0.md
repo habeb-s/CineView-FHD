@@ -5,8 +5,8 @@
 | | |
 |---|---|
 | Package | `enigma2-plugin-skins-cineview-fhd-mla_1.0.0_all.ipk` |
-| SHA256 | `b85220f59614a4287336560eec5091cb69dd4d7f55c96cd9f3608a2bac8ef978` |
-| Build | build92, commit b719a97 (branch `dev/mla-openatv`) — `version.json` in the plugin folder carries version / build / commit |
+| SHA256 | `273f9dfbea2e50d3cc31a3b85cc56b13d170a3df6d55f53352b7d39b2676d6eb` |
+| Build | build94, commit 9e68174 (branch `dev/mla-openatv`) — `version.json` in the plugin folder carries version / build / commit |
 | Target | Vu+ Duo 4K SE, OpenATV 8.0.1 (Python 3.14) — the receiver this release was verified on |
 | Status | RELEASE CANDIDATE until the owner approves the release |
 
@@ -22,8 +22,10 @@
 - Plugin icon and logo (option A); rights line in CineView Designs and the package data.
 - Plugin / package management: the busy dialog (Processing) in CineView style, one wait message instead of two,
   colour keys only when they have a function, mode title (Install / Remove / Update Plugins) in Plugin Manager.
-- CineView Designs: readable values, whole rows, a description for every row, Preview only where a preview exists,
-  preview for EventView line by line, clearer trial question (checklist: docs/mla/CineView_Designs_Checklist.md).
+- CineView Designs: final wording (Apply Design, Restore Factory Design, no development details on screen), a real
+  receiver preview for every design and theme, Posters On/Off pictures, CineView Info Card for options without a
+  picture, readable values (checklist: docs/mla/CineView_Designs_Checklist.md).
+- Message boxes fit their content; Setup pages: 27 px values, whole rows; Burgundy: readable red key text.
 
 ## Install
 On the receiver (telnet / ssh):

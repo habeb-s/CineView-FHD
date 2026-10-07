@@ -71,3 +71,8 @@ Waiting: the user's approval for 1.0.0 (no final release / no main without it).
 - build92 (b719a97) installed on Slot 8 (package SHA256 b85220f5...ef978); 24 items: 13 PASS, 8 FIXED + re-tested (item 9 both),
   2 DECISIONS (MessageBox fit, Setup value font: build flags, off), Arabic UI not tested (system language).
 - Next: the user's two decisions -> (flags on/off) -> final package -> approval -> Stage C (publish, installer, main).
+
+## 2026-10-07 07:25 - CineView Designs round 2 closed on the receiver (build94, 9e68174)
+- Items A-G + MessageBox fit + Setup 27 px: implemented and RUNTIME TESTED (checklist round 2 results).
+- Package 1.0.0 SHA256 273f9dfb...76eb on Slot 8; theme Black / Classic; devtool removed. NOT published.
+- Next: the user's final approval -> Stage C (release/rc ipk + SHA256SUMS + installer -> 1.0.0, merge to main).

@@ -66,7 +66,7 @@ is no native scrolling for it). **Setup value font 27 px — approved** (now def
 
 | # | Item (user) | Change | Result |
 |---|---|---|---|
-| A | No development details on screen | status: "CineView MLA 1.0.0 / Design: <model or Custom>   Theme: <label> / Design & Development by habeb-s © 2026"; generation, last known good, build, commit only in the log ("[CineViewMLA] CineView Designs: active …") and version.json | t102 |
+| A | No development details on screen (PASS) | status: "CineView MLA 1.0.0 / Design: <model or Custom>   Theme: <label> / Design & Development by habeb-s © 2026"; generation, last known good, build, commit only in the log ("[CineViewMLA] CineView Designs: active …") and version.json | t102 |
 | B | "Apply (trial)" | GREEN "Apply Design"; question "Apply <Design> design with <Theme> theme?"; keep prompt "Keep the <Design> design with <Theme> theme? …"; no "trial", no g000xx anywhere on screen (trial / revert unchanged inside) | t102 |
 | C | Preview / Info Card | rows without a visual preview show a CineView Info Card (icon, option name, short explanation, current value, restart or not); the "no image" placeholder is gone | t102 |
 | D | EventView previews | every EventView design (Classic, line by line, Details Card, Feature, Modern, Minimal) has a real receiver picture | t101 |
@@ -74,3 +74,26 @@ is no native scrolling for it). **Setup value font 27 px — approved** (now def
 | F | Factory | BLUE "Restore Factory Design"; "Restores Classic + Navy and the default CineView layout settings." | t102 |
 | G | Burgundy Cancel contrast | burgundy only: red key text #FF8585 (≈7:1 on the burgundy key bar) | t102 themes |
 | + | Real previews for every design | found during the review: 22 of 32 design previews were not real (18 placeholder icons, 4 drawn mock-ups), and the theme previews were colour swatches; all are now real receiver grabs (t101, t101b) | build log "without a preview: none" |
+
+## Round 2 results (build94, commit 9e68174 — code identical to 5ad08cb; receiver Slot 8)
+- **Walk, every row first → last (t102_ws, theme black):** 17 rows, each with a real preview or the Info Card; 0
+  development words on screen (status / keys / descriptions checked from the live screen: g0000, build, commit, trial,
+  generation, last known); green "Apply Design", blue "Restore Factory Design"; status "CineView MLA 1.0.0 / Design:
+  Classic   Theme: Black / Design & Development by habeb-s © 2026".
+- **MessageBox (fitted):** one line, Yes/No, four answers, nine-line text — compact and centred; six themes.
+- **Setup pages (27 px values, 13 whole rows):** UserInterface, Usage, Time, EPG, Recording, Audio, Subtitle, Playback,
+  ChannelSelection, Logs, top and scrolled — no value cut, no label/value overlap, no half row (build93 still showed a
+  cut bottom row → fixed in build94 and re-checked).
+- **Functions (t102_final, build93; the same plugin logic):** profile save / load (RED: nothing applied) / delete;
+  Apply → "Apply Classic design with Deep Purple theme?" → restart → "Keep the Classic design with Deep Purple theme?"
+  → Yes → committed; Apply → no answer → automatic revert (history: "trial: revert … rollback"); Restore Factory
+  Design → Classic + Navy (every section Classic); Processing one and several lines.
+- **Six themes:** CineView Designs (preview + Info Card), Processing, MessageBox, Setup page — Burgundy's Cancel text
+  is now readable.
+- **Previews:** 32 / 32 designs real (build: "without a preview: none"), 29 posters On/Off pictures, 6 theme pictures.
+- Every check: 0 tracebacks, 0 skin errors, 0 crash logs. Original selection (Black, Classic) and settings restored;
+  development tool removed. Package 1.0.0 SHA256 `273f9dfbea2e50d3cc31a3b85cc56b13d170a3df6d55f53352b7d39b2676d6eb`.
+- Evidence: `docs/mla/evidence/designs2/`, video `docs/mla/evidence/video/CineView_MLA_Designs_final_2026-10-07.mp4`.
+- Note (honest): the first t101 run was stopped to change channel (the HBO event had no poster); its restart had set
+  the theme to Navy, so the later restore steps returned Navy — the user's Black / Classic selection was applied again
+  by the engine before the final run and is the active selection now.
