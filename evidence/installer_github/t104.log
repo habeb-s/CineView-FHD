@@ -1,0 +1,252 @@
+embedded sha: 4709881b66ae9e5b8cc8dfa7f5b7e3fafdfb57d779431709b8c5c1b48c4cb0a8
+package sha:  4709881b66ae9e5b8cc8dfa7f5b7e3fafdfb57d779431709b8c5c1b48c4cb0a8
+hdd poster before: 0 files, 0 changed in 12h
+backup /media/usb/cineview-mla/state/backup-t104-20261007-083449
+orig: --theme black --set channelselection=classic --set epg=classic --set eventview=classic-lines --set infobar=classic --set pvr=classic --set secondinfobar=classic
+state before: 1.0.0 generations/g000077 pin=/media/usb/cineview-mla/dev-cache/reference/poster 0 black classic 
+== 1 fresh install (GUI stopped)
+1
+== 1_fresh
+   exit=0
+   | 
+   |   CineView MLA Smart Installer    version 1.0.0
+   |   Design & Development by habeb-s (c) 2026
+   | 
+   | Device
+   |   [OK] Vu+ Duo4K SE
+   | 
+   | Image
+   |   [OK] OpenATV 8.0.1 detected
+   | 
+   | Version
+   |   [OK] OpenATV 8.0.1 is supported (fully tested on OpenATV 8.0)
+   | 
+   | Python
+   |   [OK] Python 3.14 compatible
+   | 
+   | Architecture
+   |   [OK] Architecture: cortexa15hf-neon-vfpv4 (CineView MLA is architecture-independent)
+   | 
+   | Compatibility
+   |   [OK] Required components present (python3-pillow, python3-requests)
+   |   [OK] Package matches this receiver
+   | 
+   | Storage
+   |   [OK] Free space: 52547 MB
+   |   [!!] Poster cache: /tmp (HDD_CACHE=0 and no USB storage - posters are fetched again after a reboot)
+   | 
+   | Existing installation
+   |   [..] Current version: 1.0.0
+   |   [..] New version:     1.0.0
+   |   [..] CineView FHD (classic edition) found - it stays installed and independent
+   | 
+   | Verification
+   |   [OK] Package version 1.0.0
+   |   [OK] Skin files present
+   |   [OK] Plugin loadable
+   |   [OK] Plugin icon present
+   |   [OK] CineView Designs available in the Plugin Browser
+   | 
+   | Result
+   |   CineView MLA 1.0.0 is already installed and verified.
+   | 
+new e2 pid=5385 @08:35:06
+webif up @08:35:32
+   state: 1.0.0 generations/g000077 pin=none 0 
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+cap 1_fresh_live
+== 2_reinstall
+   exit=0
+   | 
+   |   CineView MLA Smart Installer    version 1.0.0
+   |   Design & Development by habeb-s (c) 2026
+   | 
+   | Device
+   |   [OK] Vu+ Duo4K SE
+   | 
+   | Image
+   |   [OK] OpenATV 8.0.1 detected
+   | 
+   | Version
+   |   [OK] OpenATV 8.0.1 is supported (fully tested on OpenATV 8.0)
+   | 
+   | Python
+   |   [OK] Python 3.14 compatible
+   | 
+   | Architecture
+   |   [OK] Architecture: cortexa15hf-neon-vfpv4 (CineView MLA is architecture-independent)
+   | 
+   | Compatibility
+   |   [OK] Required components present (python3-pillow, python3-requests)
+   |   [OK] Package matches this receiver
+   | 
+   | Storage
+   |   [OK] Free space: 52547 MB
+   |   [!!] Poster cache: /tmp (HDD_CACHE=0 and no USB storage - posters are fetched again after a reboot)
+   | 
+   | Existing installation
+   |   [..] Current version: 1.0.0
+   |   [..] New version:     1.0.0
+   |   [!!] Reinstall requested
+   |   [..] CineView FHD (classic edition) found - it stays installed and independent
+   | 
+   | Package
+   |   [OK] Package verified (SHA256)
+   | 
+   | Installing
+   |   [OK] Restore point saved
+   |   [OK] CineView MLA 1.0.0 installed
+   | 
+   | Verification
+   |   [OK] Package version 1.0.0
+   |   [OK] Skin files present
+   |   [OK] Plugin loadable
+   |   [OK] Plugin icon present
+   |   [OK] CineView Designs available in the Plugin Browser
+   | 
+   | Result
+   |   CineView MLA 1.0.0 installed successfully.
+   | 
+   |   +-----------------------------------------------------+
+   |   |  Restart the GUI to load CineView MLA 1.0.0.        |
+   |   +-----------------------------------------------------+
+   |   [..] Restarting the GUI ...
+   | 
+new e2 pid=6706 @08:36:17
+webif up @08:36:43
+   state: 1.0.0 generations/g000078 pin=/tmp/CINEVIEW-MLA/poster 0 navy classic 
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+== 3 upgrade from rc10
+Version: 1.0.0~rc10
+== 3_upgrade
+   exit=0
+   | 
+   |   CineView MLA Smart Installer    version 1.0.0
+   |   Design & Development by habeb-s (c) 2026
+   | 
+   | Device
+   |   [OK] Vu+ Duo4K SE
+   | 
+   | Image
+   |   [OK] OpenATV 8.0.1 detected
+   | 
+   | Version
+   |   [OK] OpenATV 8.0.1 is supported (fully tested on OpenATV 8.0)
+   | 
+   | Python
+   |   [OK] Python 3.14 compatible
+   | 
+   | Architecture
+   |   [OK] Architecture: cortexa15hf-neon-vfpv4 (CineView MLA is architecture-independent)
+   | 
+   | Compatibility
+   |   [OK] Required components present (python3-pillow, python3-requests)
+   |   [OK] Package matches this receiver
+   | 
+   | Storage
+   |   [OK] Free space: 52558 MB
+   |   [OK] Poster cache: /tmp/CINEVIEW-MLA/poster (your setting, kept)
+   | 
+   | Existing installation
+   |   [..] Current version: 1.0.0~rc10
+   |   [..] New version:     1.0.0
+   |   [OK] Upgrade: your design, theme, profiles, settings and poster cache are kept
+   |   [..] CineView FHD (classic edition) found - it stays installed and independent
+   | 
+   | Package
+   |   [OK] Package verified (SHA256)
+   | 
+   | Installing
+   |   [OK] Restore point saved
+   |   [OK] CineView MLA 1.0.0 installed
+   | 
+   | Verification
+   |   [OK] Package version 1.0.0
+   |   [OK] Skin files present
+   |   [OK] Plugin loadable
+   |   [OK] Plugin icon present
+   |   [OK] CineView Designs available in the Plugin Browser
+   | 
+   | Result
+   |   CineView MLA 1.0.0 installed successfully.
+   | 
+   |   +-----------------------------------------------------+
+   |   |  Restart the GUI to load CineView MLA 1.0.0.        |
+   |   +-----------------------------------------------------+
+   |   [..] Restarting the GUI ...
+   | 
+new e2 pid=8005 @08:37:34
+webif up @08:38:00
+   state: 1.0.0 generations/g000080 pin=/tmp/CINEVIEW-MLA/poster 0 navy classic 
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+== 4 damaged package
+== 4_badsha
+   exit=1
+   | 
+   |   CineView MLA Smart Installer    version 1.0.0
+   |   Design & Development by habeb-s (c) 2026
+   | 
+   | Device
+   |   [OK] Vu+ Duo4K SE
+   | 
+   | Image
+   |   [OK] OpenATV 8.0.1 detected
+   | 
+   | Version
+   |   [OK] OpenATV 8.0.1 is supported (fully tested on OpenATV 8.0)
+   | 
+   | Python
+   |   [OK] Python 3.14 compatible
+   | 
+   | Architecture
+   |   [OK] Architecture: cortexa15hf-neon-vfpv4 (CineView MLA is architecture-independent)
+   | 
+   | Compatibility
+   |   [OK] Required components present (python3-pillow, python3-requests)
+   |   [OK] Package matches this receiver
+   | 
+   | Storage
+   |   [OK] Free space: 52547 MB
+   |   [OK] Poster cache: /tmp/CINEVIEW-MLA/poster (your setting, kept)
+   | 
+   | Existing installation
+   |   [..] Current version: 1.0.0
+   |   [..] New version:     1.0.0
+   |   [!!] Reinstall requested
+   |   [..] CineView FHD (classic edition) found - it stays installed and independent
+   | 
+   | Package
+   |   [XX] The package failed the SHA256 check (damaged or not the official file).
+   | 
+   | CineView MLA was not installed. Nothing was changed on this receiver.
+   | 
+   before: 1.0.0 generations/g000080 pin=/tmp/CINEVIEW-MLA/poster 0 navy classic 
+   after:  1.0.0 generations/g000080 pin=/tmp/CINEVIEW-MLA/poster 0 navy classic 
+   UNCHANGED
+== 5 reboot
+rootsubdir=linuxrootfs8
+   webif up @08:40:55
+rootsubdir=linuxrootfs8
+ 08:40:55 up 1 min,  0 users,  load average: 0.78, 0.30, 0.11
+   state: 1.0.0 generations/g000080 pin=/tmp/CINEVIEW-MLA/poster 0 navy classic 
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+cap 5_after_reboot
+== 6 Plugin Browser + CineView Designs
+cap 6_pluginbrowser
+cap 6_designs
+   internal words in Designs rows: 0
+   internal words: /home/aiadmin/cineview-mla/shots/t104/1_fresh.txt:0
+   internal words: /home/aiadmin/cineview-mla/shots/t104/2_reinstall.txt:0
+   internal words: /home/aiadmin/cineview-mla/shots/t104/3_upgrade.txt:0
+   internal words: /home/aiadmin/cineview-mla/shots/t104/4_badsha.txt:0
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+== 7 restore
+g000081
+new e2 pid=4479 @08:41:38
+webif up @08:42:04
+   state: 1.0.0 generations/g000081 pin=/media/usb/cineview-mla/dev-cache/reference/poster 0 black classic 
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+0
+hdd poster before: 0 files, 0 changed in 12h
+hdd poster after:  3 files, 3 changed in 12h
+T104_DONE

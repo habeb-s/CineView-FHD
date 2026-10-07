@@ -1,0 +1,91 @@
+hdd poster before: 3 files, 3 changed in 30 min
+backup /media/usb/cineview-mla/state/backup-t104b-20261007-084245
+orig: --theme black --set channelselection=classic --set epg=classic --set eventview=classic-lines --set infobar=classic --set pvr=classic --set secondinfobar=classic
+state before: 1.0.0 generations/g000081 pin=/media/usb/cineview-mla/dev-cache/reference/poster black classic CineView_FHD_MLA/skin.xml 
+== a uninstall (purge)
+   | CineView MLA is the selected skin: stopping Enigma2 to switch back to the image default skin.
+   | CineView MLA removed (/etc/enigma2/cineview_mla kept unless purged).
+   | Removing enigma2-plugin-skins-cineview-fhd-mla (1.0.0) from root...
+   | CineView MLA removed. Your poster cache and backups (/etc/enigma2/cineview_mla/backup) are kept.
+new e2 pid=5915 @08:43:01
+webif up @08:43:26
+   state: pin=none 
+backup
+20261007-083601
+20261007-083716
+settings.before-uninstall
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+cap a_default_skin
+== b fresh install
+   exit=0
+   | 
+   |   CineView MLA Smart Installer    version 1.0.0
+   |   Design & Development by habeb-s (c) 2026
+   | 
+   | Device
+   |   [OK] Vu+ Duo4K SE
+   | 
+   | Image
+   |   [OK] OpenATV 8.0.1 detected
+   | 
+   | Version
+   |   [OK] OpenATV 8.0.1 is supported (fully tested on OpenATV 8.0)
+   | 
+   | Python
+   |   [OK] Python 3.14 compatible
+   | 
+   | Architecture
+   |   [OK] Architecture: cortexa15hf-neon-vfpv4 (CineView MLA is architecture-independent)
+   | 
+   | Compatibility
+   |   [OK] Required components present (python3-pillow, python3-requests)
+   |   [OK] Package matches this receiver
+   | 
+   | Storage
+   |   [OK] Free space: 52568 MB
+   |   [!!] Poster cache: /tmp (HDD_CACHE=0 and no USB storage - posters are fetched again after a reboot)
+   | 
+   | Existing installation
+   |   [..] No earlier CineView MLA installation
+   |   [..] CineView FHD (classic edition) found - it stays installed and independent
+   | 
+   | Package
+   |   [OK] Package verified (SHA256)
+   | 
+   | Installing
+   |   [OK] Restore point saved
+   |   [OK] CineView MLA 1.0.0 installed
+   | 
+   | Verification
+   |   [OK] Package version 1.0.0
+   |   [OK] Skin files present
+   |   [OK] Plugin loadable
+   |   [OK] Plugin icon present
+   |   [OK] CineView Designs available in the Plugin Browser
+   | 
+   | Result
+   |   CineView MLA 1.0.0 installed successfully.
+   | 
+   |   Next step: Menu > Setup > User Interface > Skin > CineView_FHD_MLA, then restart the GUI.
+   |   [..] Then open CineView Designs from the Plugin Browser to choose designs and themes.
+   | 
+   state: 1.0.0 generations/g000000 pin=/tmp/CINEVIEW-MLA/poster navy classic 
+   pin guard OK: /tmp/CINEVIEW-MLA/poster
+== c select skin + GUI start
+new e2 pid=6995 @08:43:57
+webif up @08:44:23
+   state: 1.0.0 generations/g000000 pin=/tmp/CINEVIEW-MLA/poster navy classic CineView_FHD_MLA/skin.xml 
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+cap c_fresh_skin
+cap c_fresh_infobar
+== d restore
+g000001
+new e2 pid=8094 @08:45:10
+webif up @08:45:36
+   state: 1.0.0 generations/g000001 pin=/media/usb/cineview-mla/dev-cache/reference/poster black classic CineView_FHD_MLA/skin.xml 
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+   internal words: /home/aiadmin/cineview-mla/shots/t104b/a_uninstall.txt:0
+   internal words: /home/aiadmin/cineview-mla/shots/t104b/b_fresh.txt:0
+hdd poster before: 3 files, 3 changed in 30 min
+hdd poster after:  3 files, 3 changed in 30 min
+T104B_DONE

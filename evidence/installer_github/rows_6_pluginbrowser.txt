@@ -1,0 +1,10 @@
+screen Screens.PluginBrowser.PluginBrowser
+(no config list: 'config')
+description  'Enigma2 Tools'
+key_red      'Remove Plugins'
+key_green    'Install Plugins'
+key_yellow   'Update Plugins'
+key_blue     'Edit Mode On'
+key_menu     'MENU'
+key_help     'HELP'
+Title        'Plugin Browser'

@@ -1,0 +1,51 @@
+
+  CineView MLA Smart Installer    version 1.0.0
+  Design & Development by habeb-s (c) 2026
+
+Device
+  [OK] Vu+ Duo4K SE
+
+Image
+  [OK] OpenATV 8.0.1 detected
+
+Version
+  [OK] OpenATV 8.0.1 is supported (fully tested on OpenATV 8.0)
+
+Python
+  [OK] Python 3.14 compatible
+
+Architecture
+  [OK] Architecture: cortexa15hf-neon-vfpv4 (CineView MLA is architecture-independent)
+
+Compatibility
+  [OK] Required components present (python3-pillow, python3-requests)
+  [OK] Package matches this receiver
+
+Storage
+  [OK] Free space: 52568 MB
+  [!!] Poster cache: /tmp (HDD_CACHE=0 and no USB storage - posters are fetched again after a reboot)
+
+Existing installation
+  [..] No earlier CineView MLA installation
+  [..] CineView FHD (classic edition) found - it stays installed and independent
+
+Package
+  [OK] Package verified (SHA256)
+
+Installing
+  [OK] Restore point saved
+  [OK] CineView MLA 1.0.0 installed
+
+Verification
+  [OK] Package version 1.0.0
+  [OK] Skin files present
+  [OK] Plugin loadable
+  [OK] Plugin icon present
+  [OK] CineView Designs available in the Plugin Browser
+
+Result
+  CineView MLA 1.0.0 installed successfully.
+
+  Next step: Menu > Setup > User Interface > Skin > CineView_FHD_MLA, then restart the GUI.
+  [..] Then open CineView Designs from the Plugin Browser to choose designs and themes.
+

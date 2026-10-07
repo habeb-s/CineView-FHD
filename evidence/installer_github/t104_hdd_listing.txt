@@ -1,0 +1,6 @@
+drwxr-xr-x    4 root     root          4096 2026-10-07 08:35:34 +0300 /media/hdd/poster
+drwxr-xr-x    2 root     root          4096 2026-10-07 08:35:34 +0300 /media/hdd/poster/id
+-rw-r--r--    1 root     root           193 2026-10-07 08:35:34 +0300 /media/hdd/poster/id/scott pilgrim kontra swiat~~2010.json
+-rw-r--r--    1 root     root        132292 2026-10-07 08:35:34 +0300 /media/hdd/poster/id/scott pilgrim kontra swiat~~2010.jpg
+drwxr-xr-x    2 root     root          4096 2026-10-07 08:35:34 +0300 /media/hdd/poster/sz
+-rw-r--r--    1 root     root         34804 2026-10-07 08:35:34 +0300 /media/hdd/poster/sz/6be9503e07058a6d5534b60b4a8493e7_105x158.png
