@@ -76,3 +76,16 @@ Waiting: the user's approval for 1.0.0 (no final release / no main without it).
 - Items A-G + MessageBox fit + Setup 27 px: implemented and RUNTIME TESTED (checklist round 2 results).
 - Package 1.0.0 SHA256 273f9dfb...76eb on Slot 8; theme Black / Classic; devtool removed. NOT published.
 - Next: the user's final approval -> Stage C (release/rc ipk + SHA256SUMS + installer -> 1.0.0, merge to main).
+
+## 2026-10-07 08:05 - closing / publication requirements (user)
+- Prepared (dev branch, nothing public beyond the dev branch that was already public): product/README.md,
+  product/RELEASE_NOTES.md, product/images (real receiver grabs), product/install/cineview-install.sh (Smart Installer),
+  product/install/cineview-uninstall.sh.  Placeholders @INSTALLER_URL@ / @UNINSTALLER_URL@ / @PKG_URL@ / @PKG_SHA@ are
+  filled when the final repository is chosen.
+- Smart Installer RUNTIME TESTED (t103, Slot 8): check-only, same version (verify only), SHA mismatch (stops, nothing
+  changed), upgrade 1.0.0~rc10 -> 1.0.0 with restart; no temporary files or installer left; 0 errors.
+- Final package candidate (build94 + clean maintainer texts): agent ~/cineview-mla/pkg_final, SHA256 bdae6fca...0775,
+  NOT pushed anywhere public.  Repackaged once more after the repository decision (homepage + URLs).
+- Waiting for the user: (1) repository: new private habeb-s/CineView-MLA (recommended) or CineView-FHD main;
+  (2) compatibility wording (evidence: OpenATV 8.0 only; 7.5 lacks skin features; 7.6 needs its own Python build);
+  (3) LICENSE text; (4) final approval -> repo public, Release 1.0.0, tag v1.0.0, main, installer link live.
