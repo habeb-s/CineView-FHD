@@ -1,6 +1,6 @@
 #!/bin/bash
 # t106x - OpenBH (Slot 5) matrix on top of t106.sh: design models, themes, posters on/off.
-#   usage: t106x.sh models | themes | posters
+#   usage: t106x.sh models | themes | posters | epgpig
 # Each case: selection applied by the engine (composer apply, the same path CineView Designs uses), GUI restart,
 # then t106.sh opens the sections.  The selection before the run is restored at the end.  HDD never used.
 . ~/cineview-mla/p6lib.sh
@@ -40,6 +40,16 @@ posters)
 		ZAP=$ZAP DEVTOOL=1 bash ~/cineview-mla/t106.sh postersoff_$m infobar sib chansel grid evinfo
 	done
 	restart_gui "sed -i '/^config.plugins.cineviewmla.poster_/d' /etc/enigma2/settings;" ;;
+epgpig)
+	# OpenBH user setting config.epgselection.grid.pig (picture in graphics): off -> the pack's own GraphicalEPG
+	# screen (GridEPG/GraphicalEPG) instead of its PiG variant.  The setting's previous value is restored.
+	PIG=$($R 'sed -n "s/^config.epgselection.grid.pig=//p" /etc/enigma2/settings'); echo "grid.pig before: '${PIG:-(default)}'"
+	for p in classic graphicalplus modern minimal columns; do
+		$R "$E apply --set epg=$p 2>&1 | tail -1"
+		restart_gui "sed -i '/^config.epgselection.grid.pig=/d' /etc/enigma2/settings; echo config.epgselection.grid.pig=False >> /etc/enigma2/settings;"
+		ZAP=$ZAP DEVTOOL=1 bash ~/cineview-mla/t106.sh epgnopig_$p grid ibgrid single multi
+	done
+	restart_gui "sed -i '/^config.epgselection.grid.pig=/d' /etc/enigma2/settings; [ -n '$PIG' ] && echo 'config.epgselection.grid.pig=$PIG' >> /etc/enigma2/settings;" ;;
 esac
 echo "== restore: $ORIG"; $R "$E apply $ORIG 2>&1 | tail -1"; restart_gui
 echo T106X_DONE
