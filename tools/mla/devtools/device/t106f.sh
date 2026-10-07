@@ -58,7 +58,7 @@ op designs 6; $RC 401; sleep 2; ga F4_factory_q; $RC 103; sleep 1; o=$(pid5); $R
 echo "   after factory: $(sel)"; X; $RC 352; sleep 2; ga F4_infobar_factory; X; errs
 
 echo "== R guardian recovery: active != last-known-good, 3rd unclean start -> rollback"
-$R "$E apply --theme black --set infobar=cinema 2>&1 | tail -1"
+$R "$E apply --trial --theme black --set infobar=cinema 2>&1 | tail -1"  # --trial: last-known-good stays the previous generation
 echo "   active=$($R "readlink /usr/share/enigma2/CineView_FHD_MLA/active") lkg=$($R "cat $ST/lkg")"
 o=$(pid5); $R "init 4; for i in \$(seq 1 30); do pidof enigma2 >/dev/null || break; sleep 1; done; rm -f $ST/clean_exit; echo 2 > $ST/boot.count; init 3"
 newe2 $o; sleep 30
