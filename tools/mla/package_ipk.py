@@ -42,16 +42,16 @@ REPO = os.path.abspath(os.path.join(HERE, "..", ".."))
 
 CONTROL = """Package: {pkg}
 Version: {ver}
-Description: CineView FHD MLA skin for OpenATV{target} (layout packs, six themes, CineView Designs control UI) - Design & Development by habeb-s (c) 2026
+Description: CineView MLA - multi-layout skin for OpenATV{target}: five design models, six themes, CineView Designs - Design & Development by habeb-s (c) 2026
 Section: skins
 Priority: optional
 Maintainer: habeb-s
 License: CineView-Proprietary
 Architecture: all
 OE: {pkg}
-Homepage: https://github.com/habeb-s/CineView-FHD
+Homepage: {homepage}
 Depends: python3-requests, python3-pillow
-Source: dev/mla-openatv {commit}
+Source: CineView MLA {ver}
 """
 
 PREINST = r"""#!/bin/sh
@@ -96,10 +96,10 @@ if [ ! -e "$S/active" ]; then  # first install (or a dangling link)
   echo "CineView MLA: factory design (Classic, Navy) active."
 elif [ "$(readlink $S/active)" != "generations/g000000" ]; then
   if $E apply >/tmp/cineview_mla_postinst.log 2>&1; then
-    echo "CineView MLA: your design selection was rebuilt with the new version ($(tail -1 /tmp/cineview_mla_postinst.log))."
+    echo "CineView MLA: your design, theme and settings were kept."
   else
     $E rollback --to factory >>/tmp/cineview_mla_postinst.log 2>&1
-    echo "CineView MLA: the previous selection could not be rebuilt - factory design activated (see /tmp/cineview_mla_postinst.log)."
+    echo "CineView MLA: the previous design could not be kept - the factory design (Classic, Navy) is active."
   fi
 fi
 echo "CineView MLA installed. Select it in Menu > Setup > User Interface > Skin, then restart the GUI."
@@ -232,7 +232,7 @@ def build_ipk(build, ver, outdir, pyc_dir=None):
 	_tar(members, data)
 	ctrl = io.BytesIO()
 	target = " 8.0 / Python %s" % pyneed if pyneed else " 7.6 / 8.0"
-	_tar([("./control", CONTROL.format(pkg=PKG, ver=ver, commit=commit, target=target).encode(), 0o644, "file", None),
+	_tar([("./control", CONTROL.format(pkg=PKG, ver=ver, commit=commit, target=target, homepage=os.environ.get("MLA_HOMEPAGE", "https://github.com/habeb-s/CineView-FHD")).encode(), 0o644, "file", None),
 		("./preinst", PREINST.replace("@PYNEED@", pyneed).encode(), 0o755, "file", None), ("./postinst", POSTINST.encode(), 0o755, "file", None),
 		("./prerm", PRERM.encode(), 0o755, "file", None), ("./postrm", POSTRM.encode(), 0o755, "file", None)], ctrl)
 	os.makedirs(outdir, exist_ok=True)
