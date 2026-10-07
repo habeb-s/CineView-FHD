@@ -850,7 +850,79 @@ def _clip_service_name_cell(lst, mode):
 	return width, shift
 
 
+NAME_COLUMN_SHARE = 0.6  # OpenBH bar-right: share of the room between name start and bar given to the name column
+
+
+def _openbh_name_column(lst):
+	"""OpenBH 52dedddc314a lib/service/listboxservice.cpp, single-line visModeComplex: xoffs = sidesMargin
+	[+ number field "00000" + itemsDistances] [+ picon itemHeight*1.67 + itemsDistances] [+ type / crypto icon
+	(mode 1) + itemsDistances]; the name paragraph is m_itemsize.width() wide unless m_column_width > -1, the event
+	text then starts at xoffs + column width and ends before the bar; bar right: pb_xpos = row - bar - 2*distances
+	- 2*sidesMargin - 2*border.  Returns the column width that ends the name before the bar with room for the event
+	text, or None when the list is not in that case (bar left = OpenBH default: nothing to do)."""
+	cu = config.usage
+	if getattr(lst, "instance", None) is None:
+		return None
+	if not mla_active() or _active_layout("channelselection") not in NAME_CLIP_LAYOUTS:
+		return None
+	if type(getattr(lst, "serviceList", None)).__name__ != "ChannelSelection":
+		return None
+	if int(cu.servicelist_twolines.value) or cu.servicelist_column.value != "-1":
+		return None
+	bar = cu.show_event_progress_in_servicelist.value
+	if bar not in ("barright", "percright"):
+		return None
+	from enigma import eLabel, eSize
+	from skin import parameters
+	dist, border = 8, 2  # eListboxServiceContent defaults (m_items_distances, m_progressbar_border_width)
+	row = lst.instance.size().width()
+	sides = getattr(lst, "sidesMargin", 0)
+	pbw = (getattr(lst, "progressPercentWidth", 0) or lst.progressBarWidth) if bar == "percright" else lst.progressBarWidth
+	pb_x = row - pbw - 2 * dist - 2 * sides - 2 * border
+	x = sides
+	if cu.show_channel_numbers_in_servicelist.value:
+		x += eLabel.calculateTextSize(lst.ServiceNumberFont, "0000" if cu.alternative_number_mode.value else "00000", eSize(row, lst.ItemHeight)).width() + dist
+	if cu.service_icon_enable.value:
+		x += int(lst.ItemHeight * 1.67) + dist
+	for mode_cfg, icon in ((cu.servicetype_icon_mode, "icons/ico_dvb-s.png"), (cu.crypto_icon_mode, "icons/icon_crypt.png")):
+		if mode_cfg.value == "1":
+			from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
+			pic = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, icon))
+			if pic:
+				x += pic.size().width() + dist
+	room = pb_x - x - 2 * dist
+	if room < 160:
+		return None
+	return int(room * NAME_COLUMN_SHARE)
+
+
+def _install_openbh_name_column():
+	try:
+		from Components.ServiceList import ServiceList
+	except Exception as err:
+		print("[CineViewMLA] name column (OpenBH): unavailable: %s" % err)
+		return
+	orig = ServiceList.setMode
+	if getattr(orig, "_cvmla_name_clip", False):
+		return
+
+	def setMode(self, mode, _orig=orig):
+		_orig(self, mode)
+		try:
+			w = _openbh_name_column(self)
+			if w:
+				self.l.setColumnWidth(w)
+				print("[CineViewMLA] name column (OpenBH, bar right): %d px" % w)
+		except Exception as err:
+			print("[CineViewMLA] name column (OpenBH): %s" % err)
+	setMode._cvmla_name_clip = True
+	ServiceList.setMode = setMode
+	print("[CineViewMLA] name column installed (OpenBH)")
+
+
 def _install_service_name_clip():
+	if image_adapter.name_clip() == "complexcolumn":
+		return _install_openbh_name_column()
 	try:
 		from Components.ServiceList import ServiceListLegacy
 	except Exception as err:

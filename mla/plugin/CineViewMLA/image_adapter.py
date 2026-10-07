@@ -19,6 +19,12 @@
 #                   "packageaction"         - OpenATV 57b7a51 PackageAction.setWaiting + global Processing dialog
 #                   "plugindownloadbrowser" - OpenBH PluginDownloadBrowser: one native "text" label shown while the
 #                                             list is hidden; its "Please wait..." stays after the list is filled
+#   name_clip       how a long channel name is kept off the progress bar in the narrow channel-list designs:
+#                   "legacycell"    - OpenATV 57b7a51 ServiceListLegacy: name cell narrowed by the picon offset
+#                   "complexcolumn" - OpenBH 52dedddc314a eListboxServiceContent visModeComplex: the single-line name
+#                                     paragraph is as wide as the row (no bound) unless a column width is set; with
+#                                     the bar on the RIGHT a long name runs over it (t106x names, 2026-10-07) ->
+#                                     native column width (eListboxServiceContent::setColumnWidth), bar-right only
 #   label_overrides one-line CineView texts for native labels whose translation does not fit the CineView key slot:
 #                   (module, class, widget, enigma2 msgid, language prefix, text).  Applied after the native screen
 #                   set its text, only when that text is still the native translation of msgid in that language.
@@ -53,9 +59,10 @@ _OPENBH_ROWS = (
 
 IMAGES = {
 	"openatv": {"rows": _OPENATV_ROWS, "shutdown_hook": "session", "choicebox_list": "choiceList",
-		"package_wait": "packageaction"},
+		"package_wait": "packageaction", "name_clip": "legacycell"},
 	"openbh": {"rows": _OPENBH_ROWS, "shutdown_hook": "autostart", "choicebox_list": "list",
-		"package_wait": "plugindownloadbrowser", "label_overrides": _OPENBH_LABELS},
+		"package_wait": "plugindownloadbrowser", "name_clip": "complexcolumn",
+		"label_overrides": _OPENBH_LABELS},
 }
 
 _image = None
@@ -106,3 +113,7 @@ def label_overrides():
 
 def package_wait():
 	return _spec().get("package_wait", "packageaction")
+
+
+def name_clip():
+	return _spec().get("name_clip", "legacycell")
