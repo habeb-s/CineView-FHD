@@ -1478,6 +1478,21 @@ def main(golden, comps, control, out):
 			d.rectangle([30, 20, 260, 50], fill=rgb(pal["steThemeAccent"]))
 			d.text((390, 175), theme.THEMES[key][0], fill=rgb(pal["steThemeText"]))
 			im.save(os.path.join(skin, "themes", key, "preview.png"))
+		# Real receiver pictures (user 2026-10-07: a visual option gets a real preview): mla/previews/ is made by
+		# tools/mla/compose_previews.py from t101 grabs.  themes/<key>.png replaces the colour swatch;
+		# posters/<section>/<layout>.png = Posters On / Off side by side -> layouts/<section>/<layout>/preview_posters.png
+		pv = os.path.join(REPO, "mla", "previews")
+		n_t = n_p = 0
+		for key in theme.THEMES:
+			src = os.path.join(pv, "themes", key + ".png")
+			if os.path.isfile(src):
+				shutil.copy2(src, os.path.join(skin, "themes", key, "preview.png")); n_t += 1
+		for sec in sorted(os.listdir(os.path.join(pv, "posters"))) if os.path.isdir(os.path.join(pv, "posters")) else []:
+			for f in sorted(os.listdir(os.path.join(pv, "posters", sec))):
+				dst = os.path.join(skin, "layouts", sec, f[:-4])
+				if f.endswith(".png") and os.path.isdir(dst):
+					shutil.copy2(os.path.join(pv, "posters", sec, f), os.path.join(dst, "preview_posters.png")); n_p += 1
+		print("PREVIEWS real: %d theme pictures, %d posters on/off pictures" % (n_t, n_p))
 	except ImportError:
 		print("PIL not available: previews skipped")
 

@@ -162,10 +162,10 @@ def _open(what):
 			_session.open(MessageBox, "\n".join(["CineView MLA display test (nothing is changed)."] + ["Line %d of a long message: the window must grow with the text and stay centred." % i for i in range(1, 9)]), MessageBox.TYPE_ERROR)
 		else:
 			_session.open(MessageBox, _("What do you want to do?"), MessageBox.TYPE_YESNO, list=[("Option %d" % i, i) for i in range(1, 5)])
-	elif what == "setup":
+	elif what == "setup" or what.startswith("setup:"):
 		# a native OpenATV Setup page (display only, nothing is saved: closed with EXIT) - shared Setup look check
 		from Screens.Setup import Setup
-		_session.open(Setup, "UserInterface")
+		_session.open(Setup, what.split(":", 1)[1] if ":" in what else "UserInterface")
 	elif what == "rows":
 		# CineView Designs rows: label, shown value, current-row marker, description / status texts -> /tmp/cvmla/rows.txt
 		dlg = _session.current_dialog
