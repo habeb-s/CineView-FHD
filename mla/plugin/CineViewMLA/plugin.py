@@ -861,6 +861,10 @@ def _openbh_name_column(lst):
 	- 2*sidesMargin - 2*border.  Returns the column width that ends the name before the bar with room for the event
 	text, or None when the list is not in that case (bar left = OpenBH default: nothing to do)."""
 	cu = config.usage
+	# PENDING the user's look decision (2026-10-07): the column look (event text starts at a fixed column) is only
+	# used when this flag file exists - test builds / prototype screenshots; nothing changes for users otherwise.
+	if not os.path.exists(os.path.join(STATE, "openbh_name_column")):
+		return None
 	if getattr(lst, "instance", None) is None:
 		return None
 	if not mla_active() or _active_layout("channelselection") not in NAME_CLIP_LAYOUTS:
