@@ -1,0 +1,54 @@
+selection before: navy channelselection=classic,epg=classic,eventview=classic,infobar=classic,pvr=classic,secondinfobar=classic
+== F0 design model Modern from the Profiles menu -> Apply -> Keep
+   cap F0_menu
+   cap F0_models
+   cap F0_model_selected
+   cap F0_apply_q
+   cap F0_keep_prompt
+   after keep: navy channelselection=modern,epg=modern,eventview=modern,infobar=modern,pvr=modern,secondinfobar=modern
+   tracebacks=0 skin_errors=0 crashlogs_today=0
+   cap F0_modern_infobar
+== F1 profiles: save / load / delete
+   cap F1_keyboard
+   cap F1_saved
+   saved file: My CineView.json
+   cap F1_pick
+   cap F1_loaded
+   cap F1_delete_q
+   profiles after delete: ''
+== F2 theme -> Apply -> Keep
+   theme -> Deep Purple
+   cap F2_apply_q
+   cap F2_keep_prompt
+   kept: purple channelselection=modern,epg=modern,eventview=modern,infobar=modern,pvr=modern,secondinfobar=modern
+   tracebacks=0 skin_errors=0 crashlogs_today=0
+== F3 theme -> Apply -> no answer -> automatic rollback
+   theme -> Black
+   cap F3_keep_prompt
+   not answered ...
+   before: purple channelselection=modern,epg=modern,eventview=modern,infobar=modern,pvr=modern,secondinfobar=modern
+   after:  purple channelselection=modern,epg=modern,eventview=modern,infobar=modern,pvr=modern,secondinfobar=modern
+   ROLLED BACK
+2026-10-07 16:20:40 trial: session started on g000031, awaiting confirmation
+2026-10-07 16:22:01 trial: revert (declined by user / prompt timeout)
+2026-10-07 16:22:01 rollback: active -> g000030
+   tracebacks=0 skin_errors=0 crashlogs_today=0
+== F4 Restore Factory Design
+   cap F4_factory_q
+   after factory: navy channelselection=classic,epg=classic,eventview=classic,infobar=classic,pvr=classic,secondinfobar=classic
+   cap F4_infobar_factory
+   tracebacks=0 skin_errors=0 crashlogs_today=0
+== R guardian recovery: active != last-known-good, 3rd unclean start -> rollback
+g000032
+   active=generations/g000032 lkg=g000000
+   active=generations/g000000 lkg=g000000 boot.count=3
+2026-10-07 16:24:29 apply: g000000 -> g000032 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "cinema", "pvr": "classic", "secondinfobar": "classic"}, "theme": "black"}
+2026-10-07 16:24:33 rollback: active -> g000000
+2026-10-07 16:24:33 guardian: count=3: rollback to last-known-good
+   tracebacks=0 skin_errors=0 crashlogs_today=0
+   cap R_after_recovery
+== restore: --theme navy --set channelselection=classic --set epg=classic --set eventview=classic --set infobar=classic --set pvr=classic --set secondinfobar=classic
+g000033
+   selection: navy channelselection=classic,epg=classic,eventview=classic,infobar=classic,pvr=classic,secondinfobar=classic
+   tracebacks=0 skin_errors=0 crashlogs_today=0
+T106F_DONE

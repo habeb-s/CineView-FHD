@@ -1,0 +1,5 @@
+servermode before: '(default profile)'
+softcam: ncam 
+== full: using=cccam address=<server>:15000
+servermode restored: ''
+T106E_DONE

@@ -1,0 +1,30 @@
+pin: /tmp/CINEVIEW-MLA/poster
+CineView MLA: image openbh 5.6 on vuduo4kse
+CineView MLA: your design, theme and settings were kept.
+CineView MLA installed. Select it in Menu > Setup > User Interface > Skin, then restart the GUI.
+Upgrading enigma2-plugin-skins-cineview-fhd-mla (1.0.0~openbh4) to enigma2-plugin-skins-cineview-fhd-mla (1.0.0~openbh5) on root
+Configuring enigma2-plugin-skins-cineview-fhd-mla.
+Version: 1.0.0~openbh5
+== GUI restart
+00_startup     tb=0 skinerr=0 missing=17 notimpl=6 screens: <embedded-in-HideVBILine> BufferIndicator ChannelSelection Dish InfoBar Mute RdsInfoDisplay Screensaver SecondInfoBar SlimChannelSelection SubtitleDisplay TimeshiftState UnhandledKey Volume 
+playing: Cinemax HD | now: 'Misija: Bijela kuća' | next: 'Za Adamovo dobro'
+infobar        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+sib            tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+chansel        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPGPIG 
+single         tb=0 skinerr=0 missing=2 notimpl=0 screens: EPGSelection 
+multi          tb=0 skinerr=0 missing=1 notimpl=0 screens: EPGSelectionMulti 
+ibgrid         tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalInfoBarEPG 
+eventview      tb=0 skinerr=0 missing=10 notimpl=2 screens: EventView 
+evinfo         tb=0 skinerr=0 missing=10 notimpl=2 screens: EventView 
+evsimple       tb=0 skinerr=0 missing=2 notimpl=0 screens: EventViewSimple 
+pvr            tb=0 skinerr=0 missing=0 notimpl=0 screens: MovieSelection 
+plugins        tb=0 skinerr=0 missing=0 notimpl=0 screens: PluginBrowser 
+designs        tb=0 skinerr=0 missing=1 notimpl=0 screens: CineViewMLASetup 
+setup_ui       tb=0 skinerr=0 missing=0 notimpl=0 screens: Setup 
+setup_usage    tb=0 skinerr=0 missing=0 notimpl=0 screens: Setup 
+msg_info       tb=0 skinerr=0 missing=0 notimpl=0 screens: MessageBox 
+msg_yesno      tb=0 skinerr=0 missing=0 notimpl=0 screens: MessageBox 
+msg_long       tb=0 skinerr=0 missing=0 notimpl=0 screens: MessageBox 
+poster cache /tmp: 32 files; crash logs today: 0
+T106_DONE

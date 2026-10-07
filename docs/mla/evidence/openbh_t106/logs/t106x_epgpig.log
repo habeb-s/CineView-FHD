@@ -1,0 +1,50 @@
+selection before: --theme navy --set channelselection=classic --set epg=classic --set eventview=classic --set infobar=classic --set pvr=classic --set secondinfobar=classic
+grid.pig before: '(default)'
+g000018
+pin: /tmp/CINEVIEW-MLA/poster
+playing: Cinemax HD | now: 'Misija: Bijela kuća' | next: 'Za Adamovo dobro'
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPG 
+ibgrid         tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalInfoBarEPG 
+single         tb=0 skinerr=0 missing=2 notimpl=0 screens: EPGSelection 
+multi          tb=0 skinerr=0 missing=1 notimpl=0 screens: EPGSelectionMulti 
+poster cache /tmp: 33 files; crash logs today: 0
+T106_DONE
+g000019
+pin: /tmp/CINEVIEW-MLA/poster
+playing: Cinemax HD | now: 'Misija: Bijela kuća' | next: 'Za Adamovo dobro'
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPG 
+ibgrid         tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalInfoBarEPG 
+single         tb=0 skinerr=0 missing=2 notimpl=0 screens: EPGSelection 
+multi          tb=0 skinerr=0 missing=1 notimpl=0 screens: EPGSelectionMulti 
+poster cache /tmp: 33 files; crash logs today: 0
+T106_DONE
+g000020
+pin: /tmp/CINEVIEW-MLA/poster
+playing: Cinemax HD | now: 'Misija: Bijela kuća' | next: 'Za Adamovo dobro'
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPG 
+ibgrid         tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalInfoBarEPG 
+single         tb=0 skinerr=0 missing=2 notimpl=0 screens: EPGSelection 
+multi          tb=0 skinerr=0 missing=1 notimpl=0 screens: EPGSelectionMulti 
+poster cache /tmp: 33 files; crash logs today: 0
+T106_DONE
+g000021
+pin: /tmp/CINEVIEW-MLA/poster
+playing: Cinemax HD | now: 'Misija: Bijela kuća' | next: 'Za Adamovo dobro'
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPG 
+ibgrid         tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalInfoBarEPG 
+single         tb=0 skinerr=0 missing=2 notimpl=0 screens: EPGSelection 
+multi          tb=0 skinerr=0 missing=1 notimpl=0 screens: EPGSelectionMulti 
+poster cache /tmp: 33 files; crash logs today: 0
+T106_DONE
+g000022
+pin: /tmp/CINEVIEW-MLA/poster
+playing: Cinemax HD | now: 'Misija: Bijela kuća' | next: 'Za Adamovo dobro'
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPG 
+ibgrid         tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalInfoBarEPG 
+single         tb=0 skinerr=0 missing=2 notimpl=0 screens: EPGSelection 
+multi          tb=0 skinerr=0 missing=1 notimpl=0 screens: EPGSelectionMulti 
+poster cache /tmp: 33 files; crash logs today: 0
+T106_DONE
+== restore: --theme navy --set channelselection=classic --set epg=classic --set eventview=classic --set infobar=classic --set pvr=classic --set secondinfobar=classic
+g000023
+T106X_DONE

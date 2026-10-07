@@ -1,0 +1,8 @@
+servermode before: '(default profile)'
+softcam: ncam 
+cat: can't open '/tmp/ecm.info': No such file or directory
+== full: using= address=
+== profile: using=cccam address=x.x.x.238:15000
+== hide: using=cccam address=x.x.x.238:15000
+servermode restored: ''
+T106E_DONE

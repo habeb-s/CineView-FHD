@@ -1,0 +1,24 @@
+selection before: --theme navy --set channelselection=classic --set epg=classic --set eventview=classic --set infobar=classic --set pvr=classic --set secondinfobar=classic
+g000015
+pin: /tmp/CINEVIEW-MLA/poster
+playing: Cinemax HD | now: 'Misija: Bijela kuća' | next: 'Za Adamovo dobro'
+infobar        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+sib            tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+chansel        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPGPIG 
+evinfo         tb=0 skinerr=0 missing=10 notimpl=2 screens: EventView 
+poster cache /tmp: 32 files; crash logs today: 0
+T106_DONE
+g000016
+pin: /tmp/CINEVIEW-MLA/poster
+playing: Cinemax HD | now: 'Misija: Bijela kuća' | next: 'Za Adamovo dobro'
+infobar        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+sib            tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+chansel        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPGPIG 
+evinfo         tb=0 skinerr=0 missing=6 notimpl=0 screens: EventView 
+poster cache /tmp: 32 files; crash logs today: 0
+T106_DONE
+== restore: --theme navy --set channelselection=classic --set epg=classic --set eventview=classic --set infobar=classic --set pvr=classic --set secondinfobar=classic
+g000017
+T106X_DONE
