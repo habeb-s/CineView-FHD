@@ -10,6 +10,11 @@
 #                   "session"   - session.onShutdown (OpenATV 57b7a51)
 #                   "autostart" - WHERE_AUTOSTART plugin called with reason=1 by PluginComponent.removePlugin from
 #                                 plugins.shutdown() (OpenBH / OpenViX family: Session has no onShutdown)
+#   choicebox_list  keyword of Screens.ChoiceBox for the item list:
+#                   "choiceList" - OpenATV 57b7a51 ChoiceBox(session, text, choiceList, ...)
+#                   "list"       - OpenBH 52dedddc314a / c06a87ef4c09 ChoiceBox(session, title, list, ...); any other
+#                                  keyword is swallowed by its **kwargs, so choiceList= opens an EMPTY menu
+#                                  (OpenBH t106f run: CineView profiles menu without entries)
 # Adding an image = one entry in IMAGES (+ skin overrides only where its native screens differ).
 import os
 
@@ -34,8 +39,8 @@ _OPENBH_ROWS = (
 )
 
 IMAGES = {
-	"openatv": {"rows": _OPENATV_ROWS, "shutdown_hook": "session"},
-	"openbh": {"rows": _OPENBH_ROWS, "shutdown_hook": "autostart"},
+	"openatv": {"rows": _OPENATV_ROWS, "shutdown_hook": "session", "choicebox_list": "choiceList"},
+	"openbh": {"rows": _OPENBH_ROWS, "shutdown_hook": "autostart", "choicebox_list": "list"},
 }
 
 _image = None
@@ -73,3 +78,8 @@ def native_rows(usage):
 
 def shutdown_hook():
 	return _spec()["shutdown_hook"]
+
+
+def choice_list(items):
+	"""ChoiceBox keyword argument carrying the menu entries on this image: session.open(ChoiceBox, ..., **choice_list(x))."""
+	return {_spec().get("choicebox_list", "choiceList"): items}

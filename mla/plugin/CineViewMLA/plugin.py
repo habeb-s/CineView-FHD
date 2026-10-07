@@ -490,7 +490,7 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 		choices = [(_("Apply a design model to every section"), "model"), (_("Save current settings as a profile"), "save")]
 		if self._profile_names():
 			choices += [(_("Load a profile"), "load"), (_("Delete a profile"), "delete")]
-		self.session.openWithCallback(self._profileAction, ChoiceBox, text=_("CineView profiles"), choiceList=choices, windowTitle=_("CineView Designs"))
+		self.session.openWithCallback(self._profileAction, ChoiceBox, text=_("CineView profiles"), **image_adapter.choice_list(choices), windowTitle=_("CineView Designs"))
 
 	def _profileAction(self, choice):
 		from Screens.ChoiceBox import ChoiceBox
@@ -498,7 +498,7 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 			return
 		if choice[1] == "model":
 			models = [(_(MODELS[m]["label"]), m) for m in MODEL_ORDER]
-			self.session.openWithCallback(self._modelLoad, ChoiceBox, text=_("Design model"), choiceList=models, windowTitle=_("CineView Designs"))
+			self.session.openWithCallback(self._modelLoad, ChoiceBox, text=_("Design model"), **image_adapter.choice_list(models), windowTitle=_("CineView Designs"))
 			return
 		if choice[1] == "save":
 			from Screens.VirtualKeyBoard import VirtualKeyBoard
@@ -506,7 +506,7 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 		else:
 			names = [(n, n) for n in self._profile_names()]
 			cb = self._profileLoad if choice[1] == "load" else self._profileDelete
-			self.session.openWithCallback(cb, ChoiceBox, text=_("Select a profile"), choiceList=names, windowTitle=_("CineView Designs"))
+			self.session.openWithCallback(cb, ChoiceBox, text=_("Select a profile"), **image_adapter.choice_list(names), windowTitle=_("CineView Designs"))
 
 	def _profile_data(self):
 		data = {"schema": 1, "theme": self.cfgTheme.value, "layouts": {s: c.value for s, c in self.cfgLayouts.items()},
