@@ -8,14 +8,15 @@
 . ~/cineview-mla/p6lib.sh
 IPK=${1:?ipk}; S=~/cineview-mla/shots/t103; rm -rf $S; mkdir -p $S
 SHA=$(sha256sum $IPK | cut -c1-64); D=$(dirname $(readlink -f $IPK)); F=$(basename $IPK)
-( cd $D && exec python3 -m http.server 8089 --bind 192.168.1.42 ) > $S/http.log 2>&1 & HP=$!
-sleep 1
-URL="http://192.168.1.42:8089/$F"
-T="ssh -tt -o BatchMode=yes -o IdentitiesOnly=yes -i $HOME/.ssh/vuplus_aiagent root@192.168.1.250"
+# the receiver cannot reach the agent's port (t103 first run: wget waited forever -> installer now has a timeout);
+# the package is copied to the receiver and given to the installer as a local file (same SHA check)
+cat $IPK | $R "cat > /tmp/cvmla-test-pkg.ipk"
+URL=/tmp/cvmla-test-pkg.ipk
+T="$R"
 push() { cat ~/cineview-mla/repo/product/install/cineview-install.sh | $R "cat > /tmp/cineview-install.sh"; }
 run() {  # $1 name, $2 env
 	local s=${SHA_OVERRIDE:-$SHA}
-	push; echo "== $1"; $T "cd /tmp; $2 CVMLA_PKG_URL=$URL CVMLA_PKG_SHA=$s sh /tmp/cineview-install.sh" < /dev/null > $S/$1.ansi 2>&1
+	push; echo "== $1"; $T "cd /tmp; $2 CVMLA_COLOR=1 CVMLA_PKG_URL=$URL CVMLA_PKG_SHA=$s sh /tmp/cineview-install.sh" < /dev/null > $S/$1.ansi 2>&1
 	sed 's/\x1b\[[0-9;]*m//g; s/\r//g' $S/$1.ansi | tee $S/$1.txt | sed 's/^/   | /'
 	$R "ls /tmp/cineview-install.sh /tmp/.cvmla.* 2>/dev/null | sed 's/^/   LEFT: /'; true"
 }
@@ -34,5 +35,5 @@ CACHE1=$($R 'for d in /media/hdd/poster /media/usb/cineview-mla/poster /tmp/CINE
 echo "cache after: $CACHE1"
 $R 'f=/home/root/logs/$(ls -t /home/root/logs | grep debug | head -1); echo "   tracebacks=$(grep -a -c Traceback $f) skin_errors_new=$(grep -a "Skin\] Error" $f | grep -v -c "progressPercentWidth\|piconMargin") crashlogs=$(ls /home/root/logs | grep -c crash)"'
 grep -ci "g0000\|generation\|dev/mla\|build9\|/tmp/cineview_mla_postinst" $S/*.txt | sed 's/^/   internal words: /'
-kill $HP
+$R "rm -f /tmp/cvmla-test-pkg.ipk"
 echo T103_DONE

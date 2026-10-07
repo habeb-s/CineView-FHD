@@ -17,7 +17,7 @@ SKIN_DIR="/usr/share/enigma2/$SKIN_NAME"
 PLG_DIR="/usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA"
 STATE="/etc/enigma2/cineview_mla"
 
-if [ -t 1 ]; then
+if [ -t 1 ] || [ "${CVMLA_COLOR:-0}" = "1" ]; then
 	B=$(printf '\033[1m'); N=$(printf '\033[0m'); G=$(printf '\033[32m'); Y=$(printf '\033[33m'); R=$(printf '\033[31m'); C=$(printf '\033[36m'); W=$(printf '\033[37m')
 else
 	B=""; N=""; G=""; Y=""; R=""; C=""; W=""
@@ -165,7 +165,10 @@ fi
 if [ "$MODE" != "same" ]; then
 	section "Package"
 	case "$PKG_URL$PKG_SHA" in *@*) fail "This installer has no package address. Please download the official installer again." ;; esac
-	wget -q -O "$IPK" "$PKG_URL" 2>/dev/null || fail "The package could not be downloaded. Please check the internet connection."
+	case "$PKG_URL" in
+		/*) cp "$PKG_URL" "$IPK" 2>/dev/null ;;  # a package file already on the receiver
+		*) wget -q -T 60 -t 2 -O "$IPK" "$PKG_URL" 2>/dev/null ;;
+	esac || fail "The package could not be downloaded. Please check the internet connection."
 	GOT=$(sha256sum "$IPK" 2>/dev/null | cut -d' ' -f1)
 	[ "$GOT" = "$PKG_SHA" ] || fail "The package failed the SHA256 check (damaged or not the official file)."
 	ok "Package verified (SHA256)"
