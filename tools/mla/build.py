@@ -1492,7 +1492,14 @@ def main(golden, comps, control, out):
 				dst = os.path.join(skin, "layouts", sec, f[:-4])
 				if f.endswith(".png") and os.path.isdir(dst):
 					shutil.copy2(os.path.join(pv, "posters", sec, f), os.path.join(dst, "preview_posters.png")); n_p += 1
-		print("PREVIEWS real: %d theme pictures, %d posters on/off pictures" % (n_t, n_p))
+		n_l = 0
+		for sec in sorted(os.listdir(os.path.join(pv, "layouts"))) if os.path.isdir(os.path.join(pv, "layouts")) else []:
+			for f in sorted(os.listdir(os.path.join(pv, "layouts", sec))):
+				dst = os.path.join(skin, "layouts", sec, f[:-4])
+				if f.endswith(".png") and os.path.isdir(dst):
+					shutil.copy2(os.path.join(pv, "layouts", sec, f), os.path.join(dst, "preview.png")); n_l += 1
+		missing = sorted(os.path.relpath(d, skin) for d in glob.glob(os.path.join(skin, "layouts", "*", "*")) if os.path.isdir(d) and not os.path.isfile(os.path.join(d, "preview.png")))
+		print("PREVIEWS real: %d theme pictures, %d design pictures, %d posters on/off pictures; without a preview: %s" % (n_t, n_l, n_p, missing or "none"))
 	except ImportError:
 		print("PIL not available: previews skipped")
 

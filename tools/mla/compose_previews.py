@@ -4,6 +4,8 @@
 usage: compose_previews.py <previews_src> <repo>/mla/previews
   <src>/posters/<model>/{on,off}/<section>.png  -> posters/<section>/<layout>.png  (720x405, Posters On | Posters Off)
   <src>/themes/<theme>.png                      -> themes/<theme>.png             (720x405, the real screen)
+  <src>/posters/<model>/on/<section>.png        -> layouts/<section>/<layout>.png (720x405, the design's real preview)
+  <src>/extra/<section>/<layout>.png            -> layouts/<section>/<layout>.png (layouts outside the five models)
 Only grabs that exist are used; a missing pair leaves that layout without a picture (CineView Designs then shows its
 Info Card)."""
 import os
@@ -67,6 +69,25 @@ def main(src, out):
 				os.makedirs(os.path.join(out, "posters", sec), exist_ok=True)
 				im.save(os.path.join(out, "posters", sec, lid + ".png"), optimize=True)
 				n += 1
+	# the design previews themselves: the posters-ON grab of every model (classic PVR included), plus extra layouts
+	PVR_CLASSIC = {"pvr": "classic"}
+	L = 0
+	for model, secs in MODELS.items():
+		for sec, lids in list(secs.items()) + (list(PVR_CLASSIC.items()) if model == "classic" else []):
+			on = os.path.join(src, "posters", model, "on", sec + ".png")
+			if not os.path.isfile(on):
+				continue
+			im = Image.open(on).convert("RGB").resize((720, 405), Image.LANCZOS)
+			for lid in (lids if isinstance(lids, list) else [lids]):
+				os.makedirs(os.path.join(out, "layouts", sec), exist_ok=True)
+				im.save(os.path.join(out, "layouts", sec, lid + ".png"), optimize=True)
+				L += 1
+	for sec in sorted(os.listdir(os.path.join(src, "extra"))) if os.path.isdir(os.path.join(src, "extra")) else []:
+		for f in sorted(os.listdir(os.path.join(src, "extra", sec))):
+			os.makedirs(os.path.join(out, "layouts", sec), exist_ok=True)
+			Image.open(os.path.join(src, "extra", sec, f)).convert("RGB").resize((720, 405), Image.LANCZOS).save(os.path.join(out, "layouts", sec, f), optimize=True)
+			L += 1
+	print("design previews: %d" % L)
 	t = 0
 	for f in sorted(os.listdir(os.path.join(src, "themes"))) if os.path.isdir(os.path.join(src, "themes")) else []:
 		if f.endswith(".png"):
