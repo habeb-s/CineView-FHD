@@ -1,0 +1,164 @@
+backup /media/usb/cineview-mla/state/backup-t102-20261007-063846
+selection before: navy channelselection=classic,epg=classic,eventview=classic-lines,infobar=classic,pvr=classic,secondinfobar=classic
+== W slow walk
+cap W00
+cap W01
+cap W02
+cap W03
+cap W04
+cap W05
+cap W06
+cap W07
+cap W08
+cap W09
+cap W10
+cap W11
+cap W12
+cap W13
+cap W14
+cap W15
+cap W16
+   rows: 17
+   forbidden words on screen (status/keys/description): 0
+status       'CineView MLA 1.0.0\nDesign: Classic   Theme: Dark Navy\nDesign & Development by habeb-s © 2026'
+key_green    'Apply Design'
+key_blue     'Restore Factory Design'
+== M MessageBox
+cap M_msg_info
+cap M_msg_yesno
+cap M_msg_list
+cap M_msg_long
+== S Setup pages
+cap S_UserInterface_top
+cap S_UserInterface_scrolled
+cap S_Usage_top
+cap S_Usage_scrolled
+cap S_Time_top
+cap S_Time_scrolled
+cap S_EPG_top
+cap S_EPG_scrolled
+cap S_Recording_top
+cap S_Recording_scrolled
+cap S_Audio_top
+cap S_Audio_scrolled
+cap S_Subtitle_top
+cap S_Subtitle_scrolled
+cap S_Playback_top
+cap S_Playback_scrolled
+cap S_ChannelSelection_top
+cap S_ChannelSelection_scrolled
+cap S_Logs_top
+cap S_Logs_scrolled
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+== F1 profiles
+cap F1_menu
+cap F1_saved
+cap F1_pick
+cap F1_loaded
+   after RED: navy channelselection=classic,epg=classic,eventview=classic-lines,infobar=classic,pvr=classic,secondinfobar=classic
+cap F1_confirm
+   profile deleted
+== F2 Apply -> Keep (theme -> next)
+   theme -> Deep Purple
+cap F2_apply_q
+new e2 pid=8927 @06:47:27
+webif up @06:47:52
+cap F2_keep_prompt
+   kept: purple channelselection=classic,epg=classic,eventview=classic-lines,infobar=classic,pvr=classic,secondinfobar=classic
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+== F3 Apply -> no answer -> automatic revert (theme -> next again)
+   theme -> Black
+new e2 pid=10949 @06:49:31
+webif up @06:49:57
+cap F3_keep_prompt
+   not answered ...
+new e2 pid=12646 @06:51:19
+webif up @06:51:45
+   after timeout: purple channelselection=classic,epg=classic,eventview=classic-lines,infobar=classic,pvr=classic,secondinfobar=classic
+2026-10-07 06:49:19 apply: g000065 -> g000066 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic-lines", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "black"}
+2026-10-07 06:49:55 trial: session started on g000066, awaiting confirmation
+2026-10-07 06:51:15 trial: revert (declined by user / prompt timeout)
+2026-10-07 06:51:15 rollback: active -> g000065
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+== F4 Factory (real)
+cap F4_factory_q
+new e2 pid=14296 @06:53:04
+webif up @06:53:28
+   after factory: navy channelselection=classic,epg=classic,eventview=classic,infobar=classic,pvr=classic,secondinfobar=classic
+cap F4_infobar_factory
+cap F4_designs_factory
+status       'CineView MLA 1.0.0\nDesign: Classic   Theme: Dark Navy\nDesign & Development by habeb-s © 2026'
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+== F5 Processing
+cap F5_processing
+cap F5_processing2
+== T six themes
+g000067
+new e2 pid=16093 @06:54:58
+webif up @06:55:24
+cap T_navy_1_preview
+cap T_navy_2_infocard
+cap T_navy_3_processing
+cap T_navy_4_yesno
+cap T_navy_5_long
+cap T_navy_6_setup
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+g000068
+new e2 pid=18159 @06:57:11
+webif up @06:57:36
+cap T_black_1_preview
+cap T_black_2_infocard
+cap T_black_3_processing
+cap T_black_4_yesno
+cap T_black_5_long
+cap T_black_6_setup
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+g000069
+new e2 pid=20190 @06:59:25
+webif up @06:59:51
+cap T_graphite_1_preview
+cap T_graphite_2_infocard
+cap T_graphite_3_processing
+cap T_graphite_4_yesno
+cap T_graphite_5_long
+cap T_graphite_6_setup
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+g000070
+new e2 pid=22173 @07:01:38
+webif up @07:02:03
+cap T_purple_1_preview
+cap T_purple_2_infocard
+cap T_purple_3_processing
+cap T_purple_4_yesno
+cap T_purple_5_long
+cap T_purple_6_setup
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+g000071
+new e2 pid=24302 @07:03:55
+webif up @07:04:19
+cap T_burgundy_1_preview
+cap T_burgundy_2_infocard
+cap T_burgundy_3_processing
+cap T_burgundy_4_yesno
+cap T_burgundy_5_long
+cap T_burgundy_6_setup
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+g000072
+new e2 pid=26386 @07:06:08
+webif up @07:06:34
+cap T_green_1_preview
+cap T_green_2_infocard
+cap T_green_3_processing
+cap T_green_4_yesno
+cap T_green_5_long
+cap T_green_6_setup
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+== restore: --theme navy --set channelselection=classic --set epg=classic --set eventview=classic-lines --set infobar=classic --set pvr=classic --set secondinfobar=classic
+g000073
+new e2 pid=28429 @07:08:23
+webif up @07:08:49
+selection after: navy channelselection=classic,epg=classic,eventview=classic-lines,infobar=classic,pvr=classic,secondinfobar=classic
+   restored: yes
+   settings: same as the backup (counters aside)
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+T102_DONE

@@ -1,0 +1,608 @@
+gettext-shadow check: 0 problem(s)
+{
+ "effective_screens": 540,
+ "by_origin": {
+  "skin_templates.xml": 34,
+  "skin.xml": 196,
+  "skin_plugins.xml": 280,
+  "openatv_skin.xml": 30
+ },
+ "nonscreen": [
+  "skin_plugins.xml:fonts",
+  "skin_plugins.xml:parameters",
+  "skin_plugins.xml:gstyle",
+  "skin.xml:output",
+  "skin.xml:fonts",
+  "skin.xml:colors",
+  "skin.xml:parameters",
+  "skin.xml:windowstyle",
+  "skin.xml:switchpixmap"
+ ],
+ "core_common_screens": 511
+}
+  infobar: ['InfoBar', 'RadioInfoBar']
+  secondinfobar: ['SecondInfoBar', 'SecondInfoBarECM', 'SecondInfoBarSimple']
+  channelselection: ['ChannelSelection', 'ChannelSelectionRadio', 'SimpleChannelSelection', 'SlimChannelSelection']
+  epg: ['EPGSelection', 'EPGSelectionMulti', 'QuickEPG', 'GraphicalEPG', 'GraphicalEPGPIG', 'GraphicalInfoBarEPG', 'EPGvertical', 'EPGverticalPIG', 'GraphMultiEPG', 'GraphMultiEPGList']
+  pvr: ['MovieSelection', 'MoviePlayer', 'PVRState', 'TimeshiftState', 'TimeshiftLive', 'MovieContextMenu']
+  eventview: ['EventView', 'EventViewSimple', 'InfoBarEventView', 'EventViewContextMenu']
+RTL titles (Classic) infobar        2 event-title widgets got a right-to-left twin
+RTL titles (Classic) secondinfobar  8 event-title widgets got a right-to-left twin
+RTL titles (Classic) eventview      4 event-title widgets got a right-to-left twin
+Channel-list description (Classic): swimming from the top (1 widget)
+IMDb rule (Classic) eventview      2 rating widgets, 1 badges
+IMDb rule (Classic) infobar        2 rating widgets, 1 badges
+IMDb rule (Classic) secondinfobar  4 rating widgets, 2 badges
+M5 channelselection ChannelSelection       poster toggle
+M5 channelselection ChannelSelection       poster toggle
+M5 channelselection ChannelSelection       poster toggle
+M5 channelselection ChannelSelection       poster toggle
+M5 epg              EPGSelection           poster toggle
+M5 epg              EPGSelectionMulti      poster toggle
+M5 epg              QuickEPG               poster toggle
+M5 epg              GraphicalEPG           poster toggle
+M5 epg              GraphicalEPG           frame 167x245
+M5 epg              GraphMultiEPG          poster toggle
+M5 eventview        EventView              poster toggle
+M5 eventview        EventView              poster toggle
+M5 eventview        EventView              poster toggle
+M5 eventview        EventViewSimple        poster toggle
+M5 eventview        InfoBarEventView       poster toggle
+M5 infobar          InfoBar                poster toggle
+M5 infobar          InfoBar                frame 111x164
+M5 secondinfobar    SecondInfoBar          poster toggle
+M5 secondinfobar    SecondInfoBar          poster toggle
+M5 secondinfobar    SecondInfoBar          poster toggle
+M5 secondinfobar    SecondInfoBar          frame 211x314
+M5 secondinfobar    SecondInfoBar          frame 211x314
+M5 secondinfobar    SecondInfoBar          frame 111x164
+M5 secondinfobar    SecondInfoBarECM       poster toggle
+M5 secondinfobar    SecondInfoBarSimple    poster toggle
+M5 secondinfobar    SecondInfoBarSimple    poster toggle
+M5 secondinfobar    SecondInfoBarSimple    poster toggle
+M5 secondinfobar    SecondInfoBarSimple    frame 211x314
+M5 secondinfobar    SecondInfoBarSimple    frame 211x314
+M5 secondinfobar    SecondInfoBarSimple    frame 111x164
+SIB-TEXTFIT SecondInfoBar        session.Event_Now  desc (narrow+wide)
+SIB-TEXTFIT SecondInfoBar        session.Event_Next desc (narrow+wide)
+SIB-TEXTFIT SecondInfoBarSimple  session.Event_Now  desc (narrow+wide)
+SIB-TEXTFIT SecondInfoBarSimple  session.Event_Next desc (narrow+wide)
+SIB-TEXTFIT EventView            session.Event_Now  desc (narrow+wide)
+SIB-TEXTFIT EventView            session.Event_Next desc (narrow+wide)
+POSTERS-OFF (Classic) infobar          InfoBar                16 moved, 1 hidden
+POSTERS-OFF (Classic) secondinfobar    SecondInfoBar          16 moved, 1 hidden
+POSTERS-OFF (Classic) secondinfobar    SecondInfoBarECM       0 moved, 0 hidden
+POSTERS-OFF (Classic) secondinfobar    SecondInfoBarSimple    16 moved, 1 hidden
+POSTERS-OFF (Classic) eventview        EventView              16 moved, 1 hidden
+POSTERS-OFF (Classic) eventview        EventViewSimple        0 moved, 0 hidden
+POSTERS-OFF (Classic) eventview        InfoBarEventView       0 moved, 0 hidden
+POSTERS-OFF (Classic) channelselection ChannelSelection       1 moved, 1 hidden
+POSTERS-OFF (Classic) epg              EPGSelection           1 moved, 0 hidden
+POSTERS-OFF (Classic) epg              EPGSelectionMulti      1 moved, 0 hidden
+POSTERS-OFF (Classic) epg              QuickEPG               1 moved, 0 hidden
+POSTERS-OFF (Classic) epg              GraphicalEPG           4 moved, 0 hidden
+POSTERS-OFF (Classic) epg              GraphMultiEPG          4 moved, 0 hidden
+POSTERS-OFF (Classic, named widgets) secondinfobar    SecondInfoBarECM_CVPosterOff: 3 widgets widened
+POSTERS-OFF (Classic, named widgets) eventview        EventViewSimple_CVPosterOff: 3 widgets widened
+POSTERS-OFF (Classic, named widgets) eventview        InfoBarEventView_CVPosterOff: 1 widgets widened
+Multi EPG description: 2 posters on/off variants (no overlap with the poster)
+Vertical EPG: channel page index hidden per the native contract (2 screens)
+EventView key captions (Classic): 5 screens
+EventView pack classic-lines: 8 description widgets (line by line, opaque label)
+P7 pack: layouts/infobar/details
+P7 pack: layouts/secondinfobar/details
+P7 pack: layouts/infobar/cinema
+P7 pack: layouts/secondinfobar/cinema
+D1 pack: layouts/channelselection/posterlist
+D1 pack: layouts/channelselection/videofirst
+D1 pack: layouts/channelselection/videofirst-right
+D2 pack: layouts/epg/graphicalplus
+COVER pack: layouts/pvr/cover
+DETAILS EV pack: layouts/eventview/detailscard
+CINEMA PVR pack: layouts/pvr/cinema
+FEATURE pack: layouts/eventview/feature
+COLUMNS pack: layouts/epg/columns
+MODERN pack: layouts/infobar/modern
+MODERN pack: layouts/secondinfobar/modern
+MODERN pack: layouts/channelselection/modern
+MODERN pack: layouts/epg/modern
+MODERN pack: layouts/pvr/modern
+MODERN pack: layouts/eventview/modern
+MINIMAL pack: layouts/infobar/minimal
+MINIMAL pack: layouts/secondinfobar/minimal
+MINIMAL pack: layouts/channelselection/minimal
+MINIMAL pack: layouts/epg/minimal
+MINIMAL pack: layouts/pvr/minimal
+MINIMAL pack: layouts/eventview/minimal
+MOVIELIST legacy attributes removed: layouts/pvr/classic/screens.openatv.xml
+ACCEL-OPT layouts/channelselection/minimal/screens.openatv.xml default posters 1, frames 0 -> tile/icon/strips
+ACCEL-OPT layouts/channelselection/posterlist/screens.openatv.xml default posters 2, frames 2 -> tile/icon/strips
+ACCEL-OPT layouts/channelselection/videofirst/screens.openatv.xml default posters 1, frames 1 -> tile/icon/strips
+ACCEL-OPT layouts/channelselection/videofirst-right/screens.openatv.xml default posters 1, frames 1 -> tile/icon/strips
+ACCEL-OPT layouts/epg/columns/screens.openatv.xml              default posters 1, frames 1 -> tile/icon/strips
+ACCEL-OPT layouts/epg/graphicalplus/screens.openatv.xml        default posters 1, frames 1 -> tile/icon/strips
+ACCEL-OPT layouts/epg/minimal/screens.openatv.xml              default posters 1, frames 0 -> tile/icon/strips
+ACCEL-OPT layouts/eventview/detailscard/screens.openatv.xml    default posters 3, frames 3 -> tile/icon/strips
+ACCEL-OPT layouts/eventview/feature/screens.openatv.xml        default posters 3, frames 3 -> tile/icon/strips
+ACCEL-OPT layouts/eventview/minimal/screens.openatv.xml        default posters 3, frames 0 -> tile/icon/strips
+ACCEL-OPT layouts/infobar/cinema/screens.openatv.xml           default posters 1, frames 1 -> tile/icon/strips
+ACCEL-OPT layouts/infobar/details/screens.openatv.xml          default posters 1, frames 1 -> tile/icon/strips
+ACCEL-OPT layouts/infobar/minimal/screens.openatv.xml          default posters 1, frames 0 -> tile/icon/strips
+ACCEL-OPT layouts/pvr/cinema/screens.openatv.xml               default posters 2, frames 2 -> tile/icon/strips
+ACCEL-OPT layouts/pvr/cover/screens.openatv.xml                default posters 2, frames 2 -> tile/icon/strips
+ACCEL-OPT layouts/pvr/minimal/screens.openatv.xml              default posters 2, frames 0 -> tile/icon/strips
+ACCEL-OPT layouts/secondinfobar/cinema/screens.openatv.xml     default posters 4, frames 4 -> tile/icon/strips
+ACCEL-OPT layouts/secondinfobar/details/screens.openatv.xml    default posters 6, frames 6 -> tile/icon/strips
+ACCEL-OPT layouts/secondinfobar/minimal/screens.openatv.xml    default posters 2, frames 0 -> tile/icon/strips
+NO-POSTER dynamic layouts/channelselection/classic/screens.openatv.xml ChannelSelection               3 variants
+NO-POSTER dynamic layouts/channelselection/minimal/screens.openatv.xml ChannelSelection               16 variants
+NO-POSTER dynamic layouts/channelselection/modern/screens.openatv.xml  ChannelSelection               44 variants
+NO-POSTER dynamic layouts/channelselection/posterlist/screens.openatv.xml ChannelSelection               38 variants
+NO-POSTER dynamic layouts/channelselection/videofirst/screens.openatv.xml ChannelSelection               36 variants
+NO-POSTER dynamic layouts/channelselection/videofirst-right/screens.openatv.xml ChannelSelection               36 variants
+NO-POSTER dynamic layouts/epg/classic/screens.openatv.xml              EPGSelection                   2 variants
+NO-POSTER dynamic layouts/epg/classic/screens.openatv.xml              EPGSelectionMulti              4 variants
+NO-POSTER dynamic layouts/epg/classic/screens.openatv.xml              QuickEPG                       2 variants
+NO-POSTER dynamic layouts/epg/classic/screens.openatv.xml              GraphicalEPG                   8 variants
+NO-POSTER dynamic layouts/epg/classic/screens.openatv.xml              GraphMultiEPG                  8 variants
+NO-POSTER dynamic layouts/epg/columns/screens.openatv.xml              EPGvertical                    16 variants
+NO-POSTER dynamic layouts/epg/columns/screens.openatv.xml              EPGSelection                   2 variants
+NO-POSTER dynamic layouts/epg/columns/screens.openatv.xml              EPGSelectionMulti              4 variants
+NO-POSTER dynamic layouts/epg/columns/screens.openatv.xml              QuickEPG                       2 variants
+NO-POSTER dynamic layouts/epg/columns/screens.openatv.xml              GraphicalEPG                   8 variants
+NO-POSTER dynamic layouts/epg/columns/screens.openatv.xml              GraphMultiEPG                  8 variants
+NO-POSTER dynamic layouts/epg/graphicalplus/screens.openatv.xml        GraphicalEPG                   24 variants
+NO-POSTER dynamic layouts/epg/graphicalplus/screens.openatv.xml        EPGSelection                   2 variants
+NO-POSTER dynamic layouts/epg/graphicalplus/screens.openatv.xml        EPGSelectionMulti              4 variants
+NO-POSTER dynamic layouts/epg/graphicalplus/screens.openatv.xml        QuickEPG                       2 variants
+NO-POSTER dynamic layouts/epg/graphicalplus/screens.openatv.xml        GraphMultiEPG                  8 variants
+NO-POSTER dynamic layouts/epg/minimal/screens.openatv.xml              GraphicalEPG                   18 variants
+NO-POSTER dynamic layouts/epg/minimal/screens.openatv.xml              EPGSelection                   2 variants
+NO-POSTER dynamic layouts/epg/minimal/screens.openatv.xml              EPGSelectionMulti              4 variants
+NO-POSTER dynamic layouts/epg/minimal/screens.openatv.xml              QuickEPG                       2 variants
+NO-POSTER dynamic layouts/epg/minimal/screens.openatv.xml              GraphMultiEPG                  8 variants
+NO-POSTER dynamic layouts/epg/modern/screens.openatv.xml               GraphicalEPG                   28 variants
+NO-POSTER dynamic layouts/epg/modern/screens.openatv.xml               EPGSelection                   2 variants
+NO-POSTER dynamic layouts/epg/modern/screens.openatv.xml               EPGSelectionMulti              4 variants
+NO-POSTER dynamic layouts/epg/modern/screens.openatv.xml               QuickEPG                       2 variants
+NO-POSTER dynamic layouts/epg/modern/screens.openatv.xml               GraphMultiEPG                  8 variants
+NO-POSTER dynamic layouts/eventview/classic/screens.openatv.xml        EventView                      41 variants
+NO-POSTER dynamic layouts/eventview/classic/screens.openatv.xml        EventViewSimple                0 variants
+NO-POSTER dynamic layouts/eventview/classic/screens.openatv.xml        InfoBarEventView               0 variants
+NO-POSTER dynamic layouts/eventview/classic-lines/screens.openatv.xml  EventView                      41 variants
+NO-POSTER dynamic layouts/eventview/classic-lines/screens.openatv.xml  EventViewSimple                0 variants
+NO-POSTER dynamic layouts/eventview/classic-lines/screens.openatv.xml  InfoBarEventView               0 variants
+NO-POSTER dynamic layouts/eventview/detailscard/screens.openatv.xml    EventView                      0 variants
+NO-POSTER dynamic layouts/eventview/detailscard/screens.openatv.xml    EventViewSimple                0 variants
+NO-POSTER dynamic layouts/eventview/detailscard/screens.openatv.xml    InfoBarEventView               0 variants
+NO-POSTER dynamic layouts/eventview/feature/screens.openatv.xml        EventView                      0 variants
+NO-POSTER dynamic layouts/eventview/feature/screens.openatv.xml        EventViewSimple                0 variants
+NO-POSTER dynamic layouts/eventview/feature/screens.openatv.xml        InfoBarEventView               0 variants
+NO-POSTER dynamic layouts/eventview/minimal/screens.openatv.xml        EventView                      0 variants
+NO-POSTER dynamic layouts/eventview/minimal/screens.openatv.xml        EventViewSimple                0 variants
+NO-POSTER dynamic layouts/eventview/minimal/screens.openatv.xml        InfoBarEventView               0 variants
+NO-POSTER dynamic layouts/eventview/modern/screens.openatv.xml         EventView                      42 variants
+NO-POSTER dynamic layouts/eventview/modern/screens.openatv.xml         EventViewSimple                0 variants
+NO-POSTER dynamic layouts/eventview/modern/screens.openatv.xml         InfoBarEventView               0 variants
+NO-POSTER dynamic layouts/infobar/cinema/screens.openatv.xml           InfoBar                        42 variants
+NO-POSTER dynamic layouts/infobar/classic/screens.openatv.xml          InfoBar                        33 variants
+NO-POSTER dynamic layouts/infobar/details/screens.openatv.xml          InfoBar                        22 variants
+NO-POSTER dynamic layouts/infobar/minimal/screens.openatv.xml          InfoBar                        10 variants
+NO-POSTER dynamic layouts/infobar/modern/screens.openatv.xml           InfoBar                        18 variants
+NO-POSTER dynamic layouts/pvr/cinema/screens.openatv.xml               MovieSelection                 20 variants
+NO-POSTER dynamic layouts/pvr/cinema/screens.openatv.xml               EMCSelection                   20 variants
+NO-POSTER dynamic layouts/pvr/cover/screens.openatv.xml                MovieSelection                 6 variants
+NO-POSTER dynamic layouts/pvr/cover/screens.openatv.xml                EMCSelection                   6 variants
+NO-POSTER dynamic layouts/pvr/minimal/screens.openatv.xml              MovieSelection                 12 variants
+NO-POSTER dynamic layouts/pvr/minimal/screens.openatv.xml              EMCSelection                   12 variants
+NO-POSTER dynamic layouts/pvr/modern/screens.openatv.xml               MovieSelection                 12 variants
+NO-POSTER dynamic layouts/pvr/modern/screens.openatv.xml               EMCSelection                   12 variants
+NO-POSTER dynamic layouts/secondinfobar/cinema/screens.openatv.xml     SecondInfoBar                  38 variants
+NO-POSTER dynamic layouts/secondinfobar/cinema/screens.openatv.xml     SecondInfoBarSimple            38 variants
+NO-POSTER dynamic layouts/secondinfobar/classic/screens.openatv.xml    SecondInfoBar                  41 variants
+NO-POSTER dynamic layouts/secondinfobar/classic/screens.openatv.xml    SecondInfoBarSimple            41 variants
+NO-POSTER dynamic layouts/secondinfobar/details/screens.openatv.xml    SecondInfoBar                  48 variants
+NO-POSTER dynamic layouts/secondinfobar/details/screens.openatv.xml    SecondInfoBarSimple            48 variants
+NO-POSTER dynamic layouts/secondinfobar/minimal/screens.openatv.xml    SecondInfoBar                  30 variants
+NO-POSTER dynamic layouts/secondinfobar/minimal/screens.openatv.xml    SecondInfoBarSimple            30 variants
+NO-POSTER dynamic layouts/secondinfobar/modern/screens.openatv.xml     SecondInfoBar                  50 variants
+NO-POSTER dynamic layouts/secondinfobar/modern/screens.openatv.xml     SecondInfoBarSimple            50 variants
+NO-POSTER static  layouts/eventview/classic/screens.openatv.xml        EventViewSimple_CVPosterOff    (separate posters-off screen / no variants: placeholder kept)
+NO-POSTER static  layouts/eventview/classic/screens.openatv.xml        InfoBarEventView_CVPosterOff   (separate posters-off screen / no variants: placeholder kept)
+NO-POSTER static  layouts/eventview/classic-lines/screens.openatv.xml  EventViewSimple_CVPosterOff    (separate posters-off screen / no variants: placeholder kept)
+NO-POSTER static  layouts/eventview/classic-lines/screens.openatv.xml  InfoBarEventView_CVPosterOff   (separate posters-off screen / no variants: placeholder kept)
+NO-POSTER static  layouts/secondinfobar/cinema/screens.openatv.xml     SecondInfoBarECM               (separate posters-off screen / no variants: placeholder kept)
+NO-POSTER static  layouts/secondinfobar/classic/screens.openatv.xml    SecondInfoBarECM               (separate posters-off screen / no variants: placeholder kept)
+NO-POSTER static  layouts/secondinfobar/classic/screens.openatv.xml    SecondInfoBarECM_CVPosterOff   (separate posters-off screen / no variants: placeholder kept)
+NO-POSTER static  layouts/secondinfobar/details/screens.openatv.xml    SecondInfoBarECM               (separate posters-off screen / no variants: placeholder kept)
+NO-POSTER static  layouts/secondinfobar/minimal/screens.openatv.xml    SecondInfoBarECM               (separate posters-off screen / no variants: placeholder kept)
+NO-POSTER static  layouts/secondinfobar/minimal/screens.openatv.xml    SecondInfoBarECM_CVPosterOff   (separate posters-off screen / no variants: placeholder kept)
+NO-POSTER static  layouts/secondinfobar/modern/screens.openatv.xml     SecondInfoBarECM               (separate posters-off screen / no variants: placeholder kept)
+SERVICEINFO video tokens -> CineViewMLAServiceInfo: 102
+Z-ORDER layouts/epg/classic/screens.openatv.xml       EPGSelectionMulti            background eLabel 0,0 1820,880 -> zPosition -1
+Z-ORDER layouts/epg/classic/screens.openatv.xml       QuickEPG                     background eLabel 0,0 1920,420 -> zPosition -1
+Z-ORDER layouts/epg/classic/screens.openatv.xml       GraphicalEPGPIG              background eLabel 0,0 1820,880 -> zPosition -1
+Z-ORDER layouts/epg/classic/screens.openatv.xml       GraphicalInfoBarEPG          background eLabel 0,0 1920,330 -> zPosition -1
+Z-ORDER layouts/epg/classic/screens.openatv.xml       EPGvertical                  background eLabel 0,0 1820,880 -> zPosition -1
+Z-ORDER layouts/epg/classic/screens.openatv.xml       EPGverticalPIG               background eLabel 0,0 1820,880 -> zPosition -1
+Z-ORDER layouts/epg/columns/screens.openatv.xml       EPGSelectionMulti            background eLabel 0,0 1820,880 -> zPosition -1
+Z-ORDER layouts/epg/columns/screens.openatv.xml       QuickEPG                     background eLabel 0,0 1920,420 -> zPosition -1
+Z-ORDER layouts/epg/columns/screens.openatv.xml       GraphicalEPGPIG              background eLabel 0,0 1820,880 -> zPosition -1
+Z-ORDER layouts/epg/columns/screens.openatv.xml       GraphicalInfoBarEPG          background eLabel 0,0 1920,330 -> zPosition -1
+Z-ORDER layouts/epg/columns/screens.openatv.xml       EPGverticalPIG               background eLabel 0,0 1820,880 -> zPosition -1
+Z-ORDER layouts/epg/graphicalplus/screens.openatv.xml EPGSelectionMulti            background eLabel 0,0 1820,880 -> zPosition -1
+Z-ORDER layouts/epg/graphicalplus/screens.openatv.xml QuickEPG                     background eLabel 0,0 1920,420 -> zPosition -1
+Z-ORDER layouts/epg/graphicalplus/screens.openatv.xml GraphicalEPGPIG              background eLabel 0,0 1820,880 -> zPosition -1
+Z-ORDER layouts/epg/graphicalplus/screens.openatv.xml GraphicalInfoBarEPG          background eLabel 0,0 1920,330 -> zPosition -1
+Z-ORDER layouts/epg/graphicalplus/screens.openatv.xml EPGvertical                  background eLabel 0,0 1820,880 -> zPosition -1
+Z-ORDER layouts/epg/graphicalplus/screens.openatv.xml EPGverticalPIG               background eLabel 0,0 1820,880 -> zPosition -1
+Z-ORDER layouts/epg/minimal/screens.openatv.xml       EPGSelectionMulti            background eLabel 0,0 1820,880 -> zPosition -1
+Z-ORDER layouts/epg/minimal/screens.openatv.xml       QuickEPG                     background eLabel 0,0 1920,420 -> zPosition -1
+Z-ORDER layouts/epg/minimal/screens.openatv.xml       GraphicalEPGPIG              background eLabel 0,0 1820,880 -> zPosition -1
+Z-ORDER layouts/epg/minimal/screens.openatv.xml       GraphicalInfoBarEPG          background eLabel 0,0 1920,330 -> zPosition -1
+Z-ORDER layouts/epg/minimal/screens.openatv.xml       EPGvertical                  background eLabel 0,0 1820,880 -> zPosition -1
+Z-ORDER layouts/epg/minimal/screens.openatv.xml       EPGverticalPIG               background eLabel 0,0 1820,880 -> zPosition -1
+Z-ORDER layouts/epg/modern/screens.openatv.xml        EPGSelectionMulti            background eLabel 0,0 1820,880 -> zPosition -1
+Z-ORDER layouts/epg/modern/screens.openatv.xml        QuickEPG                     background eLabel 0,0 1920,420 -> zPosition -1
+Z-ORDER layouts/epg/modern/screens.openatv.xml        GraphicalEPGPIG              background eLabel 0,0 1820,880 -> zPosition -1
+Z-ORDER layouts/epg/modern/screens.openatv.xml        GraphicalInfoBarEPG          background eLabel 0,0 1920,330 -> zPosition -1
+Z-ORDER layouts/epg/modern/screens.openatv.xml        EPGvertical                  background eLabel 0,0 1820,880 -> zPosition -1
+Z-ORDER layouts/epg/modern/screens.openatv.xml        EPGverticalPIG               background eLabel 0,0 1820,880 -> zPosition -1
+Z-ORDER layouts/eventview/classic-lines/screens.openatv.xml EventViewSimple              background eLabel 0,0 1820,760 -> zPosition -1
+Z-ORDER layouts/eventview/classic-lines/screens.openatv.xml EventViewSimple_CVPosterOff  background eLabel 0,0 1820,760 -> zPosition -1
+Z-ORDER layouts/eventview/classic-lines/screens.openatv.xml InfoBarEventView             background eLabel 0,0 1920,360 -> zPosition -1
+Z-ORDER layouts/eventview/classic-lines/screens.openatv.xml InfoBarEventView_CVPosterOff background eLabel 0,0 1920,360 -> zPosition -1
+Z-ORDER layouts/eventview/classic/screens.openatv.xml EventViewSimple              background eLabel 0,0 1820,760 -> zPosition -1
+Z-ORDER layouts/eventview/classic/screens.openatv.xml EventViewSimple_CVPosterOff  background eLabel 0,0 1820,760 -> zPosition -1
+Z-ORDER layouts/eventview/classic/screens.openatv.xml InfoBarEventView             background eLabel 0,0 1920,360 -> zPosition -1
+Z-ORDER layouts/eventview/classic/screens.openatv.xml InfoBarEventView_CVPosterOff background eLabel 0,0 1920,360 -> zPosition -1
+Z-ORDER layouts/secondinfobar/cinema/screens.openatv.xml SecondInfoBarECM             background eLabel 0,0 1920,520 -> zPosition -1
+Z-ORDER layouts/secondinfobar/classic/screens.openatv.xml SecondInfoBarECM             background eLabel 0,0 1920,520 -> zPosition -1
+Z-ORDER layouts/secondinfobar/classic/screens.openatv.xml SecondInfoBarECM_CVPosterOff background eLabel 0,0 1920,520 -> zPosition -1
+Z-ORDER layouts/secondinfobar/details/screens.openatv.xml SecondInfoBarECM             background eLabel 0,0 1920,520 -> zPosition -1
+Z-ORDER layouts/secondinfobar/minimal/screens.openatv.xml SecondInfoBarECM             background eLabel 0,0 1920,520 -> zPosition -1
+Z-ORDER layouts/secondinfobar/minimal/screens.openatv.xml SecondInfoBarECM_CVPosterOff background eLabel 0,0 1920,520 -> zPosition -1
+Z-ORDER layouts/secondinfobar/modern/screens.openatv.xml SecondInfoBarECM             background eLabel 0,0 1920,520 -> zPosition -1
+Z-ORDER core/common.openatv.xml                       PluginBrowserList            background eLabel 0,0 1920,1080 -> zPosition -1
+Z-ORDER core/common.openatv.xml                       PluginBrowserGrid            background eLabel 0,0 1920,1080 -> zPosition -1
+Z-ORDER core/common.openatv.xml                       PluginBrowser                background eLabel 0,0 1920,1080 -> zPosition -1
+Z-ORDER core/common.openatv.xml                       QuickMenu                    background eLabel 0,0 1920,1080 -> zPosition -1
+Z-ORDER core/common.openatv.xml                       PackageAction                background eLabel 0,0 1920,1080 -> zPosition -1
+Z-ORDER core/common.openatv.xml                       PackageActionLog             background eLabel 0,0 1920,1080 -> zPosition -1
+PACKAGE PackageAction        3 colour key(s) only with text + mode title
+PACKAGE PackageActionLog     1 colour key(s) only with text
+PACKAGE Processing (global busy dialog) added to core/common
+SETUP pages: value font 27 px, 13 whole rows (ConfigTemplate)
+MSGBOX fitted to its content: MessageBox, MessageBoxModal
+INFO-OPAQUE layouts/infobar/cinema/screens.openatv.xml         InfoBar                      scroll-fill session.CurrentService     344,930 152x34 -> steThemePanel
+INFO-OPAQUE layouts/infobar/cinema/screens.openatv.xml         InfoBar                      scroll-kept session.CurrentService     128,930: other element under it
+INFO-OPAQUE layouts/infobar/cinema/screens.openatv.xml         InfoBar                      scroll-fill session.Event_Now          540,774 1010x53 -> steThemePanel
+INFO-OPAQUE layouts/infobar/cinema/screens.openatv.xml         InfoBar                      scroll-fill session.Event_Now          540,774 1010x53 -> steThemePanel
+INFO-OPAQUE layouts/infobar/cinema/screens.openatv.xml         InfoBar                      scroll-fill session.Event_Now          324,774 1226x53 -> steThemePanel
+INFO-OPAQUE layouts/infobar/cinema/screens.openatv.xml         InfoBar                      scroll-fill session.Event_Now          324,774 1226x53 -> steThemePanel
+INFO-OPAQUE layouts/infobar/cinema/screens.openatv.xml         InfoBar                      scroll-fill session.Event_Now          540,864 1320x29 -> steThemePanel
+INFO-OPAQUE layouts/infobar/cinema/screens.openatv.xml         InfoBar                      scroll-fill session.Event_Now          540,864 1320x29 -> steThemePanel
+INFO-OPAQUE layouts/infobar/cinema/screens.openatv.xml         InfoBar                      scroll-fill session.Event_Now          324,864 1536x29 -> steThemePanel
+INFO-OPAQUE layouts/infobar/cinema/screens.openatv.xml         InfoBar                      scroll-fill session.Event_Now          324,864 1536x29 -> steThemePanel
+INFO-OPAQUE layouts/infobar/cinema/screens.openatv.xml         InfoBar                      scroll-fill session.Event_Next         650,914 900x34 -> steThemePanel
+INFO-OPAQUE layouts/infobar/cinema/screens.openatv.xml         InfoBar                      scroll-fill session.Event_Next         650,914 900x34 -> steThemePanel
+INFO-OPAQUE layouts/infobar/cinema/screens.openatv.xml         InfoBar                      scroll-kept session.Event_Next         434,914: other element under it
+INFO-OPAQUE layouts/infobar/cinema/screens.openatv.xml         InfoBar                      scroll-kept session.Event_Next         434,914: other element under it
+INFO-OPAQUE layouts/infobar/cinema/screens.openatv.xml         InfoBar                      scroll-fill session.CurrentService     1210,990 280x30 -> steThemePanel
+INFO-OPAQUE layouts/infobar/cinema/screens.openatv.xml         InfoBar                      scroll-fill session.CurrentService     994,990 280x30 -> steThemePanel
+INFO-OPAQUE layouts/infobar/cinema/screens.openatv.xml         InfoBar                      scroll-fill session.OAWeather          1670,990 122x30 -> steThemePanel
+INFO-OPAQUE layouts/infobar/classic/screens.openatv.xml        InfoBar                      scroll-kept session.CurrentService     170,934: other element under it
+INFO-OPAQUE layouts/infobar/classic/screens.openatv.xml        InfoBar                      scroll-kept session.CurrentService     40,934: other element under it
+INFO-OPAQUE layouts/infobar/classic/screens.openatv.xml        InfoBar                      scroll-kept session.CurrentService     235,978: other element under it
+INFO-OPAQUE layouts/infobar/classic/screens.openatv.xml        InfoBar                      scroll-kept session.CurrentService     105,978: other element under it
+INFO-OPAQUE layouts/infobar/classic/screens.openatv.xml        InfoBar                      scroll-fill session.Event_Now          1090,854 520x38 -> steThemePrimary
+INFO-OPAQUE layouts/infobar/classic/screens.openatv.xml        InfoBar                      scroll-kept session.Event_Now          960,854: other element under it
+INFO-OPAQUE layouts/infobar/classic/screens.openatv.xml        InfoBar                      scroll-fill session.Event_Now          1090,854 520x30 -> steThemePrimary
+INFO-OPAQUE layouts/infobar/classic/screens.openatv.xml        InfoBar                      scroll-kept session.Event_Now          960,854: other element under it
+INFO-OPAQUE layouts/infobar/classic/screens.openatv.xml        InfoBar                      scroll-fill session.Event_Next         1090,924 520x34 -> steThemePrimary
+INFO-OPAQUE layouts/infobar/classic/screens.openatv.xml        InfoBar                      scroll-kept session.Event_Next         960,924: other element under it
+INFO-OPAQUE layouts/infobar/classic/screens.openatv.xml        InfoBar                      scroll-fill session.Event_Next         1090,924 520x26 -> steThemePrimary
+INFO-OPAQUE layouts/infobar/classic/screens.openatv.xml        InfoBar                      scroll-kept session.Event_Next         960,924: other element under it
+INFO-OPAQUE layouts/infobar/classic/screens.openatv.xml        InfoBar                      scroll-fill session.OAWeather          1708,1030 105x28 -> steThemePrimary
+INFO-OPAQUE layouts/infobar/details/screens.openatv.xml        InfoBar                      scroll-fill session.CurrentService     276,836 150x30 -> steThemePanel
+INFO-OPAQUE layouts/infobar/details/screens.openatv.xml        InfoBar                      scroll-fill session.CurrentService     276,870 150x28 -> steThemePanel
+INFO-OPAQUE layouts/infobar/details/screens.openatv.xml        InfoBar                      scroll-fill session.CurrentService     44,1000 380x48 -> steThemePanel
+INFO-OPAQUE layouts/infobar/details/screens.openatv.xml        InfoBar                      scroll-fill session.Event_Now          585,786 600x42 -> steThemePanel
+INFO-OPAQUE layouts/infobar/details/screens.openatv.xml        InfoBar                      scroll-fill session.Event_Now          585,786 600x42 -> steThemePanel
+INFO-OPAQUE layouts/infobar/details/screens.openatv.xml        InfoBar                      scroll-fill session.Event_Now          462,786 723x42 -> steThemePanel
+INFO-OPAQUE layouts/infobar/details/screens.openatv.xml        InfoBar                      scroll-fill session.Event_Now          462,786 723x42 -> steThemePanel
+INFO-OPAQUE layouts/infobar/details/screens.openatv.xml        InfoBar                      scroll-fill session.Event_Now          585,884 845x50 -> steThemePanel
+INFO-OPAQUE layouts/infobar/details/screens.openatv.xml        InfoBar                      scroll-fill session.Event_Now          585,884 845x50 -> steThemePanel
+INFO-OPAQUE layouts/infobar/details/screens.openatv.xml        InfoBar                      scroll-fill session.Event_Now          462,884 968x50 -> steThemePanel
+INFO-OPAQUE layouts/infobar/details/screens.openatv.xml        InfoBar                      scroll-fill session.Event_Now          462,884 968x50 -> steThemePanel
+INFO-OPAQUE layouts/infobar/details/screens.openatv.xml        InfoBar                      scroll-fill session.Event_Next         585,970 600x32 -> steThemePanel
+INFO-OPAQUE layouts/infobar/details/screens.openatv.xml        InfoBar                      scroll-fill session.Event_Next         585,970 600x32 -> steThemePanel
+INFO-OPAQUE layouts/infobar/details/screens.openatv.xml        InfoBar                      scroll-fill session.Event_Next         585,1010 845x24 -> steThemePanel
+INFO-OPAQUE layouts/infobar/details/screens.openatv.xml        InfoBar                      scroll-fill session.Event_Next         585,1010 845x24 -> steThemePanel
+INFO-OPAQUE layouts/infobar/details/screens.openatv.xml        InfoBar                      scroll-fill session.Event_Next         462,1010 968x24 -> steThemePanel
+INFO-OPAQUE layouts/infobar/details/screens.openatv.xml        InfoBar                      scroll-fill session.Event_Next         462,1010 968x24 -> steThemePanel
+INFO-OPAQUE layouts/infobar/details/screens.openatv.xml        InfoBar                      scroll-fill session.CurrentService     1585,962 291x28 -> steThemePanel
+INFO-OPAQUE layouts/infobar/details/screens.openatv.xml        InfoBar                      scroll-fill session.OAWeather          1508,1008 278x30 -> steThemePanel
+INFO-OPAQUE layouts/infobar/minimal/screens.openatv.xml        InfoBar                      card      steThemeOverlay            0,940 1920x140
+INFO-OPAQUE layouts/infobar/minimal/screens.openatv.xml        InfoBar                      own-mix   session.Event_Now          #B0FFFFFF over steThemeOverlay
+INFO-OPAQUE layouts/infobar/minimal/screens.openatv.xml        InfoBar                      own-mix   session.Event_Now          #B0FFFFFF over steThemeOverlay
+INFO-OPAQUE layouts/infobar/minimal/screens.openatv.xml        InfoBar                      scroll-fill session.Event_Now          150,994 1060x44 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/infobar/minimal/screens.openatv.xml        InfoBar                      scroll-fill session.Event_Now          150,994 1060x44 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/infobar/minimal/screens.openatv.xml        InfoBar                      scroll-fill session.Event_Now          60,994 1060x44 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/infobar/minimal/screens.openatv.xml        InfoBar                      scroll-fill session.Event_Now          60,994 1060x44 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/infobar/minimal/screens.openatv.xml        InfoBar                      scroll-fill session.Event_Next         1336,1000 524x34 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/infobar/minimal/screens.openatv.xml        InfoBar                      scroll-fill session.Event_Next         1336,1000 524x34 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/infobar/modern/screens.openatv.xml         InfoBar                      card      steThemeCard               60,790 1800x250
+INFO-OPAQUE layouts/infobar/modern/screens.openatv.xml         InfoBar                      scroll-fill session.CurrentService     484,816 732x40 -> steThemeCardSolid
+INFO-OPAQUE layouts/infobar/modern/screens.openatv.xml         InfoBar                      scroll-fill session.Event_Next         434,978 746x34 -> steThemeCardSolid
+INFO-OPAQUE layouts/infobar/modern/screens.openatv.xml         InfoBar                      scroll-fill session.Event_Now          254,884 1322x52 -> steThemeCardSolid
+INFO-OPAQUE layouts/infobar/modern/screens.openatv.xml         InfoBar                      scroll-fill session.Event_Now          254,884 1322x52 -> steThemeCardSolid
+INFO-OPAQUE layouts/infobar/modern/screens.openatv.xml         InfoBar                      scroll-kept session.CurrentService     314,816: other element under it
+INFO-OPAQUE layouts/infobar/modern/screens.openatv.xml         InfoBar                      scroll-fill session.Event_Next         264,978 916x34 -> steThemeCardSolid
+INFO-OPAQUE layouts/infobar/modern/screens.openatv.xml         InfoBar                      scroll-fill session.Event_Now          84,884 1492x52 -> steThemeCardSolid
+INFO-OPAQUE layouts/infobar/modern/screens.openatv.xml         InfoBar                      scroll-fill session.Event_Now          84,884 1492x52 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBar                plate     steThemeOverlaySolid       76,98 1768x546
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Now          500,152 1330x65 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Now          500,152 1330x65 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Now          90,152 1740x65 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Now          90,152 1740x65 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Now          500,300 1330x330 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Now          500,300 1330x330 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Now          90,300 1740x330 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Now          90,300 1740x330 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Next         250,747 1250x42 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Next         250,747 1250x42 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Next         90,747 1410x42 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Next         90,747 1410x42 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Next         250,800 1580x87 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Next         250,800 1580x87 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Next         90,800 1740x87 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Next         90,800 1740x87 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBar                scroll-fill session.CurrentService     338,966 312x36 -> steThemePanelAlt
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBar                scroll-fill session.CurrentService     1738,1010 122x30 -> steThemePanelAlt
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBarSimple          plate     steThemeOverlaySolid       76,98 1768x546
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Now          500,152 1330x65 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Now          500,152 1330x65 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Now          90,152 1740x65 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Now          90,152 1740x65 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Now          500,300 1330x330 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Now          500,300 1330x330 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Now          90,300 1740x330 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Now          90,300 1740x330 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Next         250,747 1250x42 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Next         250,747 1250x42 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Next         90,747 1410x42 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Next         90,747 1410x42 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Next         250,800 1580x87 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Next         250,800 1580x87 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Next         90,800 1740x87 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Next         90,800 1740x87 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.CurrentService     338,966 312x36 -> steThemePanelAlt
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.CurrentService     1738,1010 122x30 -> steThemePanelAlt
+INFO-OPAQUE layouts/secondinfobar/cinema/screens.openatv.xml   SecondInfoBarECM             plate     steSecondInfoBGSolid       31,11 1778x505
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBar                card      steSecondInfoBG            55,145 805x440
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBar                card      steSecondInfoBG            925,145 940x440
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBar                card      steSecondInfoBG            16,842 1888x236
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          95,165 480x42 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          95,165 480x35 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          95,245 480x261 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          95,245 480x261 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          95,245 725x261 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          95,245 725x261 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         950,165 580x42 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         950,165 580x35 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         950,245 580x261 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         950,245 580x261 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         950,245 890x261 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         950,245 890x261 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBar                scroll-kept session.CurrentService     170,934: other element under it
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBar                scroll-kept session.CurrentService     40,934: other element under it
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBar                scroll-kept session.CurrentService     235,978: other element under it
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBar                scroll-kept session.CurrentService     105,978: other element under it
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          1090,854 520x38 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBar                scroll-kept session.Event_Now          960,854: other element under it
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          1090,854 520x30 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBar                scroll-kept session.Event_Now          960,854: other element under it
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         1090,924 520x34 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBar                scroll-kept session.Event_Next         960,924: other element under it
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         1090,924 520x26 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBar                scroll-kept session.Event_Next         960,924: other element under it
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBar                scroll-fill session.OAWeather          1708,1030 105x28 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarECM             plate     steSecondInfoBGSolid       31,11 1778x505
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarECM_CVPosterOff plate     steSecondInfoBGSolid       31,11 1818x505
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarSimple          card      steSecondInfoBG            55,145 805x440
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarSimple          card      steSecondInfoBG            925,145 940x440
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarSimple          card      steSecondInfoBG            16,842 1888x236
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          95,165 480x42 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          95,165 480x35 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          95,245 480x261 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          95,245 480x261 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          95,245 725x261 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          95,245 725x261 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         950,165 580x42 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         950,165 580x35 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         950,245 580x261 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         950,245 580x261 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         950,245 890x261 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         950,245 890x261 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarSimple          scroll-kept session.CurrentService     170,934: other element under it
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarSimple          scroll-kept session.CurrentService     40,934: other element under it
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarSimple          scroll-kept session.CurrentService     235,978: other element under it
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarSimple          scroll-kept session.CurrentService     105,978: other element under it
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          1090,854 520x38 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarSimple          scroll-kept session.Event_Now          960,854: other element under it
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          1090,854 520x30 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarSimple          scroll-kept session.Event_Now          960,854: other element under it
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         1090,924 520x34 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarSimple          scroll-kept session.Event_Next         960,924: other element under it
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         1090,924 520x26 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarSimple          scroll-kept session.Event_Next         960,924: other element under it
+INFO-OPAQUE layouts/secondinfobar/classic/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.OAWeather          1708,1030 105x28 -> steSecondInfoBGSolid
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          275,166 625x82 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          275,166 625x82 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          50,166 850x82 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          50,166 850x82 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          275,326 625x336 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          275,326 625x336 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          50,326 850x336 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          50,326 850x336 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         1124,166 406x72 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         1124,166 406x72 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         966,166 564x72 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         966,166 564x72 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         966,392 564x260 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         966,392 564x260 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         966,256 564x390 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         966,256 564x390 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.CurrentService     1586,352 290x72 -> steThemePanelAlt
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.OAWeather          1624,650 162x30 -> steThemePanelAlt
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.CurrentService     276,836 150x30 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.CurrentService     276,870 150x28 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.CurrentService     44,1000 380x48 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          585,786 600x42 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          585,786 600x42 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          462,786 723x42 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          462,786 723x42 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          585,884 845x50 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          585,884 845x50 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          462,884 968x50 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          462,884 968x50 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         585,970 600x32 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         585,970 600x32 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         585,1010 845x24 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         585,1010 845x24 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         462,1010 968x24 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         462,1010 968x24 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.CurrentService     1585,962 291x28 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBar                scroll-fill session.OAWeather          1508,1008 278x30 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          275,166 625x82 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          275,166 625x82 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          50,166 850x82 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          50,166 850x82 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          275,326 625x336 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          275,326 625x336 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          50,326 850x336 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          50,326 850x336 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         1124,166 406x72 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         1124,166 406x72 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         966,166 564x72 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         966,166 564x72 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         966,392 564x260 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         966,392 564x260 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         966,256 564x390 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         966,256 564x390 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.CurrentService     1586,352 290x72 -> steThemePanelAlt
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.OAWeather          1624,650 162x30 -> steThemePanelAlt
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.CurrentService     276,836 150x30 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.CurrentService     276,870 150x28 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.CurrentService     44,1000 380x48 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          585,786 600x42 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          585,786 600x42 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          462,786 723x42 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          462,786 723x42 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          585,884 845x50 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          585,884 845x50 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          462,884 968x50 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          462,884 968x50 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         585,970 600x32 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         585,970 600x32 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         585,1010 845x24 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         585,1010 845x24 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         462,1010 968x24 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         462,1010 968x24 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.CurrentService     1585,962 291x28 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.OAWeather          1508,1008 278x30 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/details/screens.openatv.xml  SecondInfoBarECM             plate     steSecondInfoBGSolid       31,11 1778x505
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBar                plate     steThemeOverlaySolid       46,626 1828x454
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          310,674 1550x96 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          310,674 1550x96 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          310,780 1550x140 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          310,780 1550x140 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         476,942 1384x32 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         476,942 1384x32 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         310,980 1550x50 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         310,980 1550x50 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          60,674 1800x96 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          60,674 1800x96 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          60,780 1800x140 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Now          60,780 1800x140 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         226,942 1634x32 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         226,942 1634x32 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         60,980 1800x50 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBar                scroll-fill session.Event_Next         60,980 1800x50 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBarSimple          plate     steThemeOverlaySolid       46,626 1828x454
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          310,674 1550x96 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          310,674 1550x96 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          310,780 1550x140 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          310,780 1550x140 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         476,942 1384x32 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         476,942 1384x32 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         310,980 1550x50 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         310,980 1550x50 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          60,674 1800x96 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          60,674 1800x96 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          60,780 1800x140 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Now          60,780 1800x140 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         226,942 1634x32 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         226,942 1634x32 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         60,980 1800x50 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBarSimple          scroll-fill session.Event_Next         60,980 1800x50 -> steThemeOverlaySolid
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBarECM             plate     steSecondInfoBGSolid       31,11 1778x505
+INFO-OPAQUE layouts/secondinfobar/minimal/screens.openatv.xml  SecondInfoBarECM_CVPosterOff plate     steSecondInfoBGSolid       31,11 1818x505
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBar                plate     steThemePanel              46,454 1804x84
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBar                card      steThemeCard               60,540 890x480
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBar                card      steThemeCard               970,540 890x480
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBar                scroll-fill session.CurrentService     270,474 700x44 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Now          312,616 610x90 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Now          312,616 610x90 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Now          312,772 610x228 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Now          312,772 610x228 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Now          88,616 834x90 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Now          88,616 834x90 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Now          88,772 834x228 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Now          88,772 834x228 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Next         1222,616 610x90 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Next         1222,616 610x90 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Next         1222,772 610x228 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Next         1222,772 610x228 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Next         998,616 834x90 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Next         998,616 834x90 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Next         998,772 834x228 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBar                scroll-fill session.Event_Next         998,772 834x228 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBarSimple          plate     steThemePanel              46,454 1804x84
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBarSimple          card      steThemeCard               60,540 890x480
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBarSimple          card      steThemeCard               970,540 890x480
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.CurrentService     270,474 700x44 -> steThemePanel
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Now          312,616 610x90 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Now          312,616 610x90 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Now          312,772 610x228 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Now          312,772 610x228 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Now          88,616 834x90 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Now          88,616 834x90 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Now          88,772 834x228 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Now          88,772 834x228 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Next         1222,616 610x90 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Next         1222,616 610x90 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Next         1222,772 610x228 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Next         1222,772 610x228 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Next         998,616 834x90 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Next         998,616 834x90 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Next         998,772 834x228 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBarSimple          scroll-fill session.Event_Next         998,772 834x228 -> steThemeCardSolid
+INFO-OPAQUE layouts/secondinfobar/modern/screens.openatv.xml   SecondInfoBarECM             plate     steSecondInfoBGSolid       31,11 1778x505
+INFO-OPAQUE layouts/pvr/cinema/screens.openatv.xml             PVRState                     plate     steThemePanel              0,0 239x59
+INFO-OPAQUE layouts/pvr/cinema/screens.openatv.xml             PVRState                     own-clear state                      transparent -> steThemePanel
+INFO-OPAQUE layouts/pvr/classic/screens.openatv.xml            PVRState                     plate     steThemePanel              0,0 239x59
+INFO-OPAQUE layouts/pvr/classic/screens.openatv.xml            PVRState                     own-clear state                      transparent -> steThemePanel
+INFO-OPAQUE layouts/pvr/cover/screens.openatv.xml              PVRState                     plate     steThemePanel              0,0 239x59
+INFO-OPAQUE layouts/pvr/cover/screens.openatv.xml              PVRState                     own-clear state                      transparent -> steThemePanel
+INFO-OPAQUE layouts/pvr/minimal/screens.openatv.xml            PVRState                     plate     steThemePanel              0,0 239x59
+INFO-OPAQUE layouts/pvr/minimal/screens.openatv.xml            PVRState                     own-clear state                      transparent -> steThemePanel
+INFO-OPAQUE layouts/pvr/modern/screens.openatv.xml             PVRState                     plate     steThemePanel              0,0 239x59
+INFO-OPAQUE layouts/pvr/modern/screens.openatv.xml             PVRState                     own-clear state                      transparent -> steThemePanel
+G-1 EPG cell colour role on 4 GraphicalEPG list widget(s)
+G-1 theme assets (symlinked to active/assets): 7
+PREVIEW eventview/classic-lines <- eventview/classic
+PREVIEWS real: 6 theme pictures, 32 design pictures, 29 posters on/off pictures; without a preview: none
+PLUGIN-ICON plugin_A.png
+BUILD OK: 620 files -> build94

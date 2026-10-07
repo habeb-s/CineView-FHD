@@ -1,0 +1,233 @@
+original: --theme navy --set channelselection=classic --set epg=classic --set eventview=classic-lines --set infobar=classic --set pvr=classic --set secondinfobar=classic
+movielist folder before: ''
+poster settings before: (all default = on)
+== A posters on/off
+g000050
+set {'config.plugins.cineviewmla.poster_infobar': 'True'}
+set {'config.plugins.cineviewmla.poster_secondinfobar': 'True'}
+set {'config.plugins.cineviewmla.poster_channelselection': 'True'}
+set {'config.plugins.cineviewmla.poster_epg': 'True'}
+set {'config.plugins.cineviewmla.poster_pvr': 'True'}
+set {'config.plugins.cineviewmla.poster_eventview': 'True'}
+new e2 pid=22271 @05:52:34
+webif up @05:53:00
+cap on/infobar.png ok
+cap on/secondinfobar.png ok
+cap on/channelselection.png ok
+cap on/epg.png ok
+cap on/pvr.png ok
+cap on/eventview.png ok
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+set {'config.plugins.cineviewmla.poster_infobar': 'False'}
+set {'config.plugins.cineviewmla.poster_secondinfobar': 'False'}
+set {'config.plugins.cineviewmla.poster_channelselection': 'False'}
+set {'config.plugins.cineviewmla.poster_epg': 'False'}
+set {'config.plugins.cineviewmla.poster_pvr': 'False'}
+set {'config.plugins.cineviewmla.poster_eventview': 'False'}
+new e2 pid=25174 @05:55:43
+webif up @05:56:09
+cap off/infobar.png ok
+cap off/secondinfobar.png ok
+cap off/channelselection.png ok
+cap off/epg.png ok
+cap off/pvr.png ok
+cap off/eventview.png ok
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+g000051
+set {'config.plugins.cineviewmla.poster_infobar': 'True'}
+set {'config.plugins.cineviewmla.poster_secondinfobar': 'True'}
+set {'config.plugins.cineviewmla.poster_channelselection': 'True'}
+set {'config.plugins.cineviewmla.poster_epg': 'True'}
+set {'config.plugins.cineviewmla.poster_pvr': 'True'}
+set {'config.plugins.cineviewmla.poster_eventview': 'True'}
+new e2 pid=28025 @05:58:53
+webif up @05:59:18
+cap on/infobar.png ok
+cap on/secondinfobar.png ok
+cap on/channelselection.png ok
+cap on/epg.png ok
+cap on/pvr.png ok
+cap on/eventview.png ok
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+set {'config.plugins.cineviewmla.poster_infobar': 'False'}
+set {'config.plugins.cineviewmla.poster_secondinfobar': 'False'}
+set {'config.plugins.cineviewmla.poster_channelselection': 'False'}
+set {'config.plugins.cineviewmla.poster_epg': 'False'}
+set {'config.plugins.cineviewmla.poster_pvr': 'False'}
+set {'config.plugins.cineviewmla.poster_eventview': 'False'}
+new e2 pid=30773 @06:02:01
+webif up @06:02:27
+cap off/infobar.png ok
+cap off/secondinfobar.png ok
+cap off/channelselection.png ok
+cap off/epg.png ok
+cap off/pvr.png ok
+cap off/eventview.png ok
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+g000052
+set {'config.plugins.cineviewmla.poster_infobar': 'True'}
+set {'config.plugins.cineviewmla.poster_secondinfobar': 'True'}
+set {'config.plugins.cineviewmla.poster_channelselection': 'True'}
+set {'config.plugins.cineviewmla.poster_epg': 'True'}
+set {'config.plugins.cineviewmla.poster_pvr': 'True'}
+set {'config.plugins.cineviewmla.poster_eventview': 'True'}
+new e2 pid=1133 @06:05:08
+webif up @06:05:34
+cap on/infobar.png ok
+cap on/secondinfobar.png ok
+cap on/channelselection.png ok
+cap on/epg.png ok
+cap on/pvr.png ok
+cap on/eventview.png ok
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+set {'config.plugins.cineviewmla.poster_infobar': 'False'}
+set {'config.plugins.cineviewmla.poster_secondinfobar': 'False'}
+set {'config.plugins.cineviewmla.poster_channelselection': 'False'}
+set {'config.plugins.cineviewmla.poster_epg': 'False'}
+set {'config.plugins.cineviewmla.poster_pvr': 'False'}
+set {'config.plugins.cineviewmla.poster_eventview': 'False'}
+new e2 pid=4051 @06:08:24
+webif up @06:08:49
+cap off/infobar.png ok
+cap off/secondinfobar.png ok
+cap off/channelselection.png ok
+cap off/epg.png ok
+cap off/pvr.png ok
+cap off/eventview.png ok
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+g000053
+set {'config.plugins.cineviewmla.poster_infobar': 'True'}
+set {'config.plugins.cineviewmla.poster_secondinfobar': 'True'}
+set {'config.plugins.cineviewmla.poster_channelselection': 'True'}
+set {'config.plugins.cineviewmla.poster_epg': 'True'}
+set {'config.plugins.cineviewmla.poster_pvr': 'True'}
+set {'config.plugins.cineviewmla.poster_eventview': 'True'}
+new e2 pid=6810 @06:11:34
+webif up @06:11:58
+cap on/infobar.png ok
+cap on/secondinfobar.png ok
+cap on/channelselection.png ok
+cap on/epg.png ok
+cap on/pvr.png ok
+cap on/eventview.png ok
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+set {'config.plugins.cineviewmla.poster_infobar': 'False'}
+set {'config.plugins.cineviewmla.poster_secondinfobar': 'False'}
+set {'config.plugins.cineviewmla.poster_channelselection': 'False'}
+set {'config.plugins.cineviewmla.poster_epg': 'False'}
+set {'config.plugins.cineviewmla.poster_pvr': 'False'}
+set {'config.plugins.cineviewmla.poster_eventview': 'False'}
+new e2 pid=9724 @06:14:39
+webif up @06:15:05
+cap off/infobar.png ok
+cap off/secondinfobar.png ok
+cap off/channelselection.png ok
+cap off/epg.png ok
+cap off/pvr.png ok
+cap off/eventview.png ok
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+g000054
+set {'config.plugins.cineviewmla.poster_infobar': 'True'}
+set {'config.plugins.cineviewmla.poster_secondinfobar': 'True'}
+set {'config.plugins.cineviewmla.poster_channelselection': 'True'}
+set {'config.plugins.cineviewmla.poster_epg': 'True'}
+set {'config.plugins.cineviewmla.poster_pvr': 'True'}
+set {'config.plugins.cineviewmla.poster_eventview': 'True'}
+new e2 pid=12553 @06:17:53
+webif up @06:18:19
+cap on/infobar.png ok
+cap on/secondinfobar.png ok
+cap on/channelselection.png ok
+cap on/epg.png ok
+cap on/pvr.png ok
+cap on/eventview.png ok
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+set {'config.plugins.cineviewmla.poster_infobar': 'False'}
+set {'config.plugins.cineviewmla.poster_secondinfobar': 'False'}
+set {'config.plugins.cineviewmla.poster_channelselection': 'False'}
+set {'config.plugins.cineviewmla.poster_epg': 'False'}
+set {'config.plugins.cineviewmla.poster_pvr': 'False'}
+set {'config.plugins.cineviewmla.poster_eventview': 'False'}
+new e2 pid=15387 @06:21:00
+webif up @06:21:26
+cap off/infobar.png ok
+cap off/secondinfobar.png ok
+cap off/channelselection.png ok
+cap off/epg.png ok
+cap off/pvr.png ok
+cap off/eventview.png ok
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+== B themes
+g000055
+set {'config.plugins.cineviewmla.poster_infobar': 'True'}
+set {'config.plugins.cineviewmla.poster_secondinfobar': 'True'}
+set {'config.plugins.cineviewmla.poster_channelselection': 'True'}
+set {'config.plugins.cineviewmla.poster_epg': 'True'}
+set {'config.plugins.cineviewmla.poster_pvr': 'True'}
+set {'config.plugins.cineviewmla.poster_eventview': 'True'}
+new e2 pid=18114 @06:24:08
+webif up @06:24:33
+cap themes/navy.png ok
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+g000056
+set {'config.plugins.cineviewmla.poster_infobar': 'True'}
+set {'config.plugins.cineviewmla.poster_secondinfobar': 'True'}
+set {'config.plugins.cineviewmla.poster_channelselection': 'True'}
+set {'config.plugins.cineviewmla.poster_epg': 'True'}
+set {'config.plugins.cineviewmla.poster_pvr': 'True'}
+set {'config.plugins.cineviewmla.poster_eventview': 'True'}
+new e2 pid=19403 @06:25:35
+webif up @06:26:01
+cap themes/black.png ok
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+g000057
+set {'config.plugins.cineviewmla.poster_infobar': 'True'}
+set {'config.plugins.cineviewmla.poster_secondinfobar': 'True'}
+set {'config.plugins.cineviewmla.poster_channelselection': 'True'}
+set {'config.plugins.cineviewmla.poster_epg': 'True'}
+set {'config.plugins.cineviewmla.poster_pvr': 'True'}
+set {'config.plugins.cineviewmla.poster_eventview': 'True'}
+new e2 pid=20804 @06:27:04
+webif up @06:27:29
+cap themes/graphite.png ok
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+g000058
+set {'config.plugins.cineviewmla.poster_infobar': 'True'}
+set {'config.plugins.cineviewmla.poster_secondinfobar': 'True'}
+set {'config.plugins.cineviewmla.poster_channelselection': 'True'}
+set {'config.plugins.cineviewmla.poster_epg': 'True'}
+set {'config.plugins.cineviewmla.poster_pvr': 'True'}
+set {'config.plugins.cineviewmla.poster_eventview': 'True'}
+new e2 pid=22200 @06:28:34
+webif up @06:28:58
+cap themes/purple.png ok
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+g000059
+set {'config.plugins.cineviewmla.poster_infobar': 'True'}
+set {'config.plugins.cineviewmla.poster_secondinfobar': 'True'}
+set {'config.plugins.cineviewmla.poster_channelselection': 'True'}
+set {'config.plugins.cineviewmla.poster_epg': 'True'}
+set {'config.plugins.cineviewmla.poster_pvr': 'True'}
+set {'config.plugins.cineviewmla.poster_eventview': 'True'}
+new e2 pid=23553 @06:30:00
+webif up @06:30:26
+cap themes/burgundy.png ok
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+g000060
+set {'config.plugins.cineviewmla.poster_infobar': 'True'}
+set {'config.plugins.cineviewmla.poster_secondinfobar': 'True'}
+set {'config.plugins.cineviewmla.poster_channelselection': 'True'}
+set {'config.plugins.cineviewmla.poster_epg': 'True'}
+set {'config.plugins.cineviewmla.poster_pvr': 'True'}
+set {'config.plugins.cineviewmla.poster_eventview': 'True'}
+new e2 pid=24998 @06:31:29
+webif up @06:31:54
+cap themes/green.png ok
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+== restore: --theme navy --set channelselection=classic --set epg=classic --set eventview=classic-lines --set infobar=classic --set pvr=classic --set secondinfobar=classic + posters on + movie folder
+g000061
+new e2 pid=26334 @06:32:57
+webif up @06:33:23
+now navy {'channelselection': 'classic', 'epg': 'classic', 'eventview': 'classic-lines', 'infobar': 'classic', 'pvr': 'classic', 'secondinfobar': 'classic'}
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+T101_DONE

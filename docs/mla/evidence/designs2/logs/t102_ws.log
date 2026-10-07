@@ -1,0 +1,57 @@
+backup /media/usb/cineview-mla/state/backup-t102-20261007-071211
+selection before: black channelselection=classic,epg=classic,eventview=classic-lines,infobar=classic,pvr=classic,secondinfobar=classic
+== W slow walk
+cap W00
+cap W01
+cap W02
+cap W03
+cap W04
+cap W05
+cap W06
+cap W07
+cap W08
+cap W09
+cap W10
+cap W11
+cap W12
+cap W13
+cap W14
+cap W15
+cap W16
+   rows: 17
+   forbidden words on screen (status/keys/description): 0
+status       'CineView MLA 1.0.0\nDesign: Classic   Theme: Black\nDesign & Development by habeb-s © 2026'
+key_green    'Apply Design'
+key_blue     'Restore Factory Design'
+== M MessageBox
+cap M_msg_info
+cap M_msg_yesno
+cap M_msg_list
+cap M_msg_long
+== S Setup pages
+cap S_UserInterface_top
+cap S_UserInterface_scrolled
+cap S_Usage_top
+cap S_Usage_scrolled
+cap S_Time_top
+cap S_Time_scrolled
+cap S_EPG_top
+cap S_EPG_scrolled
+cap S_Recording_top
+cap S_Recording_scrolled
+cap S_Audio_top
+cap S_Audio_scrolled
+cap S_Subtitle_top
+cap S_Subtitle_scrolled
+cap S_Playback_top
+cap S_Playback_scrolled
+cap S_ChannelSelection_top
+cap S_ChannelSelection_scrolled
+cap S_Logs_top
+cap S_Logs_scrolled
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+selection after: black channelselection=classic,epg=classic,eventview=classic-lines,infobar=classic,pvr=classic,secondinfobar=classic
+   restored: yes
+   settings: same as the backup (counters aside)
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+T102_DONE

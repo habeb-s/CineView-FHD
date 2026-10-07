@@ -1,0 +1,11 @@
+g000062
+new e2 pid=27387 @06:34:06
+webif up @06:34:32
+cap /home/aiadmin/cineview-mla/previews_src/extra/epg/columns.png
+cap /home/aiadmin/cineview-mla/previews_src/extra/channelselection/videofirst-right.png
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+g000063
+new e2 pid=29090 @06:36:00
+webif up @06:36:24
+   tracebacks=0 skin_errors_new=0 crashlogs=0
+T101B_DONE
