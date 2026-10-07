@@ -73,4 +73,4 @@ is no native scrolling for it). **Setup value font 27 px — approved** (now def
 | E | Posters On/Off | Posters rows show the selected design's section with posters ON and OFF side by side (real grabs); Classic PVR has no poster area (approved) → Info Card | t101 |
 | F | Factory | BLUE "Restore Factory Design"; "Restores Classic + Navy and the default CineView layout settings." | t102 |
 | G | Burgundy Cancel contrast | burgundy only: red key text #FF8585 (≈7:1 on the burgundy key bar) | t102 themes |
-| + | Real previews for every design | found during the review: 19 of 32 design previews were a placeholder icon or a drawn mock-up, and the theme previews were colour swatches; all are now real receiver grabs (t101, t101b) | build log "without a preview: none" |
+| + | Real previews for every design | found during the review: 22 of 32 design previews were not real (18 placeholder icons, 4 drawn mock-ups), and the theme previews were colour swatches; all are now real receiver grabs (t101, t101b) | build log "without a preview: none" |
