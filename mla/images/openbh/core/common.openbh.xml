@@ -62,4 +62,11 @@
 			<convert type="ConditionalShowHide" />
 		</widget>
 	</screen>
+	<!-- Screens/Console.py Console (OpenBH install / remove output): text = ScrollLabel; OpenBH's ScrollLabel has no
+	     itemHeight (t106 openbh7: "Attribute 'itemHeight' ... eLabel is not implemented"), so the shared CineView
+	     screen is repeated without it - same position, size, font and colours. -->
+	<screen name="Console" title="Command execution" position="fill" flags="wfNoBorder">
+		<panel name="PigTemplate" />
+		<widget name="text" position="825,100" size="1035,912" font="Fixed;28" transparent="1" foregroundColor="white" scrollbarMode="showOnDemand" />
+	</screen>
 </skin>
