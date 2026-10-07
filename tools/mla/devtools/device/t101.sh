@@ -10,7 +10,7 @@ exec 9>~/cineview-mla/t101.lock; flock -n 9 || { echo "t101 already running"; ex
 cat ~/cineview-mla/repo/tools/mla/devtools/device/setcfg.py | $R "mkdir -p /tmp/cvmla && cat > /tmp/cvmla/setcfg.py"
 O=~/cineview-mla/previews_src; rm -rf $O; mkdir -p $O/posters $O/themes
 E='python3 /usr/share/enigma2/CineView_FHD_MLA/mla/engine/composer.py'
-HBO="1:0:19:784:C6D4:16E:A00000:0:0:0:"
+HBO="1:0:19:786:C6D4:16E:A00000:0:0:0:"   # Cinemax HD: current film had a poster at capture time (probe 05:50)
 ok() { python3 -c "from PIL import Image; Image.open('$1').load()" 2>/dev/null; }
 ga() { for a in 1 2 3; do curl -s -m 60 -o $1 "http://192.168.1.250/grab?format=png&mode=all&r=1920"; ok $1 && break; done; echo "cap $(basename $(dirname $1))/$(basename $1) $(ok $1 && echo ok || echo BAD)"; }
 op() { $R "mkdir -p /tmp/cvmla; echo $1 > /tmp/cvmla/open.txt"; sleep ${2:-5}; }
@@ -35,8 +35,8 @@ POSTERS="infobar secondinfobar channelselection epg pvr eventview"
 pset() { local c=""; for s in $POSTERS; do c="$c python3 /tmp/cvmla/setcfg.py config.plugins.cineviewmla.poster_$s=$1;"; done; echo "$c"; }
 shots() {  # $1 dir
   zap $HBO; X
-  $RC 352; sleep 3; ga $1/infobar.png
-  $RC 352; sleep 4; ga $1/secondinfobar.png; X; sleep 1.5
+  $RC 352; sleep 2.5; ga $1/infobar.png; X; sleep 1
+  $RC 352; sleep 1.5; $RC 352; sleep 4; ga $1/secondinfobar.png; X; sleep 1.5
   $RC 108; sleep 4; ga $1/channelselection.png; X; sleep 1.5
   op graph 8; ga $1/epg.png; X; sleep 2; X; sleep 1
   op nativemovies 9; $RC 108; sleep 4; ga $1/pvr.png; X; sleep 3; X
