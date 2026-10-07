@@ -65,7 +65,9 @@ $R 'python3 -c "import json;print(\"pin:\", json.load(open(\"/etc/enigma2/cinevi
 NEED_RESTART=0
 if [ -n "$INSTALL" ]; then
 	cat $INSTALL | $R "cat > /tmp/cvmla-test.ipk"
-	$R "opkg install /tmp/cvmla-test.ipk 2>&1 | grep -v '^Downloading\|^Collected'; rm -f /tmp/cvmla-test.ipk; opkg status enigma2-plugin-skins-cineview-fhd-mla | grep Version"
+	$R "opkg install /tmp/cvmla-test.ipk 2>&1 | grep -v '^Downloading\|^Collected'; rm -f /tmp/cvmla-test.ipk; opkg status enigma2-plugin-skins-cineview-fhd-mla | grep 'Version\|Status'"
+	# a failed maintainer script leaves "half-installed" with the NEW version recorded but the OLD files: stop
+	$R "opkg status enigma2-plugin-skins-cineview-fhd-mla | grep -q 'Status: install ok installed'" || { echo "INSTALL FAILED - not testing a half-installed package"; exit 2; }
 	NEED_RESTART=1
 fi
 if [ "${DEVTOOL:-1}" = "1" ]; then
