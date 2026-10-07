@@ -6,6 +6,7 @@
 # unchecked hash (no source to compare with) and the final install path as their file name (tracebacks stay readable).
 set -e
 . ~/cineview-mla/p6lib.sh
+R=${MKPYC_R:-$R}  # MKPYC_R=~/cineview-mla/r5.sh compiles with Slot 5 (OpenBH 5.6) Python
 B=${1:?build}; O=${2:?out}
 rm -rf "$O"; mkdir -p "$O"
 LIST=$(cd "$B" && find usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA -name '*.py' && find usr/lib/enigma2/python/Components -name 'CineViewMLA*.py')

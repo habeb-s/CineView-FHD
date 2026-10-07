@@ -207,6 +207,32 @@ def _pyc_target(rel):
 	return rel.startswith(PYC_DIRS[0]) and os.path.basename(rel).startswith("CineViewMLA")
 
 
+OPENATV_IMAGE_CHECK_START = 'if [ "$DISTRO" != "openatv" ]'
+OPENATV_IMAGE_CHECK_END = "esac\n"
+IMAGE_CHECKS = {
+	# OpenBH: contracts from BlackHole/enigma2 52dedddc314a (5.6.008) and c06a87ef4c09 (6.0.003) - identical
+	# differences vs OpenATV (docs/mla/OpenBH_P2_Discovery.md).  TEST BUILDS ONLY until device QA passes.
+	"openbh": (
+		'if [ "$DISTRO" != "openbh" ]; then echo "CineView MLA: image \'$DISTRO\' is not OpenBH - this is the OpenBH build. Stopped."; exit 1; fi\n'
+		'case "$VER" in\n'
+		'  5.6|5.6.*|6.0|6.0.*) ;;\n'
+		'  *) echo "CineView MLA: OpenBH \'$VER\' has not been checked against this package yet (checked: 5.6, 6.0). Stopped."; exit 1;;\n'
+		'esac\n'),
+}
+
+
+def image_scripts(image, control, preinst, pyneed):
+	"""Per-image control description and preinst image check (the only packaging difference between images)."""
+	assert image in IMAGE_CHECKS, "unknown image target %s" % image
+	a = preinst.index(OPENATV_IMAGE_CHECK_START)
+	b = preinst.index(OPENATV_IMAGE_CHECK_END, a) + len(OPENATV_IMAGE_CHECK_END)
+	preinst = preinst[:a] + IMAGE_CHECKS[image] + preinst[b:]
+	preinst = preinst.replace("(OpenATV 8.0.x)", "(%s)" % image).replace("OpenATV 8.0.x only", "%s only" % image)
+	name = {"openbh": "OpenBH"}[image]
+	control = control.replace("for OpenATV 8.0 / Python %s" % pyneed, "for %s / Python %s (test build)" % (name, pyneed))
+	return control, preinst
+
+
 def build_ipk(build, ver, outdir, pyc_dir=None):
 	import json
 	import subprocess
@@ -232,8 +258,13 @@ def build_ipk(build, ver, outdir, pyc_dir=None):
 	_tar(members, data)
 	ctrl = io.BytesIO()
 	target = " 8.0 / Python %s" % pyneed if pyneed else " 7.6 / 8.0"
-	_tar([("./control", CONTROL.format(pkg=PKG, ver=ver, commit=commit, target=target, homepage=os.environ.get("MLA_HOMEPAGE", "https://github.com/habeb-s/CineView-FHD")).encode(), 0o644, "file", None),
-		("./preinst", PREINST.replace("@PYNEED@", pyneed).encode(), 0o755, "file", None), ("./postinst", POSTINST.encode(), 0o755, "file", None),
+	control = CONTROL.format(pkg=PKG, ver=ver, commit=commit, target=target, homepage=os.environ.get("MLA_HOMEPAGE", "https://github.com/habeb-s/CineView-FHD"))
+	preinst = PREINST.replace("@PYNEED@", pyneed)
+	image = os.environ.get("MLA_TARGET", "openatv")  # image adapter seam; openatv output is unchanged
+	if image != "openatv":
+		control, preinst = image_scripts(image, control, preinst, pyneed)
+	_tar([("./control", control.encode(), 0o644, "file", None),
+		("./preinst", preinst.encode(), 0o755, "file", None), ("./postinst", POSTINST.encode(), 0o755, "file", None),
 		("./prerm", PRERM.encode(), 0o755, "file", None), ("./postrm", POSTRM.encode(), 0o755, "file", None)], ctrl)
 	os.makedirs(outdir, exist_ok=True)
 	path = os.path.join(outdir, "%s_%s_all.ipk" % (PKG, ver))
