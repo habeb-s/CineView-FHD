@@ -123,8 +123,25 @@ def _open(what):
 		from Screens.QuickMenu import QuickMenu
 		_session.open(QuickMenu)
 	elif what == "pkgremove":
-		from Screens.PluginBrowser import PackageAction
-		_session.open(PackageAction, PackageAction.MODE_REMOVE)
+		try:
+			from Screens.PluginBrowser import PackageAction
+			_session.open(PackageAction, PackageAction.MODE_REMOVE)
+		except ImportError:  # OpenBH: PluginDownloadBrowser (opkg list_installed only; nothing removed unless confirmed)
+			from Screens.PluginBrowser import PluginDownloadBrowser
+			_session.open(PluginDownloadBrowser, PluginDownloadBrowser.REMOVE)
+	elif what == "pkgdownload":  # OpenBH: Install Plugins (opkg update + list; nothing installed unless confirmed)
+		from Screens.PluginBrowser import PluginDownloadBrowser
+		_session.open(PluginDownloadBrowser, PluginDownloadBrowser.DOWNLOAD)
+	elif what == "console":  # native Console screen with a harmless command (display check)
+		from Screens.Console import Console
+		_session.open(Console, title="CineView MLA console test", cmdlist=["echo 'CineView MLA console test - no package command'", "uname -m"])
+	elif what in ("mark_on", "mark_off"):
+		# ChannelSelection open: the current row drawn as MARKED (display flag of eListboxServiceContent only - no
+		# move mode, no bouquet change); shows the skin's backgroundColorMarked / foregroundColorMarked
+		dlg = _session.current_dialog
+		lst = getattr(dlg, "servicelist", None)
+		if lst is not None:
+			lst.setCurrentMarked(what == "mark_on")
 	elif what == "pkglog":
 		from Screens.PluginBrowser import PackageActionLog
 		_session.open(PackageActionLog, "\n".join(["CineView MLA display test (no opkg command was run)"] + ["Line %02d: Removing package enigma2-plugin-example-%02d from root..." % (i, i) for i in range(1, 31)]))

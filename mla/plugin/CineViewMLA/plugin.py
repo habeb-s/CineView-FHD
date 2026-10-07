@@ -5,6 +5,7 @@
 #    live preview image, trial apply with automatic revert, runtime options (posters, info).
 #  - Second InfoBar: mode and timeout are two separate NATIVE settings
 #    (config.usage.show_second_infobar / config.usage.second_infobar_timeout) — fixes ISS-01.
+import importlib
 import importlib.util
 import json
 import os
@@ -873,6 +874,47 @@ def _install_service_name_clip():
 
 
 def _install_package_waiting():
+	if image_adapter.package_wait() == "plugindownloadbrowser":
+		return _install_download_browser_waiting()
+	return _install_package_action_waiting()
+
+
+def _install_download_browser_waiting():
+	"""OpenBH Plugin Browser -> Install / Remove Plugins (Screens/PluginBrowser.py PluginDownloadBrowser, 52dedddc314a):
+	the screen shows ONE native wait text in its 'text' label while opkg runs and the list widget is hidden - the
+	single message the OpenATV hook below has to restore there.  What remains: OpenBH never clears that label, so
+	"... Please wait..." stays behind the filled list.  When updateList() has filled the list, a text that is (or ends
+	with) the native wait message is cleared (the feed warning line before it is kept); any other text - feed
+	errors, "feeds are down" - stays.  Display only; opkg, keys and the native screen code are unchanged."""
+	try:
+		from Screens.PluginBrowser import PluginDownloadBrowser
+	except Exception as err:
+		print("[CineViewMLA] package waiting (OpenBH): unavailable: %s" % err)
+		return
+	import gettext
+	orig = PluginDownloadBrowser.updateList
+	if getattr(orig, "_cvmla_pkg_wait", False):
+		return
+
+	def updateList(self, *args, _orig=orig, **kw):
+		r = _orig(self, *args, **kw)
+		try:
+			if mla_active() and "text" in self:
+				t = self["text"].getText()
+				for msg in ("Downloading plugin information. Please wait...", "Getting plugin information. Please wait..."):
+					tr = gettext.dgettext("enigma2", msg)
+					if t == tr or t.endswith("\n" + tr):
+						self["text"].setText(t[:-len(tr)].rstrip("\n"))
+						break
+		except Exception as err:
+			print("[CineViewMLA] package waiting (OpenBH): %s" % err)
+		return r
+	updateList._cvmla_pkg_wait = True
+	PluginDownloadBrowser.updateList = updateList
+	print("[CineViewMLA] package waiting installed (PluginDownloadBrowser)")
+
+
+def _install_package_action_waiting():
 	"""Plugin Browser -> Install / Remove / Update Plugins (device t96 2026-10-06, live stack): while opkg runs,
 	PackageAction.setWaiting(text) shows the global Processing dialog with `text` AND the screen keeps the same text
 	in its own 'description' label ("Downloading plugin information. Please wait..." twice on the TV).  While the
@@ -918,6 +960,38 @@ def _install_package_waiting():
 	print("[CineViewMLA] package waiting installed")
 
 
+def _install_label_overrides():
+	"""ImageAdapter label_overrides (OpenBH: short Arabic EPG red key).  Wraps the native screen's __init__; after it
+	ran, the widget text is replaced only if it is still the native enigma2 translation of msgid and the UI language
+	starts with the rule's prefix.  Display only - actions, keys and the native screen code stay as they are."""
+	import gettext
+	for module, cls_name, widget, msgid, lang, text in image_adapter.label_overrides():
+		try:
+			cls = getattr(importlib.import_module(module), cls_name)
+		except Exception as err:
+			print("[CineViewMLA] label override %s.%s unavailable: %s" % (module, cls_name, err))
+			continue
+		orig = cls.__init__
+		if getattr(orig, "_cvmla_label", False):
+			continue
+
+		def __init__(self, *args, _orig=orig, _w=widget, _msgid=msgid, _lang=lang, _text=text, **kw):
+			_orig(self, *args, **kw)
+			try:
+				if not mla_active():
+					return
+				from Components.Language import language
+				if not (language.getLanguage() or "").startswith(_lang):
+					return
+				if _w in self and self[_w].getText() == gettext.dgettext("enigma2", _msgid):
+					self[_w].setText(_text)
+			except Exception as err:
+				print("[CineViewMLA] label override: %s" % err)
+		__init__._cvmla_label = True
+		cls.__init__ = __init__
+		print("[CineViewMLA] label override installed: %s.%s %s" % (cls_name, widget, msgid))
+
+
 def sessionstart(reason, session=None, **kwargs):
 	global _timer, _session
 	if reason != 0 or session is None:
@@ -938,6 +1012,7 @@ def sessionstart(reason, session=None, **kwargs):
 		_install_service_name_clip()
 		_install_epg_eventview_name()
 		_install_package_waiting()
+		_install_label_overrides()
 
 
 def autostart(reason, **kwargs):

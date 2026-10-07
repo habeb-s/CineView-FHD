@@ -3,6 +3,7 @@
 #   usage: t106.sh <tag> [steps...]          env: INSTALL=<ipk>  ZAP=<service ref>  DEVTOOL=1 (deploy test tool)
 #   steps (default: all sections): infobar sib chansel grid single multi ibgrid eventview evinfo evsimple pvr
 #                                  plugins designs setup_ui setup_usage msg_info msg_yesno msg_long
+#                                  (extra) pkgremove pkgdownload console mark chansel_down
 # Per step: close everything, open through the NATIVE entry point, grab, new log lines only (tracebacks, skin errors,
 # missing elements, unimplemented attributes, screens processed).  Poster cache stays pinned to /tmp (HDD never used).
 . ~/cineview-mla/p6lib.sh
@@ -14,13 +15,15 @@ ga() { for a in 1 2 3; do curl -s -m 60 -o $S/$1.png "http://192.168.1.250/grab?
 op() { $R "mkdir -p /tmp/cvmla; echo $1 > /tmp/cvmla/open.txt"; sleep ${2:-5}; }
 rows() { $R 'rm -f /tmp/cvmla/rows.txt; echo rows > /tmp/cvmla/open.txt'; sleep 1.6; $R 'cat /tmp/cvmla/rows.txt 2>/dev/null' > $S/rows_$1.txt; }
 LOGF=""; N=0
+# live volume / mute + the saved value (volume side-effect watch, user 2026-10-07)
+vol() { local v=$(curl -s -m 5 http://192.168.1.250/api/statusinfo | python3 -c "import json,sys;d=json.load(sys.stdin);print('%s%s' % (d.get('volume'), 'M' if d.get('muted') else ''))" 2>/dev/null); echo "$v/$($R 'sed -n "s/^config.audio.volume=//p" /etc/enigma2/settings')"; }
 mark() { LOGF=$($R 'ls -t /home/root/logs/Enigma2_debug_*.log | head -1'); N=$($R "wc -l < $LOGF"); }
 delta() {
 	$R "tail -n +$((N + 1)) $LOGF" > $S/log_$1.txt
 	local tb=$(grep -a -c "Traceback" $S/log_$1.txt) se=$(grep -a -c "\[Skin\] Error\|SkinError" $S/log_$1.txt) mi=$(grep -a -c "Skin is missing element" $S/log_$1.txt) na=$(grep -a -c "is not implemented" $S/log_$1.txt)
 	local scr=$(grep -a -o "\[Skin\] Processing screen '[^']*'" $S/log_$1.txt | sed "s/.*'\(.*\)'/\1/" | grep -v Summary | sort -u | tr '\n' ' ')
 	local err=$(grep -a "CineViewMLAScreenOpen\] error" $S/log_$1.txt | sed 's/.*error: //' | head -1 | cut -c1-80)
-	printf "%-14s tb=%s skinerr=%s missing=%s notimpl=%s screens: %s%s\n" "$1" $tb $se $mi $na "$scr" "${err:+ TOOL-ERROR: $err}" | tee -a $S/summary.txt
+	printf "%-14s tb=%s skinerr=%s missing=%s notimpl=%s vol=%s screens: %s%s\n" "$1" $tb $se $mi $na "$(vol)" "$scr" "${err:+ TOOL-ERROR: $err}" | tee -a $S/summary.txt
 }
 restart_gui() { local o=$($R pidof enigma2); $R 'init 4; for i in $(seq 1 30); do pidof enigma2 >/dev/null || break; sleep 1; done; init 3'
 	for i in $(seq 1 90); do p=$($R 'pidof enigma2' 2>/dev/null); [ -n "$p" ] && [ "$p" != "$o" ] && break; sleep 2; done
@@ -41,6 +44,11 @@ run() {
 		evsimple) op evsimple ;;
 		pvr) op nativemovies 7 ;;
 		plugins) op pluginbrowser ;;
+		pkgremove) op pkgremove 12 ;;
+		pkgdownload) op pkgdownload 40 ;;
+		console) op console 5 ;;
+		mark) $RC 103; sleep 2.5; op mark_on 2 ;;
+		chansel_down) $RC 103; sleep 2.5; for i in 1 2 3 4 5 6 7 8; do $RC 108; sleep 0.3; done; sleep 1.5 ;;
 		designs) op designs 6; rows designs ;;
 		setup_ui) op setup:userinterface ;;
 		setup_usage) op setup:usage ;;
@@ -50,6 +58,7 @@ run() {
 		*) echo "unknown step $name"; return ;;
 	esac
 	sleep 1.5; ga $name; delta $name
+	[ "$name" = mark ] && op mark_off 2  # display flag back off before the channel list closes
 }
 $R 'grep -q "rootsubdir=duo4kse/linuxrootfs5" /proc/cmdline' || { echo "NOT Slot 5"; exit 1; }
 $R 'python3 -c "import json;print(\"pin:\", json.load(open(\"/etc/enigma2/cineview_mla/runtime.json\")).get(\"poster_cache\"))"'

@@ -48,6 +48,7 @@ check("openatv rows == 1.0.0 rows (keys, labels, cards, descriptions, order)", [
 check("openatv rows bound to the real config elements", [cfg for k, cfg, l, c, d in rows] == ["A", "B"])
 check("openatv shutdown hook = session.onShutdown", m.shutdown_hook() == "session")
 check("openatv ChoiceBox items keyword = choiceList (1.0.0 call)", m.choice_list([1]) == {"choiceList": [1]})
+check("openatv: no label override (1.0.0 texts)", m.label_overrides() == ())
 
 m = load("distro='openbh'\nimageversion='5.6'\nimagebuild='008'\n")
 rows = m.native_rows(usage_bh)
@@ -56,6 +57,7 @@ check("openbh: one native row show_second_infobar", [k for k, *_ in rows] == ["s
 check("openbh: no OpenATV-only setting requested", all(k != "second_infobar_timeout" for k, *_ in rows))
 check("openbh shutdown hook = WHERE_AUTOSTART reason 1", m.shutdown_hook() == "autostart")
 check("openbh ChoiceBox items keyword = list (52dedddc314a signature)", m.choice_list([1]) == {"list": [1]})
+check("openbh: Arabic EPG red key -> 'بحث IMDb' only", m.label_overrides() == (("Screens.EpgSelectionBase", "EPGSelectionBase", "key_red", "IMDb Search", "ar", "بحث IMDb"),))
 
 m = load("distro='openatv'\n")
 check("missing native setting is skipped, never AttributeError", [k for k, *_ in m.native_rows(usage_bh)] == ["show_second_infobar"])

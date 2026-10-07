@@ -1,6 +1,6 @@
 #!/bin/bash
 # t106x - OpenBH (Slot 5) matrix on top of t106.sh: design models, themes, posters on/off.
-#   usage: t106x.sh models | themes | posters | epgpig
+#   usage: t106x.sh models | themes | posters | epgpig | names
 # (loop variables must not be named p: restart_gui uses $p for the enigma2 pid)
 # Each case: selection applied by the engine (composer apply, the same path CineView Designs uses), GUI restart,
 # then t106.sh opens the sections.  The selection before the run is restored at the end.  HDD never used.
@@ -51,6 +51,23 @@ epgpig)
 		ZAP=$ZAP DEVTOOL=1 bash ~/cineview-mla/t106.sh epgnopig_$pk grid ibgrid single multi
 	done
 	restart_gui "sed -i '/^config.epgselection.grid.pig=/d' /etc/enigma2/settings; [ -n '$PIG' ] && echo 'config.epgselection.grid.pig=$PIG' >> /etc/enigma2/settings;" ;;
+names)
+	# channel-name length on OpenBH's native service list (eListboxServiceContent visModeComplex): the longest
+	# receivable name of the bouquets (16.0E "CineStar TV Action and Thriller HD") in every channel-list design,
+	# with the user's progress-bar setting (OpenBH default barleft) and with barright (OpenATV's layout); the setting
+	# is written with the GUI stopped and its previous value restored.
+	LONG="1:0:19:71B:C5A8:16E:A00000:0:0:0:"
+	PB=$($R 'sed -n "s/^config.usage.show_event_progress_in_servicelist=//p" /etc/enigma2/settings'); echo "progress bar before: '${PB:-(default)}'"
+	for bar in "" barright; do
+		restart_gui "sed -i '/^config.usage.show_event_progress_in_servicelist=/d' /etc/enigma2/settings; [ -n '$bar' ] && echo config.usage.show_event_progress_in_servicelist=$bar >> /etc/enigma2/settings;"
+		for cs in classic posterlist videofirst videofirst-right modern minimal; do
+			$R "$E apply --set channelselection=$cs 2>&1 | tail -1"
+			restart_gui
+			ZAP=$LONG DEVTOOL=1 bash ~/cineview-mla/t106.sh names_${cs}_${bar:-default} chansel
+		done
+	done
+	restart_gui "sed -i '/^config.usage.show_event_progress_in_servicelist=/d' /etc/enigma2/settings; [ -n '$PB' ] && echo 'config.usage.show_event_progress_in_servicelist=$PB' >> /etc/enigma2/settings;"
+	echo "progress bar restored: '$($R 'sed -n "s/^config.usage.show_event_progress_in_servicelist=//p" /etc/enigma2/settings')'" ;;
 esac
 echo "== restore: $ORIG"; $R "$E apply $ORIG 2>&1 | tail -1"; restart_gui
 echo T106X_DONE

@@ -34,4 +34,32 @@
 		<widget source="key_menu" render="Label" position="1390,1010" size="170,45" font="Regular;23" halign="center" valign="center" foregroundColor="grey" transparent="1" />
 		<widget source="key_help" render="Label" position="1580,1010" size="170,45" font="Regular;23" halign="center" valign="center" foregroundColor="grey" transparent="1" />
 	</screen>
+	<!-- Screens/PluginBrowser.py PluginDownloadBrowser (Install / Remove Plugins): OpenBH's own package screen (no
+	     PackageAction, no global Processing dialog).  Native contract: list (PluginList, rows from the PluginBrowser
+	     fonts/parameters above), text (Label: "Downloading / Getting plugin information. Please wait...", shown while
+	     the list widget is hidden), key_red / key_green / key_blue (StaticText), key_help (HelpableScreen), Title
+	     (setTitle "Install Plugins" / "Remove Plugins").  Same look as the CineView OpenATV PackageAction: header
+	     "Plugin Manager" + mode, colour keys drawn only while they have a text.  The single wait text is the native
+	     behaviour here, so the OpenATV duplicate-text hook (PackageAction.setWaiting) has nothing to do on OpenBH. -->
+	<screen name="PluginDownloadBrowser" title="Plugin Browser Action" position="0,0" size="1920,1080" flags="wfNoBorder">
+		<eLabel position="0,0" size="1920,1080" backgroundColor="steThemePrimary" zPosition="-1" />
+		<eLabel text="Plugin Manager" position="45,24" size="1830,52" font="Regular;38" foregroundColor="secondFG" backgroundColor="steThemePrimary" transparent="1" zPosition="3" />
+		<widget source="Title" render="Label" position="1075,24" size="800,52" font="Regular;30" foregroundColor="steThemeMuted" backgroundColor="steThemePrimary" transparent="1" halign="right" valign="center" zPosition="3" />
+		<eLabel position="35,88" size="1850,2" backgroundColor="steThemePanelAlt" zPosition="2" />
+		<widget name="text" position="45,110" size="1830,880" font="Regular;30" foregroundColor="grey" backgroundColor="steThemePrimary" transparent="1" halign="center" valign="center" zPosition="4" />
+		<widget name="list" position="45,110" size="1830,880" scrollbarMode="showOnDemand" foregroundColor="foreground" backgroundColor="steThemePrimary" foregroundColorSelected="selectedFG" backgroundColorSelected="selectedBG" transparent="1" zPosition="5" />
+		<eLabel position="35,995" size="1850,2" backgroundColor="steThemePanelAlt" zPosition="2" />
+		<widget zPosition="2" source="key_red" render="Label" position="55,1010" size="310,45" backgroundColor="key_red" font="Regular;25" foregroundColor="key_text" halign="center" valign="center">
+			<convert type="ConditionalShowHide" />
+		</widget>
+		<widget zPosition="2" source="key_green" render="Label" position="385,1010" size="310,45" backgroundColor="key_green" font="Regular;25" foregroundColor="key_text" halign="center" valign="center">
+			<convert type="ConditionalShowHide" />
+		</widget>
+		<widget zPosition="2" source="key_blue" render="Label" position="1045,1010" size="310,45" backgroundColor="key_blue" font="Regular;25" foregroundColor="key_text" halign="center" valign="center">
+			<convert type="ConditionalShowHide" />
+		</widget>
+		<widget source="key_help" render="Label" position="1575,1010" size="300,45" backgroundColor="key_back" conditional="key_help" font="Regular;24" foregroundColor="key_text" halign="center" valign="center">
+			<convert type="ConditionalShowHide" />
+		</widget>
+	</screen>
 </skin>

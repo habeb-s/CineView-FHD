@@ -1043,6 +1043,30 @@ PACKAGE_TITLE = ('\t\t<widget source="Title" render="Label" position="1075,24" s
 	'backgroundColor="steThemePrimary" transparent="1" halign="right" valign="center" zPosition="3" />\n')
 
 
+def apply_pvr_header_icons(skin):
+	"""PVR header (user 2026-10-07: common UI defect, fix in the common core): in the PVR packs that use the shared
+	TopTemplate header (Classic, Cover) the sort / view-mode icons (movie_sort 1740,45 + movie_off 1800,45, 52x30)
+	sat on the right-aligned date line (TopTemplate: date e-480,45 450x37, clock e-255,5 225x40), so the date was
+	drawn through them (OpenATV golden and OpenBH, every language).  They move up into the clock row, left of the
+	clock text (clock "HH:MM" Regular;36 is about 100 px wide, right-aligned at x 1890): 1600,8 and 1660,8.  Same
+	icons, same size, nothing removed; the date line is free.  Cinema / Modern / Minimal have their own date boxes
+	left of which the icons already stand (no overlap) and are not touched."""
+	done = []
+	for pack in ("classic", "cover"):
+		f = os.path.join(skin, "layouts", "pvr", pack, "screens.openatv.xml")
+		if not os.path.isfile(f):
+			continue
+		x = open(f, encoding="utf-8").read()
+		n0 = x.count('position="1740,45"') + x.count('position="1800,45"')
+		x2 = re.sub(r'(<widget name="movie_sort" [^>]*?)position="1740,45"', r'\1position="1600,8"', x)
+		x2 = re.sub(r'(<widget name="movie_off" [^>]*?)position="1800,45"', r'\1position="1660,8"', x2)
+		n = x2.count('position="1600,8"') + x2.count('position="1660,8"')
+		assert n and n == n0, "PVR header icons %s: %d/%d" % (pack, n, n0)
+		open(f, "w", encoding="utf-8").write(x2)
+		done.append((pack, n // 2))
+	return done
+
+
 def apply_package_screens(skin):
 	"""Plugin / package management (user 2026-10-06 22:00; live stack t96): the busy window of Install / Remove /
 	Update Plugins, of the feed update and of every other caller is the GLOBAL dialog Screens.Processing.ProcessingScreen
@@ -1379,6 +1403,8 @@ def main(golden, comps, control, out):
 			if lx2 != lx:
 				open(lp, "w", encoding="utf-8").write(lx2)
 				print("MOVIELIST legacy attributes removed:", os.path.relpath(lp, skin))
+	for pack, nscr in apply_pvr_header_icons(skin):
+		print("PVR header icons moved to the clock row: %s (%d screen(s))" % (pack, nscr))
 	# Accelerated-pool optimizer for every non-Classic pack (tools/mla/accel_opt.py; device t67-t74)
 	import accel_opt
 	for f, nd, nf in accel_opt.run(skin):

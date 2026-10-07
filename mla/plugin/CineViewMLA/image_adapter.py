@@ -15,6 +15,13 @@
 #                   "list"       - OpenBH 52dedddc314a / c06a87ef4c09 ChoiceBox(session, title, list, ...); any other
 #                                  keyword is swallowed by its **kwargs, so choiceList= opens an EMPTY menu
 #                                  (OpenBH t106f run: CineView profiles menu without entries)
+#   package_wait    how the plugin-package screen's wait text is kept single and current:
+#                   "packageaction"         - OpenATV 57b7a51 PackageAction.setWaiting + global Processing dialog
+#                   "plugindownloadbrowser" - OpenBH PluginDownloadBrowser: one native "text" label shown while the
+#                                             list is hidden; its "Please wait..." stays after the list is filled
+#   label_overrides one-line CineView texts for native labels whose translation does not fit the CineView key slot:
+#                   (module, class, widget, enigma2 msgid, language prefix, text).  Applied after the native screen
+#                   set its text, only when that text is still the native translation of msgid in that language.
 # Adding an image = one entry in IMAGES (+ skin overrides only where its native screens differ).
 import os
 
@@ -30,6 +37,12 @@ _OPENATV_ROWS = (
 		"How long the Second InfoBar stays on screen (OpenATV setting).",
 		"After this time the Second InfoBar closes by itself."),
 )
+# OpenBH 52dedddc314a Screens/EpgSelectionBase.py:102 key_red = _("IMDb Search"); po/ar.po: 50 characters
+# ("البحث في قاعدة بيانات معلومات الأفلام على الإنترنت") in a 400 px CineView key -> user decision 2026-10-07 (option C):
+# the short Arabic text "بحث IMDb" on OpenBH only, English and the design unchanged.
+_OPENBH_LABELS = (
+	("Screens.EpgSelectionBase", "EPGSelectionBase", "key_red", "IMDb Search", "ar", "\u0628\u062d\u062b IMDb"),
+)
 # OpenBH 5.6 / 6.0 (BlackHole/enigma2 52dedddc314a, c06a87ef4c09) Components/UsageConfig: ONE native setting -
 # show_second_infobar = no / no timeout / 3..60 s / EPG / InfoBar EPG, opened by pressing OK twice (data/setup.xml).
 _OPENBH_ROWS = (
@@ -39,8 +52,10 @@ _OPENBH_ROWS = (
 )
 
 IMAGES = {
-	"openatv": {"rows": _OPENATV_ROWS, "shutdown_hook": "session", "choicebox_list": "choiceList"},
-	"openbh": {"rows": _OPENBH_ROWS, "shutdown_hook": "autostart", "choicebox_list": "list"},
+	"openatv": {"rows": _OPENATV_ROWS, "shutdown_hook": "session", "choicebox_list": "choiceList",
+		"package_wait": "packageaction"},
+	"openbh": {"rows": _OPENBH_ROWS, "shutdown_hook": "autostart", "choicebox_list": "list",
+		"package_wait": "plugindownloadbrowser", "label_overrides": _OPENBH_LABELS},
 }
 
 _image = None
@@ -83,3 +98,11 @@ def shutdown_hook():
 def choice_list(items):
 	"""ChoiceBox keyword argument carrying the menu entries on this image: session.open(ChoiceBox, ..., **choice_list(x))."""
 	return {_spec().get("choicebox_list", "choiceList"): items}
+
+
+def label_overrides():
+	return tuple(_spec().get("label_overrides", ()))
+
+
+def package_wait():
+	return _spec().get("package_wait", "packageaction")
