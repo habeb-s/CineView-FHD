@@ -221,6 +221,25 @@ IMAGE_CHECKS = {
 }
 
 
+# OpenBH 5.6.008 (Slot 5, 2026-10-07): /bin/sh is bash, and bash itself crashes now and then with signal 11
+# (1/25 runs of the preinst; 1/100 runs of a 2-line script with no CineView content; BusyBox sh 0/200).  opkg then
+# aborts the install ("preinst script returned status -1") and leaves the package half-installed.  On that image
+# the maintainer scripts run under BusyBox sh when it is there: the bash part is one test and an exec.  Without
+# /bin/busybox the script just continues under /bin/sh, as before.  OpenATV packages are not touched.
+SHELL_REEXEC = {
+	"openbh": '[ -z "$CVMLA_BBSH" ] && [ -x /bin/busybox ] && CVMLA_BBSH=1 exec /bin/busybox sh "$0" "$@"  # OpenBH: bash /bin/sh crashes rarely (SIGSEGV)\n',
+}
+
+
+def image_shell(image, script):
+	"""Maintainer script for `image`: BusyBox sh re-exec right after the shebang where the image needs it."""
+	line = SHELL_REEXEC.get(image)
+	if not line:
+		return script
+	assert script.startswith("#!/bin/sh\n")
+	return "#!/bin/sh\n" + line + script[len("#!/bin/sh\n"):]
+
+
 def image_scripts(image, control, preinst, pyneed):
 	"""Per-image control description and preinst image check (the only packaging difference between images)."""
 	assert image in IMAGE_CHECKS, "unknown image target %s" % image
@@ -263,9 +282,10 @@ def build_ipk(build, ver, outdir, pyc_dir=None):
 	image = os.environ.get("MLA_TARGET", "openatv")  # image adapter seam; openatv output is unchanged
 	if image != "openatv":
 		control, preinst = image_scripts(image, control, preinst, pyneed)
-	_tar([("./control", control.encode(), 0o644, "file", None),
-		("./preinst", preinst.encode(), 0o755, "file", None), ("./postinst", POSTINST.encode(), 0o755, "file", None),
-		("./prerm", PRERM.encode(), 0o755, "file", None), ("./postrm", POSTRM.encode(), 0o755, "file", None)], ctrl)
+	scripts = {"preinst": preinst, "postinst": POSTINST, "prerm": PRERM, "postrm": POSTRM}
+	scripts = {k: image_shell(image, v) for k, v in scripts.items()}
+	_tar([("./control", control.encode(), 0o644, "file", None)] +
+		[("./" + k, scripts[k].encode(), 0o755, "file", None) for k in ("preinst", "postinst", "prerm", "postrm")], ctrl)
 	os.makedirs(outdir, exist_ok=True)
 	path = os.path.join(outdir, "%s_%s_all.ipk" % (PKG, ver))
 	# ipk = ar archive: debian-binary, control.tar.gz, data.tar.gz (opkg accepts ar)
