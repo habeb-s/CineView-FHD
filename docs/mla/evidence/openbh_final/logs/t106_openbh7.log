@@ -1,0 +1,35 @@
+pin: /tmp/CINEVIEW-MLA/poster
+error: xsystem: /bin/sh: Child killed by signal 11.
+error: pkg_run_script: package "enigma2-plugin-skins-cineview-fhd-mla" preinst script returned status -1.
+error: preinst_configure: Aborting installation of enigma2-plugin-skins-cineview-fhd-mla.
+Upgrading enigma2-plugin-skins-cineview-fhd-mla (1.0.0~openbh6) to enigma2-plugin-skins-cineview-fhd-mla (1.0.0~openbh7) on root
+To remove package debris, try `opkg remove enigma2-plugin-skins-cineview-fhd-mla`.
+To re-attempt the install, try `opkg install enigma2-plugin-skins-cineview-fhd-mla`.
+Version: 1.0.0~openbh7
+== GUI restart
+00_startup     tb=0 skinerr=0 missing=17 notimpl=6 vol=35/35 screens: <embedded-in-HideVBILine> BufferIndicator ChannelSelection Dish InfoBar Mute RdsInfoDisplay Screensaver SecondInfoBar SlimChannelSelection SubtitleDisplay TimeshiftState UnhandledKey Volume 
+playing: Cinemax 2 HD | now: 'Banda amazonki' | next: 'Latinski za sve'
+infobar        tb=0 skinerr=0 missing=0 notimpl=0 vol=35/35 screens: 
+sib            tb=0 skinerr=0 missing=0 notimpl=0 vol=35/35 screens: 
+chansel        tb=0 skinerr=0 missing=0 notimpl=0 vol=35/35 screens: 
+mark           tb=0 skinerr=0 missing=0 notimpl=0 vol=35/35 screens: 
+grid           tb=0 skinerr=0 missing=4 notimpl=0 vol=35/35 screens: GraphicalEPGPIG 
+single         tb=0 skinerr=0 missing=2 notimpl=0 vol=35/35 screens: EPGSelection 
+multi          tb=0 skinerr=0 missing=1 notimpl=0 vol=35/35 screens: EPGSelectionMulti 
+ibgrid         tb=0 skinerr=0 missing=4 notimpl=0 vol=35/35 screens: GraphicalInfoBarEPG 
+eventview      tb=0 skinerr=0 missing=10 notimpl=2 vol=35/35 screens: EventView 
+evinfo         tb=0 skinerr=0 missing=10 notimpl=2 vol=35/35 screens: EventView 
+evsimple       tb=0 skinerr=0 missing=2 notimpl=0 vol=35/35 screens: EventViewSimple_CVPosterOff 
+pvr            tb=0 skinerr=0 missing=0 notimpl=0 vol=35/35 screens: MovieSelection 
+plugins        tb=0 skinerr=0 missing=0 notimpl=0 vol=35/35 screens: PluginBrowser 
+pkgremove      tb=0 skinerr=0 missing=0 notimpl=0 vol=35/35 screens: PluginDownloadBrowser 
+pkgdownload    tb=0 skinerr=0 missing=0 notimpl=0 vol=35/35 screens: PluginDownloadBrowser 
+console        tb=0 skinerr=0 missing=0 notimpl=1 vol=35/35 screens: Console 
+designs        tb=0 skinerr=0 missing=1 notimpl=0 vol=35/35 screens: CineViewMLASetup 
+setup_ui       tb=0 skinerr=0 missing=0 notimpl=0 vol=35/35 screens: Setup 
+setup_usage    tb=0 skinerr=0 missing=0 notimpl=0 vol=35/35 screens: Setup 
+msg_info       tb=0 skinerr=0 missing=0 notimpl=0 vol=35/35 screens: MessageBox 
+msg_yesno      tb=0 skinerr=0 missing=0 notimpl=0 vol=35/35 screens: MessageBox 
+msg_long       tb=0 skinerr=0 missing=0 notimpl=0 vol=35/35 screens: MessageBox 
+poster cache /tmp: 62 files; crash logs today: 0
+T106_DONE

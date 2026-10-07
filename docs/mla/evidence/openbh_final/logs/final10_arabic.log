@@ -1,0 +1,14 @@
+language before: 'en_GB'
+language now: ar_AE
+pin: /tmp/CINEVIEW-MLA/poster
+playing: Cinemax HD | now: 'Patriot' | next: 'Pet minuta raja'
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPGPIG 
+multi          tb=0 skinerr=0 missing=1 notimpl=0 screens: EPGSelectionMulti 
+ibgrid         tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalInfoBarEPG 
+single         tb=0 skinerr=0 missing=2 notimpl=0 screens: EPGSelection 
+designs        tb=0 skinerr=0 missing=1 notimpl=0 screens: CineViewMLASetup 
+setup_ui       tb=0 skinerr=0 missing=0 notimpl=0 screens: Setup 
+poster cache /tmp: 93 files; crash logs today: 0
+T106_DONE
+language restored: en_GB
+T106L_DONE

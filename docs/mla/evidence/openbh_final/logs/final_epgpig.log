@@ -1,0 +1,50 @@
+selection before: --theme navy --set channelselection=classic --set epg=classic --set eventview=classic --set infobar=classic --set pvr=classic --set secondinfobar=classic
+grid.pig before: '(default)'
+g000064
+pin: /tmp/CINEVIEW-MLA/poster
+playing: Cinemax HD | now: 'Za to vrijeme na Zemlji' | next: 'Patriot'
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPG 
+ibgrid         tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalInfoBarEPG 
+single         tb=0 skinerr=0 missing=2 notimpl=0 screens: EPGSelection 
+multi          tb=0 skinerr=0 missing=1 notimpl=0 screens: EPGSelectionMulti 
+poster cache /tmp: 81 files; crash logs today: 0
+T106_DONE
+g000065
+pin: /tmp/CINEVIEW-MLA/poster
+playing: Cinemax HD | now: 'Za to vrijeme na Zemlji' | next: 'Patriot'
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPG 
+ibgrid         tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalInfoBarEPG 
+single         tb=0 skinerr=0 missing=2 notimpl=0 screens: EPGSelection 
+multi          tb=0 skinerr=0 missing=1 notimpl=0 screens: EPGSelectionMulti 
+poster cache /tmp: 81 files; crash logs today: 0
+T106_DONE
+g000066
+pin: /tmp/CINEVIEW-MLA/poster
+playing: Cinemax HD | now: 'Za to vrijeme na Zemlji' | next: 'Patriot'
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPG 
+ibgrid         tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalInfoBarEPG 
+single         tb=0 skinerr=0 missing=2 notimpl=0 screens: EPGSelection 
+multi          tb=0 skinerr=0 missing=1 notimpl=0 screens: EPGSelectionMulti 
+poster cache /tmp: 81 files; crash logs today: 0
+T106_DONE
+g000067
+pin: /tmp/CINEVIEW-MLA/poster
+playing: Cinemax HD | now: 'Za to vrijeme na Zemlji' | next: 'Patriot'
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPG 
+ibgrid         tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalInfoBarEPG 
+single         tb=0 skinerr=0 missing=2 notimpl=0 screens: EPGSelection 
+multi          tb=0 skinerr=0 missing=1 notimpl=0 screens: EPGSelectionMulti 
+poster cache /tmp: 81 files; crash logs today: 0
+T106_DONE
+g000068
+pin: /tmp/CINEVIEW-MLA/poster
+playing: Cinemax HD | now: 'Za to vrijeme na Zemlji' | next: 'Patriot'
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPG 
+ibgrid         tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalInfoBarEPG 
+single         tb=0 skinerr=0 missing=2 notimpl=0 screens: EPGSelection 
+multi          tb=0 skinerr=0 missing=1 notimpl=0 screens: EPGSelectionMulti 
+poster cache /tmp: 81 files; crash logs today: 0
+T106_DONE
+== restore: --theme navy --set channelselection=classic --set epg=classic --set eventview=classic --set infobar=classic --set pvr=classic --set secondinfobar=classic
+g000069
+T106X_DONE

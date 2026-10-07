@@ -1,0 +1,78 @@
+selection before: --theme navy --set channelselection=classic --set epg=classic --set eventview=classic --set infobar=classic --set pvr=classic --set secondinfobar=classic
+progress bar before: '(default)'
+g000035
+pin: /tmp/CINEVIEW-MLA/poster
+playing: CineStar TV Action and Thriller HD | now: 'Grof Monte Cristo' | next: 'Sicario'
+chansel        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+poster cache /tmp: 76 files; crash logs today: 0
+T106_DONE
+g000036
+pin: /tmp/CINEVIEW-MLA/poster
+playing: CineStar TV Action and Thriller HD | now: 'Grof Monte Cristo' | next: 'Sicario'
+chansel        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+poster cache /tmp: 78 files; crash logs today: 0
+T106_DONE
+g000037
+pin: /tmp/CINEVIEW-MLA/poster
+playing: CineStar TV Action and Thriller HD | now: 'Grof Monte Cristo' | next: 'Sicario'
+chansel        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+poster cache /tmp: 79 files; crash logs today: 0
+T106_DONE
+g000038
+pin: /tmp/CINEVIEW-MLA/poster
+playing: CineStar TV Action and Thriller HD | now: 'Grof Monte Cristo' | next: 'Sicario'
+chansel        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+poster cache /tmp: 79 files; crash logs today: 0
+T106_DONE
+g000039
+pin: /tmp/CINEVIEW-MLA/poster
+playing: CineStar TV Action and Thriller HD | now: 'Grof Monte Cristo' | next: 'Sicario'
+chansel        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+poster cache /tmp: 80 files; crash logs today: 0
+T106_DONE
+g000040
+pin: /tmp/CINEVIEW-MLA/poster
+playing: CineStar TV Action and Thriller HD | now: 'Grof Monte Cristo' | next: 'Sicario'
+chansel        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+poster cache /tmp: 81 files; crash logs today: 0
+T106_DONE
+g000041
+pin: /tmp/CINEVIEW-MLA/poster
+playing: CineStar TV Action and Thriller HD | now: 'Grof Monte Cristo' | next: 'Sicario'
+chansel        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+poster cache /tmp: 81 files; crash logs today: 0
+T106_DONE
+g000042
+pin: /tmp/CINEVIEW-MLA/poster
+playing: CineStar TV Action and Thriller HD | now: 'Grof Monte Cristo' | next: 'Sicario'
+chansel        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+poster cache /tmp: 81 files; crash logs today: 0
+T106_DONE
+g000043
+pin: /tmp/CINEVIEW-MLA/poster
+playing: CineStar TV Action and Thriller HD | now: 'Grof Monte Cristo' | next: 'Sicario'
+chansel        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+poster cache /tmp: 81 files; crash logs today: 0
+T106_DONE
+g000044
+pin: /tmp/CINEVIEW-MLA/poster
+playing: CineStar TV Action and Thriller HD | now: 'Grof Monte Cristo' | next: 'Sicario'
+chansel        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+poster cache /tmp: 81 files; crash logs today: 0
+T106_DONE
+g000045
+pin: /tmp/CINEVIEW-MLA/poster
+playing: CineStar TV Action and Thriller HD | now: 'Grof Monte Cristo' | next: 'Sicario'
+chansel        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+poster cache /tmp: 81 files; crash logs today: 0
+T106_DONE
+g000046
+pin: /tmp/CINEVIEW-MLA/poster
+playing: CineStar TV Action and Thriller HD | now: 'Grof Monte Cristo' | next: 'Sicario'
+chansel        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+poster cache /tmp: 81 files; crash logs today: 0
+T106_DONE
+progress bar restored: ''
+== restore: --theme navy --set channelselection=classic --set epg=classic --set eventview=classic --set infobar=classic --set pvr=classic --set secondinfobar=classic
+g000047
+T106X_DONE

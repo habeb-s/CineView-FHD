@@ -1,0 +1,3 @@
+#!/bin/sh
+[ -z "$CVMLA_BBSH" ] && [ -x /bin/busybox ] && CVMLA_BBSH=1 exec /bin/busybox sh "$0" "$@"  # OpenBH: bash /bin/sh crashes rarely (SIGSEGV)
+preinst crashes: 0/200

@@ -1,0 +1,14 @@
+PARITY: 12 differing files vs golden build94
+   usr/lib/enigma2/python/Components/Converter/CineViewMLAServiceInfo.py
+   usr/lib/enigma2/python/Components/Converter/CineViewMLAShowIf.py
+   usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/image_adapter.py
+   usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/plugin.py
+   usr/share/enigma2/CineView_FHD_MLA/active/MANIFEST.sha256
+   usr/share/enigma2/CineView_FHD_MLA/active/pvr.xml
+   usr/share/enigma2/CineView_FHD_MLA/generations/g000000/MANIFEST.sha256
+   usr/share/enigma2/CineView_FHD_MLA/generations/g000000/pvr.xml
+   usr/share/enigma2/CineView_FHD_MLA/layouts/pvr/classic/screens.openatv.xml
+   usr/share/enigma2/CineView_FHD_MLA/layouts/pvr/cover/screens.openatv.xml
+   usr/share/enigma2/CineView_FHD_MLA/mla/engine/composer.py
+   usr/share/enigma2/CineView_FHD_MLA/mla/guardian/guardian.sh
+PARITY: PASS (skin XML, layouts, themes, previews, assets identical; only the listed shared code changed)

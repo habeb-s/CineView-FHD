@@ -1,0 +1,22 @@
+pin: /tmp/CINEVIEW-MLA/poster
+CineView MLA: image openbh 5.6 on vuduo4kse
+CineView MLA: your design, theme and settings were kept.
+CineView MLA installed. Select it in Menu > Setup > User Interface > Skin, then restart the GUI.
+Upgrading enigma2-plugin-skins-cineview-fhd-mla (1.0.0~openbh7) to enigma2-plugin-skins-cineview-fhd-mla (1.0.0~openbh8) on root
+Configuring enigma2-plugin-skins-cineview-fhd-mla.
+Version: 1.0.0~openbh8
+Status: install ok installed
+== GUI restart
+00_startup     tb=0 skinerr=0 missing=17 notimpl=6 vol=40/35 screens: <embedded-in-HideVBILine> BufferIndicator ChannelSelection Dish InfoBar Mute RdsInfoDisplay Screensaver SecondInfoBar SlimChannelSelection SubtitleDisplay TimeshiftState UnhandledKey Volume 
+playing: Cinemax HD | now: 'Profesori' | next: 'Za to vrijeme na Zemlji'
+chansel        tb=0 skinerr=0 missing=0 notimpl=0 vol=40/35 screens: 
+grid           tb=0 skinerr=0 missing=4 notimpl=0 vol=40/35 screens: GraphicalEPGPIG 
+multi          tb=0 skinerr=0 missing=1 notimpl=0 vol=40/35 screens: EPGSelectionMulti 
+ibgrid         tb=0 skinerr=0 missing=4 notimpl=0 vol=40/35 screens: GraphicalInfoBarEPG 
+pvr            tb=0 skinerr=0 missing=0 notimpl=0 vol=40/35 screens: MovieSelection 
+plugins        tb=0 skinerr=0 missing=0 notimpl=0 vol=40/35 screens: PluginBrowser 
+pkgremove      tb=0 skinerr=0 missing=0 notimpl=0 vol=40/35 screens: PluginDownloadBrowser 
+pkgdownload    tb=0 skinerr=0 missing=0 notimpl=0 vol=40/35 screens: PluginDownloadBrowser 
+console        tb=0 skinerr=0 missing=0 notimpl=0 vol=40/35 screens: Console 
+poster cache /tmp: 64 files; crash logs today: 0
+T106_DONE

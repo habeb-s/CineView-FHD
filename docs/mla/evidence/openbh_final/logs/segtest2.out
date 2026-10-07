@@ -1,0 +1,5 @@
+SEG cv-preinst.sh sh=0/100
+SEG cv-preinst.sh busybox=0/100
+/tmp/segtest2.sh: line 6:  5039 Segmentation fault         sh $s upgrade > /dev/null 2>&1
+SEG seg_t.sh sh=1/100
+SEG seg_t.sh busybox=0/100

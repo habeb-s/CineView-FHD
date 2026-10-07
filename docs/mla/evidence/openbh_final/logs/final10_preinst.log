@@ -1,0 +1,2 @@
+[ -z "$CVMLA_BBSH" ] && [ -x /bin/busybox ] && CVMLA_BBSH=1 
+preinst crashes: 0/100

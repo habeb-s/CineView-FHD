@@ -1,0 +1,49 @@
+/dev/sdb1                56.1G      4.1G     52.0G   7% /
+== timer 1791393400..1791393490 -> /home/root/cvmla-testmedia/
+   timeradd: True Timer 'CineView MLA PVR test' added
+   files: drwxr-xr-x    2 root     root          4096 Oct  7 20:18 .
+drwx------    8 root     root          4096 Oct  7 18:53 ..
+-rw-r--r--    1 root     root           731 Oct  7 20:16 20261007 2016 - Cinemax HD - CineView MLA PVR test.eit
+-rw-r--r--    1 root     root      43122688 Oct  7 20:18 20261007 2016 - Cinemax HD - CineView MLA PVR test.ts
+-rw-r--r--    1 root     root          2112 Oct  7 20:18 20261007 2016 - Cinemax HD - CineView MLA PVR test.ts.ap
+-rw-r--r--    1 root     root             0 Oct  7 20:18 20261007 2016 - Cinemax HD - CineView MLA PVR test.ts.cuts
+-rw-r--r--    1 root     root           198 Oct  7 20:16 20261007 2016 - Cinemax HD - CineView MLA PVR test.ts.meta
+-rw-r--r--    1 root     root         71376 Oct  7 20:18 20261007 2016 - Cinemax HD - CineView MLA PVR test.ts.sc
+== native PVR
+   cap 01_list
+   cap 02_info
+   cap 03_down
+   cap 04_up
+   cap 05_select
+   cap 06_playing
+   cap 07_player_info
+   cap 07b_player_infobar
+   cap 08_after_stop
+   tracebacks=0 skin_errors=0
+g000075
+   cap 10_layout_cover
+   tracebacks=0 skin_errors=0
+g000076
+   cap 10_layout_cinema
+   tracebacks=0 skin_errors=0
+g000077
+   cap 10_layout_modern
+   tracebacks=0 skin_errors=0
+g000078
+   cap 10_layout_minimal
+   tracebacks=0 skin_errors=0
+g000079
+   pvr layout restored: classic
+== cleanup
+   timerdelete: True The timer 'CineView MLA PVR test' has been deleted successfully
+   deleted 20261007 2016 - Cinemax HD - CineView MLA PVR test.eit
+   deleted 20261007 2016 - Cinemax HD - CineView MLA PVR test.ts
+   deleted 20261007 2016 - Cinemax HD - CineView MLA PVR test.ts.ap
+   deleted 20261007 2016 - Cinemax HD - CineView MLA PVR test.ts.cuts
+   deleted 20261007 2016 - Cinemax HD - CineView MLA PVR test.ts.meta
+   deleted 20261007 2016 - Cinemax HD - CineView MLA PVR test.ts.sc
+drwxr-xr-x    2 root     root          4096 Oct  7 20:26 .
+drwx------    8 root     root          4096 Oct  7 18:53 ..
+   folder removed
+   timers.xml identical to the backup
+T107P_DONE
