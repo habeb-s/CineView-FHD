@@ -6,8 +6,8 @@
 set -e
 CO=${1:?checkout}; VER=${2:?version}
 cd ~/cineview-mla
-bash "$CO/tools/mla/parity_openatv.sh" "$CO" build_parity | tail -3
-grep -q "PARITY: PASS" build_parity.log 2>/dev/null || true
+bash "$CO/tools/mla/parity_openatv.sh" "$CO" build_parity > parity_last.log 2>&1 || { echo "PARITY FAILED - no OpenBH build"; tail -8 parity_last.log; exit 3; }
+tail -3 parity_last.log
 G=candidates/golden0926/usr
 rm -rf build_bh
 MLA_IMAGE=openbh MLA_CS_MOCKS=$PWD/csmock/out MLA_PREVIEWS=$PWD/previews python3 "$CO/tools/mla/build.py" $G/share/enigma2/CineView_FHD \

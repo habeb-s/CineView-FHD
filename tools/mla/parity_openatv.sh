@@ -22,16 +22,25 @@ usr/share/enigma2/CineView_FHD_MLA/mla/engine/composer.py
 usr/share/enigma2/CineView_FHD_MLA/mla/guardian/guardian.sh
 usr/share/enigma2/CineView_FHD_MLA/layouts/pvr/classic/screens.openatv.xml
 usr/share/enigma2/CineView_FHD_MLA/layouts/pvr/cover/screens.openatv.xml
-usr/share/enigma2/CineView_FHD_MLA/generations/g000000/pvr.xml'
+usr/share/enigma2/CineView_FHD_MLA/generations/g000000/pvr.xml
+usr/share/enigma2/CineView_FHD_MLA/generations/g000000/MANIFEST.sha256
+usr/share/enigma2/CineView_FHD_MLA/active/pvr.xml
+usr/share/enigma2/CineView_FHD_MLA/active/MANIFEST.sha256'
 diff -rq build94 "$OUT" | sed -e "s|^Files build94/\([^ ]*\) and .* differ$|\1|" -e "s|^Only in $OUT/*\([^:]*\): \(.*\)$|\1/\2|" \
 	-e "s|^Only in build94/*\([^:]*\): \(.*\)$|REMOVED \1/\2|" | sed 's|//|/|g' > "$OUT.diff"
 BAD=$(grep -v -x -F "$ALLOWED" "$OUT.diff")
 echo "PARITY: $(wc -l < "$OUT.diff") differing files vs golden build94"
 sed 's/^/   /' "$OUT.diff"
 if [ -n "$BAD" ]; then echo "PARITY: FAIL - not allowed:"; echo "$BAD" | sed 's/^/   /'; exit 1; fi
-for f in usr/share/enigma2/CineView_FHD_MLA/layouts/pvr/classic/screens.openatv.xml usr/share/enigma2/CineView_FHD_MLA/layouts/pvr/cover/screens.openatv.xml usr/share/enigma2/CineView_FHD_MLA/generations/g000000/pvr.xml; do
+for f in usr/share/enigma2/CineView_FHD_MLA/layouts/pvr/classic/screens.openatv.xml usr/share/enigma2/CineView_FHD_MLA/layouts/pvr/cover/screens.openatv.xml usr/share/enigma2/CineView_FHD_MLA/generations/g000000/pvr.xml usr/share/enigma2/CineView_FHD_MLA/active/pvr.xml; do
 	[ -f "build94/$f" ] || continue
 	CH=$(diff <(sed -e 's/position="1600,8"/position="1740,45"/' -e 's/position="1660,8"/position="1800,45"/' "$OUT/$f") "build94/$f" | wc -l)
 	[ "$CH" = 0 ] || { echo "PARITY: FAIL - $f changed beyond the PVR header icon positions"; exit 1; }
+done
+# the generation manifest may differ only in the pvr.xml line
+for f in usr/share/enigma2/CineView_FHD_MLA/generations/g000000/MANIFEST.sha256; do
+	[ -f "build94/$f" ] || continue
+	CH=$(diff <(grep -v " pvr.xml$" "$OUT/$f") <(grep -v " pvr.xml$" "build94/$f") | wc -l)
+	[ "$CH" = 0 ] || { echo "PARITY: FAIL - $f changed beyond pvr.xml"; exit 1; }
 done
 echo "PARITY: PASS (skin XML, layouts, themes, previews, assets identical; only the listed shared code changed)"
