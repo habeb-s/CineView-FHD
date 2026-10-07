@@ -32,7 +32,12 @@ class CineViewMLAServiceInfo(ServiceInfo):
 		self._timer = None
 		self._steps = []
 		if self._video:
-			self.interestingEvents = tuple(set(tuple(self.interestingEvents or ()) + EXTRA_EVENTS))
+			# the native ServiceInfo keeps its event filter under an image-specific name (OpenATV: interestingEvents,
+			# OpenBH/OpenViX: interesting_events); extend whichever one the base class created
+			for name in ("interestingEvents", "interesting_events"):
+				if hasattr(self, name):
+					setattr(self, name, tuple(set(tuple(getattr(self, name) or ()) + EXTRA_EVENTS)))
+					break
 
 	def _recheck(self):
 		ServiceInfo.changed(self, (self.CHANGED_ALL,))
