@@ -1,0 +1,8 @@
+<   966.997974> 13:30:36.3715 [Harddisk][splitDeviceName] devName = 'sda1', device = 'sda', partition = '1'
+<   966.999188> 13:30:36.3728 [Harddisk][splitDeviceName] devName = 'sda1', device = 'sda', partition = '1'
+<   967.011067> 13:30:36.3846 [Skin] Processing screen 'MovieSelection', position=(0, 0), size=(1920 x 1080) for module 'MovieSelection'.
+<   967.047223> 13:30:36.4208 [Skin] Processing screen 'MovieSelectionSummary' from list 'MovieSelectionSummary, ScreenSummary', position=(0, 0), size=(480 x 320) for module 'MovieSelectionSummary'.
+<   967.111389> 13:30:36.4850 [CineViewMLAScreenOpen] opened nativemovies
+<   967.131187> 13:30:36.5048 [Trashcan] Debug path /home/root/cvmla-testmedia/ => /.Trash
+<   975.373671> 13:30:44.7472 [eConsoleAppContainer] Starting /usr/bin/grab
+<   975.894920> 13:30:45.2685 "::ffff:192.168.1.42" - - [07/Oct/2026:10:30:44 +0000] "GET /grab?format=png&mode=all&r=1920 HTTP/1.1" 200 260268 "-" "curl/8.5.0"

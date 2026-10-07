@@ -1,0 +1,49 @@
+skin before: (default)
+cap 0_openbh_default_infobar_before
+cap 0_openbh_default_infobar
+== install
+CineView MLA: image openbh 5.6 on vuduo4kse
+CineView MLA: factory design (Classic, Navy) active.
+CineView MLA installed. Select it in Menu > Setup > User Interface > Skin, then restart the GUI.
+Installing enigma2-plugin-skins-cineview-fhd-mla (1.0.0~openbh1) on root
+Configuring enigma2-plugin-skins-cineview-fhd-mla.
+Version: 1.0.0~openbh1
+Status: install ok installed
+== pin poster cache to /tmp (HDD protection) BEFORE the GUI loads CineView
+pin: {'poster_cache': '/tmp/CINEVIEW-MLA/poster'}
+== select skin (GUI stopped, same as Menu > Skin) and start
+   enigma2 pid=9516
+<   534.386948> 13:23:23.7605 [Skin] Loading skin file '/usr/share/enigma2/skin_default/skin.xml'.
+<   534.391839> 13:23:23.7654 [Skin] Loading skin file '/usr/share/enigma2/skin_default.xml'.
+<   534.447780> 13:23:23.8214 [Skin] Loading skin file '/usr/share/enigma2/skin_default_windowstyle.xml'.
+<   534.461815> 13:23:23.8354 [Skin] Loading skin file '/usr/share/enigma2/skin_subtitles.xml'.
+<   534.471340> 13:23:23.8449 [Skin] Loading skin file '/usr/share/enigma2/display/skin_default/skin_display.xml'.
+<   534.489727> 13:23:23.8633 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/skin.xml'.
+<   534.494512> 13:23:23.8681 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/active/theme.xml'.
+<   534.503629> 13:23:23.8772 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/core/base.openatv.xml'.
+<   534.520215> 13:23:23.8938 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/core/common.openatv.xml'.
+<   534.629735> 13:23:24.0033 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/core/mla_ui.openatv.xml'.
+<   534.635243> 13:23:24.0088 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/active/infobar.xml'.
+<   534.643090> 13:23:24.0167 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/active/secondinfobar.xml'.
+<   534.657679> 13:23:24.0313 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/active/channelselection.xml'.
+<   534.667504> 13:23:24.0411 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/active/epg.xml'.
+<   534.679701> 13:23:24.0533 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/active/pvr.xml'.
+<   534.685791> 13:23:24.0594 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/active/eventview.xml'.
+<   552.459294> 13:23:41.8329 [CineViewMLA] onShutdown hook unavailable: 'Session' object has no attribute 'onShutdown'
+<   552.503758> 13:23:41.8774 [CineViewMLA] posters-off names: EMCSelection unavailable: No module named 'Plugins.Extensions.EnhancedMovieCenter'
+<   552.503907> 13:23:41.8775 [CineViewMLA] posters-off names installed for SecondInfoBar
+<   552.503985> 13:23:41.8776 [CineViewMLA] posters-off names installed for EventViewSimple
+<   552.504075> 13:23:41.8777 [CineViewMLA] posters-off names installed for EPGSelection
+<   552.504168> 13:23:41.8778 [CineViewMLA] posters-off names installed for MovieSelection
+<   552.504332> 13:23:41.8779 [CineViewMLA] name clip: ServiceListLegacy unavailable: cannot import name 'ServiceListLegacy' from 'Components.ServiceList' (/usr/lib/enigma2/python/Components/ServiceLi
+<   552.504428> 13:23:41.8780 [CineViewMLA] EPG event view name installed
+<   552.513115> 13:23:41.8867 [CineViewMLA] package waiting: unavailable: cannot import name 'PackageAction' from 'Screens.PluginBrowser' (/usr/lib/enigma2/python/Screens/PluginBrowser.pyc)
+   log=/home/root/logs/Enigma2_debug_2026-10-07_13-23-18.log tracebacks=2 skin_errors=2 crashlogs=1
+   error lines: 33
+cap 1_first_start
+generations/g000000
+{
+ "poster_cache": "/tmp/CINEVIEW-MLA/poster"
+}poster
+poster.log
+T105A_DONE

@@ -1,0 +1,42 @@
+<   984.470514> 13:30:53.8441 [Skin] Processing screen 'PluginBrowser', position=(0, 0), size=(1920 x 1080) for module 'PluginBrowser'.
+<   984.471438> 13:30:53.8450 [Skin] Error in screen 'PluginBrowser' widget 'widget' [Skin] {CineView_FHD_MLA/skin.xml}: Component with name 'quickselect' was not found in skin of screen 'PluginBrowser'!  Please contact the skin's author!!
+<   984.474581> 13:30:53.8481 Traceback (most recent call last):
+<   984.474998> 13:30:53.8486   File "/usr/lib/enigma2/python/skin.py", line 1509, in processWidget
+<   984.475372> 13:30:53.8489 KeyError: 'quickselect'
+<   984.475661> 13:30:53.8492
+During handling of the above exception, another exception occurred:
+
+<   984.476183> 13:30:53.8497 Traceback (most recent call last):
+<   984.476533> 13:30:53.8501   File "/usr/lib/enigma2/python/skin.py", line 1651, in processScreen
+<   984.476835> 13:30:53.8504   File "/usr/lib/enigma2/python/skin.py", line 1511, in processWidget
+<   984.477179> 13:30:53.8507 skin.SkinError: [Skin] {CineView_FHD_MLA/skin.xml}: Component with name 'quickselect' was not found in skin of screen 'PluginBrowser'!  Please contact the skin's author!
+<   984.477716> 13:30:53.8513 [Skin] Error in screen 'PluginBrowser' widget 'widget' [Skin] {CineView_FHD_MLA/skin.xml}: Component with name 'description' was not found in skin of screen 'PluginBrowser'!  Please contact the skin's author!!
+<   984.480371> 13:30:53.8539 Traceback (most recent call last):
+<   984.480715> 13:30:53.8543   File "/usr/lib/enigma2/python/skin.py", line 1509, in processWidget
+<   984.481060> 13:30:53.8546 KeyError: 'description'
+<   984.481328> 13:30:53.8549
+During handling of the above exception, another exception occurred:
+
+<   984.481812> 13:30:53.8554 Traceback (most recent call last):
+<   984.482172> 13:30:53.8557   File "/usr/lib/enigma2/python/skin.py", line 1651, in processScreen
+<   984.482233> 13:30:53.8558   File "/usr/lib/enigma2/python/skin.py", line 1511, in processWidget
+<   984.482314> 13:30:53.8559 skin.SkinError: [Skin] {CineView_FHD_MLA/skin.xml}: Component with name 'description' was not found in skin of screen 'PluginBrowser'!  Please contact the skin's author!
+<   984.483269> 13:30:53.8568 [Skin] Error in screen 'PluginBrowser' widget 'widget' [Skin] {CineView_FHD_MLA/skin.xml}: The source 'key_blue' was not found in screen 'PluginBrowser'!  Please contact the skin's author!!
+<   984.484563> 13:30:53.8581 Traceback (most recent call last):
+<   984.484716> 13:30:53.8583   File "/usr/lib/enigma2/python/skin.py", line 1651, in processScreen
+<   984.484768> 13:30:53.8583   File "/usr/lib/enigma2/python/skin.py", line 1538, in processWidget
+<   984.484841> 13:30:53.8584 skin.SkinError: [Skin] {CineView_FHD_MLA/skin.xml}: The source 'key_blue' was not found in screen 'PluginBrowser'!  Please contact the skin's author!
+<   984.487476> 13:30:53.8610 [Screen] Warning: Skin is missing element 'key_red' in <class 'Screens.PluginBrowser.PluginBrowser'>.
+<   984.487603> 13:30:53.8612 [Screen] Warning: Skin is missing element 'key_green' in <class 'Screens.PluginBrowser.PluginBrowser'>.
+<   984.487712> 13:30:53.8613 [Screen] Warning: Skin is missing element 'key_yellow' in <class 'Screens.PluginBrowser.PluginBrowser'>.
+<   984.487870> 13:30:53.8614 [Screen] Warning: Skin is missing element 'list' in <class 'Screens.PluginBrowser.PluginBrowser'>.
+<   984.490416> 13:30:53.8640 [Skin] Processing screen 'PluginBrowserSummary' from list 'PluginBrowserSummary, ScreenSummary', position=(0, 0), size=(480 x 320) for module 'PluginBrowserSummary'.
+<   984.498699> 13:30:53.8723 [gAccel] alloc failed
+<   984.498744> 13:30:53.8723 [gSurface] ERROR: accelAlloc failed
+<   984.622476> 13:30:53.9960 [gAccel] alloc failed
+<   984.622519> 13:30:53.9961 [gSurface] ERROR: accelAlloc failed
+<   984.668848> 13:30:54.0424 [gAccel] alloc failed
+<   984.668903> 13:30:54.0425 [gSurface] ERROR: accelAlloc failed
+<   984.761797> 13:30:54.1354 [CineViewMLAScreenOpen] opened pluginbrowser
+<   991.312977> 13:31:00.6865 [eConsoleAppContainer] Starting /usr/bin/grab
+<   991.645248> 13:31:01.0188 "::ffff:192.168.1.42" - - [07/Oct/2026:10:31:00 +0000] "GET /grab?format=png&mode=all&r=1920 HTTP/1.1" 200 20076 "-" "curl/8.5.0"

@@ -1,0 +1,1494 @@
+========== Enigma2 log starts ==========
+<   751.277588> 13:27:00.6512 [Avahi] avahi_timeout_new
+<   751.277588> 13:27:00.6512 [Avahi] avahi_timeout_new
+<   751.277810> 13:27:00.6514 [Avahi] avahi_watch_new(3 0x1)
+<   751.277862> 13:27:00.6514 [Avahi] avahi_timeout_update
+<   751.277996> 13:27:00.6516 [Avahi] avahi_timeout_new
+<   751.278985> 13:27:00.6526 [Avahi] avahi_timeout_free
+<   751.279136> 13:27:00.6527 [Avahi] avahi_timeout_new
+<   751.279349> 13:27:00.6529 [Avahi] avahi_timeout_free
+<   751.279417> 13:27:00.6530 [Avahi] avahi_timeout_new
+<   751.279616> 13:27:00.6532 [Avahi] avahi_timeout_free
+<   751.279695> 13:27:00.6533 [Avahi] avahi_timeout_new
+<   751.280056> 13:27:00.6536 [Avahi] avahi_timeout_free
+<   751.280123> 13:27:00.6537 [Avahi] avahi_timeout_new
+<   751.280476> 13:27:00.6540 [Avahi] avahi_timeout_free
+<   751.280552> 13:27:00.6541 [Avahi] avahi_timeout_new
+<   751.280889> 13:27:00.6545 [Avahi] avahi_timeout_free
+<   751.280922> 13:27:00.6545 [Avahi] client state: 2
+<   751.281184> 13:27:00.6548 [Avahi] avahi_timeout_new
+<   751.281581> 13:27:00.6551 [Avahi] avahi_timeout_free
+<   751.281676> 13:27:00.6552 [eInit] + (1) Background File Eraser
+<   751.281726> 13:27:00.6553 [eInit] + (5) Tuxtxt
+<   751.281756> 13:27:00.6553 [eInit] + (8) graphics acceleration manager
+<   751.282544> 13:27:00.6561 [eInit] + (9) Font Render Class
+<   751.282599> 13:27:00.6562 [Font] Initializing lib...
+<   751.282947> 13:27:00.6565 [Font] Loading fonts...
+<   751.282963> 13:27:00.6565 [Font] Intializing font cache, using max. 4MB...
+[Enigma2] PYTHONPATH: /usr/lib/enigma2/python
+[Enigma2] DVB_API_VERSION 5 DVB_API_VERSION_MINOR 12
+ENIGMA_DEBUG_LVL=4
+<   751.283051> 13:27:00.6566 [eInit] + (9) gLCD
+<   751.283164> 13:27:00.6567 [eFbLCD] /dev/fb1: Function not implemented
+<   751.283186> 13:27:00.6568 [eFbLCD] framebuffer /dev/fb1 not available
+<   751.283413> 13:27:00.6570 [eDboxLCD] xres=480, yres=320, bpp=32 lcd_type=3
+<   751.284713> 13:27:00.6583 [eLCD] (480x320x32) buffer 0xb52be008 614400 bytes, stride 1920
+<   751.285888> 13:27:00.6595 [eLCD] (480x320x32) buffer 0xb5227008 614400 bytes, stride 1920
+<   751.285907> 13:27:00.6595 [gLCDDC] resolution: 480x320x32 stride=1920
+<   751.285923> 13:27:00.6595 [eInit] + (9) GFBDC
+<   751.285954> 13:27:00.6595 [fb] /dev/fb0: 21600k video mem
+<   751.286121> 13:27:00.6597 [fb] setting /dev/tty0 status failed.
+<   751.286160> 13:27:00.6597 [fb] double buffering available!
+<   751.317168> 13:27:00.6907 [gFBDC] resolution: 1920x1080x32 stride=7680, 5400kB available for acceleration surfaces.
+<   751.317276> 13:27:00.6908 [eInit] + (10) gRC
+<   751.317492> 13:27:00.6911 [gRC] Thread created successfully.
+<   751.317514> 13:27:00.6911 [eInit] + (15) eWindowStyleManager
+<   751.317537> 13:27:00.6911 [eInit] + (20) AVSwitch Driver
+<   751.317898> 13:27:00.6915 [eInit] + (20) misc options
+<   751.317915> 13:27:00.6915 [eInit] + (20) RC Input layer
+<   751.317929> 13:27:00.6915 [eInit] + (20) UHF Modulator
+<   751.317958> 13:27:00.6915 [eRFmod] couldnt open /dev/rfmod0: Function not implemented
+<   751.317981> 13:27:00.6915 [eInit] + (20) DVB-CI UI
+<   751.318131> 13:27:00.6917 [eInit] + (21) input device driver
+<   751.318202> 13:27:00.6918 [eRCInputEventDriver] devicename=dreambox advanced remote control (native)
+<   751.318223> 13:27:00.6918 [eRCInputEventDriver] devicename=dreambox advanced remote control (native)
+<   751.318241> 13:27:00.6918 [eRCDeviceInputDev] device "dreambox advanced remote control (native)" is a remotecontrol
+<   751.318274> 13:27:00.6918 [eInputDeviceInit] Found 1 input devices.
+<   751.318289> 13:27:00.6919 [eInit] + (22) Hdmi CEC driver
+<   751.318439> 13:27:00.6920 [eInit] + (30) eActionMap
+<   751.318457> 13:27:00.6920 [eInit] + (35) CA handler
+<   751.318644> 13:27:00.6922 [eInit] + (35) CI Slots
+<   751.318709> 13:27:00.6923 [CI] scanning for common interfaces..
+<   751.318958> 13:27:00.6925 [dvbci][setSource][CI0] setSource: A
+<   751.319044> 13:27:00.6926 [dvbci][setSource][CI1] setSource: A
+<   751.319166> 13:27:00.6927 [CI] eDVBCIInterfaces setInputSource(0, A)
+<   751.319253> 13:27:00.6928 [CI] eDVBCIInterfaces setInputSource(1, B)
+<   751.319337> 13:27:00.6929 [CI] eDVBCIInterfaces setInputSource(2, C)
+<   751.319422> 13:27:00.6930 [CI] eDVBCIInterfaces setInputSource(3, D)
+<   751.319506> 13:27:00.6931 [CI] eDVBCIInterfaces setInputSource(4, E)
+<   751.319589> 13:27:00.6932 [CI] eDVBCIInterfaces setInputSource(5, F)
+<   751.319669> 13:27:00.6932 [CI] eDVBCIInterfaces setInputSource(6, G)
+<   751.319750> 13:27:00.6933 [CI] eDVBCIInterfaces setInputSource(7, H)
+<   751.319832> 13:27:00.6934 [CI] eDVBCIInterfaces setInputSource(8, I)
+<   751.319913> 13:27:00.6935 [CI] eDVBCIInterfaces setInputSource(9, J)
+<   751.319997> 13:27:00.6936 [CI] eDVBCIInterfaces setInputSource(10, K)
+<   751.320095> 13:27:00.6937 [CI] eDVBCIInterfaces setInputSource(11, L)
+<   751.320179> 13:27:00.6937 [CI] eDVBCIInterfaces setInputSource(12, M)
+<   751.320266> 13:27:00.6938 [CI] eDVBCIInterfaces setInputSource(13, N)
+<   751.320348> 13:27:00.6939 [CI] eDVBCIInterfaces setInputSource(14, O)
+<   751.320430> 13:27:00.6940 [CI] eDVBCIInterfaces setInputSource(15, P)
+<   751.320510> 13:27:00.6941 [CI] eDVBCIInterfaces setInputSource(16, Q)
+<   751.320596> 13:27:00.6942 [CI] eDVBCIInterfaces setInputSource(17, R)
+<   751.320680> 13:27:00.6942 [CI] eDVBCIInterfaces setInputSource(18, S)
+<   751.320764> 13:27:00.6943 [CI] eDVBCIInterfaces setInputSource(19, T)
+<   751.320801> 13:27:00.6944 [CI] done, found 2 common interface slots
+<   751.321266> 13:27:00.6948 [eInit] + (40) eServiceCenter
+<   751.321292> 13:27:00.6949 [eServiceCenter] settings instance.
+<   751.321339> 13:27:00.6949 [dvbci][data][CI1] non Dreambox stateInvalid .....reset requested
+<   751.321366> 13:27:00.6949 [dvbci][reset][CI1] reset requested state = 2
+<   751.321379> 13:27:00.6949 [eInit] + (41) Stream server
+<   751.321385> 13:27:00.6950 [dvbci][reset][CI1] flush
+<   751.321410> 13:27:00.6950 [dvbci][reset][CI1] reset ioctl requested, state = 3
+<   751.321429> 13:27:00.6950 [dvbci][data][CI1] ci inserted state= 3
+<   751.321449> 13:27:00.6950 [dvbci][data][CI1] ci inserted reset stateInserted state= 1
+<   751.321789> 13:27:00.6954 [Avahi] AvahiServiceEntry (null) (_e2stream._tcp) 8001
+<   751.321897> 13:27:00.6955 [Avahi] avahi_timeout_new
+<   751.322502> 13:27:00.6961 [Avahi] avahi_timeout_free
+<   751.322586> 13:27:00.6962 [Avahi] avahi_timeout_new
+<   751.322949> 13:27:00.6965 [Avahi] avahi_timeout_free
+<   751.323051> 13:27:00.6966 [Avahi] avahi_timeout_new
+<   751.323404> 13:27:00.6970 [Avahi] avahi_timeout_free
+<   751.323441> 13:27:00.6970 [Avahi] Will Register vuduo4kse (_e2stream._tcp) on vuduo4kse:8001
+<   751.323691> 13:27:00.6973 [Avahi] avahi_timeout_new
+<   751.324157> 13:27:00.6977 [Avahi] avahi_timeout_free
+<   751.324236> 13:27:00.6978 [Avahi] avahi_timeout_new
+<   751.324763> 13:27:00.6983 [Avahi] avahi_timeout_free
+<   751.324800> 13:27:00.6984 [Avahi] Registered vuduo4kse (_e2stream._tcp) on vuduo4kse:8001
+<   751.324817> 13:27:00.6984 [eInit] + (41) Encoders
+<   751.324929> 13:27:00.6985 [eEncoder][eEncoder] +++ have bcm encoder and encoder 0
+<   751.325046> 13:27:00.6986 [eEncoder][eEncoder] +++ have bcm encoder and encoder 1
+<   751.325170> 13:27:00.6987 [eInit] + (41) eServiceFactoryDVB
+<   751.325296> 13:27:00.6989 [eInit] + (41) eServiceFactoryFS
+<   751.325316> 13:27:00.6989 [eInit] + (41) eServiceFactoryMP3
+<   751.325390> 13:27:00.6990 [eInit] + (41) eServiceFactoryM2TS
+<   751.325411> 13:27:00.6990 [eInit] + (41) eServiceFactoryHDMI
+<   751.325427> 13:27:00.6990 [eInit] + (41) eServiceFactoryTS
+<   751.325443> 13:27:00.6990 [eInit] + (41) eServiceFactoryWebTS
+<   751.325459> 13:27:00.6990 [eInit] + (41) eServiceFactoryDVD
+<   751.325482> 13:27:00.6990 [eInit] reached rl 70
+<   751.325549> 13:27:00.6991 [eDVBDB] ---- opening lame channel db
+<   751.325613> 13:27:00.6992 [eDVBDB] reading services (version 4)
+<   751.644142> 13:27:01.0177 [eDVBDB] loaded 6954 channels/transponders and 16201 services
+<   751.645023> 13:27:01.0186 [eDVBResourceManager] scanning for frontends..
+<   751.645119> 13:27:01.0187 [eDVBFrontend0] opening frontend
+<   751.645196> 13:27:01.0188 [eDVBFrontend0] opening frontend
+<   751.645313> 13:27:01.0189 [eDVBFrontend] opened frontend m_filename: /dev/dvb/adapter0/frontend0
+<   751.645332> 13:27:01.0189 [eDVBFrontend] opened frontend m_fd: 21
+<   751.645349> 13:27:01.0189 [eDVBFrontend0] frontend 0 has DVB API 50a
+<   751.654944> 13:27:01.0285 [eDVBFrontend0] setVoltage FE_ENABLE_HIGH_LNB_VOLTAGE 0 FE_SET_VOLTAGE 2
+<   751.664513> 13:27:01.0381 [eDVBFrontend0] close frontend
+<   751.673920> 13:27:01.0475 [eDVBFrontend0] setVoltage FE_ENABLE_HIGH_LNB_VOLTAGE 0 FE_SET_VOLTAGE 2
+<   751.683563> 13:27:01.0571 [eDVBFrontend1] opening frontend
+<   751.683700> 13:27:01.0573 [eDVBFrontend1] opening frontend
+<   751.683840> 13:27:01.0574 [eDVBFrontend] opened frontend m_filename: /dev/dvb/adapter0/frontend1
+<   751.683868> 13:27:01.0574 [eDVBFrontend] opened frontend m_fd: 21
+<   751.683907> 13:27:01.0575 [eDVBFrontend1] frontend 1 has DVB API 50a
+<   751.702147> 13:27:01.0757 [eDVBFrontend1] setVoltage FE_ENABLE_HIGH_LNB_VOLTAGE 0 FE_SET_VOLTAGE 2
+<   751.712302> 13:27:01.0859 [eDVBFrontend1] close frontend
+<   751.722034> 13:27:01.0956 [eDVBFrontend1] setVoltage FE_ENABLE_HIGH_LNB_VOLTAGE 0 FE_SET_VOLTAGE 2
+<   751.732134> 13:27:01.1057 [eDVBFrontend2] opening frontend
+<   751.732212> 13:27:01.1058 [eDVBFrontend2] opening frontend
+<   751.732348> 13:27:01.1059 [eDVBFrontend] opened frontend m_filename: /dev/dvb/adapter0/frontend2
+<   751.732374> 13:27:01.1059 [eDVBFrontend] opened frontend m_fd: 21
+<   751.732402> 13:27:01.1060 [eDVBFrontend2] frontend 2 has DVB API 50a
+<   751.749965> 13:27:01.1235 [eDVBFrontend2] setVoltage FE_ENABLE_HIGH_LNB_VOLTAGE 0 FE_SET_VOLTAGE 2
+<   751.759291> 13:27:01.1329 [eDVBFrontend2] close frontend
+<   751.769349> 13:27:01.1429 [eDVBFrontend2] setVoltage FE_ENABLE_HIGH_LNB_VOLTAGE 0 FE_SET_VOLTAGE 2
+<   751.778935> 13:27:01.1525 [eDVBFrontend3] opening frontend
+<   751.779049> 13:27:01.1526 [eDVBFrontend3] opening frontend
+<   751.779151> 13:27:01.1527 [eDVBFrontend] opened frontend m_filename: /dev/dvb/adapter0/frontend3
+<   751.779184> 13:27:01.1528 [eDVBFrontend] opened frontend m_fd: 21
+<   751.779208> 13:27:01.1528 [eDVBFrontend3] frontend 3 has DVB API 50a
+<   751.797338> 13:27:01.1709 [eDVBFrontend3] setVoltage FE_ENABLE_HIGH_LNB_VOLTAGE 0 FE_SET_VOLTAGE 2
+<   751.806612> 13:27:01.1802 [eDVBFrontend3] close frontend
+<   751.816033> 13:27:01.1896 [eDVBFrontend3] setVoltage FE_ENABLE_HIGH_LNB_VOLTAGE 0 FE_SET_VOLTAGE 2
+<   751.825391> 13:27:01.1990 [eDVBFrontend4] opening frontend
+<   751.825493> 13:27:01.1991 [eDVBFrontend4] opening frontend
+<   751.825593> 13:27:01.1992 [eDVBFrontend] opened frontend m_filename: /dev/dvb/adapter0/frontend4
+<   751.825613> 13:27:01.1992 [eDVBFrontend] opened frontend m_fd: 21
+<   751.825653> 13:27:01.1992 [eDVBFrontend4] frontend 4 has DVB API 50a
+<   751.844237> 13:27:01.2178 [eDVBFrontend4] setVoltage FE_ENABLE_HIGH_LNB_VOLTAGE 0 FE_SET_VOLTAGE 2
+<   751.853513> 13:27:01.2271 [eDVBFrontend4] close frontend
+<   751.862928> 13:27:01.2365 [eDVBFrontend4] setVoltage FE_ENABLE_HIGH_LNB_VOLTAGE 0 FE_SET_VOLTAGE 2
+<   751.872285> 13:27:01.2459 [eDVBFrontend5] opening frontend
+<   751.872373> 13:27:01.2459 [eDVBFrontend5] opening frontend
+<   751.872469> 13:27:01.2460 [eDVBFrontend] opened frontend m_filename: /dev/dvb/adapter0/frontend5
+<   751.872499> 13:27:01.2461 [eDVBFrontend] opened frontend m_fd: 21
+<   751.872524> 13:27:01.2461 [eDVBFrontend5] frontend 5 has DVB API 50a
+<   751.890715> 13:27:01.2643 [eDVBFrontend5] setVoltage FE_ENABLE_HIGH_LNB_VOLTAGE 0 FE_SET_VOLTAGE 2
+<   751.900135> 13:27:01.2737 [eDVBFrontend5] close frontend
+<   751.909429> 13:27:01.2830 [eDVBFrontend5] setVoltage FE_ENABLE_HIGH_LNB_VOLTAGE 0 FE_SET_VOLTAGE 2
+<   751.918944> 13:27:01.2925 [eDVBFrontend6] opening frontend
+<   751.919041> 13:27:01.2926 [eDVBFrontend6] opening frontend
+<   751.919144> 13:27:01.2927 [eDVBFrontend] opened frontend m_filename: /dev/dvb/adapter0/frontend6
+<   751.919165> 13:27:01.2927 [eDVBFrontend] opened frontend m_fd: 21
+<   751.919186> 13:27:01.2928 [eDVBFrontend6] frontend 6 has DVB API 50a
+<   751.937502> 13:27:01.3111 [eDVBFrontend6] setVoltage FE_ENABLE_HIGH_LNB_VOLTAGE 0 FE_SET_VOLTAGE 2
+<   751.946731> 13:27:01.3203 [eDVBFrontend6] close frontend
+<   751.956037> 13:27:01.3296 [eDVBFrontend6] setVoltage FE_ENABLE_HIGH_LNB_VOLTAGE 0 FE_SET_VOLTAGE 2
+<   751.965521> 13:27:01.3391 [eDVBFrontend7] opening frontend
+<   751.965631> 13:27:01.3392 [eDVBFrontend7] opening frontend
+<   751.965709> 13:27:01.3393 [eDVBFrontend] opened frontend m_filename: /dev/dvb/adapter0/frontend7
+<   751.965737> 13:27:01.3393 [eDVBFrontend] opened frontend m_fd: 21
+<   751.965780> 13:27:01.3393 [eDVBFrontend7] frontend 7 has DVB API 50a
+<   751.983970> 13:27:01.3575 [eDVBFrontend7] setVoltage FE_ENABLE_HIGH_LNB_VOLTAGE 0 FE_SET_VOLTAGE 2
+<   751.993462> 13:27:01.3670 [eDVBFrontend7] close frontend
+<   752.002884> 13:27:01.3765 [eDVBFrontend7] setVoltage FE_ENABLE_HIGH_LNB_VOLTAGE 0 FE_SET_VOLTAGE 2
+<   752.013144> 13:27:01.3867 [eDVBDemux] using 32 for PVR DMX_SET_SOURCE
+<   752.013293> 13:27:01.3869 [eDVBDemux] using 32 for PVR DMX_SET_SOURCE
+<   752.013429> 13:27:01.3870 [eDVBDemux] using 32 for PVR DMX_SET_SOURCE
+<   752.013545> 13:27:01.3871 [eDVBDemux] using 32 for PVR DMX_SET_SOURCE
+<   752.013705> 13:27:01.3873 [eDVBDemux] using 32 for PVR DMX_SET_SOURCE
+<   752.013818> 13:27:01.3874 [eDVBDemux] using 32 for PVR DMX_SET_SOURCE
+<   752.013931> 13:27:01.3875 [eDVBDemux] using 32 for PVR DMX_SET_SOURCE
+<   752.014074> 13:27:01.3876 [eDVBDemux] using 32 for PVR DMX_SET_SOURCE
+<   752.014181> 13:27:01.3877 [eDVBDemux] using 32 for PVR DMX_SET_SOURCE
+<   752.014289> 13:27:01.3879 [eDVBDemux] using 32 for PVR DMX_SET_SOURCE
+<   752.014405> 13:27:01.3880 [eDVBDemux] using 32 for PVR DMX_SET_SOURCE
+<   752.014523> 13:27:01.3881 [eDVBDemux] using 32 for PVR DMX_SET_SOURCE
+<   752.014639> 13:27:01.3882 [eDVBDemux] using 32 for PVR DMX_SET_SOURCE
+<   752.014747> 13:27:01.3883 [eDVBDemux] using 32 for PVR DMX_SET_SOURCE
+<   752.014837> 13:27:01.3884 [eDVBDemux] using 32 for PVR DMX_SET_SOURCE
+<   752.014978> 13:27:01.3885 [eDVBDemux] using 32 for PVR DMX_SET_SOURCE
+<   752.015098> 13:27:01.3887 [eDVBDemux] using 32 for PVR DMX_SET_SOURCE
+<   752.015220> 13:27:01.3888 [eDVBDemux] using 32 for PVR DMX_SET_SOURCE
+<   752.015331> 13:27:01.3889 [eDVBDemux] using 32 for PVR DMX_SET_SOURCE
+<   752.015472> 13:27:01.3890 [eDVBDemux] using 32 for PVR DMX_SET_SOURCE
+<   752.015584> 13:27:01.3892 [eDVBDemux] using 32 for PVR DMX_SET_SOURCE
+<   752.015628> 13:27:01.3892 [eDVBAdapterLinux] get demux 0
+<   752.015656> 13:27:01.3892 [eDVBAdapterLinux] get demux 1
+<   752.015684> 13:27:01.3893 [eDVBAdapterLinux] get demux 2
+<   752.015703> 13:27:01.3893 [eDVBAdapterLinux] get demux 3
+<   752.015733> 13:27:01.3893 [eDVBAdapterLinux] get demux 4
+<   752.015750> 13:27:01.3893 [eDVBAdapterLinux] get demux 5
+<   752.015767> 13:27:01.3893 [eDVBAdapterLinux] get demux 6
+<   752.015789> 13:27:01.3894 [eDVBAdapterLinux] get demux 7
+<   752.015806> 13:27:01.3894 [eDVBAdapterLinux] get demux 8
+<   752.015821> 13:27:01.3894 [eDVBAdapterLinux] get demux 9
+<   752.015842> 13:27:01.3894 [eDVBAdapterLinux] get demux 10
+<   752.015858> 13:27:01.3894 [eDVBAdapterLinux] get demux 11
+<   752.015873> 13:27:01.3894 [eDVBAdapterLinux] get demux 12
+<   752.015894> 13:27:01.3895 [eDVBAdapterLinux] get demux 13
+<   752.015912> 13:27:01.3895 [eDVBAdapterLinux] get demux 14
+<   752.015942> 13:27:01.3895 [eDVBAdapterLinux] get demux 15
+<   752.015959> 13:27:01.3895 [eDVBAdapterLinux] get demux 16
+<   752.015978> 13:27:01.3895 [eDVBAdapterLinux] get demux 17
+<   752.015997> 13:27:01.3896 [eDVBAdapterLinux] get demux 18
+<   752.016036> 13:27:01.3896 [eDVBAdapterLinux] get demux 19
+<   752.016058> 13:27:01.3896 [eDVBAdapterLinux] get demux 20
+<   752.016582> 13:27:01.3902 [eDVBResourceManager] found 1 adapter, 8 frontends(8 sim) and 21 demux
+<   752.035640> 13:27:01.4092 [eDVBLocalTimeHandler] RTC not ready... wait for transponder time
+<   752.035701> 13:27:01.4093 [eEPGCache] Initialized EPGCache (wait for setCacheFile call now)
+<   752.035816> 13:27:01.4094 [eEPGTransponderDataReader] Initialized
+<   752.036054> 13:27:01.4096 [MAIN] Loading spinners...
+<   752.041115> 13:27:01.4147 [ePNG] couldn't open /usr/share/enigma2/spinner/wait9.png
+<   752.041149> 13:27:01.4147 [MAIN] Found 8 spinners.
+<   752.041227> 13:27:01.4148 [setIoPrio] best-effort level 3 ok
+<   752.536569> 13:27:01.9101 [multiboot][getMultibootslots]root:mmcblk0p9 UBIMB:False CHKROOTMB:False
+<   752.536663> 13:27:01.9102 [multiboot][getMultibootslots]device:/dev/mmcblk0p9
+<   752.536749> 13:27:01.9103 [multiboot][getMultibootslots]root:mmcblk0p9 device:/dev/mmcblk0p9 UBIMB:False CHKROOTMB:False
+<   752.536828> 13:27:01.9104 [Console] command: mount /dev/mmcblk0p9 /tmp/getMultibootslots2orpy9_o
+<   752.536939> 13:27:01.9105 [eConsoleAppContainer] Starting /bin/sh
+<   752.565426> 13:27:01.9390 [multiboot][getMultibootslots]device:/dev/mmcblk0p9 found STARTUP
+<   752.565920> 13:27:01.9395 [multiboot][getMultibootslots] STARTUP:kernel=duo4kse/linuxrootfs5/zImage root=UUID=3cfb20d7-18b5-42b9-ad97-80f41f99dc72 rootsubdir=duo4kse/linuxrootfs5 rootwait=35
+<   752.566177> 13:27:01.9397 [Multiboot][[getMultibootslots]2 *** Bootdevice found: mmcblk0p9 CHKROOTMB:False MBbootdevice:/dev/mmcblk0p9
+<   752.568368> 13:27:01.9419 [Multiboot][[getMultibootslots]3 slotnumber:10 slot:{'kernel': 'duo4kse/linuxrootfs10/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'duo4kse/linuxrootfs10', 'rootwait': '35'}
+<   752.568435> 13:27:01.9420 [Multiboot][[getMultibootslots]4 slotnumber:10 slotType:USB
+<   752.568930> 13:27:01.9425 [Multiboot][[getMultibootslots]3 slotnumber:12 slot:{'kernel': 'duo4kse/linuxrootfs12/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'duo4kse/linuxrootfs12', 'rootwait': '35'}
+<   752.568979> 13:27:01.9425 [Multiboot][[getMultibootslots]4 slotnumber:12 slotType:USB
+<   752.569394> 13:27:01.9430 [Multiboot][[getMultibootslots]3 slotnumber:2 slot:{'kernel': '/linuxrootfs2/zImage', 'root': '/dev/mmcblk0p9', 'rootsubdir': 'linuxrootfs2'}
+<   752.569438> 13:27:01.9430 [Multiboot][[getMultibootslots]4 slotnumber:2 slotType:eMMC
+<   752.569813> 13:27:01.9434 [Multiboot][[getMultibootslots]3 slotnumber:9 slot:{'kernel': 'duo4kse/linuxrootfs9/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'duo4kse/linuxrootfs9', 'rootwait': '35'}
+<   752.569855> 13:27:01.9434 [Multiboot][[getMultibootslots]4 slotnumber:9 slotType:USB
+<   752.570251> 13:27:01.9438 [Multiboot][[getMultibootslots]3 slotnumber:7 slot:{'kernel': 'duo4kse/linuxrootfs7/zImage', 'root': 'UUID=3cfb20d7-18b5-42b9-ad97-80f41f99dc72', 'rootsubdir': 'duo4kse/linuxrootfs7', 'rootwait': '35'}
+<   752.570297> 13:27:01.9439 [Multiboot][[getMultibootslots]4 slotnumber:7 slotType:USB
+<   752.644827> 13:27:02.0184 [Multiboot][[getMultibootslots]3 slotnumber:14 slot:{'kernel': 'duo4kse/linuxrootfs14/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'duo4kse/linuxrootfs14', 'rootwait': '35'}
+<   752.644912> 13:27:02.0185 [Multiboot][[getMultibootslots]4 slotnumber:14 slotType:USB
+<   752.645398> 13:27:02.0190 [Multiboot][[getMultibootslots]3 slotnumber:0 slot:{'kernel': '/zImage', 'root': '/dev/mmcblk0p9', 'rootsubdir': 'linuxrootfs0'}
+<   752.645469> 13:27:02.0190 [Multiboot][[getMultibootslots]4 slotnumber:0 slotType:
+<   752.645888> 13:27:02.0195 [Multiboot][[getMultibootslots]3 slotnumber:13 slot:{'kernel': 'duo4kse/linuxrootfs13/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'duo4kse/linuxrootfs13', 'rootwait': '35'}
+<   752.645934> 13:27:02.0195 [Multiboot][[getMultibootslots]4 slotnumber:13 slotType:USB
+<   752.646342> 13:27:02.0199 [Multiboot][[getMultibootslots]3 slotnumber:15 slot:{'kernel': 'duo4kse/linuxrootfs15/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'duo4kse/linuxrootfs15', 'rootwait': '35'}
+<   752.646386> 13:27:02.0200 [Multiboot][[getMultibootslots]4 slotnumber:15 slotType:USB
+<   752.646771> 13:27:02.0203 [Multiboot][[getMultibootslots]3 slotnumber:1 slot:{'kernel': '/linuxrootfs1/zImage', 'root': '/dev/mmcblk0p9', 'rootsubdir': 'linuxrootfs1'}
+<   752.646813> 13:27:02.0204 [Multiboot][[getMultibootslots]4 slotnumber:1 slotType:eMMC
+<   752.647239> 13:27:02.0208 [Multiboot][[getMultibootslots]3 slotnumber:4 slot:{'kernel': 'duo4kse/linuxrootfs4/zImage', 'root': 'UUID=3cfb20d7-18b5-42b9-ad97-80f41f99dc72', 'rootsubdir': 'duo4kse/linuxrootfs4', 'rootwait': '35'}
+<   752.647283> 13:27:02.0209 [Multiboot][[getMultibootslots]4 slotnumber:4 slotType:USB
+<   752.715549> 13:27:02.0891 [Multiboot][[getMultibootslots]3 slotnumber:8 slot:{'kernel': 'linuxrootfs8/zImage', 'root': 'UUID=3cfb20d7-18b5-42b9-ad97-80f41f99dc72', 'rootsubdir': 'linuxrootfs8', 'rootwait': '35'}
+<   752.715632> 13:27:02.0892 [Multiboot][[getMultibootslots]4 slotnumber:8 slotType:USB
+<   752.779564> 13:27:02.1531 [Multiboot][[getMultibootslots]3 slotnumber:3 slot:{'kernel': '/linuxrootfs3/zImage', 'root': '/dev/mmcblk0p9', 'rootsubdir': 'linuxrootfs3'}
+<   752.779647> 13:27:02.1532 [Multiboot][[getMultibootslots]4 slotnumber:3 slotType:eMMC
+<   752.780148> 13:27:02.1537 [Multiboot][[getMultibootslots]3 slotnumber:5 slot:{'kernel': 'duo4kse/linuxrootfs5/zImage', 'root': 'UUID=3cfb20d7-18b5-42b9-ad97-80f41f99dc72', 'rootsubdir': 'duo4kse/linuxrootfs5', 'rootwait': '35'}
+<   752.780203> 13:27:02.1538 [Multiboot][[getMultibootslots]4 slotnumber:5 slotType:USB
+<   752.843866> 13:27:02.2174 [Multiboot][[getMultibootslots]3 slotnumber:6 slot:{'kernel': 'duo4kse/linuxrootfs6/zImage', 'root': 'UUID=3cfb20d7-18b5-42b9-ad97-80f41f99dc72', 'rootsubdir': 'duo4kse/linuxrootfs6', 'rootwait': '35'}
+<   752.844227> 13:27:02.2178 [Multiboot][[getMultibootslots]4 slotnumber:6 slotType:USB
+<   752.913971> 13:27:02.2875 [Multiboot][[getMultibootslots]3 slotnumber:11 slot:{'kernel': 'duo4kse/linuxrootfs11/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'duo4kse/linuxrootfs11', 'rootwait': '35'}
+<   752.914090> 13:27:02.2877 [Multiboot][[getMultibootslots]4 slotnumber:11 slotType:USB
+<   752.914304> 13:27:02.2879 [Console] command: umount /tmp/getMultibootslots2orpy9_o
+<   752.914390> 13:27:02.2880 [eConsoleAppContainer] Starting /bin/sh
+<   752.952241> 13:27:02.3258 [multiboot][getMultibootslots] bootslots: {10: {'kernel': 'duo4kse/linuxrootfs10/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'duo4kse/linuxrootfs10', 'rootwait': '35', 'slotType': 'USB', 'startupfile': 'STARTUP_10', 'slotname': ''}, 12: {'kernel': 'duo4kse/linuxrootfs12/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'duo4kse/linuxrootfs12', 'rootwait': '35', 'slotType': 'USB', 'startupfile': 'STARTUP_12', 'slotname': ''}, 2: {'kernel': '/linuxrootfs2/zImage', 'root': '/dev/mmcblk0p9', 'rootsubdir': 'linuxrootfs2', 'slotType': 'eMMC', 'startupfile': 'STARTUP_2', 'slotname': ''}, 9: {'kernel': 'duo4kse/linuxrootfs9/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'duo4kse/linuxrootfs9', 'rootwait': '35', 'slotType': 'USB', 'startupfile': 'STARTUP_9', 'slotname': ''}, 7: {'kernel': '/linuxrootfs7/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'duo4kse/linuxrootfs7', 'rootwait': '35', 'slotType': 'USB', 'startupfile': 'STARTUP_7', 'slotname': ''}, 14: {'kernel': 'duo4kse/linuxrootfs14/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'duo4kse/linuxrootfs14', 'rootwait': '35', 'slotType': 'USB', 'startupfile': 'STARTUP_14', 'slotname': ''}, 0: {'kernel': '/zImage', 'root': '/dev/mmcblk0p9', 'rootsubdir': 'linuxrootfs0', 'slotType': '', 'startupfile': 'STARTUP_RECOVERY', 'slotname': ''}, 13: {'kernel': 'duo4kse/linuxrootfs13/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'duo4kse/linuxrootfs13', 'rootwait': '35', 'slotType': 'USB', 'startupfile': 'STARTUP_13', 'slotname': ''}, 15: {'kernel': 'duo4kse/linuxrootfs15/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'duo4kse/linuxrootfs15', 'rootwait': '35', 'slotType': 'USB', 'startupfile': 'STARTUP_15', 'slotname': ''}, 1: {'kernel': '/linuxrootfs1/zImage', 'root': '/dev/mmcblk0p9', 'rootsubdir': 'linuxrootfs1', 'slotType': 'eMMC', 'startupfile': 'STARTUP_1', 'slotname': ''}, 4: {'kernel': '/linuxrootfs4/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'duo4kse/linuxrootfs4', 'rootwait': '35', 'slotType': 'USB', 'startupfile': 'STARTUP_4', 'slotname': ''}, 8: {'kernel': '/linuxrootfs8/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'linuxrootfs8', 'rootwait': '35', 'slotType': 'USB', 'startupfile': 'STARTUP_8', 'slotname': ''}, 3: {'kernel': '/linuxrootfs3/zImage', 'root': '/dev/mmcblk0p9', 'rootsubdir': 'linuxrootfs3', 'slotType': 'eMMC', 'startupfile': 'STARTUP_3', 'slotname': ''}, 5: {'kernel': '/linuxrootfs5/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'duo4kse/linuxrootfs5', 'rootwait': '35', 'slotType': 'USB', 'startupfile': 'STARTUP_5', 'slotname': ''}, 6: {'kernel': '/linuxrootfs6/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'duo4kse/linuxrootfs6', 'rootwait': '35', 'slotType': 'USB', 'startupfile': 'STARTUP_6', 'slotname': ''}, 11: {'kernel': 'duo4kse/linuxrootfs11/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'duo4kse/linuxrootfs11', 'rootwait': '35', 'slotType': 'USB', 'startupfile': 'STARTUP_11', 'slotname': ''}}
+<   752.952794> 13:27:02.3264 [multiboot][getMultibootslots]4 bootArgs: kexec=1 libata.force=1:3.0G,2:3.0G,3:3.0G rootfstype=ext4 rootflags=data=journal rootwait rw coherent_pool=2M vmalloc=622m bmem=630m@394m bmem=383m@1665m bmem=443m@2625m kernel=duo4kse/linuxrootfs5/zImage root=/dev/sdb1 rootsubdir=duo4kse/linuxrootfs5
+<   752.952837> 13:27:02.3264
+<   752.953282> 13:27:02.3268 [multiboot][getMultibootslots] bootslots: {10: {'kernel': 'duo4kse/linuxrootfs10/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'duo4kse/linuxrootfs10', 'rootwait': '35', 'slotType': 'USB', 'startupfile': 'STARTUP_10', 'slotname': ''}, 12: {'kernel': 'duo4kse/linuxrootfs12/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'duo4kse/linuxrootfs12', 'rootwait': '35', 'slotType': 'USB', 'startupfile': 'STARTUP_12', 'slotname': ''}, 2: {'kernel': '/linuxrootfs2/zImage', 'root': '/dev/mmcblk0p9', 'rootsubdir': 'linuxrootfs2', 'slotType': 'eMMC', 'startupfile': 'STARTUP_2', 'slotname': ''}, 9: {'kernel': 'duo4kse/linuxrootfs9/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'duo4kse/linuxrootfs9', 'rootwait': '35', 'slotType': 'USB', 'startupfile': 'STARTUP_9', 'slotname': ''}, 7: {'kernel': '/linuxrootfs7/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'duo4kse/linuxrootfs7', 'rootwait': '35', 'slotType': 'USB', 'startupfile': 'STARTUP_7', 'slotname': ''}, 14: {'kernel': 'duo4kse/linuxrootfs14/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'duo4kse/linuxrootfs14', 'rootwait': '35', 'slotType': 'USB', 'startupfile': 'STARTUP_14', 'slotname': ''}, 0: {'kernel': '/zImage', 'root': '/dev/mmcblk0p9', 'rootsubdir': 'linuxrootfs0', 'slotType': '', 'startupfile': 'STARTUP_RECOVERY', 'slotname': ''}, 13: {'kernel': 'duo4kse/linuxrootfs13/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'duo4kse/linuxrootfs13', 'rootwait': '35', 'slotType': 'USB', 'startupfile': 'STARTUP_13', 'slotname': ''}, 15: {'kernel': 'duo4kse/linuxrootfs15/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'duo4kse/linuxrootfs15', 'rootwait': '35', 'slotType': 'USB', 'startupfile': 'STARTUP_15', 'slotname': ''}, 1: {'kernel': '/linuxrootfs1/zImage', 'root': '/dev/mmcblk0p9', 'rootsubdir': 'linuxrootfs1', 'slotType': 'eMMC', 'startupfile': 'STARTUP_1', 'slotname': ''}, 4: {'kernel': '/linuxrootfs4/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'duo4kse/linuxrootfs4', 'rootwait': '35', 'slotType': 'USB', 'startupfile': 'STARTUP_4', 'slotname': ''}, 8: {'kernel': '/linuxrootfs8/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'linuxrootfs8', 'rootwait': '35', 'slotType': 'USB', 'startupfile': 'STARTUP_8', 'slotname': ''}, 3: {'kernel': '/linuxrootfs3/zImage', 'root': '/dev/mmcblk0p9', 'rootsubdir': 'linuxrootfs3', 'slotType': 'eMMC', 'startupfile': 'STARTUP_3', 'slotname': ''}, 5: {'kernel': '/linuxrootfs5/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'duo4kse/linuxrootfs5', 'rootwait': '35', 'slotType': 'USB', 'startupfile': 'STARTUP_5', 'slotname': ''}, 6: {'kernel': '/linuxrootfs6/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'duo4kse/linuxrootfs6', 'rootwait': '35', 'slotType': 'USB', 'startupfile': 'STARTUP_6', 'slotname': ''}, 11: {'kernel': 'duo4kse/linuxrootfs11/zImage', 'root': '/dev/sdb1', 'rootsubdir': 'duo4kse/linuxrootfs11', 'rootwait': '35', 'slotType': 'USB', 'startupfile': 'STARTUP_11', 'slotname': ''}} Activeslot:5
+<   752.954119> 13:27:02.3277 [eDVBCSAEngine] libdvbcsa.so.1 successfully loaded, software CSA enabled
+<   752.954924> 13:27:02.3285 [Misc_Options] 12Vdetect cannot open /proc/stb/misc/12V_output: Function not implemented
+<   752.959867> 13:27:02.3334 [StartEnigma]  Starting Python Level Initialisation.
+<   752.959936> 13:27:02.3335 [StartEnigma]  Receiver -> Vu+ Duo4K SE
+<   752.959975> 13:27:02.3335 [StartEnigma]  Image Type -> release
+<   752.960030> 13:27:02.3336 [StartEnigma]  Image Version -> 5.6
+<   752.960070> 13:27:02.3336 [StartEnigma]  Image Build -> 008
+<   752.960382> 13:27:02.3340 [StartEnigma]  Initialising SetupDevices.
+<   752.984905> 13:27:02.3585 [Harddisk] Enumerating hotplug devices.
+<   752.986292> 13:27:02.3599 [Harddisk][enumerateBlockDevices] Enumerating block devices...
+<   752.993823> 13:27:02.3674 [Harddisk][getUserfriendlyDeviceName] device:sda physicalDevice:/sys/devices/platform/rdb/f045a000.sata/ata1/host0/target0:0:0/0:0:0:0
+<   752.994165> 13:27:02.3677 [Harddisk][splitDeviceName] devName = 'sda', device = 'sda', partition = '0'
+<   752.995147> 13:27:02.3687 [Harddisk][enumerateBlockDevices] len partitions = 1, device = sda
+<   752.995214> 13:27:02.3688 [Harddisk][enumerateBlockDevices]2 Found storage device 'sda' (Removable=False) Number of Partitions = 1.
+<   752.995266> 13:27:02.3688 [Harddisk][enumerateBlockDevices]1 SystemInfo['HasUsbhdd']= {}
+<   752.996124> 13:27:02.3697 [Harddisk][runCommand]: 'hdparm -S0 /dev/sda'.
+
+/dev/sda:
+setting standby to 0
+(off)
+<   753.025353> 13:27:02.3989 [Harddisk][Init] Device 'sda' (Internal (SSD) - ATA (KINGSTON SA400S3)) -> '/dev/sda' -> '/dev/sda' (Start Idle).
+<   753.025450> 13:27:02.3990 [Harddisk][getUserfriendlyDeviceName] device:sda1 physicalDevice:/sys/devices/platform/rdb/f045a000.sata/ata1/host0/target0:0:0/0:0:0:0
+<   753.025531> 13:27:02.3991 [Harddisk][splitDeviceName] devName = 'sda1', device = 'sda', partition = '1'
+<   753.026315> 13:27:02.3999 [Harddisk][enumerateBlockDevices]### Found partition 'sda1', description='KINGSTON SA400S3 (Partition 1)', device='/sys/devices/platform/rdb/f045a000.sata/ata1/host0/target0:0:0/0:0:0:0' mountpoint=/media/hdd/.
+<   753.026719> 13:27:02.4003 [Harddisk][enumerateBlockDevices]### MTDBLACK:sda1
+<   753.028189> 13:27:02.4018 [Harddisk][getUserfriendlyDeviceName] device:sdb physicalDevice:/sys/devices/platform/rdb/f0471000.xhci_v2/usb2/2-2/2-2:1.0/host2/target2:0:0/2:0:0:0
+<   753.028256> 13:27:02.4018 [Harddisk][splitDeviceName] devName = 'sdb', device = 'sdb', partition = '0'
+<   753.029295> 13:27:02.4029 [Harddisk][enumerateBlockDevices] len partitions = 1, device = sdb
+<   753.029364> 13:27:02.4029 [Harddisk][enumerateBlockDevices]2 Found storage device 'sdb' (Removable=True) Number of Partitions = 1.
+<   753.029422> 13:27:02.4030 [Harddisk][enumerateBlockDevices]1 SystemInfo['HasUsbhdd']= {'sdb': 1}
+<   753.030744> 13:27:02.4043 [Harddisk][Init] Device 'sdb' (Rear Upper USB 3.0 - SanDisk (Ultra USB 3.0)) -> '/dev/sdb' -> '/dev/sdb'.
+<   753.030798> 13:27:02.4044 [Harddisk][getUserfriendlyDeviceName] device:sdb1 physicalDevice:/sys/devices/platform/rdb/f0471000.xhci_v2/usb2/2-2/2-2:1.0/host2/target2:0:0/2:0:0:0
+<   753.030852> 13:27:02.4044 [Harddisk][splitDeviceName] devName = 'sdb1', device = 'sdb', partition = '1'
+<   753.031477> 13:27:02.4050 [Harddisk][enumerateBlockDevices]### Found partition 'sdb1', description='Ultra USB 3.0 (Partition 1)', device='/sys/devices/platform/rdb/f0471000.xhci_v2/usb2/2-2/2-2:1.0/host2/target2:0:0/2:0:0:0' mountpoint=/.
+<   753.032167> 13:27:02.4057 [Harddisk][enumerateBlockDevices] Enumerating block devices complete.
+<   753.032215> 13:27:02.4058 [Harddisk][enumerateNetworkMounts] Enumerating network mounts...
+<   753.046928> 13:27:02.4205 [Harddisk][enumerateNetworkMounts] Enumerating network mounts complete.
+<   753.055360> 13:27:02.4289 [Config] Config file loaded ok...
+<   753.057205> 13:27:02.4308 [Keyboard] Adding keymap 'Dreambox Keyboard Deutsch' ('dream-de.kmap').
+<   753.057580> 13:27:02.4311 [Keyboard] Adding keymap 'Default (US)' ('default.kmap').
+<   753.057928> 13:27:02.4315 [Keyboard] Adding keymap 'German keyboard' ('de.kmap').
+<   753.058257> 13:27:02.4318 [Keyboard] Adding keymap 'Dreambox Keyboard English' ('eng.kmap').
+<   753.058586> 13:27:02.4322 [Keyboard] Adding keymap 'azerty keyboard' ('azerty.kmap').
+<   753.317689> 13:27:02.6913 [gRC] Warning: Main thread is busy, displaying spinner!
+<   753.539592> 13:27:02.9132 [Language] Activating language English (UK)
+<   753.694958> 13:27:03.0685 [Keyboard] Activating keymap: 'Default (US)'.
+<   753.695256> 13:27:03.0688 [Console] command: loadkmap < /usr/share/keymaps/default.kmap
+<   753.695327> 13:27:03.0689 [eConsoleAppContainer] Starting /bin/sh
+<   753.725615> 13:27:03.0992 [StartEnigma]  Initialising ClientMode.
+<   753.728253> 13:27:03.1018 [StartEnigma]  Initialising InfoBar.
+<   753.781303> 13:27:03.1549 [Harddisk][splitDeviceName] devName = 'sda1', device = 'sda', partition = '1'
+<   754.055429> 13:27:03.4290 [PiconLocator] adding path: /media/hdd/picon/
+<   754.112068> 13:27:03.4856 [NimManager] Reading satellites.xml
+<   754.568827> 13:27:03.9424 [NimManager][SecConfigure] sec config cleared
+<   754.569207> 13:27:03.9428 [eDVBFrontend] setSlotInfo for dvb frontend 0 to slotid 0, descr Vuplus DVB-S NIM(45308X FBC), need rotorworkaround No, enabled Yes, DVB-S2 Yes
+<   754.569244> 13:27:03.9428 [eDVBFrontend] setSlotInfo for dvb frontend 1 to slotid 1, descr Vuplus DVB-S NIM(45308X FBC), need rotorworkaround No, enabled Yes, DVB-S2 Yes
+<   754.569265> 13:27:03.9428 [eDVBFrontend] setSlotInfo for dvb frontend 2 to slotid 2, descr Vuplus DVB-S NIM(45308X FBC), need rotorworkaround No, enabled No, DVB-S2 Yes
+<   754.569284> 13:27:03.9429 [eDVBFrontend] setSlotInfo for dvb frontend 3 to slotid 3, descr Vuplus DVB-S NIM(45308X FBC), need rotorworkaround No, enabled No, DVB-S2 Yes
+<   754.569303> 13:27:03.9429 [eDVBFrontend] setSlotInfo for dvb frontend 4 to slotid 4, descr Vuplus DVB-S NIM(45308X FBC), need rotorworkaround No, enabled No, DVB-S2 Yes
+<   754.569321> 13:27:03.9429 [eDVBFrontend] setSlotInfo for dvb frontend 5 to slotid 5, descr Vuplus DVB-S NIM(45308X FBC), need rotorworkaround No, enabled No, DVB-S2 Yes
+<   754.569338> 13:27:03.9429 [eDVBFrontend] setSlotInfo for dvb frontend 6 to slotid 6, descr Vuplus DVB-S NIM(45308X FBC), need rotorworkaround No, enabled No, DVB-S2 Yes
+<   754.569354> 13:27:03.9429 [eDVBFrontend] setSlotInfo for dvb frontend 7 to slotid 7, descr Vuplus DVB-S NIM(45308X FBC), need rotorworkaround No, enabled No, DVB-S2 Yes
+<   754.569652> 13:27:03.9432 [NimManager][SecConfigure] slot: 0 configmode: advanced
+<   754.570102> 13:27:03.9437 [SecConfigure] add 19 to 1
+<   754.570205> 13:27:03.9438 [SecConfigure] add 30 to 1
+<   754.570307> 13:27:03.9439 [SecConfigure] add 48 to 1
+<   754.570421> 13:27:03.9440 [SecConfigure] add 90 to 1
+<   754.570514> 13:27:03.9441 [SecConfigure] add 100 to 1
+<   754.570646> 13:27:03.9442 [SecConfigure] add 170 to 1
+<   754.570738> 13:27:03.9443 [SecConfigure] add 192 to 1
+<   754.570829> 13:27:03.9444 [SecConfigure] add 215 to 1
+<   754.570909> 13:27:03.9445 [SecConfigure] add 235 to 1
+<   754.571054> 13:27:03.9446 [SecConfigure] add 282 to 1
+<   754.571134> 13:27:03.9447 [SecConfigure] add 305 to 1
+<   754.571230> 13:27:03.9448 [SecConfigure] add 360 to 1
+<   754.571333> 13:27:03.9449 [SecConfigure] add 390 to 1
+<   754.571435> 13:27:03.9450 [SecConfigure] add 420 to 1
+<   754.571546> 13:27:03.9451 [SecConfigure] add 450 to 1
+<   754.571637> 13:27:03.9452 [SecConfigure] add 460 to 1
+<   754.571739> 13:27:03.9453 [SecConfigure] add 500 to 1
+<   754.571841> 13:27:03.9454 [SecConfigure] add 520 to 1
+<   754.571920> 13:27:03.9455 [SecConfigure] add 525 to 1
+<   754.571999> 13:27:03.9456 [SecConfigure] add 530 to 1
+<   754.572091> 13:27:03.9457 [SecConfigure] add 549 to 1
+<   754.572169> 13:27:03.9457 [SecConfigure] add 560 to 1
+<   754.572247> 13:27:03.9458 [SecConfigure] add 570 to 1
+<   754.572337> 13:27:03.9459 [SecConfigure] add 585 to 1
+<   754.572415> 13:27:03.9460 [SecConfigure] add 620 to 1
+<   754.572520> 13:27:03.9461 [SecConfigure] add 660 to 1
+<   754.572676> 13:27:03.9462 [SecConfigure] add 685 to 1
+<   754.572772> 13:27:03.9463 [SecConfigure] add 705 to 1
+<   754.572876> 13:27:03.9464 [SecConfigure] add 750 to 1
+<   754.572987> 13:27:03.9466 [SecConfigure] add 785 to 1
+<   754.573093> 13:27:03.9467 [SecConfigure] add 800 to 1
+<   754.573173> 13:27:03.9467 [SecConfigure] add 830 to 1
+<   754.573285> 13:27:03.9469 [SecConfigure] add 880 to 1
+<   754.573375> 13:27:03.9469 [SecConfigure] add 900 to 1
+<   754.573465> 13:27:03.9470 [SecConfigure] add 915 to 1
+<   754.573555> 13:27:03.9471 [SecConfigure] add 935 to 1
+<   754.573645> 13:27:03.9472 [SecConfigure] add 950 to 1
+<   754.573737> 13:27:03.9473 [SecConfigure] add 973 to 1
+<   754.573829> 13:27:03.9474 [SecConfigure] add 1005 to 1
+<   754.573977> 13:27:03.9475 [SecConfigure] add 1130 to 1
+<   754.575216> 13:27:03.9488 [SecConfigure] add 3380 to 1
+<   754.575321> 13:27:03.9489 [SecConfigure] add 3450 to 1
+<   754.575429> 13:27:03.9490 [SecConfigure] add 3460 to 1
+<   754.575599> 13:27:03.9492 [SecConfigure] add 3592 to 1
+<   754.578194> 13:27:03.9518 [NimManager][SecConfigure] slot: 1 configmode: advanced
+<   754.580352> 13:27:03.9539 [SecConfigure] add 70 to 5
+<   754.580481> 13:27:03.9540 [SecConfigure] add 130 to 3
+<   754.580560> 13:27:03.9541 [SecConfigure] add 160 to 6
+<   754.580713> 13:27:03.9543 [SecConfigure] add 255 to 1
+<   754.580801> 13:27:03.9544 [SecConfigure] add 260 to 1
+<   754.580962> 13:27:03.9545 [SecConfigure] add 400 to 4
+<   754.581672> 13:27:03.9552 [SecConfigure] add 1081 to 7
+<   754.582916> 13:27:03.9565 [SecConfigure] add 3520 to 2
+<   754.583013> 13:27:03.9566 [SecConfigure] add 3530 to 2
+<   754.584434> 13:27:03.9580 [NimManager][SecConfigure] slot: 2 configmode: nothing
+<   754.584509> 13:27:03.9581 [NimManager][SecConfigure] slot: 3 configmode: nothing
+<   754.584577> 13:27:03.9581 [NimManager][SecConfigure] slot: 4 configmode: nothing
+<   754.584642> 13:27:03.9582 [NimManager][SecConfigure] slot: 5 configmode: nothing
+<   754.584706> 13:27:03.9583 [NimManager][SecConfigure] slot: 6 configmode: nothing
+<   754.584771> 13:27:03.9583 [NimManager][SecConfigure] slot: 7 configmode: nothing
+<   754.584815> 13:27:03.9584 [NimManager][SecConfigure] sec config completed
+<   754.636942> 13:27:04.0105 [MovieSelection] Bluray Player is not installed: cannot import name 'BlurayPlayer' from 'Plugins.Extensions' (/usr/lib/enigma2/python/Plugins/Extensions/__init__.pyc)
+<   754.778796> 13:27:04.1524 [StartEnigma]  Initialising Bouquets.
+<   754.779654> 13:27:04.1532 [eDVBDB] loading bouquet... /etc/enigma2//bouquets.tv
+<   754.779833> 13:27:04.1534 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.buket_exyu.tv
+<   754.780339> 13:27:04.1539 [eDVBDB] 55 entries in Bouquet userbouquet.buket_exyu.tv
+<   754.780414> 13:27:04.1540 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.buket_pinktv.tv
+<   754.780819> 13:27:04.1544 [eDVBDB] 54 entries in Bouquet userbouquet.buket_pinktv.tv
+<   754.780883> 13:27:04.1545 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.buket_maxtv.tv
+<   754.781592> 13:27:04.1552 [eDVBDB] 111 entries in Bouquet userbouquet.buket_maxtv.tv
+<   754.781661> 13:27:04.1552 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.buket_sport.tv
+<   754.784416> 13:27:04.1580 [eDVBDB] 420 entries in Bouquet userbouquet.buket_sport.tv
+<   754.784490> 13:27:04.1581 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.buket_kids.tv
+<   754.785228> 13:27:04.1588 [eDVBDB] 108 entries in Bouquet userbouquet.buket_kids.tv
+<   754.785295> 13:27:04.1589 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.buket_docu.tv
+<   754.786795> 13:27:04.1604 [eDVBDB] 234 entries in Bouquet userbouquet.buket_docu.tv
+<   754.786861> 13:27:04.1604 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.buket_movie.tv
+<   754.788881> 13:27:04.1624 [eDVBDB] 327 entries in Bouquet userbouquet.buket_movie.tv
+<   754.788948> 13:27:04.1625 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.buket_music.tv
+<   754.790245> 13:27:04.1638 [eDVBDB] 200 entries in Bouquet userbouquet.buket_music.tv
+<   754.790310> 13:27:04.1639 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.buket_uhd.tv
+<   754.790688> 13:27:04.1643 [eDVBDB] 51 entries in Bouquet userbouquet.buket_uhd.tv
+<   754.790748> 13:27:04.1643 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.buket_adult.tv
+<   754.791244> 13:27:04.1648 [eDVBDB] 77 entries in Bouquet userbouquet.buket_adult.tv
+<   754.791308> 13:27:04.1649 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.buket_multistream.tv
+<   754.795416> 13:27:04.1690 [eDVBDB] 683 entries in Bouquet userbouquet.buket_multistream.tv
+<   754.795527> 13:27:04.1691 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.buket_t2mi.tv
+<   754.796743> 13:27:04.1703 [eDVBDB] 121 entries in Bouquet userbouquet.buket_t2mi.tv
+<   754.796821> 13:27:04.1704 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.buket_abertis.tv
+<   754.798746> 13:27:04.1723 [eDVBDB] 192 entries in Bouquet userbouquet.buket_abertis.tv
+<   754.798815> 13:27:04.1724 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.buket_emu.tv
+<   754.799290> 13:27:04.1729 [eDVBDB] 61 entries in Bouquet userbouquet.buket_emu.tv
+<   754.799355> 13:27:04.1729 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_26e_badr.tv
+<   754.800965> 13:27:04.1745 [eDVBDB] 289 entries in Bouquet userbouquet.e2e_26e_badr.tv
+<   754.801057> 13:27:04.1746 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_26e_mbc.tv
+<   754.801309> 13:27:04.1749 [eDVBDB] 35 entries in Bouquet userbouquet.e2e_26e_mbc.tv
+<   754.801366> 13:27:04.1749 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_7w8w.tv
+<   754.802678> 13:27:04.1762 [eDVBDB] 231 entries in Bouquet userbouquet.e2e_7w8w.tv
+<   754.802744> 13:27:04.1763 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_7w8w_business.tv
+<   754.802787> 13:27:04.1764 [eDVBDB] 1 entries in Bouquet userbouquet.e2e_7w8w_business.tv
+<   754.802843> 13:27:04.1764 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_13e_hotbird.tv
+<   754.803468> 13:27:04.1770 [eDVBDB] 88 entries in Bouquet userbouquet.e2e_13e_hotbird.tv
+<   754.803537> 13:27:04.1771 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_13e_polandmovies.tv
+<   754.803962> 13:27:04.1775 [eDVBDB] 72 entries in Bouquet userbouquet.e2e_13e_polandmovies.tv
+<   754.804044> 13:27:04.1776 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_13e_polanddocu.tv
+<   754.804435> 13:27:04.1780 [eDVBDB] 59 entries in Bouquet userbouquet.e2e_13e_polanddocu.tv
+<   754.804495> 13:27:04.1781 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_13e_polandgeneral.tv
+<   754.804994> 13:27:04.1786 [eDVBDB] 83 entries in Bouquet userbouquet.e2e_13e_polandgeneral.tv
+<   754.805070> 13:27:04.1786 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_13e_polandsport.tv
+<   754.805368> 13:27:04.1789 [eDVBDB] 45 entries in Bouquet userbouquet.e2e_13e_polandsport.tv
+<   754.805427> 13:27:04.1790 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_13e_sfi.tv
+<   754.805924> 13:27:04.1795 [eDVBDB] 83 entries in Bouquet userbouquet.e2e_13e_sfi.tv
+<   754.805987> 13:27:04.1796 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_13e_orangefrance.tv
+<   754.806356> 13:27:04.1799 [eDVBDB] 52 entries in Bouquet userbouquet.e2e_13e_orangefrance.tv
+<   754.806412> 13:27:04.1800 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_13e_raimediaset.tv
+<   754.807100> 13:27:04.1807 [eDVBDB] 114 entries in Bouquet userbouquet.e2e_13e_raimediaset.tv
+<   754.807158> 13:27:04.1807 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_13e_vivacom.tv
+<   754.808126> 13:27:04.1817 [eDVBDB] 163 entries in Bouquet userbouquet.e2e_13e_vivacom.tv
+<   754.808194> 13:27:04.1818 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_13e_skyitaliahd.tv
+<   754.808977> 13:27:04.1825 [eDVBDB] 124 entries in Bouquet userbouquet.e2e_13e_skyitaliahd.tv
+<   754.809052> 13:27:04.1826 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_13e_skyitalia_icam.tv
+<   754.811152> 13:27:04.1847 [eDVBDB] 162 entries in Bouquet userbouquet.e2e_13e_skyitalia_icam.tv
+<   754.811229> 13:27:04.1848 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_13e_novagreece.tv
+<   754.812088> 13:27:04.1857 [eDVBDB] 135 entries in Bouquet userbouquet.e2e_13e_novagreece.tv
+<   754.812157> 13:27:04.1857 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.buket_slovak.tv
+<   754.812523> 13:27:04.1861 [eDVBDB] 59 entries in Bouquet userbouquet.buket_slovak.tv
+<   754.812626> 13:27:04.1862 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.buket_skylink.tv
+<   754.813621> 13:27:04.1872 [eDVBDB] 169 entries in Bouquet userbouquet.buket_skylink.tv
+<   754.813690> 13:27:04.1873 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.buket_antiksat.tv
+<   754.814229> 13:27:04.1878 [eDVBDB] 87 entries in Bouquet userbouquet.buket_antiksat.tv
+<   754.814288> 13:27:04.1879 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.buket_upc.tv
+<   754.814731> 13:27:04.1883 [eDVBDB] 72 entries in Bouquet userbouquet.buket_upc.tv
+<   754.814785> 13:27:04.1884 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_80e.tv
+<   754.816672> 13:27:04.1902 [eDVBDB] 336 entries in Bouquet userbouquet.e2e_80e.tv
+<   754.816738> 13:27:04.1903 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_68e.tv
+<   754.817129> 13:27:04.1907 [eDVBDB] 61 entries in Bouquet userbouquet.e2e_68e.tv
+<   754.817182> 13:27:04.1907 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_62e.tv
+<   754.817246> 13:27:04.1908 [eDVBDB] 3 entries in Bouquet userbouquet.e2e_62e.tv
+<   754.817306> 13:27:04.1909 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_55e.tv
+<   754.817772> 13:27:04.1913 [eDVBDB] 78 entries in Bouquet userbouquet.e2e_55e.tv
+<   754.817829> 13:27:04.1914 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_53e.tv
+<   754.818021> 13:27:04.1916 [eDVBDB] 23 entries in Bouquet userbouquet.e2e_53e.tv
+<   754.818080> 13:27:04.1916 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_52e.tv
+<   754.818452> 13:27:04.1920 [eDVBDB] 62 entries in Bouquet userbouquet.e2e_52e.tv
+<   754.818507> 13:27:04.1921 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_52e_aref.tv
+<   754.819488> 13:27:04.1931 [eDVBDB] 174 entries in Bouquet userbouquet.e2e_52e_aref.tv
+<   754.819556> 13:27:04.1931 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_52e_wns.tv
+<   754.820286> 13:27:04.1939 [eDVBDB] 129 entries in Bouquet userbouquet.e2e_52e_wns.tv
+<   754.820350> 13:27:04.1939 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_51e.tv
+<   754.820674> 13:27:04.1942 [eDVBDB] 50 entries in Bouquet userbouquet.e2e_51e.tv
+<   754.820731> 13:27:04.1943 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_46e.tv
+<   754.821066> 13:27:04.1946 [eDVBDB] 49 entries in Bouquet userbouquet.e2e_46e.tv
+<   754.821121> 13:27:04.1947 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_45e.tv
+<   754.821318> 13:27:04.1949 [eDVBDB] 32 entries in Bouquet userbouquet.e2e_45e.tv
+<   754.821383> 13:27:04.1950 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_42e_turksat.tv
+<   754.822532> 13:27:04.1961 [eDVBDB] 198 entries in Bouquet userbouquet.e2e_42e_turksat.tv
+<   754.822594> 13:27:04.1962 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_42e_digiturk.tv
+<   754.823151> 13:27:04.1967 [eDVBDB] 81 entries in Bouquet userbouquet.e2e_42e_digiturk.tv
+<   754.823211> 13:27:04.1968 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_42e_dsmart.tv
+<   754.823667> 13:27:04.1972 [eDVBDB] 75 entries in Bouquet userbouquet.e2e_42e_dsmart.tv
+<   754.823723> 13:27:04.1973 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_42e_tivibu.tv
+<   754.824122> 13:27:04.1977 [eDVBDB] 52 entries in Bouquet userbouquet.e2e_42e_tivibu.tv
+<   754.824176> 13:27:04.1977 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_39e_hellas.tv
+<   754.824436> 13:27:04.1980 [eDVBDB] 37 entries in Bouquet userbouquet.e2e_39e_hellas.tv
+<   754.824496> 13:27:04.1981 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_39e_hellas_sport.tv
+<   754.824697> 13:27:04.1983 [eDVBDB] 28 entries in Bouquet userbouquet.e2e_39e_hellas_sport.tv
+<   754.824748> 13:27:04.1983 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_39e_ert.tv
+<   754.825416> 13:27:04.1990 [eDVBDB] 91 entries in Bouquet userbouquet.e2e_39e_ert.tv
+<   754.825473> 13:27:04.1990 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_39e_polaris.tv
+<   754.826293> 13:27:04.1999 [eDVBDB] 135 entries in Bouquet userbouquet.e2e_39e_polaris.tv
+<   754.826356> 13:27:04.1999 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_39e_dolce.tv
+<   754.827548> 13:27:04.2011 [eDVBDB] 161 entries in Bouquet userbouquet.e2e_39e_dolce.tv
+<   754.827624> 13:27:04.2012 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_39e_a1bg.tv
+<   754.828554> 13:27:04.2021 [eDVBDB] 155 entries in Bouquet userbouquet.e2e_39e_a1bg.tv
+<   754.828619> 13:27:04.2022 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_39e_tring.tv
+<   754.829190> 13:27:04.2028 [eDVBDB] 95 entries in Bouquet userbouquet.e2e_39e_tring.tv
+<   754.829249> 13:27:04.2028 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_36e.tv
+<   754.829861> 13:27:04.2034 [eDVBDB] 107 entries in Bouquet userbouquet.e2e_36e.tv
+<   754.829918> 13:27:04.2035 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_31e.tv
+<   754.829962> 13:27:04.2035 [eDVBDB] 1 entries in Bouquet userbouquet.e2e_31e.tv
+<   754.830043> 13:27:04.2036 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_28e_astra.tv
+<   754.830382> 13:27:04.2039 [eDVBDB] 45 entries in Bouquet userbouquet.e2e_28e_astra.tv
+<   754.830437> 13:27:04.2040 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_28e_skyuk_icam.tv
+<   754.833204> 13:27:04.2068 [eDVBDB] 254 entries in Bouquet userbouquet.e2e_28e_skyuk_icam.tv
+<   754.833280> 13:27:04.2068 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_28e_skyukmovie.tv
+<   754.833725> 13:27:04.2073 [eDVBDB] 68 entries in Bouquet userbouquet.e2e_28e_skyukmovie.tv
+<   754.833784> 13:27:04.2074 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_28e_skyukdocuments.tv
+<   754.834094> 13:27:04.2077 [eDVBDB] 41 entries in Bouquet userbouquet.e2e_28e_skyukdocuments.tv
+<   754.834155> 13:27:04.2077 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_28e_skyuksports.tv
+<   754.834818> 13:27:04.2084 [eDVBDB] 113 entries in Bouquet userbouquet.e2e_28e_skyuksports.tv
+<   754.834879> 13:27:04.2084 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_28e_skyukkids.tv
+<   754.835097> 13:27:04.2087 [eDVBDB] 28 entries in Bouquet userbouquet.e2e_28e_skyukkids.tv
+<   754.835153> 13:27:04.2087 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_28e_skyukgeneral.tv
+<   754.836081> 13:27:04.2096 [eDVBDB] 151 entries in Bouquet userbouquet.e2e_28e_skyukgeneral.tv
+<   754.836143> 13:27:04.2097 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_28e_freesat.tv
+<   754.837269> 13:27:04.2108 [eDVBDB] 202 entries in Bouquet userbouquet.e2e_28e_freesat.tv
+<   754.837331> 13:27:04.2109 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_23e_astra.tv
+<   754.837716> 13:27:04.2113 [eDVBDB] 44 entries in Bouquet userbouquet.e2e_23e_astra.tv
+<   754.837773> 13:27:04.2113 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_23e_skylinkgeneral.tv
+<   754.838300> 13:27:04.2119 [eDVBDB] 88 entries in Bouquet userbouquet.e2e_23e_skylinkgeneral.tv
+<   754.838359> 13:27:04.2119 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_23e_skylink.tv
+<   754.839040> 13:27:04.2126 [eDVBDB] 115 entries in Bouquet userbouquet.e2e_23e_skylink.tv
+<   754.839101> 13:27:04.2127 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_23e_canaldigital.tv
+<   754.839657> 13:27:04.2132 [eDVBDB] 92 entries in Bouquet userbouquet.e2e_23e_canaldigital.tv
+<   754.839718> 13:27:04.2133 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_23e_sport.tv
+<   754.839961> 13:27:04.2135 [eDVBDB] 33 entries in Bouquet userbouquet.e2e_23e_sport.tv
+<   754.840067> 13:27:04.2136 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_23e_telekomsrbija.tv
+<   754.841997> 13:27:04.2156 [eDVBDB] 336 entries in Bouquet userbouquet.e2e_23e_telekomsrbija.tv
+<   754.842081> 13:27:04.2156 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_21e_eutelsat.tv
+<   754.842444> 13:27:04.2160 [eDVBDB] 52 entries in Bouquet userbouquet.e2e_21e_eutelsat.tv
+<   754.842504> 13:27:04.2161 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_19e_astra.tv
+<   754.843032> 13:27:04.2166 [eDVBDB] 86 entries in Bouquet userbouquet.e2e_19e_astra.tv
+<   754.843090> 13:27:04.2167 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_19e_movistarsport.tv
+<   754.843724> 13:27:04.2173 [eDVBDB] 97 entries in Bouquet userbouquet.e2e_19e_movistarsport.tv
+<   754.843780> 13:27:04.2173 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_19e_movistarmovies.tv
+<   754.844706> 13:27:04.2183 [eDVBDB] 73 entries in Bouquet userbouquet.e2e_19e_movistarmovies.tv
+<   754.845200> 13:27:04.2188 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_19e_movistardocu.tv
+<   754.845673> 13:27:04.2192 [eDVBDB] 42 entries in Bouquet userbouquet.e2e_19e_movistardocu.tv
+<   754.845768> 13:27:04.2193 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_19e_skyde_icam.tv
+<   754.847470> 13:27:04.2210 [eDVBDB] 149 entries in Bouquet userbouquet.e2e_19e_skyde_icam.tv
+<   754.847574> 13:27:04.2211 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_19e_skydemovies.tv
+<   754.847865> 13:27:04.2214 [eDVBDB] 42 entries in Bouquet userbouquet.e2e_19e_skydemovies.tv
+<   754.847922> 13:27:04.2215 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_19e_skydedocu.tv
+<   754.848279> 13:27:04.2218 [eDVBDB] 46 entries in Bouquet userbouquet.e2e_19e_skydedocu.tv
+<   754.848333> 13:27:04.2219 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_19e_skydesport.tv
+<   754.848745> 13:27:04.2223 [eDVBDB] 61 entries in Bouquet userbouquet.e2e_19e_skydesport.tv
+<   754.848804> 13:27:04.2224 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_19e_hdplus.tv
+<   754.849538> 13:27:04.2231 [eDVBDB] 112 entries in Bouquet userbouquet.e2e_19e_hdplus.tv
+<   754.849598> 13:27:04.2232 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_19e_ORF.tv
+<   754.849937> 13:27:04.2235 [eDVBDB] 48 entries in Bouquet userbouquet.e2e_19e_ORF.tv
+<   754.849989> 13:27:04.2236 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_19e_fta.tv
+<   754.851416> 13:27:04.2250 [eDVBDB] 235 entries in Bouquet userbouquet.e2e_19e_fta.tv
+<   754.851479> 13:27:04.2250 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_19e_canaldigitaal.tv
+<   754.851889> 13:27:04.2255 [eDVBDB] 60 entries in Bouquet userbouquet.e2e_19e_canaldigitaal.tv
+<   754.851944> 13:27:04.2255 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_19e_canalsat.tv
+<   754.852903> 13:27:04.2265 [eDVBDB] 155 entries in Bouquet userbouquet.e2e_19e_canalsat.tv
+<   754.852961> 13:27:04.2265 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_16e_eutelsat.tv
+<   754.853123> 13:27:04.2267 [eDVBDB] 17 entries in Bouquet userbouquet.e2e_16e_eutelsat.tv
+<   754.853178> 13:27:04.2267 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_16e_oivzagreb.tv
+<   754.853542> 13:27:04.2271 [eDVBDB] 43 entries in Bouquet userbouquet.e2e_16e_oivzagreb.tv
+<   754.853610> 13:27:04.2272 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_16e_maxtv.tv
+<   754.854276> 13:27:04.2278 [eDVBDB] 111 entries in Bouquet userbouquet.e2e_16e_maxtv.tv
+<   754.854339> 13:27:04.2279 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_16e_pink.tv
+<   754.854725> 13:27:04.2283 [eDVBDB] 59 entries in Bouquet userbouquet.e2e_16e_pink.tv
+<   754.854778> 13:27:04.2283 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_16e_antiksat.tv
+<   754.855306> 13:27:04.2289 [eDVBDB] 87 entries in Bouquet userbouquet.e2e_16e_antiksat.tv
+<   754.855359> 13:27:04.2289 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_16e_sport.tv
+<   754.855665> 13:27:04.2292 [eDVBDB] 46 entries in Bouquet userbouquet.e2e_16e_sport.tv
+<   754.855718> 13:27:04.2293 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_16e_totaltv.tv
+<   754.857248> 13:27:04.2308 [eDVBDB] 269 entries in Bouquet userbouquet.e2e_16e_totaltv.tv
+<   754.857306> 13:27:04.2309 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_16e_vipnet.tv
+<   754.857759> 13:27:04.2313 [eDVBDB] 76 entries in Bouquet userbouquet.e2e_16e_vipnet.tv
+<   754.857812> 13:27:04.2314 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_16e_digitalbania.tv
+<   754.858544> 13:27:04.2321 [eDVBDB] 117 entries in Bouquet userbouquet.e2e_16e_digitalbania.tv
+<   754.858601> 13:27:04.2322 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_16e_freesatromania.tv
+<   754.859032> 13:27:04.2326 [eDVBDB] 72 entries in Bouquet userbouquet.e2e_16e_freesatromania.tv
+<   754.859083> 13:27:04.2327 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_16e_rtsh.tv
+<   754.859223> 13:27:04.2328 [eDVBDB] 18 entries in Bouquet userbouquet.e2e_16e_rtsh.tv
+<   754.859277> 13:27:04.2328 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_10e_eutelsat.tv
+<   754.859612> 13:27:04.2332 [eDVBDB] 56 entries in Bouquet userbouquet.e2e_10e_eutelsat.tv
+<   754.859666> 13:27:04.2332 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_9e_eutelsat.tv
+<   754.860138> 13:27:04.2337 [eDVBDB] 73 entries in Bouquet userbouquet.e2e_9e_eutelsat.tv
+<   754.860192> 13:27:04.2338 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_9e_kabelkiosk.tv
+<   754.860821> 13:27:04.2344 [eDVBDB] 52 entries in Bouquet userbouquet.e2e_9e_kabelkiosk.tv
+<   754.860879> 13:27:04.2344 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_9e_cosmote.tv
+<   754.861736> 13:27:04.2353 [eDVBDB] 141 entries in Bouquet userbouquet.e2e_9e_cosmote.tv
+<   754.861794> 13:27:04.2354 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_9e_afn.tv
+<   754.862039> 13:27:04.2356 [eDVBDB] 34 entries in Bouquet userbouquet.e2e_9e_afn.tv
+<   754.862092> 13:27:04.2357 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_9e_mediaset.tv
+<   754.863926> 13:27:04.2375 [eDVBDB] 331 entries in Bouquet userbouquet.e2e_9e_mediaset.tv
+<   754.863983> 13:27:04.2376 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_9e_persidera.tv
+<   754.864410> 13:27:04.2380 [eDVBDB] 72 entries in Bouquet userbouquet.e2e_9e_persidera.tv
+<   754.864462> 13:27:04.2380 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_7e_eutelsat.tv
+<   754.864764> 13:27:04.2383 [eDVBDB] 47 entries in Bouquet userbouquet.e2e_7e_eutelsat.tv
+<   754.864816> 13:27:04.2384 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_5e_fta_powervu.tv
+<   754.865312> 13:27:04.2389 [eDVBDB] 85 entries in Bouquet userbouquet.e2e_5e_fta_powervu.tv
+<   754.865365> 13:27:04.2389 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_5e_ukraina.tv
+<   754.866332> 13:27:04.2399 [eDVBDB] 168 entries in Bouquet userbouquet.e2e_5e_ukraina.tv
+<   754.866387> 13:27:04.2400 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_5e_brt_t2mi.tv
+<   754.866859> 13:27:04.2404 [eDVBDB] 61 entries in Bouquet userbouquet.e2e_5e_brt_t2mi.tv
+<   754.866916> 13:27:04.2405 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_3e_eutelsat.tv
+<   754.867042> 13:27:04.2406 [eDVBDB] 11 entries in Bouquet userbouquet.e2e_3e_eutelsat.tv
+<   754.867096> 13:27:04.2407 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_2e_bulgariasat1.tv
+<   754.867366> 13:27:04.2409 [eDVBDB] 46 entries in Bouquet userbouquet.e2e_2e_bulgariasat1.tv
+<   754.867418> 13:27:04.2410 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_2e_neosat.tv
+<   754.868089> 13:27:04.2417 [eDVBDB] 108 entries in Bouquet userbouquet.e2e_2e_neosat.tv
+<   754.868143> 13:27:04.2417 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_08w_thor.tv
+<   754.868430> 13:27:04.2420 [eDVBDB] 43 entries in Bouquet userbouquet.e2e_08w_thor.tv
+<   754.868481> 13:27:04.2420 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_08w_sport.tv
+<   754.869221> 13:27:04.2428 [eDVBDB] 122 entries in Bouquet userbouquet.e2e_08w_sport.tv
+<   754.869275> 13:27:04.2428 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_08w_docu.tv
+<   754.869780> 13:27:04.2433 [eDVBDB] 77 entries in Bouquet userbouquet.e2e_08w_docu.tv
+<   754.869833> 13:27:04.2434 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_08w_music.tv
+<   754.870592> 13:27:04.2442 [eDVBDB] 119 entries in Bouquet userbouquet.e2e_08w_music.tv
+<   754.870649> 13:27:04.2442 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_08w_allente_sve_den.tv
+<   754.871293> 13:27:04.2449 [eDVBDB] 108 entries in Bouquet userbouquet.e2e_08w_allente_sve_den.tv
+<   754.871350> 13:27:04.2449 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_08w_allente_movie_music.tv
+<   754.871993> 13:27:04.2456 [eDVBDB] 104 entries in Bouquet userbouquet.e2e_08w_allente_movie_music.tv
+<   754.872069> 13:27:04.2456 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_08w_directone_svk.tv
+<   754.872535> 13:27:04.2461 [eDVBDB] 76 entries in Bouquet userbouquet.e2e_08w_directone_svk.tv
+<   754.872588> 13:27:04.2462 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_08w_directone_movies.tv
+<   754.873164> 13:27:04.2467 [eDVBDB] 70 entries in Bouquet userbouquet.e2e_08w_directone_movies.tv
+<   754.873222> 13:27:04.2468 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_08w_focussat.tv
+<   754.873728> 13:27:04.2473 [eDVBDB] 79 entries in Bouquet userbouquet.e2e_08w_focussat.tv
+<   754.873784> 13:27:04.2474 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_08w_focussat_movies.tv
+<   754.874451> 13:27:04.2480 [eDVBDB] 94 entries in Bouquet userbouquet.e2e_08w_focussat_movies.tv
+<   754.874507> 13:27:04.2481 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_08w_digitv.tv
+<   754.875533> 13:27:04.2491 [eDVBDB] 155 entries in Bouquet userbouquet.e2e_08w_digitv.tv
+<   754.875590> 13:27:04.2492 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_08w_slovaktelekom.tv
+<   754.876395> 13:27:04.2500 [eDVBDB] 119 entries in Bouquet userbouquet.e2e_08w_slovaktelekom.tv
+<   754.876452> 13:27:04.2500 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_5w_eutelsat.tv
+<   754.876505> 13:27:04.2501 [eDVBDB] 3 entries in Bouquet userbouquet.e2e_5w_eutelsat.tv
+<   754.876556> 13:27:04.2501 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_5w_rai.tv
+<   754.878450> 13:27:04.2520 [eDVBDB] 275 entries in Bouquet userbouquet.e2e_5w_rai.tv
+<   754.878517> 13:27:04.2521 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_5w_france_multistream.tv
+<   754.878767> 13:27:04.2523 [eDVBDB] 37 entries in Bouquet userbouquet.e2e_5w_france_multistream.tv
+<   754.878820> 13:27:04.2524 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_5w_francesat.tv
+<   754.879355> 13:27:04.2529 [eDVBDB] 81 entries in Bouquet userbouquet.e2e_5w_francesat.tv
+<   754.879408> 13:27:04.2530 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_7w.tv
+<   754.880777> 13:27:04.2543 [eDVBDB] 231 entries in Bouquet userbouquet.e2e_7w.tv
+<   754.880838> 13:27:04.2544 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_14w.tv
+<   754.880938> 13:27:04.2545 [eDVBDB] 9 entries in Bouquet userbouquet.e2e_14w.tv
+<   754.880987> 13:27:04.2546 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_15w.tv
+<   754.881167> 13:27:04.2547 [eDVBDB] 18 entries in Bouquet userbouquet.e2e_15w.tv
+<   754.881221> 13:27:04.2548 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_30w_hispasat.tv
+<   754.882043> 13:27:04.2556 [eDVBDB] 136 entries in Bouquet userbouquet.e2e_30w_hispasat.tv
+<   754.882100> 13:27:04.2557 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_30w_hispasatsport.tv
+<   754.882476> 13:27:04.2560 [eDVBDB] 50 entries in Bouquet userbouquet.e2e_30w_hispasatsport.tv
+<   754.882527> 13:27:04.2561 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_30w_nos.tv
+<   754.883373> 13:27:04.2569 [eDVBDB] 127 entries in Bouquet userbouquet.e2e_30w_nos.tv
+<   754.883440> 13:27:04.2570 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_30w_meotv.tv
+<   754.884315> 13:27:04.2579 [eDVBDB] 131 entries in Bouquet userbouquet.e2e_30w_meotv.tv
+<   754.884374> 13:27:04.2579 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_30w_abertis.tv
+<   754.886825> 13:27:04.2604 [eDVBDB] 256 entries in Bouquet userbouquet.e2e_30w_abertis.tv
+<   754.886891> 13:27:04.2605 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_35w.tv
+<   754.887070> 13:27:04.2606 [eDVBDB] 22 entries in Bouquet userbouquet.e2e_35w.tv
+<   754.887127> 13:27:04.2607 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_terrestrial_fta.tv
+<   754.887752> 13:27:04.2613 [eDVBDB] 87 entries in Bouquet userbouquet.e2e_terrestrial_fta.tv
+<   754.887804> 13:27:04.2614 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_terrestrial_paytv.tv
+<   754.889133> 13:27:04.2627 [eDVBDB] 205 entries in Bouquet userbouquet.e2e_terrestrial_paytv.tv
+<   754.889198> 13:27:04.2628 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.LastScanned.tv
+<   754.889419> 13:27:04.2630 [eDVBDB] 32 entries in Bouquet userbouquet.LastScanned.tv
+<   754.889472> 13:27:04.2630 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.livefeed_search.tv
+<   754.889628> 13:27:04.2632 [eDVBDB] 21 entries in Bouquet userbouquet.livefeed_search.tv
+<   754.889677> 13:27:04.2632 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.favourites.tv
+<   754.889710> 13:27:04.2633 [eDVBDB] 0 entries in Bouquet userbouquet.favourites.tv
+<   754.889732> 13:27:04.2633 [eDVBDB] 141 entries in Bouquet bouquets.tv
+<   754.890120> 13:27:04.2637 [eDVBDB] loading bouquet... /etc/enigma2//bouquets.radio
+<   754.890191> 13:27:04.2638 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.dbe00.radio
+<   754.890227> 13:27:04.2638 [eDVBDB] 0 entries in Bouquet userbouquet.dbe00.radio
+<   754.890279> 13:27:04.2638 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_exyu.radio
+<   754.893799> 13:27:04.2674 [eDVBDB] 346 entries in Bouquet userbouquet.e2e_exyu.radio
+<   754.894080> 13:27:04.2676 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_slovakia.radio
+<   754.894798> 13:27:04.2684 [eDVBDB] 66 entries in Bouquet userbouquet.e2e_slovakia.radio
+<   754.894860> 13:27:04.2684 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_czech.radio
+<   754.897081> 13:27:04.2706 [eDVBDB] 224 entries in Bouquet userbouquet.e2e_czech.radio
+<   754.897149> 13:27:04.2707 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_germany.radio
+<   754.897428> 13:27:04.2710 [eDVBDB] 23 entries in Bouquet userbouquet.e2e_germany.radio
+<   754.897481> 13:27:04.2710 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.e2e_romania.radio
+<   754.898195> 13:27:04.2718 [eDVBDB] 62 entries in Bouquet userbouquet.e2e_romania.radio
+<   754.898258> 13:27:04.2718 [eDVBDB] loading bouquet... /etc/enigma2//userbouquet.favourites.radio
+<   754.898892> 13:27:04.2725 [eDVBDB] 109 entries in Bouquet userbouquet.favourites.radio
+<   754.898919> 13:27:04.2725 [eDVBDB] 7 entries in Bouquet bouquets.radio
+<   754.898940> 13:27:04.2725 [eDVBDB] Renumbering...
+<   754.902710> 13:27:04.2763 [StartEnigma]  Initialising ParentalControl.
+<   754.904377> 13:27:04.2779 [StartEnigma]  Initialising Navigation.
+<   754.908748> 13:27:04.2823 [StartEnigma]  Initialising Skin.
+<   754.909071> 13:27:04.2826 [StartEnigma]  Initialising FallbackFiles.
+<   754.909647> 13:27:04.2832 [StartEnigma]  Initialising Misc Config Variables.
+<   754.911490> 13:27:04.2851 [StartEnigma]  Initialising Twisted.
+<   756.021777> 13:27:05.3953 [StartEnigma]  Initialising Twisted Log.
+<   756.022555> 13:27:05.3961 Log opened.
+<   756.022845> 13:27:05.3964 [StartEnigma]  Initialising NTPSync.
+<   756.024281> 13:27:05.3978 [StartEnigma]  Initialising Wizards.
+<   756.036590> 13:27:05.4102 [Network] read configured interface: {'lo': {'dhcp': False}, 'eth0': {'dhcp': True}}
+<   756.036725> 13:27:05.4103 [Network] self.ifaces after loading: {'eth0': {'up': True, 'dhcp': True, 'preup': False, 'predown': False, 'ip': [192, 168, 1, 250], 'netmask': [255, 255, 255, 0], 'bcast': [192, 168, 1, 255], 'mac': '00:1d:ec:17:66:b2', 'gateway': [192, 168, 1, 1]}}
+<   756.037923> 13:27:05.4115 [Network] read configured interface: {'lo': {'dhcp': False}, 'eth0': {'dhcp': True}}
+<   756.038095> 13:27:05.4117 [Network] self.ifaces after loading: {'eth0': {'up': True, 'dhcp': True, 'preup': False, 'predown': False, 'ip': [192, 168, 1, 250], 'netmask': [255, 255, 255, 0], 'bcast': [192, 168, 1, 255], 'mac': '00:1d:ec:17:66:b2', 'gateway': [192, 168, 1, 1]}, 'wlan3': {'up': False, 'dhcp': True, 'preup': False, 'predown': False, 'ip': [0, 0, 0, 0], 'netmask': [0, 0, 0, 0], 'gateway': [0, 0, 0, 0]}}
+<   756.072680> 13:27:05.4463 [StartWizard][import] import.......
+<   756.073426> 13:27:05.4470 [StartEnigma]  Initialising Plugins.
+<   756.073881> 13:27:05.4475 [StartEnigma]  Initialising ScreenGlobals.
+<   756.078791> 13:27:05.4524 [Harddisk][splitDeviceName] devName = 'sda1', device = 'sda', partition = '1'
+<   756.078988> 13:27:05.4526 [Ipkg] Added to OPKG destinations: /
+<   756.089051> 13:27:05.4626 [eAVSwitch] cannot open /proc/stb/avs/0/input_choices: Function not implemented
+<   756.089323> 13:27:05.4629 [StartEnigma]  Initialising CommonInterface.
+<   756.091989> 13:27:05.4656 [StartEnigma]  Initialising VolumeControl.
+<   756.093462> 13:27:05.4670 [StackTrace] Initializing StackTracePrinter.
+<   756.094091> 13:27:05.4677 [StartEnigma]  Initialising Skins.
+<   756.094522> 13:27:05.4681 [Skin] Loading skin file '/usr/share/enigma2/skin_default/skin.xml'.
+<   756.095195> 13:27:05.4688 [Skin] DEBUG: Extracting non screen blocks from '/usr/share/enigma2/skin_default/skin.xml'.  (scope='SCOPE_CURRENT_SKIN')
+<   756.099327> 13:27:05.4729 [Skin] Loading skin file '/usr/share/enigma2/skin_default.xml'.
+<   756.142774> 13:27:05.5163 [Skin] DEBUG: Extracting non screen blocks from '/usr/share/enigma2/skin_default.xml'.  (scope='SCOPE_CURRENT_SKIN')
+<   756.146441> 13:27:05.5200 [Font] Adding font '/usr/share/fonts/Roboto-Bold.ttf' -> 'Regular'.
+<   756.146902> 13:27:05.5205 [Font] Adding font '/usr/share/fonts/Roboto-BoldItalic.ttf' -> 'Italic'.
+<   756.147172> 13:27:05.5207 [Font] Adding font '/usr/share/fonts/Roboto-Black.ttf' -> 'Bold'.
+<   756.147378> 13:27:05.5209 [Font] Adding font '/usr/share/fonts/Roboto-BlackItalic.ttf' -> 'Boldit'.
+<   756.147579> 13:27:05.5211 [Font] Adding font '/usr/share/fonts/nmsbd.ttf' -> 'Subtitlefont'.
+<   756.147810> 13:27:05.5214 [Font] Adding font '/usr/share/fonts/lcd.ttf' -> 'LCD'.
+<   756.148030> 13:27:05.5216 [Font] Adding font '/usr/share/fonts/ae_AlMateen.ttf' -> 'Replacement'.
+<   756.148251> 13:27:05.5218 [Font] Adding font '/usr/share/fonts/tuxtxt.ttf' -> 'Console'.
+<   756.148419> 13:27:05.5220 [Font] Adding font '/usr/share/fonts/andale.ttf' -> 'Fixed'.
+<   756.149551> 13:27:05.5231 [Font] Adding font '/usr/share/fonts/fallback.font' -> 'Fallback'.
+<   756.154070> 13:27:05.5276 [Skin] Loading skin file '/usr/share/enigma2/skin_default.xml' complete.
+<   756.154452> 13:27:05.5280 [Skin] Loading skin file '/usr/share/enigma2/skin_default_windowstyle.xml'.
+<   756.155338> 13:27:05.5289 [Skin] DEBUG: Extracting non screen blocks from '/usr/share/enigma2/skin_default_windowstyle.xml'.  (scope='SCOPE_CURRENT_SKIN')
+<   756.164487> 13:27:05.5381 [Skin] Loading skin file '/usr/share/enigma2/skin_default_windowstyle.xml' complete.
+<   756.168087> 13:27:05.5417 [Skin] Loading skin file '/usr/share/enigma2/skin_default/skin.xml' complete.
+<   756.168395> 13:27:05.5420 [Skin] Loading skin file '/usr/share/enigma2/skin_subtitles.xml'.
+<   756.169094> 13:27:05.5427 [Skin] DEBUG: Extracting non screen blocks from '/usr/share/enigma2/skin_subtitles.xml'.  (scope='SCOPE_CURRENT_SKIN')
+<   756.169480> 13:27:05.5430 [Font] Adding font '/usr/share/fonts/OpenSans-Regular.ttf' -> 'Subs'.
+<   756.170126> 13:27:05.5437 [Font] Adding font '/usr/share/fonts/OpenSans-Italic.ttf' -> 'Subsi'.
+<   756.170691> 13:27:05.5443 [Font] Adding font '/usr/share/fonts/OpenSans-Semibold.ttf' -> 'Subsb'.
+<   756.171267> 13:27:05.5448 [Font] Adding font '/usr/share/fonts/OpenSans-SemiboldItalic.ttf' -> 'Subsz'.
+<   756.171808> 13:27:05.5454 [Font] Adding font '/usr/share/fonts/fallback.font' -> 'Fallback'.
+<   756.176734> 13:27:05.5503 [Skin] Loading skin file '/usr/share/enigma2/skin_subtitles.xml' complete.
+<   756.177656> 13:27:05.5512 [Skin] Loading skin file '/usr/share/enigma2/display/skin_default/skin_display.xml'.
+<   756.183898> 13:27:05.5575 [Skin] DEBUG: Extracting non screen blocks from '/usr/share/enigma2/display/skin_default/skin_display.xml'.  (scope='SCOPE_CURRENT_LCDSKIN')
+<   756.185198> 13:27:05.5588 [Font] Adding font '/usr/share/fonts/nmsbd.ttf' -> 'FdLcD'.
+<   756.185768> 13:27:05.5593 [Font] Adding font '/usr/share/fonts/fallback.font' -> 'Fallback'.
+<   756.193426> 13:27:05.5670 [Skin] Loading skin file '/usr/share/enigma2/display/skin_default/skin_display.xml' complete.
+<   756.194694> 13:27:05.5683 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/skin.xml'.
+<   756.195322> 13:27:05.5689 [Skin] DEBUG: Extracting non screen blocks from '/usr/share/enigma2/CineView_FHD_MLA/skin.xml'.  (scope='SCOPE_CURRENT_SKIN')
+<   756.199421> 13:27:05.5730 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/active/theme.xml'.
+<   756.200804> 13:27:05.5744 [Skin] DEBUG: Extracting non screen blocks from '/usr/share/enigma2/CineView_FHD_MLA/active/theme.xml'.  (scope='SCOPE_CURRENT_SKIN')
+<   756.207854> 13:27:05.5814 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/active/theme.xml' complete.
+<   756.208175> 13:27:05.5817 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/core/base.openatv.xml'.
+<   756.209942> 13:27:05.5835 [Skin] DEBUG: Extracting non screen blocks from '/usr/share/enigma2/CineView_FHD_MLA/core/base.openatv.xml'.  (scope='SCOPE_CURRENT_SKIN')
+<   756.211571> 13:27:05.5851 [Font] Adding font '/usr/share/fonts/fallback.font' -> 'Fallback'.
+<   756.212168> 13:27:05.5857 [Font] Adding font '/usr/share/enigma2/CineView_FHD_MLA/fonts/LiberationSans-Regular.ttf' -> 'Regular'.
+<   756.212508> 13:27:05.5861 [Font] Adding font '/usr/share/enigma2/CineView_FHD_MLA/fonts/LiberationSans-Regular.ttf' -> 'RegularSmall'.
+<   756.213038> 13:27:05.5866 [Font] Adding font '/usr/share/fonts/lcd.ttf' -> 'LCD'.
+<   756.213516> 13:27:05.5871 [Font] Adding font '/usr/share/fonts/tuxtxt.ttf' -> 'Console'.
+<   756.213949> 13:27:05.5875 [Font] Adding font '/usr/share/fonts/andale.ttf' -> 'Fixed'.
+<   756.214399> 13:27:05.5880 [Font] Adding font '/usr/share/fonts/fallback.font' -> 'Fallback'.
+<   756.223919> 13:27:05.5975 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/core/base.openatv.xml' complete.
+<   756.224259> 13:27:05.5978 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/core/common.openatv.xml'.
+<   756.317224> 13:27:05.6908 [Skin] DEBUG: Extracting non screen blocks from '/usr/share/enigma2/CineView_FHD_MLA/core/common.openatv.xml'.  (scope='SCOPE_CURRENT_SKIN')
+<   756.331167> 13:27:05.7047 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/core/common.openatv.xml' complete.
+<   756.331492> 13:27:05.7051 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/core/mla_ui.openatv.xml'.
+<   756.332702> 13:27:05.7063 [Skin] DEBUG: Extracting non screen blocks from '/usr/share/enigma2/CineView_FHD_MLA/core/mla_ui.openatv.xml'.  (scope='SCOPE_CURRENT_SKIN')
+<   756.336437> 13:27:05.7100 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/core/mla_ui.openatv.xml' complete.
+<   756.336688> 13:27:05.7103 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/active/infobar.xml'.
+<   756.340290> 13:27:05.7139 [Skin] DEBUG: Extracting non screen blocks from '/usr/share/enigma2/CineView_FHD_MLA/active/infobar.xml'.  (scope='SCOPE_CURRENT_SKIN')
+<   756.344308> 13:27:05.7179 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/active/infobar.xml' complete.
+<   756.344575> 13:27:05.7181 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/active/secondinfobar.xml'.
+<   756.354395> 13:27:05.7280 [Skin] DEBUG: Extracting non screen blocks from '/usr/share/enigma2/CineView_FHD_MLA/active/secondinfobar.xml'.  (scope='SCOPE_CURRENT_SKIN')
+<   756.358365> 13:27:05.7319 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/active/secondinfobar.xml' complete.
+<   756.358625> 13:27:05.7322 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/active/channelselection.xml'.
+<   756.364643> 13:27:05.7382 [Skin] DEBUG: Extracting non screen blocks from '/usr/share/enigma2/CineView_FHD_MLA/active/channelselection.xml'.  (scope='SCOPE_CURRENT_SKIN')
+<   756.368916> 13:27:05.7425 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/active/channelselection.xml' complete.
+<   756.369195> 13:27:05.7428 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/active/epg.xml'.
+<   756.376803> 13:27:05.7504 [Skin] DEBUG: Extracting non screen blocks from '/usr/share/enigma2/CineView_FHD_MLA/active/epg.xml'.  (scope='SCOPE_CURRENT_SKIN')
+<   756.381311> 13:27:05.7549 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/active/epg.xml' complete.
+<   756.381570> 13:27:05.7551 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/active/pvr.xml'.
+<   756.383187> 13:27:05.7568 [Skin] DEBUG: Extracting non screen blocks from '/usr/share/enigma2/CineView_FHD_MLA/active/pvr.xml'.  (scope='SCOPE_CURRENT_SKIN')
+<   756.386997> 13:27:05.7606 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/active/pvr.xml' complete.
+<   756.387272> 13:27:05.7608 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/active/eventview.xml'.
+<   756.392845> 13:27:05.7664 [Skin] DEBUG: Extracting non screen blocks from '/usr/share/enigma2/CineView_FHD_MLA/active/eventview.xml'.  (scope='SCOPE_CURRENT_SKIN')
+<   756.396961> 13:27:05.7705 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/active/eventview.xml' complete.
+<   756.400484> 13:27:05.7741 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD_MLA/skin.xml' complete.
+<   756.401405> 13:27:05.7750 [StartEnigma]  Initialisation of Skins complete.
+<   756.401749> 13:27:05.7753 [StartEnigma]  Initialising InputDevice.
+<   756.409086> 13:27:05.7827 [InputDevice] Found: evdev='event0', name='dreambox advanced remote control (native)', type='remote'
+<   756.409380> 13:27:05.7829 [InputDevice] Error: evdev='mice' getInputDevices <ERROR: ioctl(EVIOCGNAME): '[Errno 25] Inappropriate ioctl for device'>
+<   756.424296> 13:27:05.7979 [InputDevice] Error: evdev='mouse0' getInputDevices <ERROR: ioctl(EVIOCGNAME): '[Errno 25] Inappropriate ioctl for device'>
+<   756.440954> 13:27:05.8145 [StartEnigma]  Initialising AVSwitch.
+<   756.443417> 13:27:05.8170 [AVSwitch] Modes found are: {'HDMI': ['720p', '1080p', '2160p', '2160p30', '1080i', '576p', '576i', '480p', '480i']}
+<   756.445047> 13:27:05.8186 [AVSwitch][readPreferredModes]none, so using ['pal', 'ntsc', '480i', '576i', '1080i', '1080p', '720p', '480p', '1080i50', '1080p24', '1080p25', '1080p30', '1080p50', '1080p60', '720p24', '720p50', '576p', '2160p50', '2160p', '2160p24', '2160p25', '2160p30']
+<   756.445222> 13:27:05.8188 [AVSwitch][createConfig] portlist is ['HDMI']
+<   756.445712> 13:27:05.8193 [AVSwitch][createConfig] mode:720p rates:[('50Hz', '50Hz'), ('60Hz', '60Hz'), ('multi', 'multi (50Hz/60Hz)'), ('auto', 'auto (50Hz/60Hz/24Hz)')]
+<   756.445830> 13:27:05.8194 [AVSwitch][createConfig] mode:1080p rates:[('50Hz', '50Hz'), ('60Hz', '60Hz'), ('multi', 'multi (50Hz/60Hz)'), ('auto', 'auto (50Hz/60Hz/24Hz)')]
+<   756.445985> 13:27:05.8196 [AVSwitch][createConfig] mode:2160p rates:[('50Hz', '50Hz'), ('60Hz', '60Hz'), ('multi', 'multi (50Hz/60Hz)'), ('auto', 'auto (50Hz/60Hz/24Hz)')]
+<   756.446109> 13:27:05.8197 [AVSwitch][createConfig] mode:2160p30 rates:[('25Hz', '25Hz'), ('30Hz', '30Hz'), ('multi', 'multi (25Hz/30Hz)'), ('auto', 'auto (25Hz/30Hz/24Hz)')]
+<   756.446210> 13:27:05.8198 [AVSwitch][createConfig] mode:1080i rates:[('50Hz', '50Hz'), ('60Hz', '60Hz'), ('multi', 'multi (50Hz/60Hz)')]
+<   756.446294> 13:27:05.8199 [AVSwitch][createConfig] mode:576p rates:[('50Hz', '50Hz')]
+<   756.446386> 13:27:05.8200 [AVSwitch][createConfig] mode:576i rates:[('50Hz', '50Hz')]
+<   756.446468> 13:27:05.8200 [AVSwitch][createConfig] mode:480p rates:[('60Hz', '60Hz')]
+<   756.446550> 13:27:05.8201 [AVSwitch][createConfig] mode:480i rates:[('60Hz', '60Hz')]
+<   756.453569> 13:27:05.8271 [eAVSwitch] setAspect: 16:9
+<   756.453643> 13:27:05.8272 [AVSwitch] setting aspect:16:9
+<   756.453719> 13:27:05.8273 [AVSwitch] setting wss:auto configElement.value:True
+<   756.454041> 13:27:05.8276 [AVSwitch] setting policy43:panscan
+<   756.454224> 13:27:05.8278 [eAVSwitch] setPolicy43: panscan
+<   756.454290> 13:27:05.8279 [AVSwitch] setting policy169:scale
+<   756.454376> 13:27:05.8279 [eAVSwitch] setPolicy169: scale
+<   756.454898> 13:27:05.8285 [eAVSwitch] cannot open /proc/stb/avs/0/input_choices: Function not implemented
+<   756.855322> 13:27:06.2289 [eDVBVolumecontrol] Setvolume: raw: 100 100, -1db: 0 0
+<   756.882653> 13:27:06.2562 [AVSwitch] setting scaler_sharpness to: 0000000D
+<   756.883348> 13:27:06.2569 [AVSwitch] setMode - port: HDMI, mode: 2160p, rate: 60Hz
+<   756.883421> 13:27:06.2570 [AVSwitch] setMode modes - setup_mode: 2160p, available:  mode_50: None, mode_60: 2160p, mode_24: None
+<   756.883575> 13:27:06.2571 [AVSwitch][setMode][videomode_50hz] set to 2160p
+<   756.894499> 13:27:06.2681 [AVSwitch][setMode][videomode_60hz] set to 2160p
+<   756.894745> 13:27:06.2683 [AVSwitch][setMode][videomode_24hz] set to 2160p
+<   756.895283> 13:27:06.2689 [StartEnigma]  Initialising UserInterface.
+<   756.911851> 13:27:06.2854 [StartEnigma]  Initialising RecordingConfig.
+<   756.915272> 13:27:06.2888 [StartEnigma]  Initialising UsageConfig.
+<   756.926252> 13:27:06.2998 [eTuxttxtApp] enable caching
+<   756.937625> 13:27:06.3112 [EPGC Load] Poller disabled.
+<   756.937746> 13:27:06.3113 [EPGC Save] Poller disabled.
+<   756.938646> 13:27:06.3122 [Harddisk][splitDeviceName] devName = 'sda1', device = 'sda', partition = '1'
+<   756.940153> 13:27:06.3137 [eEPGCache] setCacheFile read/write epg data from/to '/etc/enigma2/epg.dat'
+<   756.941098> 13:27:06.3147 [Harddsk][HDDList] ATA (KINGSTON SA400S3) Internal (SSD) /dev/sda.
+<   756.943086> 13:27:06.3167 [Harddsk][HDDList] SanDisk (Ultra USB 3.0) Rear Upper USB 3.0 /dev/sdb.
+<   756.948485> 13:27:06.3221 [StackTrace] Activating StackTracePrinter.
+
+CHANGE config.crash.debugloglimit=4
+<   756.950228> 13:27:06.3238 [Harddisk][splitDeviceName] devName = 'sda1', device = 'sda', partition = '1'
+
+CHANGE config.crash.debug_path=/home/root/logs/
+<   757.066621> 13:27:06.4402 [CamControl] self.name=softcam
+<   757.066706> 13:27:06.4403 [CamControl] self.link=/etc/init.d/softcam
+<   757.067176> 13:27:06.4407 [CamControl][getList] returnlist=['oscam-emu', 'None']
+<   757.071571> 13:27:06.4451 [StartEnigma]  Initialising Timezones.
+<   757.105409> 13:27:06.4790 [Timezones] Setting time zone to 'Asia/Riyadh'.
+<   757.106625> 13:27:06.4802 [Timezones] Local time is 'Wed 07-Oct-2026 13:27:06'  -  UTC time is 'Wed 07-Oct-2026 10:27:06'.
+<   757.106915> 13:27:06.4805 [StartEnigma]  Initialising DebugLogCheck.
+<   757.109670> 13:27:06.4832 [StartEnigma]  Initialising KeymapParser.
+<   757.153421> 13:27:06.5270 [StartEnigma]  Initialising OnlineCheckState.
+<   757.153887> 13:27:06.5275 [StartEnigma]  Initialising Network.
+<   757.154217> 13:27:06.5278 [StartEnigma]  Initialising hdmiCEC.
+<   757.156912> 13:27:06.5305 [StartEnigma]  Initialising LCD / FrontPanel.
+<   757.159532> 13:27:06.5331 [eDboxLCD] setLCDBrightness 25
+<   766.939090> 13:27:16.3127 [eDboxLCD] setLCDBrightness 127
+<   767.002199> 13:27:16.3758 [StartEnigma]  Initialising UserInterface.
+<   767.004522> 13:27:16.3781 [UserInterfacePositioner] Setting OSD position: 0 720 0 576
+<   767.004910> 13:27:16.3785 [UserInterfacePositioner] Setting OSD alpha: 255
+<   767.005693> 13:27:16.3793 [StartEnigma]  Initialising EPGCacheScheduler.
+<   767.006051> 13:27:16.3796 [EPGC Save] Poller disabled.
+<   767.006343> 13:27:16.3799 [EPGC Load] Poller disabled.
+<   767.006772> 13:27:16.3803 [StartEnigma]  Initialising RFMod.
+<   767.008673> 13:27:16.3822 [StartEnigma]  Initialising CommonInterface.
+<   767.009253> 13:27:16.3828 [dvbci][setEnabled][CI0] Enabled: 1, state 2
+<   767.010224> 13:27:16.3838 [CI][InitCiConfig] highBitrateChoices [('normal', 'Normal'), ('high', 'High'), ('extra_high', 'Extra_High')]
+<   767.015269> 13:27:16.3888 [dvbci][setEnabled][CI1] Enabled: 1, state 1
+<   767.016429> 13:27:16.3900 [CI][InitCiConfig] highBitrateChoices [('normal', 'Normal'), ('high', 'High'), ('extra_high', 'Extra_High')]
+<   767.021075> 13:27:16.3946 [StartEnigma]  Starting User Interface.
+<   767.072236> 13:27:16.4458 [dvbci][data][CI1] eSocketNotifier::Priority stateRemoved state= 1
+<   767.217693> 13:27:16.5913 /usr/lib/python3.13/site-packages/requests/__init__.py:113: requests.exceptions.RequestsDependencyWarning: urllib3 (2.6.3) or chardet (6.0.0.post1)/charset_normalizer (None) doesn't match a supported version!
+<   767.422073> 13:27:16.7956 [Font] Adding font '/usr/share/fonts/Default.ttf' -> 'RSQFont'.
+<   767.455427> 13:27:16.8290 [Font] Adding font '/usr/share/fonts/fallback.font' -> 'OAWeatherFont'.
+<   767.542510> 13:27:16.9161 Checking for .pyc files in: /usr/lib/enigma2/python/Plugins/Extensions/Stremio/
+<   767.566774> 13:27:16.9403 load_settings_from_json: Loading settings from /etc/enigma2/stremio.json
+<   767.568088> 13:27:16.9417 Loading config: torrserver_url = http://127.0.0.1:8090
+<   767.568695> 13:27:16.9423 Skipping placeholder config: trakt_client_id
+<   767.569199> 13:27:16.9428 Skipping placeholder config: trakt_client_secret
+<   767.569683> 13:27:16.9433 Skipping placeholder config: trakt_token
+<   767.570163> 13:27:16.9437 Loading config: debrid_provider = realdebrid
+<   767.570731> 13:27:16.9443 Skipping placeholder config: debrid_token
+<   767.571215> 13:27:16.9448 Loading config: addon_base_url = https://torrentio.strem.fun
+<   767.571787> 13:27:16.9454 Skipping placeholder config: os_api_key
+<   767.572254> 13:27:16.9458 Loading config: subtitles_enabled = True
+<   767.572522> 13:27:16.9461 Loading config: subtitle_lang = en
+<   767.572764> 13:27:16.9463 Loading config: quality_pref = auto
+<   767.573065> 13:27:16.9466 Skipping placeholder config: tmdb_api_key
+<   767.573287> 13:27:16.9469 Skipping placeholder config: stremio_email
+<   767.573528> 13:27:16.9471 Skipping placeholder config: stremio_password
+<   767.573785> 13:27:16.9474 Skipping empty stremio_auth_key from JSON (keeping existing)
+<   767.574014> 13:27:16.9476 Skipping empty stremio_user_id from JSON (keeping existing)
+<   767.574221> 13:27:16.9478 Settings loaded and saved to enigma2 config
+<   767.652411> 13:27:17.0260 _extend_virtual_categories: auth_key=
+<   767.682715> 13:27:17.0563 [Font] Adding font '/usr/lib/enigma2/python/Plugins/Extensions/AudioShift/assets/fonts/nmsbd.ttf' -> 'AudioShiftRegular'.
+<   767.761232> 13:27:17.1348 Current Picon Path : /media/hdd/picon/
+<   767.931096> 13:27:17.3047 [OpenWebif] wrong hw detection
+<   768.479399> 13:27:17.8530 [filtersServices] Error loading from /etc/epgimport/ignore.conf: [Errno 2] No such file or directory: '/etc/epgimport/ignore.conf'
+<   768.479499> 13:27:17.8531 [filtersServices] INFO: init..
+<   768.494734> 13:27:17.8683 [EPGImport] EPGCache instance obtained successfully.
+<   768.549501> 13:27:17.9231 [Font] Adding font '/usr/lib/enigma2/python/Plugins/Extensions/LiveFeed/assets/fonts/nmsbd.ttf' -> 'LiveFeedRegular'.
+<   768.550112> 13:27:17.9237 [Font] Adding font '/usr/lib/enigma2/python/Plugins/Extensions/LiveFeed/assets/fonts/ae_AlMateen.ttf' -> 'LiveFeedArabic'.
+<   768.587062> 13:27:17.9606 [Config] Config file loaded ok...
+<   768.829589> 13:27:18.2032 [Config] Config file loaded ok...
+<   768.855866> 13:27:18.2294 Checking for .pyc files in: /usr/lib/enigma2/python/Plugins/Extensions/Transmission/
+<   769.596417> 13:27:18.9700 [serviceapp_set_setting] setting servicemp3 options
+<   769.596534> 13:27:18.9701 [serviceapp_set_setting] setting servicegstplayer options
+<   769.596576> 13:27:18.9701 [serviceapp_set_setting] setting serviceexteplayer3 options
+<   769.596651> 13:27:18.9702 [gstplayer_set_setting] setting servicemp3 options
+<   769.596726> 13:27:18.9703 [gstplayer_set_setting] setting servicegstplayer options
+<   769.596856> 13:27:18.9704 [exteplayer3_set_setting] setting servicemp3 options
+<   769.596932> 13:27:18.9705 [exteplayer3_set_setting] setting serviceextplayer3 options
+<   769.823748> 13:27:19.1973 [Harddisk][splitDeviceName] devName = 'sda1', device = 'sda', partition = '1'
+<   769.825133> 13:27:19.1987 [Harddisk][splitDeviceName] devName = 'sda1', device = 'sda', partition = '1'
+<   770.006318> 13:27:19.3799 [getFonts] fontDir: /usr/share/fonts/
+<   770.071724> 13:27:19.4453 [getFonts] find font Regular in skin_default.xml
+<   770.071834> 13:27:19.4454 [getFonts] find font Italic in skin_default.xml
+<   770.071883> 13:27:19.4455 [getFonts] find font Bold in skin_default.xml
+<   770.071927> 13:27:19.4455 [getFonts] find font Boldit in skin_default.xml
+<   770.071985> 13:27:19.4456 [getFonts] find font Subtitlefont in skin_default.xml
+<   770.072071> 13:27:19.4456 [getFonts] find font LCD in skin_default.xml
+<   770.072124> 13:27:19.4457 [getFonts] find font Replacement in skin_default.xml
+<   770.072171> 13:27:19.4457 [getFonts] find font Console in skin_default.xml
+<   770.072220> 13:27:19.4458 [getFonts] find font Fixed in skin_default.xml
+<   770.075904> 13:27:19.4495 [getFonts] find font Subs in skin_subtitles.xml
+<   770.075993> 13:27:19.4496 [getFonts] find font Subsi in skin_subtitles.xml
+<   770.076064> 13:27:19.4496 [getFonts] find font Subsb in skin_subtitles.xml
+<   770.076106> 13:27:19.4497 [getFonts] find font Subsz in skin_subtitles.xml
+<   770.076422> 13:27:19.4500 [Font] Adding font '/usr/share/fonts/tiny.ttf' -> 'tiny'.
+<   770.076766> 13:27:19.4503 [Font] Adding font '/usr/share/fonts/ae_AlMateen.ttf' -> 'ae_AlMateen'.
+<   770.077337> 13:27:19.4509 [Font] Adding font '/usr/share/fonts/DroidSans-Bold.ttf' -> 'DroidSans-Bold'.
+<   770.077598> 13:27:19.4512 [Font] Adding font '/usr/share/fonts/tuxtxt_nonbold.ttf' -> 'tuxtxt_nonbold'.
+<   770.077773> 13:27:19.4513 [Font] Adding font '/usr/share/fonts/Roboto-BlackItalic.ttf' -> 'Roboto-BlackItalic'.
+<   770.077971> 13:27:19.4515 [Font] Adding font '/usr/share/fonts/Roboto-Black.ttf' -> 'Roboto-Black'.
+<   770.078177> 13:27:19.4517 [Font] Adding font '/usr/share/fonts/nmsbd.ttf' -> 'nmsbd'.
+<   770.078375> 13:27:19.4519 [Font] Adding font '/usr/share/fonts/Roboto-BoldItalic.ttf' -> 'Roboto-BoldItalic'.
+<   770.078561> 13:27:19.4521 [Font] Adding font '/usr/share/fonts/Roboto-Bold.ttf' -> 'Roboto-Bold'.
+<   770.078735> 13:27:19.4523 [Font] Adding font '/usr/share/fonts/lcd.ttf' -> 'lcd'.
+<   770.078912> 13:27:19.4525 [Font] Adding font '/usr/share/fonts/andale.ttf' -> 'andale'.
+<   770.079084> 13:27:19.4527 [Font] Adding font '/usr/share/fonts/md_khmurabi_10.ttf' -> 'md_khmurabi_10'.
+<   770.079300> 13:27:19.4529 [Font] Adding font '/usr/share/fonts/tuxtxt.ttf' -> 'tuxtxt'.
+<   770.079445> 13:27:19.4530 [Font] Adding font '/usr/share/fonts/Default.ttf' -> 'Default'.
+<   770.079643> 13:27:19.4532 [Font] Adding font '/usr/share/fonts/valis_enigma.ttf' -> 'valis_enigma'.
+<   770.079832> 13:27:19.4534 [Font] Adding font '/usr/lib/enigma2/python/Plugins/Extensions/SubsSupportPro/fonts/Traditional_Arabic.ttf' -> 'SS_Traditional_Arabic'.
+<   770.080048> 13:27:19.4536 [Font] Adding font '/usr/lib/enigma2/python/Plugins/Extensions/SubsSupportPro/fonts/ArbFONTS-panda-Bold-Italic.ttf' -> 'SS_ArbFONTS-panda-Bold-Italic'.
+<   770.080199> 13:27:19.4538 [Font] Adding font '/usr/lib/enigma2/python/Plugins/Extensions/SubsSupportPro/fonts/ArbFONTS-Greta-arabic-bold-italic.ttf' -> 'SS_ArbFONTS-Greta-arabic-bold-italic'.
+<   770.080495> 13:27:19.4541 [Font] Adding font '/usr/lib/enigma2/python/Plugins/Extensions/SubsSupportPro/fonts/ArbFONTS-Thulth-Bold-Italic.ttf' -> 'SS_ArbFONTS-Thulth-Bold-Italic'.
+<   770.080666> 13:27:19.4542 [Font] Adding font '/usr/lib/enigma2/python/Plugins/Extensions/SubsSupportPro/fonts/ArbFONTS-Lenos-BoldItalic.otf' -> 'SS_ArbFONTS-Lenos-BoldItalic'.
+<   770.080981> 13:27:19.4545 [Font] Adding font '/usr/lib/enigma2/python/Plugins/Extensions/SubsSupportPro/fonts/ArbFONTS-BASHA-8A-bold.ttf' -> 'SS_ArbFONTS-BASHA-8A-bold'.
+<   770.081180> 13:27:19.4547 [Font] Adding font '/usr/lib/enigma2/python/Plugins/Extensions/SubsSupportPro/fonts/ArbFONTS-Jaridah Bold Italic.ttf' -> 'SS_ArbFONTS-Jaridah Bold Italic'.
+<   770.081335> 13:27:19.4549 [Font] Adding font '/usr/lib/enigma2/python/Plugins/Extensions/SubsSupportPro/fonts/ArbFONTS-GE-Flow-Bold-Italic.otf' -> 'SS_ArbFONTS-GE-Flow-Bold-Italic'.
+<   770.081542> 13:27:19.4551 [Font] Adding font '/usr/lib/enigma2/python/Plugins/Extensions/SubsSupportPro/fonts/ArbFONTS-AlRiyadh-Bold-Italic.ttf' -> 'SS_ArbFONTS-AlRiyadh-Bold-Italic'.
+<   770.081691> 13:27:19.4553 [Font] Adding font '/usr/lib/enigma2/python/Plugins/Extensions/SubsSupportPro/fonts/ArbFONTS-Somar-BoldItalic.otf' -> 'SS_ArbFONTS-Somar-BoldItalic'.
+<   770.081942> 13:27:19.4555 [Font] Adding font '/usr/lib/enigma2/python/Plugins/Extensions/SubsSupportPro/fonts/ArbFONTS-LANTX-BoldItalic.otf' -> 'SS_ArbFONTS-LANTX-BoldItalic'.
+<   770.082173> 13:27:19.4557 [Font] Adding font '/usr/lib/enigma2/python/Plugins/Extensions/SubsSupportPro/fonts/ArbFONTS-AlAhram-Bold-Italic.ttf' -> 'SS_ArbFONTS-AlAhram-Bold-Italic'.
+<   770.082329> 13:27:19.4559 [Font] Adding font '/usr/lib/enigma2/python/Plugins/Extensions/SubsSupportPro/fonts/ArbFONTS-BritishCouncil-Arabic-Bold-Italic.ttf' -> 'SS_ArbFONTS-BritishCouncil-Arabic-Bold-Italic'.
+<   770.082492> 13:27:19.4561 [Font] Adding font '/usr/lib/enigma2/python/Plugins/Extensions/SubsSupportPro/fonts/ArbFONTS-AlJazerah-Bold-Italic.ttf' -> 'SS_ArbFONTS-AlJazerah-Bold-Italic'.
+<   770.082637> 13:27:19.4562 [Font] Adding font '/usr/lib/enigma2/python/Plugins/Extensions/SubsSupportPro/fonts/ArbFONTS-MyriadArabic-BoldIt.otf' -> 'SS_ArbFONTS-MyriadArabic-BoldIt'.
+<   770.082931> 13:27:19.4565 [Font] Adding font '/usr/lib/enigma2/python/Plugins/Extensions/SubsSupportPro/fonts/KhalidArtboldRegular.ttf' -> 'SS_KhalidArtboldRegular'.
+<   770.095086> 13:27:19.4687 [SubsSupportPro] looking for custom colors in /usr/lib/enigma2/python/Plugins/Extensions/SubsSupportPro/colors.txt
+<   770.096336> 13:27:19.4699 [SubsSupportPro] adding custom color white
+<   770.096437> 13:27:19.4700 [SubsSupportPro] adding custom color lightgrey
+<   770.096515> 13:27:19.4701 [SubsSupportPro] adding custom color silver
+<   770.096588> 13:27:19.4702 [SubsSupportPro] adding custom color cream
+<   770.096660> 13:27:19.4702 [SubsSupportPro] adding custom color ivory
+<   770.096730> 13:27:19.4703 [SubsSupportPro] adding custom color beige
+<   770.096800> 13:27:19.4704 [SubsSupportPro] adding custom color lightyellow
+<   770.096868> 13:27:19.4704 [SubsSupportPro] adding custom color gold
+<   770.096937> 13:27:19.4705 [SubsSupportPro] adding custom color orange
+<   770.097020> 13:27:19.4706 [SubsSupportPro] adding custom color amber
+<   770.097092> 13:27:19.4707 [SubsSupportPro] adding custom color lightgreen
+<   770.097164> 13:27:19.4707 [SubsSupportPro] adding custom color lime
+<   770.097232> 13:27:19.4708 [SubsSupportPro] adding custom color mint
+<   770.097301> 13:27:19.4709 [SubsSupportPro] adding custom color cyan
+<   770.097368> 13:27:19.4709 [SubsSupportPro] adding custom color skyblue
+<   770.097436> 13:27:19.4710 [SubsSupportPro] adding custom color deepsky
+<   770.097504> 13:27:19.4711 [SubsSupportPro] adding custom color dodgerblue
+<   770.097573> 13:27:19.4711 [SubsSupportPro] adding custom color violet
+<   770.097642> 13:27:19.4712 [SubsSupportPro] adding custom color magenta
+<   770.097752> 13:27:19.4713 [SubsSupportPro] adding custom color pink
+<   770.539017> 13:27:19.9126 [Font] Adding font '/usr/lib/enigma2/python/Plugins/Extensions/BouquetMakerXtream/fonts/slyk-medium.ttf' -> 'slykregular'.
+<   770.539335> 13:27:19.9129 [Font] Adding font '/usr/lib/enigma2/python/Plugins/Extensions/BouquetMakerXtream/fonts/slyk-bold.ttf' -> 'slykbold'.
+<   770.539476> 13:27:19.9130 [Font] Adding font '/usr/lib/enigma2/python/Plugins/Extensions/BouquetMakerXtream/fonts/m-plus-rounded-1c-regular.ttf' -> 'bmxregular'.
+<   770.539656> 13:27:19.9132 [Font] Adding font '/usr/lib/enigma2/python/Plugins/Extensions/BouquetMakerXtream/fonts/m-plus-rounded-1c-medium.ttf' -> 'bmxbold'.
+<   770.584344> 13:27:19.9579 [Config] Config file loaded ok...
+<   770.850423> 13:27:20.2240 [Font] Adding font '/usr/lib/enigma2/python/Plugins/Extensions/XStreamity/fonts/m-plus-rounded-1c-regular.ttf' -> 'xstreamityregular'.
+<   770.850755> 13:27:20.2243 [Font] Adding font '/usr/lib/enigma2/python/Plugins/Extensions/XStreamity/fonts/m-plus-rounded-1c-medium.ttf' -> 'xstreamitybold'.
+<   770.850967> 13:27:20.2245 [Font] Adding font '/usr/lib/enigma2/python/Plugins/Extensions/XStreamity/fonts/slyk-medium.ttf' -> 'slykregular'.
+<   770.851221> 13:27:20.2248 [Font] Adding font '/usr/lib/enigma2/python/Plugins/Extensions/XStreamity/fonts/slyk-bold.ttf' -> 'slykbold'.
+<   770.851353> 13:27:20.2249 [Font] Adding font '/usr/lib/enigma2/python/Plugins/Extensions/XStreamity/fonts/classfont2.ttf' -> 'klass'.
+<   771.367030> 13:27:20.7406 [crossepglib] patch crossepg v2.1 found
+<   771.383715> 13:27:20.7573 [Quadpip] ViX Vu+ Rc True
+<   771.383821> 13:27:20.7574 [Quadpip] ATV BoxInfo Vu+ Rc True
+<   771.558933> 13:27:20.9325 [RemoteControlCode] Write Remote Control Code : 2
+<   771.672608> 13:27:21.0462 Imported en.py
+[[01;31m  ERROR[00m][libvubt/source/bt_adapter.cpp][Init][146] [BT] Cannot start BSA Server!!
+[[01;31m  ERROR[00m][libvubt/source/vu_bluetooth.cpp][Enable][63] [BT] Failed to adapter init!
+<   777.939828> 13:27:27.3134 [BT] current status : 1
+<   777.940184> 13:27:27.3138 [setVoiceCheckDB] value : -33
+<   777.960899> 13:27:27.3345 --> setting contrast to: 00008000
+<   777.961554> 13:27:27.3351 --> setting saturation to: 00008000
+<   777.961971> 13:27:27.3355 --> setting hue to: 00008000
+<   777.962355> 13:27:27.3359 --> setting brightness to: 00008000
+<   777.962733> 13:27:27.3363 --> setting block_noise_reduction to: 00000000
+<   777.977279> 13:27:27.3508 --> setting mosquito_noise_reduction to: 00000000
+<   777.994721> 13:27:27.3683 --> setting digital_contour_removal to: 00000000
+<   778.010710> 13:27:27.3843 --> setting splitmode to: off
+<   778.011097> 13:27:27.3847 --> setting sharpness to: 00000000
+<   778.011448> 13:27:27.3850 --> setting auto_flesh to: 00000000
+<   778.011764> 13:27:27.3853 --> setting green_boost to: 00000000
+<   778.012083> 13:27:27.3857 --> setting blue_boost to: 00000000
+<   778.012446> 13:27:27.3860 --> setting dynamic_contrast to: 00000000
+<   778.013047> 13:27:27.3866 --> setting color_soace to: Edid(Auto)
+<   778.013455> 13:27:27.3870 --> setting scaler_vertical_dejagging to: disable
+<   778.213399> 13:27:27.5870 --> setting smooth to: disable
+<   778.213751> 13:27:27.5873 --> applying pep values
+<   778.232850> 13:27:27.6064 [Harddisk][splitDeviceName] devName = 'sda1', device = 'sda', partition = '1'
+<   778.243197> 13:27:27.6168 [Harddisk][splitDeviceName] devName = 'sda1', device = 'sda', partition = '1'
+<   778.253976> 13:27:27.6275 [AutoTimer] Auto Poll Enabled
+<   778.270125> 13:27:27.6437 [BouquetMakerXtream] autostart (0) occurred at 2026-10-07 13:27:27.643591
+<   778.270196> 13:27:27.6438 [BouquetMakerXtream] Shutdown or other reason, no timer started
+<   778.274066> 13:27:27.6476 [TranscodingSetup] set /proc/stb/encoder/enable to enable
+<   778.274730> 13:27:27.6483 [TranscodingSetup] set /proc/stb/encoder/0/bitrate to 2000000
+<   778.275352> 13:27:27.6489 [TranscodingSetup] set /proc/stb/encoder/0/framerate to 50000
+<   778.275893> 13:27:27.6495 [TranscodingSetup] set /proc/stb/encoder/0/display_format to 480p
+<   778.276450> 13:27:27.6500 [TranscodingSetup] set /proc/stb/encoder/0/aspectratio to 2
+<   778.277289> 13:27:27.6509 [TranscodingSetup] set /proc/stb/encoder/0/audio_codec to aac
+<   778.277872> 13:27:27.6514 [TranscodingSetup] set /proc/stb/encoder/0/video_codec to h264
+<   778.278472> 13:27:27.6520 [TranscodingSetup] set /proc/stb/encoder/0/gop_frameb to 0
+<   778.278991> 13:27:27.6526 [TranscodingSetup] set /proc/stb/encoder/0/gop_framep to 29
+<   778.279519> 13:27:27.6531 [TranscodingSetup] set /proc/stb/encoder/0/level to 3.1
+<   778.280035> 13:27:27.6536 [TranscodingSetup] set /proc/stb/encoder/0/profile to baseline
+<   778.280657> 13:27:27.6542 [TranscodingSetup] set /proc/stb/encoder/1/bitrate to 2000000
+<   778.281236> 13:27:27.6548 [TranscodingSetup] set /proc/stb/encoder/1/framerate to 50000
+<   778.281758> 13:27:27.6553 [TranscodingSetup] set /proc/stb/encoder/1/display_format to 480p
+<   778.282280> 13:27:27.6558 [TranscodingSetup] set /proc/stb/encoder/1/aspectratio to 2
+<   778.282775> 13:27:27.6563 [TranscodingSetup] set /proc/stb/encoder/1/audio_codec to aac
+<   778.283305> 13:27:27.6569 [TranscodingSetup] set /proc/stb/encoder/1/video_codec to h264
+<   778.283820> 13:27:27.6574 [TranscodingSetup] set /proc/stb/encoder/1/gop_frameb to 0
+<   778.284463> 13:27:27.6580 [TranscodingSetup] set /proc/stb/encoder/1/gop_framep to 29
+<   778.284976> 13:27:27.6585 [TranscodingSetup] set /proc/stb/encoder/1/level to 3.1
+<   778.285495> 13:27:27.6591 [TranscodingSetup] set /proc/stb/encoder/1/profile to baseline
+<   778.286162> 13:27:27.6597 [Hotplug] Starting hotplug handler.
+<   778.287429> 13:27:27.6610 Factory starting on '/tmp/hotplug.socket'
+<   778.287962> 13:27:27.6615 Starting factory <twisted.internet.protocol.Factory object at 0xae98b0e8>
+<   778.288608> 13:27:27.6622 [ABM-Scheduler][Scheduleautostart] reason(0), session None
+<   778.289740> 13:27:27.6633 [CI_Assignment] activating ci configs:
+<   778.290314> 13:27:27.6639 [SwapManager] autostart False
+<   778.290639> 13:27:27.6642 [eInit] + (43) eServiceFactoryApp
+<   778.293391> 13:27:27.6670 [EventInfo] gotEvent, type: 'now', what: 'evEnd', is timed repeat: False
+<   778.293902> 13:27:27.6675 [EventInfo] gotEvent, type: 'next', what: 'evEnd', is timed repeat: False
+<   778.336175> 13:27:27.7097 [Satelliweb] Module loaded - Version 3.4r4 - All Fixes Active
+<   778.352371> 13:27:27.7259 Site starting on 9999
+<   778.352887> 13:27:27.7265 Starting factory <twisted.web.server.Site object at 0xab1ad3c8>
+<   778.353270> 13:27:27.7268 [Satelliweb] Web Interface started on port 9999
+<   778.353457> 13:27:27.7270 [ABM-Scheduler][Scheduleautostart] reason(0), session <__main__.Session object at 0xae98b5f0>
+<   778.353524> 13:27:27.7271 [ABM-Scheduler][Scheduleautostart] AutoStart Enabled
+<   778.353712> 13:27:27.7273 [ABM-Scheduler][AutoScheduleTimer] Schedule Disabled at Wed 07 Oct 2026 13:27:27 +03
+<   778.353857> 13:27:27.7274 [BouquetMakerXtream] autostart (0) occurred at 2026-10-07 13:27:27.727416
+<   778.354041> 13:27:27.7276 [BMXAutoStartTimer] Auto update disabled
+<   778.354132> 13:27:27.7277 [CrossEPG_Auto] AutoStart Enabled
+<   778.354306> 13:27:27.7279 [crossepglib] patch crossepg v2.1 found
+<   778.354562> 13:27:27.7281 [CrossEPG_Auto] Schedule Disabled at Wed 07 Oct 2026 13:27:27 +03
+<   778.354670> 13:27:27.7282 [XMLTVImport] autostart (0) occured at 1791368847
+<   778.354915> 13:27:27.7285 [XMLTVImport] WakeUpTime now set to Not set (now=2026-10-07 13:27:27)
+<   779.035021> 13:27:28.4086 [Font] Adding font '/usr/lib/enigma2/python/Plugins/Extensions/ArabicSavior//fonts/font_default.otf' -> 'ArabicFont'.
+<   779.036063> 13:27:28.4096 [TorrWeb] Initialized TorrPlayResource
+<   779.037209> 13:27:28.4108 Site starting on 7878
+<   779.037824> 13:27:28.4114 Starting factory <twisted.web.server.Site object at 0xab1da5b0>
+<   779.038267> 13:27:28.4118 [TransmissionWebServer] Started on port 7878
+<   779.038492> 13:27:28.4121 [CineViewMLA] onShutdown hook unavailable: 'Session' object has no attribute 'onShutdown'
+<   779.042151> 13:27:28.4157 [CineViewMLA] posters-off names: EMCSelection unavailable: No module named 'Plugins.Extensions.EnhancedMovieCenter'
+<   779.042262> 13:27:28.4158 [CineViewMLA] posters-off names installed for SecondInfoBar
+<   779.042335> 13:27:28.4159 [CineViewMLA] posters-off names installed for EventViewSimple
+<   779.042407> 13:27:28.4160 [CineViewMLA] posters-off names installed for EPGSelection
+<   779.042481> 13:27:28.4160 [CineViewMLA] posters-off names installed for MovieSelection
+<   779.042615> 13:27:28.4162 [CineViewMLA] name clip: ServiceListLegacy unavailable: cannot import name 'ServiceListLegacy' from 'Components.ServiceList' (/usr/lib/enigma2/python/Components/ServiceList.pyc)
+<   779.042701> 13:27:28.4163 [CineViewMLA] EPG event view name installed
+<   779.048102> 13:27:28.4217 [CineViewMLA] package waiting: unavailable: cannot import name 'PackageAction' from 'Screens.PluginBrowser' (/usr/lib/enigma2/python/Screens/PluginBrowser.pyc)
+<   779.063288> 13:27:28.4369 [ImageManager] AutoStart Enabled
+<   779.063541> 13:27:28.4371 [ImageManager] Backup Schedule Disabled at (now=Wed 07 Oct 2026 13:27:28 +03)
+<   779.063637> 13:27:28.4372 [BackupManager] AutoStart Enabled
+<   779.063807> 13:27:28.4374 [BackupManager] Backup Schedule Disabled at (now=Wed 07 Oct 2026 13:27:28 +03)
+<   779.068128> 13:27:28.4417 [OpenWebif] loading external plugins...
+<   779.068294> 13:27:28.4419 [OpenWebif] no plugins to load
+<   779.069235> 13:27:28.4428 Site starting on 80
+<   779.069644> 13:27:28.4432 Starting factory <twisted.web.server.Site object at 0xaa7f9378>
+<   779.069914> 13:27:28.4435 [OpenWebif] started on 80
+<   779.070571> 13:27:28.4441 [Avahi] AvahiServiceEntry (null) (_http._tcp) 80
+<   779.070702> 13:27:28.4443 [Avahi] avahi_timeout_new
+<   779.071544> 13:27:28.4451 [Avahi] avahi_timeout_free
+<   779.071650> 13:27:28.4452 [Avahi] avahi_timeout_new
+<   779.072050> 13:27:28.4456 [Avahi] avahi_timeout_free
+<   779.072100> 13:27:28.4457 [Avahi] Will Register vuduo4kse (_http._tcp) on vuduo4kse:80
+<   779.072352> 13:27:28.4459 [Avahi] avahi_timeout_new
+<   779.072821> 13:27:28.4464 [Avahi] avahi_timeout_free
+<   779.072899> 13:27:28.4465 [Avahi] avahi_timeout_new
+<   779.073471> 13:27:28.4470 [Avahi] avahi_timeout_free
+<   779.073517> 13:27:28.4471 [Avahi] Registered vuduo4kse (_http._tcp) on vuduo4kse:80
+<   779.076700> 13:27:28.4503 [Skin] Processing screen 'Screensaver', position=(0, 0), size=(1920 x 1080) for module 'Screensaver'.
+<   779.078377> 13:27:28.4519 [eWindow] animation mode not supported
+<   779.088176> 13:27:28.4617 [Skin] Processing screen 'SecondInfoBar', position=(0, 0), size=(1920 x 1080) for module 'SecondInfoBar'.
+<   779.184404> 13:27:28.5580 [Skin] Error in screen 'SecondInfoBar', AttributeError: 'CineViewMLAServiceInfo' object has no attribute 'interestingEvents'!
+<   779.188710> 13:27:28.5623 Traceback (most recent call last):
+<   779.189107> 13:27:28.5627   File "/usr/lib/enigma2/python/skin.py", line 1723, in readSkin
+<   779.189171> 13:27:28.5627   File "/usr/lib/enigma2/python/skin.py", line 1651, in processScreen
+<   779.189226> 13:27:28.5628   File "/usr/lib/enigma2/python/skin.py", line 1565, in processWidget
+<   779.189274> 13:27:28.5628   File "/usr/lib/enigma2/python/Components/Converter/CineViewMLAServiceInfo.py", line 35, in __init__
+<   779.189379> 13:27:28.5629 AttributeError: 'CineViewMLAServiceInfo' object has no attribute 'interestingEvents'. Did you mean: 'interesting_events'?
+<   779.206729> 13:27:28.5803 [Skin] Attribute 'mode' (with value of 'infobar') in object of type 'ePixmap' is not implemented!
+<   779.208335> 13:27:28.5819 [Skin] Attribute 'mode' (with value of 'infobar') in object of type 'ePixmap' is not implemented!
+<   779.229411> 13:27:28.6030 [Screen] Warning: Skin is missing element 'epg_description' in <class 'Screens.InfoBarGenerics.SecondInfoBar'>.
+<   779.229561> 13:27:28.6031 [Screen] Warning: Skin is missing element 'channel' in <class 'Screens.InfoBarGenerics.SecondInfoBar'>.
+<   779.229670> 13:27:28.6032 [Screen] Warning: Skin is missing element 'key_red' in <class 'Screens.InfoBarGenerics.SecondInfoBar'>.
+<   779.229783> 13:27:28.6034 [Screen] Warning: Skin is missing element 'key_green' in <class 'Screens.InfoBarGenerics.SecondInfoBar'>.
+<   779.229894> 13:27:28.6035 [Screen] Warning: Skin is missing element 'key_yellow' in <class 'Screens.InfoBarGenerics.SecondInfoBar'>.
+<   779.229991> 13:27:28.6036 [Screen] Warning: Skin is missing element 'key_blue' in <class 'Screens.InfoBarGenerics.SecondInfoBar'>.
+<   779.233058> 13:27:28.6066 [Skin] Parsing embedded skin '<embedded-in-HideVBILine>'.
+<   779.234042> 13:27:28.6076 [Skin] Processing screen '<embedded-in-HideVBILine>', position=(0, 0), size=(1920 x 4) for module 'HideVBILine'.
+<   779.245122> 13:27:28.6187 [Skin] Processing screen 'ChannelSelection', position=(0, 0), size=(1920 x 1080) for module 'ChannelSelection'.
+<   779.271799> 13:27:28.6454 [Skin] Attribute 'piconMargin' (with value of '3') in object of type 'eListbox' is not implemented!
+<   779.281684> 13:27:28.6553 [Skin] Processing screen 'SlimChannelSelection' from list 'SlimChannelSelection, SimpleChannelSelection, ChannelSelection', position=(0, 0), size=(1920 x 1080) for module 'PiPZapSelection'.
+<   779.295430> 13:27:28.6690 [Skin] Attribute 'piconMargin' (with value of '3') in object of type 'eListbox' is not implemented!
+<   779.300888> 13:27:28.6745 [Skin] Processing screen 'RdsInfoDisplay', position=(22, 90), size=(1920 x 300) for module 'RdsInfoDisplay'.
+<   779.303117> 13:27:28.6767 [Skin] Processing screen 'ScreenSummary' from list 'RdsInfoDisplaySummary, ScreenSummary', position=(0, 0), size=(480 x 320) for module 'RdsInfoDisplaySummary'.
+<   779.307079> 13:27:28.6806 [Skin] Processing screen 'UnhandledKey', position=(1856, 10), size=(34 x 45) for module 'UnhandledKey'.
+<   779.314831> 13:27:28.6884 [Skin] Processing screen 'Dish', position=(30, 90), size=(195 x 303) for module 'Dish'.
+<   779.319697> 13:27:28.6933 [Screen] Warning: Skin is missing element 'Tuner' in <class 'Screens.Dish.Dish'>.
+<   779.321877> 13:27:28.6954 [Skin] Processing screen 'BufferIndicator', position=(660, 45), size=(600 x 48) for module 'BufferIndicator'.
+<   779.329058> 13:27:28.7026 [Skin] Processing screen 'TimeshiftState', position=(150, 67), size=(1620 x 150) for module 'TimeshiftState'.
+<   779.340226> 13:27:28.7138 [Screen] Warning: Skin is missing element 'eventname' in <class 'Screens.PVRState.TimeshiftState'>.
+<   779.340351> 13:27:28.7139 [Screen] Warning: Skin is missing element 'state' in <class 'Screens.PVRState.TimeshiftState'>.
+<   779.342449> 13:27:28.7160 [Screen] Warning: Skin is missing element 'PTSSeekBack' in <class 'Screens.PVRState.TimeshiftState'>.
+<   779.342575> 13:27:28.7161 [Screen] Warning: Skin is missing element 'PTSSeekPointer' in <class 'Screens.PVRState.TimeshiftState'>.
+<   779.346168> 13:27:28.7197 [Skin] Processing screen 'SubtitleDisplay', position=(0, 0), size=(1920 x 1080) for module 'SubtitleDisplay'.
+<   779.346835> 13:27:28.7204 [Screen] Warning: Skin is missing element 'subtitles' in <class 'Screens.SubtitleDisplay.SubtitleDisplay'>.
+<   779.348338> 13:27:28.7219 [Notifications] RemovePopup, id = ZapError
+<   779.352572> 13:27:28.7261 [Skin] Processing screen 'InfoBar', position=(0, 0), size=(1920 x 1080) for module 'InfoBar'.
+<   779.374724> 13:27:28.7483 [Skin] Error in screen 'InfoBar', AttributeError: 'CineViewMLAServiceInfo' object has no attribute 'interestingEvents'!
+<   779.378975> 13:27:28.7526 Traceback (most recent call last):
+<   779.379328> 13:27:28.7529   File "/usr/lib/enigma2/python/skin.py", line 1723, in readSkin
+<   779.379396> 13:27:28.7530   File "/usr/lib/enigma2/python/skin.py", line 1651, in processScreen
+<   779.379452> 13:27:28.7530   File "/usr/lib/enigma2/python/skin.py", line 1565, in processWidget
+<   779.379503> 13:27:28.7531   File "/usr/lib/enigma2/python/Components/Converter/CineViewMLAServiceInfo.py", line 35, in __init__
+<   779.379596> 13:27:28.7532 AttributeError: 'CineViewMLAServiceInfo' object has no attribute 'interestingEvents'. Did you mean: 'interesting_events'?
+<   779.381990> 13:27:28.7556 [Skin] Attribute 'mode' (with value of 'infobar') in object of type 'ePixmap' is not implemented!
+<   779.382965> 13:27:28.7565 [Skin] Attribute 'mode' (with value of 'infobar') in object of type 'ePixmap' is not implemented!
+<   779.401648> 13:27:28.7752 [Screen] Warning: Skin is missing element 'key_red' in <class 'Screens.InfoBar.InfoBar'>.
+<   779.401761> 13:27:28.7753 [Screen] Warning: Skin is missing element 'key_yellow' in <class 'Screens.InfoBar.InfoBar'>.
+<   779.401853> 13:27:28.7754 [Screen] Warning: Skin is missing element 'key_blue' in <class 'Screens.InfoBar.InfoBar'>.
+<   779.401952> 13:27:28.7755 [Screen] Warning: Skin is missing element 'key_green' in <class 'Screens.InfoBar.InfoBar'>.
+<   779.405831> 13:27:28.7794 [Skin] Processing screen 'InfoBarSummary' from list 'InfoBarSummary, ScreenSummary', position=(0, 0), size=(480 x 320) for module 'InfoBarSummary'.
+<   779.452022> 13:27:28.8256 [eDVBVolumecontrol] Setvolume: raw: 5 5, -1db: 60 60
+<   779.477300> 13:27:28.8509 [Skin] Processing screen 'Volume', position=(0, 360), size=(30 x 330) for module 'Volume'.
+<   779.479566> 13:27:28.8531 [Screen] Warning: Skin is missing element 'VolumeText' in <class 'Screens.Volume.Volume'>.
+<   779.480143> 13:27:28.8537 [Volume] Volume set to 5.
+<   779.480581> 13:27:28.8541 [Skin] Processing screen 'Mute', position=(937, 15), size=(45 x 45) for module 'Mute'.
+<   779.482279> 13:27:28.8558 [eAVSwitch] cannot open /proc/stb/avs/0/input_choices: Function not implemented
+<   779.482635> 13:27:28.8562 [PowerUpState] config.usage.power.was_controlled_shutdown.value True
+<   779.482715> 13:27:28.8563 [PowerUpState] config.usage.power.uncontrolled_shutdown_action.value 'last'
+<   779.482776> 13:27:28.8563 [PowerUpState] config.usage.power.wake_up_to_standby.value 'False'
+<   779.482836> 13:27:28.8564 [PowerUpState] config.usage.power.last_known_state.value 'normal'
+<   779.482886> 13:27:28.8565 [PowerUpState] goToDeep False
+<   779.482929> 13:27:28.8565 [PowerUpState] goToStandby False
+<   779.595777> 13:27:28.9693 [Avahi] timeout elapsed
+<   779.595989> 13:27:28.9696 [Avahi] avahi_timeout_update
+<   779.596196> 13:27:28.9698 [NetworkTime] Updating from NTP
+<   779.596343> 13:27:28.9699 [Console] command: ['/usr/sbin/ntpd', '/usr/sbin/ntpd', '-nq', '-p', 'pool.ntp.org']
+<   779.596441> 13:27:28.9700 [eConsoleAppContainer] Starting /usr/sbin/ntpd
+<   779.596958> 13:27:28.9705 [LogManager] Trash Poll Started
+<   779.644520> 13:27:29.0181 [LogManager] probing folders
+<   779.699487> 13:27:29.0731 [LogManager] found following log's: ['/home/root/logs']
+<   779.699587> 13:27:29.0732 [LogManager] looking in: /home/root/logs
+<   779.701410> 13:27:29.0750 [Navigation] playing ref 1:0:1:290F:1EDC:71:820000:0:0:0:
+<   779.704124> 13:27:29.0777 [LogManager] /home/root/logs: bytesToRemove -9644469
+<   779.719451> 13:27:29.0930 [servicedvb][eDVBServicePlay] now running: m_is_streamx set by m_is_stream 0
+<   779.719499> 13:27:29.0931 [servicedvb][eDVBServicePlay] now running: m_is_pvr set to; 0
+<   779.719553> 13:27:29.0931 [servicedvb][eDVBServicePlay][start] m_is_stream set to: 0
+<   779.719570> 13:27:29.0931 [servicedvb][eDVBServicePlay][start] m_is_pvr set to; 0
+<   779.732731> 13:27:29.1063 [EventInfo] gotEvent, type: 'now', what: 'evStart', is timed repeat: False
+<   779.735565> 13:27:29.1091 [EventInfo] gotEvent, type: 'next', what: 'evStart', is timed repeat: False
+<   779.741060> 13:27:29.1146 [Notifications] RemovePopup, id = ZapError
+<   779.741156> 13:27:29.1147 [eDVBResourceManager] allocate channel.. 1edc:0071
+<   779.741215> 13:27:29.1148 [eDVBFrontend1] opening frontend
+<   779.741335> 13:27:29.1149 [eDVBFrontend] opened frontend m_filename: /dev/dvb/adapter0/frontend1
+<   779.741358> 13:27:29.1149 [eDVBFrontend] opened frontend m_fd: 57
+<   779.750590> 13:27:29.1242 [eDVBFrontend1] setVoltage FE_ENABLE_HIGH_LNB_VOLTAGE 0 FE_SET_VOLTAGE 2
+<   779.760789> 13:27:29.1344 [eDVBFrontend1] tune
+<   779.760844> 13:27:29.1344 [eDVBSatelliteEquipmentControl] RotorCmd ffffffff, lastRotorCmd ffffffff
+<   779.760876> 13:27:29.1344 [eDVBFrontend1] prepare_sat System 1 Freq 12284000 Pol 0 SR 27500000 INV 2 FEC 3 orbpos 130 system 1 modulation 2 pilot 2, rolloff 2, is_id -1, pls_mode 1, pls_code 0, t2mi_plp_id -1 t2mi_pid 4096
+<   779.760894> 13:27:29.1345 [eDVBFrontend1] tuning to 1684 mhz
+<   779.760919> 13:27:29.1345 [eDVBChannel] OURSTATE: tuning
+<   779.760965> 13:27:29.1345 [eDVBServicePMTHandler] allocate Channel: res 0
+<   779.761017> 13:27:29.1346 [eDVBCIInterfaces] addPMTHandler 1:0:1:290F:1EDC:71:820000:0:0:0:
+<   779.761066> 13:27:29.1346 [eDVBChannel] getDemux cap=00
+<   779.761082> 13:27:29.1346 [eDVBResourceManager] allocate demux cap=00
+<   779.761098> 13:27:29.1347 [eDVBResourceManager] allocating demux adapter=0, demux=0, source=-1 fesource=1
+<   779.761114> 13:27:29.1347 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   779.761239> 13:27:29.1348 [eDVBServicePlay] Encrypted channel, creating speculative CSA session
+<   779.761277> 13:27:29.1348 [eDVBCSASession] Created for service 1:0:1:290F:1EDC:71:820000:0:0:0:
+<   779.761305> 13:27:29.1349 [eDVBCSAEngine] init: batch_size=128
+<   779.761321> 13:27:29.1349 [eDVBCSASession] Initialized - CSA-ALT detection via ECM analysis
+<   779.761363> 13:27:29.1349 [eDVBSoftDecoder] Created for decoder 0
+<   779.761388> 13:27:29.1350 [eDVBServicePlay] Speculative CSA session created, waiting for ECM analysis
+<   779.818357> 13:27:29.1919 [netlink][parse] yield event:{None: 'add@/module/btusb', 'ACTION': 'add', 'DEVPATH': '/module/btusb', 'SUBSYSTEM': 'module', 'SEQNUM': '1211'}, reset
+<   779.818709> 13:27:29.1923 [Task] job Components.Task.Job name=LogManager #tasks=1 completed with [] in None
+<   779.818855> 13:27:29.1924 [Avahi] timeout elapsed
+<   779.819058> 13:27:29.1926 [Avahi] Resolving service 'dm920' of type '_e2stream._tcp'
+<   779.819451> 13:27:29.1930 [Avahi] avahi_timeout_new
+<   779.820315> 13:27:29.1939 [Avahi] avahi_timeout_free
+<   779.820394> 13:27:29.1940 [Avahi] avahi_timeout_update
+<   779.820938> 13:27:29.1945 [eDVBFrontend1] set static current limiting
+<   779.822127> 13:27:29.1957 [netlink][parse] yield event:{None: 'add@/class/usbmisc', 'ACTION': 'add', 'DEVPATH': '/class/usbmisc', 'SUBSYSTEM': 'class', 'SEQNUM': '1212'}, reset
+<   779.822292> 13:27:29.1959 [Avahi] timeout elapsed
+<   779.822362> 13:27:29.1959 [Avahi] Resolving service 'dm920' of type '_e2stream._tcp'
+<   779.822558> 13:27:29.1961 [Avahi] avahi_timeout_new
+<   779.823704> 13:27:29.1973 [Avahi] avahi_timeout_free
+<   779.823882> 13:27:29.1975 [Avahi] avahi_timeout_update
+<   779.823924> 13:27:29.1975 [eDVBFrontend1] set sequence pos 3
+<   779.825450> 13:27:29.1990 [netlink][parse] yield event:{None: 'add@/devices/platform/rdb/f0480300.ehci_v2/usb5/5-1/5-1.2/5-1.2:1.0/usbmisc/btusb0', 'ACTION': 'add', 'DEVPATH': '/devices/platform/rdb/f0480300.ehci_v2/usb5/5-1/5-1.2/5-1.2:1.0/usbmisc/btusb0', 'SUBSYSTEM': 'usbmisc', 'MAJOR': '180', 'MINOR': '194', 'DEVNAME': 'btusb0', 'SEQNUM': '1213'}, reset
+<   779.825604> 13:27:29.1992 [Avahi] timeout elapsed
+<   779.825648> 13:27:29.1992 [Avahi] avahi_timeout_update
+<   779.825989> 13:27:29.1996 [netlink][parse] yield event:{None: 'add@/bus/usb/drivers/btusb', 'ACTION': 'add', 'DEVPATH': '/bus/usb/drivers/btusb', 'SUBSYSTEM': 'drivers', 'SEQNUM': '1214'}, reset
+<   779.826111> 13:27:29.1997 [Avahi] timeout elapsed
+<   779.826142> 13:27:29.1997 [Avahi] avahi_timeout_update
+<   779.826162> 13:27:29.1997 [eDVBFrontend1] set sequence pos 4
+<   779.826456> 13:27:29.2000 [Avahi] timeout elapsed
+<   779.826536> 13:27:29.2001 [Avahi] avahi_timeout_update
+<   779.826557> 13:27:29.2001 [eDVBFrontend1] setVoltage 2
+<   779.826572> 13:27:29.2001 [eDVBFrontend1] setVoltage FE_ENABLE_HIGH_LNB_VOLTAGE 0 FE_SET_VOLTAGE 1
+<   779.836363> 13:27:29.2099 [Avahi] timeout elapsed
+<   779.836427> 13:27:29.2100 [Avahi] avahi_timeout_update
+<   779.836766> 13:27:29.2103 [eDVBFrontend1] sleep 200ms
+<   779.837102> 13:27:29.2107 [Avahi] timeout elapsed
+<   779.837137> 13:27:29.2107 [Avahi] Resolving service 'vuduo4kse' of type '_e2stream._tcp'
+<   779.837311> 13:27:29.2109 [Avahi] avahi_timeout_new
+<   779.838331> 13:27:29.2119 [Avahi] avahi_timeout_free
+<   779.838389> 13:27:29.2120 [Avahi] avahi_timeout_update
+<   779.838709> 13:27:29.2123 [Avahi] timeout elapsed
+<   779.838739> 13:27:29.2123 [Avahi] Resolving service 'vuduo4kse' of type '_e2stream._tcp'
+<   779.838906> 13:27:29.2125 [Avahi] avahi_timeout_new
+<   779.839304> 13:27:29.2129 [Avahi] avahi_timeout_free
+<   779.839350> 13:27:29.2129 [Avahi] avahi_timeout_update
+<   779.839808> 13:27:29.2134 [netlink][parse] yield event:{None: 'add@/module/bthid', 'ACTION': 'add', 'DEVPATH': '/module/bthid', 'SUBSYSTEM': 'module', 'SEQNUM': '1215'}, reset
+<   779.839898> 13:27:29.2135 [Avahi] timeout elapsed
+<   779.839929> 13:27:29.2135 [Avahi] Resolving service 'vuduo4kse' of type '_e2stream._tcp'
+<   779.840102> 13:27:29.2137 [Avahi] avahi_timeout_new
+<   779.840476> 13:27:29.2140 [Avahi] avahi_timeout_free
+<   779.840521> 13:27:29.2141 [Avahi] avahi_timeout_update
+<   779.840980> 13:27:29.2145 [netlink][parse] yield event:{None: 'add@/devices/virtual/misc/bthid', 'ACTION': 'add', 'DEVPATH': '/devices/virtual/misc/bthid', 'SUBSYSTEM': 'misc', 'MAJOR': '10', 'MINOR': '224', 'DEVNAME': 'bthid', 'SEQNUM': '1216'}, reset
+<   779.841081> 13:27:29.2146 [Avahi] timeout elapsed
+<   779.841111> 13:27:29.2147 [Avahi] Resolving service 'vuduo4kse' of type '_e2stream._tcp'
+<   779.841268> 13:27:29.2148 [Avahi] avahi_timeout_new
+<   779.841646> 13:27:29.2152 [Avahi] avahi_timeout_free
+<   779.841692> 13:27:29.2153 [Avahi] avahi_timeout_update
+<   779.842127> 13:27:29.2157 [netlink][parse] yield event:{None: 'add@/bus/hid/drivers/bthid', 'ACTION': 'add', 'DEVPATH': '/bus/hid/drivers/bthid', 'SUBSYSTEM': 'drivers', 'SEQNUM': '1217'}, reset
+<   779.842214> 13:27:29.2158 [Avahi] timeout elapsed
+<   779.842252> 13:27:29.2158 [Avahi] avahi_timeout_update
+<   779.842289> 13:27:29.2159 [Avahi] watch activated: 0x1
+<   779.842644> 13:27:29.2162 [Avahi] timeout elapsed
+<   779.842801> 13:27:29.2164 [Avahi] avahi_timeout_new
+<   779.843197> 13:27:29.2168 [Avahi] avahi_timeout_free
+<   779.843247> 13:27:29.2168 [Avahi] avahi_timeout_update
+<   779.844295> 13:27:29.2179 [Avahi] timeout elapsed
+<   779.844384> 13:27:29.2180 [Avahi] avahi_timeout_new
+<   779.849312> 13:27:29.2229 [Avahi] avahi_timeout_free
+<   779.849447> 13:27:29.2230 [Avahi] avahi_timeout_update
+<   779.850166> 13:27:29.2237 [Avahi] timeout elapsed
+<   779.850273> 13:27:29.2238 [Avahi] avahi_timeout_new
+<   779.850780> 13:27:29.2243 [Avahi] avahi_timeout_free
+<   779.850841> 13:27:29.2244 [Avahi] avahi_timeout_update
+<   779.850895> 13:27:29.2245 [Avahi] timeout elapsed
+<   779.850959> 13:27:29.2245 [Avahi] avahi_timeout_new
+<   779.851351> 13:27:29.2249 [Avahi] avahi_timeout_free
+<   779.851402> 13:27:29.2250 [Avahi] avahi_timeout_update
+<   779.951992> 13:27:29.3256 [Avahi] watch activated: 0x1
+<   779.952284> 13:27:29.3259 [Avahi] avahi_timeout_update
+<   779.952340> 13:27:29.3259 [Avahi] timeout elapsed
+<   779.952401> 13:27:29.3260 [Avahi] ADD Service 'dm920' of type '_e2stream._tcp' at dm920.local:8001
+<   779.952434> 13:27:29.3260 ADD Peer dm920=dm920.local:8001
+<   779.952687> 13:27:29.3263 [Avahi] avahi_timeout_new
+<   779.953408> 13:27:29.3270 [Avahi] avahi_timeout_free
+<   779.953474> 13:27:29.3270 [Avahi] avahi_timeout_update
+<   779.953535> 13:27:29.3271 [Avahi] timeout elapsed
+<   779.953570> 13:27:29.3271 [Avahi] ADD Service 'dm920' of type '_e2stream._tcp' at dm920.local:8001
+<   779.953586> 13:27:29.3272 ADD Peer dm920=dm920.local:8001
+<   779.953656> 13:27:29.3272 [Avahi] avahi_timeout_new
+<   779.954108> 13:27:29.3277 [Avahi] avahi_timeout_free
+<   779.954161> 13:27:29.3277 [Avahi] avahi_timeout_update
+<   780.036956> 13:27:29.4105 [eDVBFrontend1] invalidate current switch params
+<   780.080577> 13:27:29.4541 [eDVBFrontend1] sendDiseqc: e00000(DiSEqC reset)
+<   780.080831> 13:27:29.4544 [Avahi] watch activated: 0x1
+<   780.080939> 13:27:29.4545 [Avahi] avahi_timeout_update
+<   780.081505> 13:27:29.4551 [eDVBFrontend1] sleep 50ms
+<   780.081536> 13:27:29.4551 [Avahi] timeout elapsed
+<   780.081590> 13:27:29.4552 [Avahi] avahi_timeout_update
+<   780.175254> 13:27:29.5488 [eDVBFrontend1] sendDiseqc: e00003(DiSEqC peripherial power on)
+<   780.175338> 13:27:29.5489 [eDVBFrontend1] sleep 150ms
+<   780.382614> 13:27:29.7562 [eDVBFrontend1] sendDiseqc: e01039f2(?)
+<   780.399372> 13:27:29.7729 [eDVBFrontend1] sleep 100ms
+<   780.499484> 13:27:29.8731 [eDVBFrontend1] set sequence pos 3
+<   780.499591> 13:27:29.8732 [eDVBFrontend1] setTone 1
+<   780.508601> 13:27:29.8822 [eDVBFrontend1] sleep 10ms
+<   780.518633> 13:27:29.8922 [eDVBFrontend1] update current switch params
+<   780.518670> 13:27:29.8922 [eDVBFrontend1] startTuneTimeout 5000
+<   780.518711> 13:27:29.8923 [eDVBFrontend1] setFrontend 1
+<   780.518727> 13:27:29.8923 [eDVBFrontend1] setting frontend
+<   780.534964> 13:27:29.9085 [eDVBFrontend1] fe event: status 0, inversion off, m_tuning 1
+<   780.535041> 13:27:29.9086 [eDVBFrontend1] sleep 500ms
+<   780.589802> 13:27:29.9634 [eDVBFrontend1] fe event: status 7, inversion off, m_tuning 2
+<   780.895268> 13:27:30.2688 [eDVBFrontend1] fe event: status 1f, inversion off, m_tuning 3
+<   780.895333> 13:27:30.2689 [eDVBChannel] OURSTATE: ok
+<   780.895367> 13:27:30.2689 [eDVBLocalTimerHandler] channel 0x26315e8 running
+<   780.895417> 13:27:30.2690 [eDVBChannel] getDemux cap=00
+<   780.895449> 13:27:30.2690 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   780.895543> 13:27:30.2691 [eDVBSectionReader] DMX_SET_FILTER pid=20
+<   780.896088> 13:27:30.2697 [eEPGTransponderDataReader] channel 0x26315e8 running
+<   780.896115> 13:27:30.2697 [eDVBChannel] getDemux cap=00
+<   780.896129> 13:27:30.2697 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   780.896172> 13:27:30.2697 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   780.896203> 13:27:30.2698 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   780.896231> 13:27:30.2698 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   780.896257> 13:27:30.2698 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   780.896285> 13:27:30.2699 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   780.896312> 13:27:30.2699 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   780.896339> 13:27:30.2699 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   780.896367> 13:27:30.2699 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   780.896397> 13:27:30.2700 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   780.896426> 13:27:30.2700 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   780.896453> 13:27:30.2700 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   780.896479> 13:27:30.2700 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   780.896506> 13:27:30.2701 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   780.896532> 13:27:30.2701 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   780.896558> 13:27:30.2701 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   780.896583> 13:27:30.2702 [eDVBResourceManager] stop release channel timer
+<   780.896599> 13:27:30.2702 [eDVBChannel] getDemux cap=01
+<   780.896611> 13:27:30.2702 [eDVBResourceManager] allocate demux cap=01
+<   780.896625> 13:27:30.2702 [eDVBResourceManager] allocating shared demux adapter=0, demux=0, source=1
+<   780.896639> 13:27:30.2702 [eDVBServicePMTHandler] ok ... now we start!!
+<   780.896655> 13:27:30.2702 [eDVBServicePlay] eventNewProgramInfo timeshift_enabled=0 timeshift_active=0
+<   780.896687> 13:27:30.2703 [eDVBServicePlay] Requesting ECM monitor: PID=65535, CAID=0x1813
+<   780.896708> 13:27:30.2703 [eDVBServicePlay] have 1 video stream(s) (006e), and 1 audio stream(s) (0136), and the pcr pid is 006e, and the text pid is ffffffff
+<   780.896756> 13:27:30.2703 [eDVBChannel] getDemux cap=01
+<   780.896790> 13:27:30.2704 [decoder][eDVBText] initCache
+<   780.900763> 13:27:30.2743 [eDVBServicePlay] Setting audio delay: setAC3Delay, 0 + 0
+<   780.900943> 13:27:30.2745 [eDVBServicePlay] Setting audio delay: setPCMDelay, 0 + 0
+<   780.901149> 13:27:30.2747 [eDVBServicePlay] updateAudioCache: pid=0136 type=1
+<   780.901178> 13:27:30.2747 [eTSMPEGDecoder] decoder state: play, vpid=006e, apid=0136
+<   780.901220> 13:27:30.2748 [eDVBPCR0] DMX_SET_PES_FILTER pid=0x006e ok
+<   780.901244> 13:27:30.2748 [eDVBPCR0] DEMUX_START ok
+<   780.905432> 13:27:30.2790 [eDVBAudio0] DMX_SET_PES_FILTER pid=0x0136 ok
+<   780.905457> 13:27:30.2790 [eDVBAudio0] DEMUX_START ok
+<   780.905508> 13:27:30.2791 [eDVBAudio0] AUDIO_SET_BYPASS bypass=0 ok
+<   780.914286> 13:27:30.2879 [eDVBAudio0] AUDIO_PAUSE ok
+<   780.917695> 13:27:30.2913 [eDVBAudio0] AUDIO_PLAY ok
+<   780.924132> 13:27:30.2977 [eDVBVideo] Video Device: /dev/dvb/adapter0/video0
+<   780.924190> 13:27:30.2978 [eDVBVideo] demux device: /dev/dvb/adapter0/demux0
+<   780.939979> 13:27:30.3135 [eDVBVideo0] VIDEO_SET_STREAMTYPE 1 - ok
+<   780.944297> 13:27:30.3179 [eDVBVideo0] DMX_SET_PES_FILTER pid=0x006e ok
+<   780.944329> 13:27:30.3179 [eDVBVideo0] DEMUX_START ok
+<   780.944411> 13:27:30.3180 [eDVBVideo0] VIDEO_FREEZE ok
+<   780.948183> 13:27:30.3218 [eDVBVideo0] VIDEO_PLAY ok
+<   780.956913> 13:27:30.3305 [decoder][eDVBText] resetPID
+<   780.956949> 13:27:30.3305 [eDVBVideo0] VIDEO_SLOWMOTION 0 ok
+<   780.961338> 13:27:30.3349 [eDVBVideo0] VIDEO_FAST_FORWARD 0 ok
+<   780.965954> 13:27:30.3395 [eDVBVideo0] VIDEO_CONTINUE ok
+<   780.969860> 13:27:30.3434 [eDVBAudio0] AUDIO_CONTINUE ok
+<   780.978057> 13:27:30.3516 [eDVBAudio0] AUDIO_CHANNEL_SELECT 0 ok
+<   780.982313> 13:27:30.3559 [servicedvb][eDVBServicePlay] m_teletext_parser active
+<   780.982334> 13:27:30.3559 [eDVBTeletextParser] Starting!
+<   780.982347> 13:27:30.3559 [eDVBTeletextParser] disable teletext subtitles page ffffffffffffffff (und)
+<   780.982362> 13:27:30.3559 [eDVBPESReader] Created. Opening demux
+<   780.982374> 13:27:30.3559 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   780.982445> 13:27:30.3560 [eDVBTeletextParser] created teletext subtitle PES reader!
+<   780.982493> 13:27:30.3561 [eDVBPESReader] Created. Opening demux
+<   780.982508> 13:27:30.3561 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   780.982558> 13:27:30.3561 [eDVBTeletextParser] starting PES reader on pid=ffffffff
+<   780.991401> 13:27:30.3650 [EventInfo] gotEvent, type: 'now', what: 'evUpdatedInfo', is timed repeat: False
+<   780.994715> 13:27:30.3683 [EventInfo] gotEvent, timer is set to repeat event in 155 seconds
+<   780.994993> 13:27:30.3686 [EventInfo] current event: None
+<   780.995152> 13:27:30.3687 [EventInfo] gotEvent, type: 'next', what: 'evUpdatedInfo', is timed repeat: False
+<   780.996807> 13:27:30.3704 [EventInfo] gotEvent, timer is set to repeat event in 155 seconds
+<   781.003452> 13:27:30.3770 [servicedvb][eDVBServicePlay] program.textPid dvb active
+<   781.518301> 13:27:30.8919 [eDVBSubtitleParser] start on pid 0x0583 with composition_page_id 2 and ancillary_page_id 2
+<   781.518359> 13:27:30.8919 [eDVBPESReader] DMX_SET_PES_FILTER pid=0583
+<   781.704219> 13:27:31.0778 [eDVBCAService] new service 1:0:1:290F:1EDC:71:820000:0:0:0:, serviceId 1
+<   781.704264> 13:27:31.0778 [eDVBCAHandler] add demux 0 to slot 0 service 1:0:1:290F:1EDC:71:820000:0:0:0:
+<   781.704298> 13:27:31.0779 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   781.704355> 13:27:31.0779 [eDVBSectionReader] DMX_SET_FILTER pid=0
+<   781.704896> 13:27:31.0785 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   781.704954> 13:27:31.0785 [eDVBSectionReader] DMX_SET_FILTER pid=18
+<   781.705968> 13:27:31.0795 [Notifications] RemovePopup, id = ZapError
+<   781.706045> 13:27:31.0796 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   781.706093> 13:27:31.0797 [eDVBSectionReader] DMX_SET_FILTER pid=0
+<   781.709992> 13:27:31.0836 [eDVBFrontend1] set dynamic current limiting
+<   781.840254> 13:27:31.2138 [Console] finished: /usr/sbin/ntpd
+<   781.840457> 13:27:31.2140 [NetworkTime] setting E2 time: 1791368851.2140024
+<   781.951263> 13:27:31.3248 [eDVBLocalTimerHandler] setUseDVBTime: current=dvb, new=ntp
+<   781.951310> 13:27:31.3249 [eDVBLocalTimeHandler] disable sync local time with transponder time!
+<   781.951738> 13:27:31.3253 [eEPGCache] time updated.. start EPG Mainloop
+<   781.952168> 13:27:31.3257 [eDVBVideo0] VIDEO_GET_EVENT SIZE_CHANGED 0x0 aspect 3
+<   781.957991> 13:27:31.3316 [eDVBVideo0] VIDEO_GET_EVENT FRAME_RATE_CHANGED 50000 fps
+<   781.959135> 13:27:31.3327 [eDVBServicePMTHandler] PATready
+<   781.959197> 13:27:31.3328 [eDVBServicePMTHandler] use pmtpid 0020 for service_id 290f
+<   781.959235> 13:27:31.3328 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   781.959295> 13:27:31.3329 [eDVBSectionReader] DMX_SET_FILTER pid=32
+<   781.959650> 13:27:31.3332 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   781.959707> 13:27:31.3333 [eDVBSectionReader] DMX_SET_FILTER pid=0
+<   781.967130> 13:27:31.3407 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   781.967216> 13:27:31.3408 [eDVBSectionReader] DMX_SET_FILTER pid=43
+<   781.967560> 13:27:31.3411 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   781.967610> 13:27:31.3412 [eDVBSectionReader] DMX_SET_FILTER pid=17
+<   782.062272> 13:27:31.4359 [eEPGCache][load] 15244 events read from /etc/enigma2/epg.dat
+<   782.065133> 13:27:31.4387 [eEPGTransponderDataReader] start Mainloop
+<   782.065646> 13:27:31.4392 [eEPGChannelData] next update in 2 sec
+<   782.074591> 13:27:31.4482 [eDVBServicePlay] eventNewProgramInfo timeshift_enabled=0 timeshift_active=0
+<   782.075186> 13:27:31.4488 [eDVBServicePlay] Requesting ECM monitor: PID=710, CAID=0x1813
+<   782.075220> 13:27:31.4488 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   782.075292> 13:27:31.4489 [eDVBSectionReader] DMX_SET_FILTER pid=710
+<   782.075647> 13:27:31.4492 [eDVBCSASession] ECM Monitor started on PID 710
+<   782.075678> 13:27:31.4492 [eDVBServicePlay] have 1 video stream(s) (006e), and 2 audio stream(s) (00d2, 0136), and the pcr pid is 006e, and the text pid is ffffffff
+<   782.075805> 13:27:31.4494 [eDVBServicePlay] Setting audio delay: setAC3Delay, 0 + 0
+<   782.075852> 13:27:31.4494 [eDVBServicePlay] Setting audio delay: setPCMDelay, 0 + 0
+<   782.076056> 13:27:31.4496 [eTSMPEGDecoder] decoder state: play, vpid=006e, apid=0136
+<   782.076078> 13:27:31.4496 [decoder][eDVBText] resetPID
+<   782.076091> 13:27:31.4497 [eDVBVideo0] VIDEO_SLOWMOTION 0 ok
+<   782.080534> 13:27:31.4541 [eDVBVideo0] VIDEO_FAST_FORWARD 0 ok
+<   782.085071> 13:27:31.4586 [eDVBVideo0] VIDEO_CONTINUE ok
+<   782.088952> 13:27:31.4625 [eDVBAudio0] AUDIO_CONTINUE ok
+<   782.102857> 13:27:31.4764 [EventInfo] gotEvent, type: 'now', what: 'evUpdatedInfo', is timed repeat: False
+<   782.106062> 13:27:31.4796 [EventInfo] gotEvent, timer is set to repeat event in 154 seconds
+<   782.106435> 13:27:31.4800 [EventInfo] current event: None
+<   782.106582> 13:27:31.4802 [EventInfo] gotEvent, type: 'next', what: 'evUpdatedInfo', is timed repeat: False
+<   782.108745> 13:27:31.4823 [EventInfo] gotEvent, timer is set to repeat event in 154 seconds
+<   782.301061> 13:27:31.6746 [eDVBCIInterfaces] gotPMT
+<   782.301601> 13:27:31.6752 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   782.301719> 13:27:31.6753 [eDVBSectionReader] DMX_SET_FILTER pid=32
+<   782.303534> 13:27:31.6771 [eDVBCSASession] ECM received (PMT): caid=0x1813, ecm[2]=0x67, ecm[4]=0x68, ecm_mode=0x00, CSA-ALT=0
+<   782.303578> 13:27:31.6771 [eDVBCSASession] ECM analyzed: Not CSA-ALT, hardware descrambling will be used
+<   782.303786> 13:27:31.6774 [eDVBCSASession] ECM Monitor stopped
+<   782.304595> 13:27:31.6782 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   782.304643> 13:27:31.6782 [eDVBSectionReader] DMX_SET_FILTER pid=44
+<   782.936684> 13:27:32.3103 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   782.936777> 13:27:32.3103 [eDVBSectionReader] DMX_SET_FILTER pid=55
+<   782.941096> 13:27:32.3147 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   782.941330> 13:27:32.3149 [eDVBSectionReader] DMX_SET_FILTER pid=46
+<   783.112122> 13:27:32.4857 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   783.112229> 13:27:32.4858 [eDVBSectionReader] DMX_SET_FILTER pid=1007
+<   783.124491> 13:27:32.4981 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   783.124566> 13:27:32.4981 [eDVBSectionReader] DMX_SET_FILTER pid=48
+<   783.202985> 13:27:32.5765 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   783.203085> 13:27:32.5766 [eDVBSectionReader] DMX_SET_FILTER pid=59
+<   783.374616> 13:27:32.7482 [Weatherinfo] accessing MSN for weatherdata...
+<   783.411791> 13:27:32.7854 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   783.412242> 13:27:32.7858 [eDVBSectionReader] DMX_SET_FILTER pid=50
+<   783.599918> 13:27:32.9735 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   783.600039> 13:27:32.9736 [eDVBSectionReader] DMX_SET_FILTER pid=32
+<   783.725443> 13:27:33.0990 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   783.725527> 13:27:33.0991 [eDVBSectionReader] DMX_SET_FILTER pid=62
+<   783.857743> 13:27:33.2313 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   783.857841> 13:27:33.2314 [eDVBSectionReader] DMX_SET_FILTER pid=53
+<   783.864170> 13:27:33.2377 [Weatherinfo] MSN successfully accessed...
+<   783.891153> 13:27:33.2647 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   783.891248> 13:27:33.2648 [eDVBSectionReader] DMX_SET_FILTER pid=45
+<   784.030455> 13:27:33.4040 [eDVBVideo0] VIDEO_GET_EVENT SIZE_CHANGED 1920x1080 aspect 3
+<   784.036488> 13:27:33.4101 [eDVBVideo0] VIDEO_GET_EVENT FRAME_RATE_CHANGED 25000 fps
+<   784.040649> 13:27:33.4142 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   784.040771> 13:27:33.4143 [eDVBSectionReader] DMX_SET_FILTER pid=1016
+<   784.074723> 13:27:33.4483 [eDVBSectionReader] DMX_SET_FILTER pid=18
+<   784.076556> 13:27:33.4501 [eDVBSectionReader] DMX_SET_FILTER pid=18
+<   784.080305> 13:27:33.4539 [eDVBSectionReader] DMX_SET_FILTER pid=18
+<   784.107751> 13:27:33.4813 [eDVBSectionReader] DMX_SET_FILTER pid=5000
+<   784.138375> 13:27:33.5119 [eDVBSectionReader] DMX_SET_FILTER pid=5000
+<   784.158991> 13:27:33.5326 [eEPGChannelData] abort non avail OpenTV EIT reading
+<   784.159102> 13:27:33.5327 [eDVBSectionReader] DMX_SET_FILTER pid=57
+<   784.202346> 13:27:33.5759 [eDVBDemux] open demux /dev/dvb/adapter0/demux0
+<   784.202444> 13:27:33.5760 [eDVBSectionReader] DMX_SET_FILTER pid=52
+<   784.543846> 13:27:33.9174 [eDVBServicePMTHandler] sdt update done!
+<   791.159506> 13:27:40.5331 [eEPGChannelData] abort non avail netmed schedule reading
+<   791.160416> 13:27:40.5340 [eEPGChannelData] abort non avail netmed schedule other reading
+<   791.160598> 13:27:40.5342 [eEPGChannelData] abort non avail viasat reading
+<   791.166498> 13:27:40.5401 [eEPGChannelData] nownext<   798.605765> 13:27:47.9793 "::ffff:192.168.1.42" - - [07/Oct/2026:10:27:47 +0000] "GET /api/powerstate HTTP/1.1" 200 40 "-" "curl/8.5.0"
+[MAIN] executing main

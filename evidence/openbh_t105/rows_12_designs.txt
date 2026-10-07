@@ -1,0 +1,8 @@
+screen Screens.InfoBar.InfoBar
+(no config list: 'config')
+key_red      'Grid EPG'
+key_green    'Green Panel'
+key_yellow   'Audio Panel'
+key_blue     'Blue Panel'
+key_help     'HELP'
+Title        'InfoBar'

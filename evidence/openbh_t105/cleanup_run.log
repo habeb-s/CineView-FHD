@@ -1,0 +1,35 @@
+== stop GUI
+== settings
+removed line: config.plugins.cineview.theme=navy
+removed line: config.skin.display_skin=display/CineView_FHD/skin_display_picon.xml
+== package manager
+Removing enigma2-plugin-cineview-mx-openbh (2.0.0-openbh56) from root...
+Removing enigma2-skin-mx-slim-line-se (2.0.0-openbh56) from root...
+Removing enigma2-plugin-skins-cineview-fhd-openbh (2.4.13) from root...
+no old CineView package installed
+== leftovers
+absent   /usr/share/enigma2/CineView_FHD
+absent   /usr/share/enigma2/MX_Slim-Line_SE
+absent   /usr/share/enigma2/display/CineView_FHD
+deleted  /usr/lib/enigma2/python/Plugins/Extensions/CineViewControl
+absent   /usr/share/doc/enigma2-plugin-skins-cineview-fhd-openbh
+absent   /usr/lib/enigma2/python/Components/Converter/CineViewBitrate.py
+deleted  /usr/lib/enigma2/python/Components/Converter/CineViewBitrate.pyc
+absent   /usr/lib/enigma2/python/Components/Converter/CineViewCPUTemp.py
+deleted  /usr/lib/enigma2/python/Components/Converter/CineViewCPUTemp.pyc
+absent   /usr/lib/enigma2/python/Components/Converter/CineViewCamInfo.py
+deleted  /usr/lib/enigma2/python/Components/Converter/CineViewCamInfo.pyc
+absent   /usr/lib/enigma2/python/Components/Converter/CineViewIMDb.py
+deleted  /usr/lib/enigma2/python/Components/Converter/CineViewIMDb.pyc
+absent   /usr/lib/enigma2/python/Components/Converter/CineViewTransponder.py
+absent   /usr/lib/enigma2/python/Components/Converter/CineViewTransponder.pyc
+absent   /usr/lib/enigma2/python/Components/Converter/CineViewTransponderInfo.py
+deleted  /usr/lib/enigma2/python/Components/Converter/CineViewTransponderInfo.pyc
+absent   /usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.py
+deleted  /usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.pyc
+deleted  /etc/enigma2/CineView_FHD_skin_base.xml
+deleted  /var/volatile/tmp/CineViewBitrate.log
+deleted  /usr/uninstall/enigma2-plugin-cineview-mx-openbh.del
+deleted  /usr/uninstall/enigma2-plugin-skins-cineview-fhd-openbh.del
+deleted  /usr/uninstall/enigma2-skin-mx-slim-line-se.del
+CLEANUP_DONE

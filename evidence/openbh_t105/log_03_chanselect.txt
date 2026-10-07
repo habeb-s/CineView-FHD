@@ -1,0 +1,12 @@
+<   852.905602> 13:28:42.2792 [eActionMap] key from dreambox remote control (native): 103 0
+<   852.906044> 13:28:42.2796 [InfoBarGenerics] Key: 103 (Make) KeyID='KEY_UP' Binding='('UP',)'.
+<   852.906126> 13:28:42.2797 [InfoBarGenerics] KEY: 103 UP
+<   852.906214> 13:28:42.2798 [eActionMap] key from dreambox remote control (native): 103 1
+<   852.906392> 13:28:42.2800 [InfoBarGenerics] Key: 103 (Break) KeyID='KEY_UP' Binding='('UP',)'.
+<   852.906444> 13:28:42.2800 [InfoBarGenerics] KEY: 103 UP
+<   852.906763> 13:28:42.2803 [ActionMap] Keymap 'InfobarChannelSelection' -> Action = 'switchChannelUp'.
+<   852.908793> 13:28:42.2824 [Skin] Processing screen 'ChannelSelectionSummary' from list 'ChannelSelectionSummary, ScreenSummary', position=(0, 0), size=(480 x 320) for module 'ScreenSummary'.
+<   852.925058> 13:28:42.2986 "::ffff:192.168.1.42" - - [07/Oct/2026:10:28:42 +0000] "GET /api/remotecontrol?command=103 HTTP/1.1" 200 67 "-" "curl/8.5.0"
+<   857.639023> 13:28:47.0126 [eConsoleAppContainer] Starting /usr/bin/grab
+<   858.469355> 13:28:47.8429 "::ffff:192.168.1.42" - - [07/Oct/2026:10:28:47 +0000] "GET /grab?format=png&mode=all&r=1920 HTTP/1.1" 200 493871 "-" "curl/8.5.0"
+<   858.731347> 13:28:48.1049 "::ffff:192.168.1.42" - - [07/Oct/2026:10:28:48 +0000] "GET /api/powerstate HTTP/1.1" 200 40 "-" "curl/8.5.0"

@@ -1,0 +1,3 @@
+<   949.540096> 13:30:18.9137 [CineViewMLAScreenOpen] opened evsimple
+<   956.329692> 13:30:25.7033 [eConsoleAppContainer] Starting /usr/bin/grab
+<   957.633383> 13:30:27.0070 "::ffff:192.168.1.42" - - [07/Oct/2026:10:30:26 +0000] "GET /grab?format=png&mode=all&r=1920 HTTP/1.1" 200 672983 "-" "curl/8.5.0"

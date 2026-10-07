@@ -1,0 +1,3 @@
+<  1068.854675> 13:32:18.2282 [CineViewMLAScreenOpen] error: [StartEnigma] Error: Modal open are allowed only from a screen which is modal!
+<  1075.668457> 13:32:25.0420 [eConsoleAppContainer] Starting /usr/bin/grab
+<  1076.699968> 13:32:26.0735 "::ffff:192.168.1.42" - - [07/Oct/2026:10:32:26 +0000] "GET /grab?format=png&mode=all&r=1920 HTTP/1.1" 200 698537 "-" "curl/8.5.0"

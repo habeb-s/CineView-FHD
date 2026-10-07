@@ -1,0 +1,16 @@
+model: vuduo4kse / duo4kse
+cmdline: kernel=duo4kse/linuxrootfs5/zImage root=/dev/sdb1 rootsubdir=duo4kse/linuxrootfs5 
+STARTUP: rootsubdir=duo4kse/linuxrootfs5
+image-version:
+distro=openbh
+enigma2 pkg: 5.6+git37259+52deddd14+52dedddc31-r13.14
+python: Python 3.13.12 magic=f30d0d0a
+arch: armv7l / opkg: all any noarch cortexa15hf-neon-vfpv4 static-vuduo4kse static-cortexa15hf-neon-vfpv4 static-all vuduo4kse private ocram armv7ahf-vfp-neon armv7ahf-neon 
+skin: config.skin.primary_skin not set (image default) | display: config.skin.display_skin=display/CineView_FHD/skin_display_picon.xml
+default skin dirs:
+Aglare-FHD BlackShadow_X2P BoHLALA_FHD CineView_FHD Cosmos Cosmos-XP Cosmos-XPI CosmosBlack CosmosBlack-XP CosmosBlack-XPI CosmosBlue CosmosBlue-XP CosmosBlue-XPI CosmosBurgundy CosmosBurgundy-XP CosmosBurgundy-XPI CosmosGlass-XP CosmosGlass-XPI Luka-FHD MX_BlackSea MX_GrayDots_XB MX_GrayDots_XP MX_Slim-Line_NP MX_Slim-Line_SE Magic-FHD Premium-FHD-Blue black.mvi defaults display distro-logo.png 
+rootfs: /dev/sdb1 on / type ext4 (rw,relatime,data=ordered)
+/dev/sdb1                56.1G      4.1G     52.0G   7% /
+tmpfs                   790.6M    736.0K    789.9M   0% /var/volatile
+hdd mount (read only info): /dev/sda1 /media/hdd ext4
+ 13:08:40 up 10 min,  1 user,  load average: 1.16, 1.03, 0.59

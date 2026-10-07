@@ -1,0 +1,6 @@
+<   932.795937> 13:30:02.1695 [CineViewMLAScreenOpen] opened eventview
+<   936.106158> 13:30:05.4797 [EventInfo] gotEvent, type: 'now', what: 'evUpdatedEventInfo', is timed repeat: True
+<   936.109238> 13:30:05.4828 [EventInfo] current event: None
+<   936.109423> 13:30:05.4830 [EventInfo] gotEvent, type: 'next', what: 'evUpdatedEventInfo', is timed repeat: True
+<   939.164029> 13:30:08.5376 [eConsoleAppContainer] Starting /usr/bin/grab
+<   940.889654> 13:30:10.2632 "::ffff:192.168.1.42" - - [07/Oct/2026:10:30:09 +0000] "GET /grab?format=png&mode=all&r=1920 HTTP/1.1" 200 1076357 "-" "curl/8.5.0"

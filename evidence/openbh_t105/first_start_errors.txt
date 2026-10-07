@@ -1,0 +1,33 @@
+<   552.578905> 13:23:41.9525 [Skin] Processing screen 'SecondInfoBar', position=(0, 0), size=(1920 x 1080) for module 'SecondInfoBar'.
+<   552.660119> 13:23:42.0337 [Skin] Error in screen 'SecondInfoBar', AttributeError: 'CineViewMLAServiceInfo' object has no attribute 'interestingEvents'!
+<   552.664751> 13:23:42.0384 Traceback (most recent call last):
+<   552.665154> 13:23:42.0388   File "/usr/lib/enigma2/python/skin.py", line 1723, in readSkin
+<   552.665218> 13:23:42.0388   File "/usr/lib/enigma2/python/skin.py", line 1651, in processScreen
+<   552.665269> 13:23:42.0389   File "/usr/lib/enigma2/python/skin.py", line 1565, in processWidget
+<   552.665317> 13:23:42.0389   File "/usr/lib/enigma2/python/Components/Converter/CineViewMLAServiceInfo.py", line 35, in __init__
+<   552.665422> 13:23:42.0390 AttributeError: 'CineViewMLAServiceInfo' object has no attribute 'interestingEvents'. Did you mean: 'interesting_events'?
+<   552.684117> 13:23:42.0577 [Skin] Attribute 'mode' (with value of 'infobar') in object of type 'ePixmap' is not implemented!
+<   552.685753> 13:23:42.0594 [Skin] Attribute 'mode' (with value of 'infobar') in object of type 'ePixmap' is not implemented!
+<   552.706590> 13:23:42.0802 [Screen] Warning: Skin is missing element 'epg_description' in <class 'Screens.InfoBarGenerics.SecondInfoBar'>.
+<   552.706733> 13:23:42.0803 [Screen] Warning: Skin is missing element 'channel' in <class 'Screens.InfoBarGenerics.SecondInfoBar'>.
+<   552.706836> 13:23:42.0804 [Screen] Warning: Skin is missing element 'key_red' in <class 'Screens.InfoBarGenerics.SecondInfoBar'>.
+<   552.706943> 13:23:42.0805 [Screen] Warning: Skin is missing element 'key_green' in <class 'Screens.InfoBarGenerics.SecondInfoBar'>.
+<   552.707063> 13:23:42.0807 [Screen] Warning: Skin is missing element 'key_yellow' in <class 'Screens.InfoBarGenerics.SecondInfoBar'>.
+--
+<   552.838883> 13:23:42.2125 [Skin] Processing screen 'InfoBar', position=(0, 0), size=(1920 x 1080) for module 'InfoBar'.
+<   552.861316> 13:23:42.2349 [Skin] Error in screen 'InfoBar', AttributeError: 'CineViewMLAServiceInfo' object has no attribute 'interestingEvents'!
+<   552.865137> 13:23:42.2387 Traceback (most recent call last):
+<   552.865415> 13:23:42.2390   File "/usr/lib/enigma2/python/skin.py", line 1723, in readSkin
+<   552.866431> 13:23:42.2400   File "/usr/lib/enigma2/python/skin.py", line 1651, in processScreen
+<   552.866501> 13:23:42.2401   File "/usr/lib/enigma2/python/skin.py", line 1565, in processWidget
+<   552.866555> 13:23:42.2402   File "/usr/lib/enigma2/python/Components/Converter/CineViewMLAServiceInfo.py", line 35, in __init__
+<   552.866660> 13:23:42.2403 AttributeError: 'CineViewMLAServiceInfo' object has no attribute 'interestingEvents'. Did you mean: 'interesting_events'?
+<   552.868980> 13:23:42.2426 [Skin] Attribute 'mode' (with value of 'infobar') in object of type 'ePixmap' is not implemented!
+<   552.870087> 13:23:42.2437 [Skin] Attribute 'mode' (with value of 'infobar') in object of type 'ePixmap' is not implemented!
+<   552.889264> 13:23:42.2629 [Screen] Warning: Skin is missing element 'key_red' in <class 'Screens.InfoBar.InfoBar'>.
+<   552.889387> 13:23:42.2630 [Screen] Warning: Skin is missing element 'key_yellow' in <class 'Screens.InfoBar.InfoBar'>.
+<   552.889479> 13:23:42.2631 [Screen] Warning: Skin is missing element 'key_blue' in <class 'Screens.InfoBar.InfoBar'>.
+<   552.889578> 13:23:42.2632 [Screen] Warning: Skin is missing element 'key_green' in <class 'Screens.InfoBar.InfoBar'>.
+<   552.893493> 13:23:42.2671 [Skin] Processing screen 'InfoBarSummary' from list 'InfoBarSummary, ScreenSummary', position=(0, 0), size=(480 x 320) for module 'InfoBarSummary'.
+      1 <   552.861316> 13:23:42.2349 [Skin] Error in screen 'InfoBar', AttributeError: 'CineViewMLAServiceInfo' object has no attribute 'interestingEvents'!
+      1 <   552.660119> 13:23:42.0337 [Skin] Error in screen 'SecondInfoBar', AttributeError: 'CineViewMLAServiceInfo' object has no attribute 'interestingEvents'!

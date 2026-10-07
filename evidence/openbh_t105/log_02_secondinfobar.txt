@@ -1,0 +1,19 @@
+<   836.670604> 13:28:26.0442 [eActionMap] key from dreambox remote control (native): 352 0
+<   836.671471> 13:28:26.0450 [InfoBarGenerics] Key: 352 (Make) KeyID='KEY_OK' Binding='('OK',)'.
+<   836.671860> 13:28:26.0454 [InfoBarGenerics] KEY: 352 OK
+<   836.672208> 13:28:26.0458 [ActionMap] Keymap 'InfobarShowHideActions' -> Action = 'toggleShow'.
+<   836.820987> 13:28:26.1946 [eActionMap] key from dreambox remote control (native): 352 1
+<   836.821749> 13:28:26.1953 [InfoBarGenerics] Key: 352 (Break) KeyID='KEY_OK' Binding='('OK',)'.
+<   836.822133> 13:28:26.1957 [InfoBarGenerics] KEY: 352 OK
+<   836.823397> 13:28:26.1970 "::ffff:192.168.1.42" - - [07/Oct/2026:10:28:26 +0000] "GET /api/remotecontrol?command=352 HTTP/1.1" 200 67 "-" "curl/8.5.0"
+<   838.940168> 13:28:28.3137 [eActionMap] key from dreambox remote control (native): 352 0
+<   838.940949> 13:28:28.3145 [InfoBarGenerics] Key: 352 (Make) KeyID='KEY_OK' Binding='('OK',)'.
+<   838.941353> 13:28:28.3149 [InfoBarGenerics] KEY: 352 OK
+<   838.941640> 13:28:28.3152 [ActionMap] Keymap 'InfobarShowHideActions' -> Action = 'toggleShow'.
+<   839.085948> 13:28:28.4595 [eActionMap] key from dreambox remote control (native): 352 1
+<   839.086304> 13:28:28.4599 [InfoBarGenerics] Key: 352 (Break) KeyID='KEY_OK' Binding='('OK',)'.
+<   839.086379> 13:28:28.4599 [InfoBarGenerics] KEY: 352 OK
+<   839.087430> 13:28:28.4610 "::ffff:192.168.1.42" - - [07/Oct/2026:10:28:28 +0000] "GET /api/remotecontrol?command=352 HTTP/1.1" 200 67 "-" "curl/8.5.0"
+<   839.121128> 13:28:28.4947 [CineViewMLA] session healthy; guardian counter reset
+<   843.737991> 13:28:33.1116 [eConsoleAppContainer] Starting /usr/bin/grab
+<   844.690245> 13:28:34.0638 "::ffff:192.168.1.42" - - [07/Oct/2026:10:28:33 +0000] "GET /grab?format=png&mode=all&r=1920 HTTP/1.1" 200 425367 "-" "curl/8.5.0"
