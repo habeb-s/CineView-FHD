@@ -55,3 +55,22 @@ Both are off in build92; switching one on = one build flag, then the package is 
 1.0.0 build92 installed (`version.json` build92 / b719a97), active = lkg = g000047, theme black, every section Classic
 (EventView line by line), journal COMMITTED, 0 tracebacks, 0 skin errors, 0 crash logs, development tool removed.
 Backups: /media/usb/cineview-mla/state/backup-t98-20261006-231320, -232105, backup-t98b-20261006-232347.
+
+---
+
+# Round 2 — user review 2026-10-07 05:36 (decisions + open items A–G)
+
+Decisions: **MessageBox fitted to its content — approved** (now default, min 180 / max 900 px; text taller than the room
+under the maximum is cut at the bottom as the fixed box always did — MessageBox text is a plain Label in 57b7a51, there
+is no native scrolling for it). **Setup value font 27 px — approved** (now default, shared ConfigTemplate).
+
+| # | Item (user) | Change | Result |
+|---|---|---|---|
+| A | No development details on screen | status: "CineView MLA 1.0.0 / Design: <model or Custom>   Theme: <label> / Design & Development by habeb-s © 2026"; generation, last known good, build, commit only in the log ("[CineViewMLA] CineView Designs: active …") and version.json | t102 |
+| B | "Apply (trial)" | GREEN "Apply Design"; question "Apply <Design> design with <Theme> theme?"; keep prompt "Keep the <Design> design with <Theme> theme? …"; no "trial", no g000xx anywhere on screen (trial / revert unchanged inside) | t102 |
+| C | Preview / Info Card | rows without a visual preview show a CineView Info Card (icon, option name, short explanation, current value, restart or not); the "no image" placeholder is gone | t102 |
+| D | EventView previews | every EventView design (Classic, line by line, Details Card, Feature, Modern, Minimal) has a real receiver picture | t101 |
+| E | Posters On/Off | Posters rows show the selected design's section with posters ON and OFF side by side (real grabs); Classic PVR has no poster area (approved) → Info Card | t101 |
+| F | Factory | BLUE "Restore Factory Design"; "Restores Classic + Navy and the default CineView layout settings." | t102 |
+| G | Burgundy Cancel contrast | burgundy only: red key text #FF8585 (≈7:1 on the burgundy key bar) | t102 themes |
+| + | Real previews for every design | found during the review: 19 of 32 design previews were a placeholder icon or a drawn mock-up, and the theme previews were colour swatches; all are now real receiver grabs (t101, t101b) | build log "without a preview: none" |
