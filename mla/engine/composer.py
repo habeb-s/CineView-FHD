@@ -209,8 +209,11 @@ def validate(selection, components=None, warnings=None):
 		except ET.ParseError as e:
 			problems.append(f"XML error {f}: {e}")
 			continue
+		override = os.path.basename(f) == "common.%s.xml" % image() and image() != DEFAULT_IMAGE
 		for n in scr:
-			if n in seen:
+			if n in seen and override and os.path.basename(seen[n]) in ("base.openatv.xml", "common.openatv.xml"):
+				pass  # intended: the image's core override replaces the shared screen (last definition wins)
+			elif n in seen:
 				problems.append(f"duplicate screen {n} in {os.path.basename(f)} and {os.path.basename(seen[n])}")
 			seen[n] = f
 		all_screens.update(scr)
