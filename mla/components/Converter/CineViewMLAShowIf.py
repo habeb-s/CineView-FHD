@@ -134,12 +134,12 @@ class CineViewMLAShowIf(Converter):
 		self._up_visible = bool(value)
 		v = self._up_visible and self._visible()
 		for element in self.downstream_elements:
-			element.visible = v
+			_set_visible(element, v)
 
 	def changed(self, what):
 		visible = self._visible() and getattr(self, "_up_visible", True)
 		for element in self.downstream_elements:
-			element.visible = visible
+			_set_visible(element, visible)
 		if getattr(self, "_debug", False):
 			self._log("changed %s" % (what,), visible)
 		Converter.changed(self, what)
@@ -148,7 +148,7 @@ class CineViewMLAShowIf(Converter):
 			# variant that is the default picon (its text is "").  Keep hidden variants hidden (device t57b / t82).
 			for element in self.downstream_elements:
 				try:
-					element.visible = False
+					_set_visible(element, False)
 				except Exception:
 					pass
 
@@ -191,6 +191,19 @@ class CineViewMLAShowIf(Converter):
 
 
 _RTL_RANGES = ((0x0590, 0x08FF), (0xFB1D, 0xFDFF), (0xFE70, 0xFEFF), (0x10800, 0x10FFF), (0x1E800, 0x1EFFF))
+
+
+def _set_visible(element, visible):
+	"""GUIComponent.visible only acts when the flag changes.  A renderer that shows its widget instance itself
+	(OpenBH Renderer/Picon.applySkin -> changed(CHANGED_DEFAULT) -> instance.show(), c06a87ef4c09 / 52dedddc314a)
+	leaves the flag False while the widget is on screen, so a later 'visible = False' does nothing (OpenBH device
+	2026-10-07: poster-on and poster-off channel logos both shown).  A hidden element's instance is therefore
+	hidden explicitly as well; on OpenATV the instance is already hidden there (no visible change)."""
+	element.visible = visible
+	if not visible:
+		inst = getattr(element, "instance", None)
+		if inst is not None:
+			inst.hide()
 
 
 def _direction(text):

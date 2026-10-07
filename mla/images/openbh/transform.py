@@ -87,3 +87,16 @@ def check(text):
 				if a in w.attrib:
 					problems.append("%s: %s" % (scr.get("name"), a))
 	return problems
+
+
+# Shared core files (core/common.openatv.xml, core/mla_ui.openatv.xml) in the OpenBH package:
+# OpenATV 57b7a51 eListbox setValueFont <-> OpenBH 52dedddc314a skin.py "secondfont" -> eListbox::setSecondFont,
+# used by eListboxPythonConfigContent::paint for the VALUE text (lib/gui/elistboxcontent.cpp fnt2; without it OpenBH
+# draws values at font size - 20 %).  Keeps the approved 27 px setting values (user 2026-10-07).
+CORE_ATTR_MAP = (("valueFont", "secondfont"),)
+
+
+def core(text):
+	for old, new in CORE_ATTR_MAP:
+		text = re.sub(r'\s%s="' % old, ' %s="' % new, text)
+	return text

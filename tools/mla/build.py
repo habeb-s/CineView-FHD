@@ -1219,6 +1219,15 @@ def apply_image_overlay(skin, img):
 		spec = importlib.util.spec_from_file_location("mla_transform_%s" % img, tf)
 		mod = importlib.util.module_from_spec(spec)
 		spec.loader.exec_module(mod)
+		if hasattr(mod, "core"):  # attribute mapping of the shared core files in this image's package only
+			for f in ("common.openatv.xml", "mla_ui.openatv.xml"):
+				p = os.path.join(skin, "core", f)
+				t = open(p, encoding="utf-8").read()
+				t2 = mod.core(t)
+				if t2 != t:
+					ET.fromstring(t2.encode("utf-8"))
+					open(p, "w", encoding="utf-8").write(t2)
+					n += 1
 		epgdir = os.path.join(skin, "layouts", "epg")
 		for pack in sorted(os.listdir(epgdir)):
 			dst = os.path.join(epgdir, pack)

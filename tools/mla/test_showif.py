@@ -102,5 +102,38 @@ check("upstream sets visible=True -> renderer follows our condition", r.visible 
 SETTINGS[K] = "False"
 c.changed((2,))
 check("poster switch off -> narrow variant hidden", r.visible is False)
+
+# OpenBH Picon: applySkin -> changed(CHANGED_DEFAULT) -> instance.show() directly; the GUIComponent flag stays False,
+# so "visible = False" alone is a no-op and the hidden variant stays on screen (device 2026-10-07, doubled logo).
+class Inst:
+	def __init__(self):
+		self.shown = True
+
+	def show(self):
+		self.shown = True
+
+	def hide(self):
+		self.shown = False
+
+
+class PiconLike(Renderer):
+	def __init__(self):
+		Renderer.__init__(self)
+		self.instance = Inst()
+
+
+SETTINGS[K] = "True"
+c = CineViewMLAShowIf(K + ",True,Invert,poster0")
+c.source = Src("1:0:19:786:C6D4:16E:A00000:0:0:0:")
+r = PiconLike()
+r.src = c
+c.connectDownstream(r)
+r.instance.show()  # what OpenBH Picon.applySkin does after the converter connected
+c.changed((2,))
+check("hidden variant: widget instance hidden even when the renderer showed it itself", r.instance.shown is False and r.visible is False)
+SETTINGS[K] = "False"
+c.changed((2,))
+check("shown again when its condition becomes true", r.visible is True)
+
 print("RESULT: %s" % ("all passed" if not FAIL else "%d failed" % FAIL))
 sys.exit(1 if FAIL else 0)
