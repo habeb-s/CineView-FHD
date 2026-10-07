@@ -15,15 +15,13 @@ ga() { for a in 1 2 3; do curl -s -m 60 -o $S/$1.png "http://192.168.1.250/grab?
 op() { $R "mkdir -p /tmp/cvmla; echo $1 > /tmp/cvmla/open.txt"; sleep ${2:-5}; }
 rows() { $R 'rm -f /tmp/cvmla/rows.txt; echo rows > /tmp/cvmla/open.txt'; sleep 1.6; $R 'cat /tmp/cvmla/rows.txt 2>/dev/null' > $S/rows_$1.txt; }
 LOGF=""; N=0
-# live volume / mute + the saved value (volume side-effect watch, user 2026-10-07)
-vol() { local v=$(curl -s -m 5 http://192.168.1.250/api/statusinfo | python3 -c "import json,sys;d=json.load(sys.stdin);print('%s%s' % (d.get('volume'), 'M' if d.get('muted') else ''))" 2>/dev/null); echo "$v/$($R 'sed -n "s/^config.audio.volume=//p" /etc/enigma2/settings')"; }
 mark() { LOGF=$($R 'ls -t /home/root/logs/Enigma2_debug_*.log | head -1'); N=$($R "wc -l < $LOGF"); }
 delta() {
 	$R "tail -n +$((N + 1)) $LOGF" > $S/log_$1.txt
 	local tb=$(grep -a -c "Traceback" $S/log_$1.txt) se=$(grep -a -c "\[Skin\] Error\|SkinError" $S/log_$1.txt) mi=$(grep -a -c "Skin is missing element" $S/log_$1.txt) na=$(grep -a -c "is not implemented" $S/log_$1.txt)
 	local scr=$(grep -a -o "\[Skin\] Processing screen '[^']*'" $S/log_$1.txt | sed "s/.*'\(.*\)'/\1/" | grep -v Summary | sort -u | tr '\n' ' ')
 	local err=$(grep -a "CineViewMLAScreenOpen\] error" $S/log_$1.txt | sed 's/.*error: //' | head -1 | cut -c1-80)
-	printf "%-14s tb=%s skinerr=%s missing=%s notimpl=%s vol=%s screens: %s%s\n" "$1" $tb $se $mi $na "$(vol)" "$scr" "${err:+ TOOL-ERROR: $err}" | tee -a $S/summary.txt
+	printf "%-14s tb=%s skinerr=%s missing=%s notimpl=%s screens: %s%s\n" "$1" $tb $se $mi $na "$scr" "${err:+ TOOL-ERROR: $err}" | tee -a $S/summary.txt
 }
 restart_gui() { local o=$($R pidof enigma2); $R 'init 4; for i in $(seq 1 30); do pidof enigma2 >/dev/null || break; sleep 1; done; init 3'
 	for i in $(seq 1 90); do p=$($R 'pidof enigma2' 2>/dev/null); [ -n "$p" ] && [ "$p" != "$o" ] && break; sleep 2; done

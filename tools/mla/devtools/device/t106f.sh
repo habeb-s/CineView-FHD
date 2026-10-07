@@ -25,7 +25,7 @@ pid5() { $R 'pidof enigma2'; }
 newe2() { local old=$1; for i in $(seq 1 120); do p=$($R 'pidof enigma2' 2>/dev/null); [ -n "$p" ] && [ "$p" != "$old" ] && break; sleep 2; done
 	for i in $(seq 1 60); do curl -s -m 3 -o /dev/null -w "%{http_code}" http://192.168.1.250/api/statusinfo 2>/dev/null | grep -q 200 && break; sleep 3; done; }
 waithealthy() { for k in $(seq 1 40); do sleep 4; $R 'grep -a "CineViewMLA\] session healthy" $(ls -t /home/root/logs/Enigma2_debug_*.log | head -1) >/dev/null' && return 0; done; return 1; }
-errs() { $R 'f=$(ls -t /home/root/logs/Enigma2_debug_*.log | head -1); echo "   tracebacks=$(grep -a -c Traceback $f) skin_errors=$(grep -a -c "\[Skin\] Error\|SkinError" $f) crashlogs_today=$(ls /home/root/logs | grep -i crash | grep -c 2026-10-07) saved_volume=$(sed -n "s/^config.audio.volume=//p" /etc/enigma2/settings)"'; echo "   live volume: $(curl -s -m 5 http://192.168.1.250/api/statusinfo | python3 -c "import json,sys;d=json.load(sys.stdin);print(d.get('volume'), 'muted' if d.get('muted') else '')" 2>/dev/null)"; }
+errs() { $R 'f=$(ls -t /home/root/logs/Enigma2_debug_*.log | head -1); echo "   tracebacks=$(grep -a -c Traceback $f) skin_errors=$(grep -a -c "\[Skin\] Error\|SkinError" $f) crashlogs_today=$(ls /home/root/logs | grep -i crash | grep -c 2026-10-07)"'; }
 ORIG=$($R "python3 -c \"import json;d=json.load(open('$ST/selection.json'));print('--theme', d['theme'], ' '.join('--set %s=%s'%kv for kv in sorted(d['layouts'].items())))\"")
 echo "selection before: $(sel)"; X
 
