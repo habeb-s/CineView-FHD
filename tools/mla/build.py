@@ -1067,6 +1067,24 @@ def apply_pvr_header_icons(skin):
 	return done
 
 
+def apply_caminfo_wrap(skin):
+	"""CAM / server field (CineViewMLACamInfo in a RunningText, InfoBar / SecondInfoBar / EventView designs): the
+	converter returns one line per item (CAM, "Reader: ...", "Server: ..." in Full mode) but the widget options had no
+	'wrap', and RunningText without RT_WRAP turns the line breaks into spaces (Components/Renderer/RunningText.py,
+	OpenATV 57b7a51 and OpenBH 52dedddc314a alike) -> one line, cut at 225 px: the Full-mode server never shows
+	(OpenBH t106e 2026-10-07; same renderer and XML on OpenATV).  'wrap' gives the intended lines in the same box.
+	PROTOTYPE behind MLA_CAMINFO_WRAP=1 until the user approves the look."""
+	done = []
+	for f in sorted(glob.glob(os.path.join(skin, "layouts", "*", "*", "screens.openatv.xml"))):
+		x = open(f, encoding="utf-8").read()
+		x2, n = re.subn(r'(<widget [^>]*render="RunningText"[^>]*options=")([^"]*)("[^>]*>\s*<convert type="CineViewMLACamInfo">)',
+			lambda m: m.group(1) + (m.group(2) if ",wrap" in m.group(2) else m.group(2) + ",wrap") + m.group(3), x)
+		if n:
+			open(f, "w", encoding="utf-8").write(x2)
+			done.append((os.path.relpath(f, skin), n))
+	return done
+
+
 def apply_package_screens(skin):
 	"""Plugin / package management (user 2026-10-06 22:00; live stack t96): the busy window of Install / Remove /
 	Update Plugins, of the feed update and of every other caller is the GLOBAL dialog Screens.Processing.ProcessingScreen
@@ -1403,6 +1421,9 @@ def main(golden, comps, control, out):
 			if lx2 != lx:
 				open(lp, "w", encoding="utf-8").write(lx2)
 				print("MOVIELIST legacy attributes removed:", os.path.relpath(lp, skin))
+	if os.environ.get("MLA_CAMINFO_WRAP", "0") == "1":
+		for f, n in apply_caminfo_wrap(skin):
+			print("CAMINFO wrap (prototype): %s %d widget(s)" % (f, n))
 	for pack, nscr in apply_pvr_header_icons(skin):
 		print("PVR header icons moved to the clock row: %s (%d screen(s))" % (pack, nscr))
 	# Accelerated-pool optimizer for every non-Classic pack (tools/mla/accel_opt.py; device t67-t74)

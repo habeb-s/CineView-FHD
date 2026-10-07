@@ -6,7 +6,7 @@
 set -e
 CO=${1:?checkout}; VER=${2:?version}
 cd ~/cineview-mla
-bash "$CO/tools/mla/parity_openatv.sh" "$CO" build_parity > parity_last.log 2>&1 || { echo "PARITY FAILED - no OpenBH build"; tail -8 parity_last.log; exit 3; }
+env -u MLA_CAMINFO_WRAP bash "$CO/tools/mla/parity_openatv.sh" "$CO" build_parity > parity_last.log 2>&1 || { echo "PARITY FAILED - no OpenBH build"; tail -8 parity_last.log; exit 3; }
 tail -3 parity_last.log
 G=candidates/golden0926/usr
 rm -rf build_bh
