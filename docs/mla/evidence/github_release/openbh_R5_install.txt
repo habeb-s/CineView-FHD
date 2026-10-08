@@ -1,0 +1,55 @@
+
+  CineView MLA Smart Installer    version 1.2.2
+  Design & Development by habeb-s (c) 2026
+
+Device
+  [OK] Vu+ Duo4K SE (vuduo4kse, confirmed by the receiver driver)
+
+Image
+  [OK] OpenBH 5.6 detected (image information and the image's own files agree)
+
+Version
+  [OK] OpenBH 5.6 is supported (tested on OpenBH 5.6)
+  [OK] Package source: CineView MLA distribution point
+
+Python
+  [OK] Python 3.13 compatible
+
+Architecture
+  [OK] Architecture: cortexa15hf-neon-vfpv4 (CineView MLA is architecture-independent)
+
+Compatibility
+  [OK] Required components present (python3-pillow, python3-requests)
+  [OK] Package matches this receiver
+
+Storage
+  [OK] Free space: 53242 MB
+  [OK] Poster cache: /tmp/CINEVIEW-MLA/poster (your setting, kept)
+
+Existing installation
+  [..] Current version: 1.0.0~openbh17
+  [..] New version:     1.0.1~openbh1
+  [OK] Upgrade: your design, theme, profiles, settings and poster cache are kept
+
+Package
+  [OK] Package verified (SHA256)
+
+Installing
+  [OK] Restore point saved
+  [OK] CineView MLA 1.0.1~openbh1 installed
+
+Verification
+  [OK] Package version 1.0.1~openbh1
+  [OK] Skin files present
+  [OK] Plugin loadable
+  [OK] Plugin icon present
+  [OK] CineView Designs available in the Plugin Browser
+
+Result
+  CineView MLA 1.0.1~openbh1 installed successfully.
+
+  +-----------------------------------------------------+
+  |  Restart the GUI to load CineView MLA 1.0.1~openbh1. |
+  +-----------------------------------------------------+
+  [..] Restarting the GUI ...
+
