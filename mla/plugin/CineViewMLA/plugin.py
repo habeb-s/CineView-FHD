@@ -946,7 +946,8 @@ def _openbh_name_layout(lst):
 		budget = min(budget, user_col - after - 2 * dist)
 	if budget < 60:
 		return None
-	return {"budget": budget, "column": column, "after": after, "dist": dist, "font_key": fk, "area": area}
+	return {"budget": budget, "column": column, "after": after, "dist": dist, "font_key": fk, "area": area,
+		"budget_alone": (area - after - NAME_EST_MARGIN) if not column and user_col <= 0 else budget}
 
 
 _cvmla_advances = {}  # font key -> {character: advance}
@@ -1022,8 +1023,15 @@ def _openbh_apply_names(lst):
 	# Estimated widths (sum of character advances) decide; only names within NAME_EST_MARGIN of the budget are
 	# measured.  In the flow layout the programme always starts after the drawn name, so an estimate never causes
 	# an overlap; the bar-right column (wide lists only) measures every shortened name.
-	names, shown, measured, err = {}, [], 0, 0
+	names, shown, measured, err, alone = {}, [], 0, 0, 0
 	verify = lay["column"]
+	epg = None
+	if lay["budget_alone"] > budget:  # flow layout: a row without a programme may use the whole text area
+		try:
+			from enigma import eEPGCache
+			epg = eEPGCache.getInstance()
+		except Exception:
+			epg = None
 	for n, i, name in rows:
 		w = _cvmla_estimate(fk, font, name)
 		if w > budget - NAME_EST_MARGIN:
@@ -1032,8 +1040,16 @@ def _openbh_apply_names(lst):
 				real = _cvmla_text_width(fk, font, name)
 				err = max(err, abs(real - w))
 				w = real
-			if w > budget:
-				short = _cvmla_shorten(fk, font, name, budget, verify)
+			limit = budget
+			if w > budget and epg is not None:
+				try:
+					if epg.lookupEventTime(refs[i], -1) is None:
+						limit = lay["budget_alone"]
+						alone += 1
+				except Exception:
+					pass
+			if w > limit:
+				short = _cvmla_shorten(fk, font, name, limit, verify)
 				if short:
 					r = refs[i]
 					names[r.toCompareString()] = r.getName()  # the entry's own name field ("" = channel database)
@@ -1083,8 +1099,8 @@ def _openbh_apply_names(lst):
 		lst.l.setColumnWidth(int(config.usage.servicelist_column.value))  # the native value again
 		lst._cvmla_col = None
 	lst.instance and lst.instance.invalidate()
-	print("[CineViewMLA] channel names (OpenBH): %d rows, %d services, %d measured (estimate error <= %d px), %d shortened, budget %d px, column %s, %d ms (names %d, widths %d, refill %d)" % (
-		len(refs), len(rows), measured, err, len(names), budget, col, int((time.time() - t0) * 1000), int((t1 - t0) * 1000), int((t2 - t1) * 1000), int((t3 - t2) * 1000)))
+	print("[CineViewMLA] channel names (OpenBH): %d rows, %d services, %d measured (estimate error <= %d px), %d shortened (%d rows without programme), budget %d px, column %s, %d ms (names %d, widths %d, refill %d)" % (
+		len(refs), len(rows), measured, err, len(names), alone, budget, col, int((time.time() - t0) * 1000), int((t1 - t0) * 1000), int((t2 - t1) * 1000), int((t3 - t2) * 1000)))
 
 
 def _cvmla_original(lst, r):
