@@ -850,120 +850,264 @@ def _clip_service_name_cell(lst, mode):
 	return width, shift
 
 
-NAME_COLUMN_MAX = 0.68  # bar right: the name column never takes more than this share of the room before the bar
-NAME_COLUMN_SCAN = 800  # names measured per bouquet (a very large root: the column is capped instead)
+# ---------------------------------------------------------------------------------------------------------------
+# OpenBH channel list: long channel names (user requirement 2026-10-08: every design, bar left and bar right, no
+# overlap with the bar, no name glued to its programme, no glyph cut in half, as much text as possible).
+#
+# OpenBH 52dedddc314a lib/service/listboxservice.cpp, single-line visModeComplex, draws per row:
+#   sides | number "00000" + d | [bar + d (bar left)] | picon itemHeight*1.67 + d | d | [type icon + d] [crypt + d]
+#   | name | event text | [bar (bar right)]
+# The name paragraph is as wide as the whole row (no column) or exactly the column; there is no ellipsis and no gap
+# in the engine, so a name that does not fit runs under the bar / to the list edge or is cut mid-glyph against the
+# programme.  The only per-row input is the text itself (service_info->getName(): the reference's own name when it
+# has one).  So: the names that do not fit their row get a shortened display name with an ellipsis, on in-memory
+# copies of the list entries (eListboxServiceContent setRoot(justSet) / addService / FillFinished - the native
+# refill path ChannelSelection itself uses).  Nothing is written anywhere: bouquets, lamedb and settings are not
+# touched, and every reference handed out by the list (getCurrent / getNext / getPrev / getList and the picon
+# lookup) gets its original name back, so zapping, history, timers, EPG and edit functions see the real service.
+#   bar left / percent left (flow, native look): name, one item distance, programme.
+#   bar right / percent right: one name column per list, as wide as its longest (shortened) name + NAME_GAP, so the
+#   programmes line up and always start NAME_GAP after the name (user decision 2026-10-08, option C).
+# In both modes a name may use the text area minus the programme reserve (NAME_EVENT_SHARE of the area, at least
+# NAME_EVENT_MIN, at most NAME_EVENT_MAX px), so wide designs keep every name whole and narrow designs still show a
+# readable programme.
+NAME_EVENT_SHARE = 0.32
+NAME_EVENT_MIN = 90
+NAME_EVENT_MAX = 220
+NAME_GAP = 32
+NAME_ELLIPSIS = "…"
+_cvmla_short_names = {}  # compare string -> original name field, entries shortened in the current channel list
+_cvmla_text_widths = {}
 
 
-def _openbh_name_room(lst):
-	"""OpenBH 52dedddc314a lib/service/listboxservice.cpp, single-line visModeComplex: xoffs = sidesMargin
-	[+ number field "00000" + itemsDistances] [+ picon itemHeight*1.67 + itemsDistances] [+ type / crypto icon
-	(mode 1) + itemsDistances]; the name paragraph is as wide as the row unless m_column_width > -1 (then it is
-	clipped at the column and the event text starts there); bar right: pb_xpos = row - bar - 2*distances
-	- 2*sidesMargin - 2*border.  Returns (room for name + event text, item distance), or None when the list is not
-	in that case - bar left (OpenBH default), two lines, a user column width, another screen or skin."""
+def _cvmla_text_width(font_key, font, text):
+	k = (font_key, text)
+	w = _cvmla_text_widths.get(k)
+	if w is None:
+		from enigma import eLabel, eSize
+		w = eLabel.calculateTextSize(font, text, eSize(4000, 200)).width()
+		if len(_cvmla_text_widths) > 20000:
+			_cvmla_text_widths.clear()
+		_cvmla_text_widths[k] = w
+	return w
+
+
+def _openbh_name_layout(lst):
+	"""Name budget of one channel list row, or None when the list is not the single-line channel list of
+	ChannelSelection with CineView MLA active (two-line mode is a different native layout)."""
 	cu = config.usage
 	if getattr(lst, "instance", None) is None or not mla_active():
 		return None
 	if type(getattr(lst, "serviceList", None)).__name__ != "ChannelSelection":
 		return None
-	if int(cu.servicelist_twolines.value) or cu.servicelist_column.value != "-1":
+	if int(cu.servicelist_twolines.value):
 		return None
-	bar = cu.show_event_progress_in_servicelist.value
-	if bar not in ("barright", "percright"):
-		return None
-	from enigma import eLabel, eSize
 	from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
-	dist, border = 8, 2  # eListboxServiceContent defaults (m_items_distances, m_progressbar_border_width)
+	dist = getattr(lst, "_cvmla_dist", 8)  # skin itemsDistances / progressbarBorderWidth, engine defaults 8 / 2
+	border = getattr(lst, "_cvmla_border", 2)
 	row = lst.instance.size().width()
 	sides = getattr(lst, "sidesMargin", 0)
-	pbw = (getattr(lst, "progressPercentWidth", 0) or lst.progressBarWidth) if bar == "percright" else lst.progressBarWidth
-	pb_x = row - pbw - 2 * dist - 2 * sides - 2 * border
+	bar = cu.show_event_progress_in_servicelist.value
+	pbw = (lst.progressPercentWidth or lst.progressBarWidth) if bar.startswith("perc") else lst.progressBarWidth
+	fk = (lst.ServiceNameFontName, lst.ServiceNameFontSize, cu.servicename_fontsize.value)
 	x = sides
 	if cu.show_channel_numbers_in_servicelist.value:
-		x += eLabel.calculateTextSize(lst.ServiceNumberFont, "0000" if cu.alternative_number_mode.value else "00000", eSize(row, lst.ItemHeight)).width() + dist
+		nk = (lst.ServiceNumberFontName, lst.ServiceNumberFontSize, cu.servicenum_fontsize.value)
+		x += _cvmla_text_width(nk, lst.ServiceNumberFont, "0000" if cu.alternative_number_mode.value else "00000") + dist
+	if bar in ("barleft", "percleft"):
+		x += pbw + dist
 	if cu.service_icon_enable.value:
 		x += int(lst.ItemHeight * 1.67) + dist
+	x += dist  # iconSystemPosX = xoffs + m_items_distances
+	after = 0  # icons drawn after the name (icon mode 2)
 	for mode_cfg, icon in ((cu.servicetype_icon_mode, "icons/ico_dvb-s.png"), (cu.crypto_icon_mode, "icons/icon_crypt.png")):
-		if mode_cfg.value == "1":
-			pic = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, icon))
+		if mode_cfg.value in ("1", "2"):
+			pic = LoadPixmap(path=resolveFilename(SCOPE_CURRENT_SKIN, icon), cached=True)
 			if pic:
-				x += pic.size().width() + dist
-	room = pb_x - x - 2 * dist
-	return (room, dist) if room >= 160 else None
-
-
-def _openbh_fit_column(lst):
-	"""Bar on the right (user decision 2026-10-08, option C): one name column for the whole bouquet, as wide as its
-	longest channel name + a gap, so every name ends before the event text and the event text ends before the bar
-	(native eListboxServiceContent::setColumnWidth).  Short bouquets keep the name-then-programme look with aligned
-	programmes; only a name longer than NAME_COLUMN_MAX of the room is cut, at the column.  None = not applicable."""
-	r = _openbh_name_room(lst)
-	if not r:
+				if mode_cfg.value == "1":
+					x += pic.size().width() + dist
+				else:
+					after += pic.size().width() + dist
+	right = bar in ("barright", "percright")
+	end = (row - pbw - 2 * dist - 2 * sides - 2 * border) if right else (row - 2 * sides)
+	area = end - 2 * dist - x  # where the event paragraph of a row with an empty name would end
+	if area < 120:
 		return None
-	room, dist = r
-	from enigma import eLabel, eSize, eServiceCenter, eServiceReference
-	widest = 0
-	try:
-		sc = eServiceCenter.getInstance()
-		services = sc.list(lst.root) if lst.root is not None else None
-		size = eSize(room * 4, lst.ItemHeight)
-		n = 0
-		while services is not None and n < NAME_COLUMN_SCAN:
-			ref = services.getNext()
-			if not ref.valid():
-				break
-			n += 1
-			if ref.flags & (eServiceReference.isMarker | eServiceReference.isDirectory):
-				continue
-			info = sc.info(ref)
-			name = info and info.getName(ref) or ""
-			if name:
-				widest = max(widest, eLabel.calculateTextSize(lst.ServiceNameFont, name, size).width())
-		if n >= NAME_COLUMN_SCAN:
-			widest = room  # very large root: use the cap
-	except Exception as err:
-		print("[CineViewMLA] name column (OpenBH): names: %s" % err)
-		widest = room
-	gap = 4 * dist  # clear separation name | programme (2*dist alone looked joined on the longest name)
-	return max(80, min(widest + gap, int(room * NAME_COLUMN_MAX)))
+	reserve = min(max(int(area * NAME_EVENT_SHARE), NAME_EVENT_MIN), NAME_EVENT_MAX)
+	user_col = int(cu.servicelist_column.value)
+	column = right and user_col == -1
+	budget = area - reserve - after
+	if column:
+		budget -= NAME_GAP
+	elif user_col > 0:  # the user's own native column: names end a gap before it
+		budget = min(budget, user_col - after - 2 * dist)
+	if budget < 60:
+		return None
+	return {"budget": budget, "column": column, "after": after, "dist": dist, "font_key": fk, "area": area}
+
+
+def _cvmla_shorten(fk, font, name, budget):
+	lo, hi, best = 1, len(name) - 1, ""
+	while lo <= hi:
+		mid = (lo + hi) // 2
+		s = name[:mid].rstrip(" -_.,:;|/(") + NAME_ELLIPSIS
+		if _cvmla_text_width(fk, font, s) <= budget:
+			best, lo = s, mid + 1
+		else:
+			hi = mid - 1
+	return best
+
+
+def _openbh_editing(lst):
+	cs = getattr(lst, "serviceList", None)
+	return bool(getattr(cs, "movemode", False) or getattr(cs, "bouquet_mark_edit", 0))
+
+
+def _openbh_apply_names(lst):
+	"""Shorten the names that do not fit (in-memory copies only) and set the name column (bar right)."""
+	global _cvmla_short_names
+	lay = _openbh_name_layout(lst)
+	if lay is None or _openbh_editing(lst):
+		if getattr(lst, "_cvmla_col", None):
+			lst.l.setColumnWidth(int(config.usage.servicelist_column.value))
+			lst._cvmla_col = None
+		lst._cvmla_names = {}
+		return
+	from enigma import eServiceCenter, eServiceReference
+	t0 = time.time()
+	sc = eServiceCenter.getInstance()
+	font, fk, budget = lst.ServiceNameFont, lay["font_key"], lay["budget"]
+	refs = lst.l.getList()
+	names, out, widest, changed = {}, [], 0, False
+	for r in refs:
+		if not r.valid() or r.flags & (eServiceReference.isMarker | eServiceReference.isDirectory):
+			out.append(r)
+			continue
+		info = sc.info(r)
+		name = info and info.getName(r) or ""
+		w = _cvmla_text_width(fk, font, name) if name else 0
+		if w > budget:
+			short = _cvmla_shorten(fk, font, name, budget)
+			if short:
+				names[r.toCompareString()] = r.getName()  # the entry's own name field ("" = channel database)
+				r.setName(short)  # r is a copy made by getList()
+				w = _cvmla_text_width(fk, font, short)
+				changed = True
+		widest = max(widest, w)
+		out.append(r)
+	if changed:
+		cur = eServiceReference()
+		lst.l.getCurrent(cur)
+		lst.l.setRoot(lst.root, True)  # native refill path (ChannelSelection.showSatellites does the same)
+		for r in out:
+			lst.l.addService(r)
+		lst.l.FillFinished()
+		if cur.valid():
+			lst.l.setCurrent(cur)
+	lst._cvmla_names = names
+	_cvmla_short_names = names
+	col = None
+	if lay["column"]:
+		col = max(80, widest + lay["after"] + (lay["dist"] if lay["after"] else 0) + NAME_GAP)
+	if col:
+		if col != getattr(lst, "_cvmla_col", None):
+			lst.l.setColumnWidth(col)
+			lst._cvmla_col = col
+	elif getattr(lst, "_cvmla_col", None):
+		lst.l.setColumnWidth(int(config.usage.servicelist_column.value))  # the native value again
+		lst._cvmla_col = None
+	lst.instance and lst.instance.invalidate()
+	print("[CineViewMLA] channel names (OpenBH): %d rows, %d shortened, budget %d px, column %s, %d ms" % (
+		len(refs), len(names), budget, col, int((time.time() - t0) * 1000)))
+
+
+def _cvmla_original(lst, r):
+	m = getattr(lst, "_cvmla_names", None)
+	if m and r is not None and r.valid():
+		k = r.toCompareString()
+		if k in m:
+			r.setName(m[k])
+	return r
 
 
 def _install_openbh_name_column():
 	try:
 		from Components.ServiceList import ServiceList
+		from Components.Renderer.Picon import getPiconName
 	except Exception as err:
-		print("[CineViewMLA] name column (OpenBH): unavailable: %s" % err)
+		print("[CineViewMLA] channel names (OpenBH): unavailable: %s" % err)
 		return
 	if getattr(ServiceList.setMode, "_cvmla_name_clip", False):
 		return
+	from enigma import eServiceReference
 
-	def apply(self):
+	def picon_name(refstr):
+		if _cvmla_short_names:
+			try:
+				r = eServiceReference(refstr)
+				k = r.toCompareString()
+				if k in _cvmla_short_names:
+					r.setName(_cvmla_short_names[k])
+					refstr = r.toString()
+			except Exception:
+				pass
+		return getPiconName(refstr)
+
+	def run(self):
 		try:
-			w = _openbh_fit_column(self)
-			if w:
-				if w != getattr(self, "_cvmla_col", None):
-					self.l.setColumnWidth(w)
-					self._cvmla_col = w
-					self.instance and self.instance.invalidate()
-			elif getattr(self, "_cvmla_col", None):
-				self.l.setColumnWidth(int(config.usage.servicelist_column.value))  # the native value again
-				self._cvmla_col = None
-				self.instance and self.instance.invalidate()
+			_openbh_apply_names(self)
 		except Exception as err:
-			print("[CineViewMLA] name column (OpenBH): %s" % err)
+			print("[CineViewMLA] channel names (OpenBH): %s" % err)
+
+	def applySkin(self, desktop, parent, _orig=ServiceList.applySkin):
+		try:
+			from skin import parseScale
+			for attrib, value in self.skinAttributes or ():
+				if attrib == "itemsDistances":
+					self._cvmla_dist = parseScale(value)
+				elif attrib == "progressbarBorderWidth":
+					self._cvmla_border = parseScale(value)
+		except Exception as err:
+			print("[CineViewMLA] channel names (OpenBH): skin: %s" % err)
+		return _orig(self, desktop, parent)
 
 	def setMode(self, mode, _orig=ServiceList.setMode):
-		_orig(self, mode)  # sets the native column width again
+		_orig(self, mode)  # sets the native column width and picon function again
 		self._cvmla_col = None
-		apply(self)
+		if config.usage.service_icon_enable.value:
+			self.l.setGetPiconNameFunc(picon_name)
 
 	def setRoot(self, root, justSet=False, _orig=ServiceList.setRoot):
 		_orig(self, root, justSet)
-		apply(self)
+		if not justSet:
+			run(self)
+			self.selectionChanged()
+
+	def resetRoot(self, _orig=ServiceList.resetRoot):
+		_orig(self)
+		run(self)
+
+	def getCurrent(self, _orig=ServiceList.getCurrent):
+		return _cvmla_original(self, _orig(self))
+
+	def getPrev(self, _orig=ServiceList.getPrev):
+		return _cvmla_original(self, _orig(self))
+
+	def getNext(self, _orig=ServiceList.getNext):
+		return _cvmla_original(self, _orig(self))
+
+	def getList(self, _orig=ServiceList.getList):
+		return [_cvmla_original(self, r) for r in _orig(self)]
 	setMode._cvmla_name_clip = True
+	ServiceList.applySkin = applySkin
 	ServiceList.setMode = setMode
 	ServiceList.setRoot = setRoot
-	print("[CineViewMLA] name column installed (OpenBH, bar right only)")
+	ServiceList.resetRoot = resetRoot
+	ServiceList.getCurrent = getCurrent
+	ServiceList.getPrev = getPrev
+	ServiceList.getNext = getNext
+	ServiceList.getList = getList
+	print("[CineViewMLA] channel names installed (OpenBH: shortened display names, bar right name column)")
 
 
 def _install_service_name_clip():
