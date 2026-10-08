@@ -1,0 +1,2 @@
+pyc (Python 3.14): 15 modules -> CineViewMLAPosterMatch.py, CineViewMLAPosterState.py, CineViewMLABitrate.py, CineViewMLACPUTemp.py, CineViewMLACamInfo.py, CineViewMLAIMDb.py, CineViewMLAServiceInfo.py, CineViewMLAShowIf.py, CineViewMLATransponder.py, CineViewMLATransponderInfo.py, CineViewMLALineText.py, CineViewMLAPosterX.py, __init__.py, image_adapter.py, plugin.py
+/tmp/s8w.BbDA/pkg/enigma2-plugin-skins-cineview-fhd-mla_1.0.0~s8static_all.ipk  (753 entries, data 15.9 MB)

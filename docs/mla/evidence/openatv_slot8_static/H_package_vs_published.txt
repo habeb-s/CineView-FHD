@@ -1,0 +1,29 @@
+control scripts vs published 1.0.0:
+  preinst identical
+  postinst identical
+  prerm identical
+  postrm identical
+file list differs:
+14a15
+> ./usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/image_adapter.pyc
+files with different content:
+  ./usr/lib/enigma2/python/Components/Converter/CineViewMLACamInfo.pyc
+  ./usr/lib/enigma2/python/Components/Converter/CineViewMLAServiceInfo.pyc
+  ./usr/lib/enigma2/python/Components/Converter/CineViewMLAShowIf.pyc
+  ./usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/plugin.pyc
+  ./usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/version.json
+  ./usr/share/enigma2/CineView_FHD_MLA/generations/g000000/pvr.xml
+  ./usr/share/enigma2/CineView_FHD_MLA/generations/g000000/MANIFEST.sha256
+  ./usr/share/enigma2/CineView_FHD_MLA/generations/g000000/secondinfobar.xml
+  ./usr/share/enigma2/CineView_FHD_MLA/generations/g000000/eventview.xml
+  ./usr/share/enigma2/CineView_FHD_MLA/generations/g000000/infobar.xml
+  ./usr/share/enigma2/CineView_FHD_MLA/mla/guardian/guardian.sh
+  ./usr/share/enigma2/CineView_FHD_MLA/mla/engine/composer.py
+  ./usr/share/enigma2/CineView_FHD_MLA/layouts/eventview/classic-lines/screens.openatv.xml
+  ./usr/share/enigma2/CineView_FHD_MLA/layouts/eventview/classic/screens.openatv.xml
+  ./usr/share/enigma2/CineView_FHD_MLA/layouts/pvr/classic/screens.openatv.xml
+  ./usr/share/enigma2/CineView_FHD_MLA/layouts/pvr/cover/screens.openatv.xml
+  ./usr/share/enigma2/CineView_FHD_MLA/layouts/secondinfobar/details/screens.openatv.xml
+  ./usr/share/enigma2/CineView_FHD_MLA/layouts/secondinfobar/classic/screens.openatv.xml
+  ./usr/share/enigma2/CineView_FHD_MLA/layouts/infobar/details/screens.openatv.xml
+  ./usr/share/enigma2/CineView_FHD_MLA/layouts/infobar/classic/screens.openatv.xml

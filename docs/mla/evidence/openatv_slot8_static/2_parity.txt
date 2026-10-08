@@ -1,0 +1,27 @@
+PARITY: 25 differing files vs golden build94
+   usr/lib/enigma2/python/Components/Converter/CineViewMLACamInfo.py
+   usr/lib/enigma2/python/Components/Converter/CineViewMLAServiceInfo.py
+   usr/lib/enigma2/python/Components/Converter/CineViewMLAShowIf.py
+   usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/image_adapter.py
+   usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/plugin.py
+   usr/share/enigma2/CineView_FHD_MLA/active/MANIFEST.sha256
+   usr/share/enigma2/CineView_FHD_MLA/active/eventview.xml
+   usr/share/enigma2/CineView_FHD_MLA/active/infobar.xml
+   usr/share/enigma2/CineView_FHD_MLA/active/pvr.xml
+   usr/share/enigma2/CineView_FHD_MLA/active/secondinfobar.xml
+   usr/share/enigma2/CineView_FHD_MLA/generations/g000000/MANIFEST.sha256
+   usr/share/enigma2/CineView_FHD_MLA/generations/g000000/eventview.xml
+   usr/share/enigma2/CineView_FHD_MLA/generations/g000000/infobar.xml
+   usr/share/enigma2/CineView_FHD_MLA/generations/g000000/pvr.xml
+   usr/share/enigma2/CineView_FHD_MLA/generations/g000000/secondinfobar.xml
+   usr/share/enigma2/CineView_FHD_MLA/layouts/eventview/classic/screens.openatv.xml
+   usr/share/enigma2/CineView_FHD_MLA/layouts/eventview/classic-lines/screens.openatv.xml
+   usr/share/enigma2/CineView_FHD_MLA/layouts/infobar/classic/screens.openatv.xml
+   usr/share/enigma2/CineView_FHD_MLA/layouts/infobar/details/screens.openatv.xml
+   usr/share/enigma2/CineView_FHD_MLA/layouts/pvr/classic/screens.openatv.xml
+   usr/share/enigma2/CineView_FHD_MLA/layouts/pvr/cover/screens.openatv.xml
+   usr/share/enigma2/CineView_FHD_MLA/layouts/secondinfobar/classic/screens.openatv.xml
+   usr/share/enigma2/CineView_FHD_MLA/layouts/secondinfobar/details/screens.openatv.xml
+   usr/share/enigma2/CineView_FHD_MLA/mla/engine/composer.py
+   usr/share/enigma2/CineView_FHD_MLA/mla/guardian/guardian.sh
+PARITY: PASS (skin XML, layouts, themes, previews, assets identical; only the listed shared code changed)

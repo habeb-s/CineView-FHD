@@ -1,0 +1,12 @@
+PASS start 1 counts 1
+PASS start 2 (1 crash) keeps trial
+PASS start 3 (2 crashes) -> last-known-good
+PASS start 5 -> factory
+PASS start 7 -> previous skin restored
+PASS other settings preserved
+PASS guardian inert once MLA is not the active skin
+PASS clean exit resets the counter
+PASS not active -> no action
+PASS python engine unavailable -> shell fallback to factory
+PASS interrupted write cleaned at boot
+RESULT: 11/11 passed

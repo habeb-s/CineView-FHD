@@ -1,0 +1,3 @@
+image: openatv
+native rows: [('show_second_infobar', 'Second InfoBar mode'), ('second_infobar_timeout', 'Second InfoBar timeout')]
+shutdown hook: session | ChoiceBox: {'choiceList': ['x']} | package wait: packageaction | name clip: legacycell | label overrides: ()

@@ -1,0 +1,13 @@
+
+  CineView MLA Smart Installer    version 1.0.0
+  Design & Development by habeb-s (c) 2026
+
+Device
+  [OK] Vu+ Duo4K SE
+
+Image
+  [OK] OpenATV 8.0.1 detected
+
+Version
+  [OK] OpenATV 8.0.1 is supported (fully tested on OpenATV 8.0)
+DECISION image= version=1.0.0 url=https://raw.githubusercontent.com/habeb-s/CineView-MLA/main/release/1.0.0/enigma2-plugin-skins-cineview-fhd-mla_1.0.0_all.ipk sha=4709881b66ae9e5b8cc8dfa7f5b7e3fafdfb57d779431709b8c5c1b48c4cb0a8 python=3.14

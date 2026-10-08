@@ -1,0 +1,3 @@
+package files: 615   identical on Slot 8: 614   different: 0   not present: 1
+opkg .list entries: 752   package files not in .list: 0
+MISSING /usr/bin/enigma2_pre_start.sh
