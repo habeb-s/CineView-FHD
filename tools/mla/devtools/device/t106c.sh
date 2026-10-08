@@ -1,6 +1,6 @@
 #!/bin/bash
 # t106c - OpenBH (Slot 5): CAM / server field in every design that has one, servermode Full (worst case: 3-4 lines).
-# Per design: InfoBar, SecondInfoBar, EventView; 4 grabs 3 s apart (the vertical fields scroll when the text is
+# Per design: InfoBar, SecondInfoBar, EventView; 7 grabs 1.5 s apart (the vertical fields scroll when the text is
 # taller than the box).  servermode and the design selection are restored afterwards.  HDD never used.
 . ~/cineview-mla/p6lib.sh
 R=~/cineview-mla/r5.sh
@@ -21,9 +21,9 @@ for dsg in classic details cinema; do
 	restart_gui "sed -i '/^$K=/d' /etc/enigma2/settings; echo $K=full >> /etc/enigma2/settings;"
 	curl -s -m 10 -o /dev/null "http://192.168.1.250/api/zap?sRef=$ZAP"; sleep 10
 	for i in $(seq 1 20); do $R "[ -s /tmp/ecm.info ]" && break; sleep 3; done
-	X; $RC 352; for k in 1 2 3 4; do sleep 2; ga ${dsg}_ib_$k; done; X
-	$RC 352; sleep 1; $RC 352; for k in 1 2 3 4; do sleep 2; ga ${dsg}_sib_$k; done; X
-	[ $dsg = classic ] && { op eventview 3; for k in 1 2 3 4; do sleep 2; ga ${dsg}_ev_$k; done; X; }
+	X; $RC 352; for k in 1 2 3 4 5 6 7; do sleep 1.5; ga ${dsg}_ib_$k; done; X
+	$RC 352; sleep 1; $RC 352; for k in 1 2 3 4 5 6 7; do sleep 1.5; ga ${dsg}_sib_$k; done; X
+	[ $dsg = classic ] && { op eventview 3; for k in 1 2 3 4 5 6 7; do sleep 1.5; ga ${dsg}_ev_$k; done; X; }
 	echo "== $dsg done"
 done
 restart_gui "sed -i '/^$K=/d' /etc/enigma2/settings; [ -n '$M0' ] && echo '$K=$M0' >> /etc/enigma2/settings;"
