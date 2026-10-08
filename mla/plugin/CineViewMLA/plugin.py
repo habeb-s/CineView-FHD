@@ -924,7 +924,7 @@ def _openbh_fit_column(lst):
 	except Exception as err:
 		print("[CineViewMLA] name column (OpenBH): names: %s" % err)
 		widest = room
-	gap = 2 * dist
+	gap = 4 * dist  # clear separation name | programme (2*dist alone looked joined on the longest name)
 	return max(80, min(widest + gap, int(room * NAME_COLUMN_MAX)))
 
 
