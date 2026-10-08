@@ -16,6 +16,7 @@ MLA_CS_MOCKS=$PWD/csmock/out MLA_PREVIEWS=$PWD/previews python3 "$CO/tools/mla/b
 	|| { echo "PARITY: build failed"; tail -5 "$OUT.log"; exit 2; }
 ALLOWED='usr/lib/enigma2/python/Components/Converter/CineViewMLAServiceInfo.py
 usr/lib/enigma2/python/Components/Converter/CineViewMLAShowIf.py
+usr/lib/enigma2/python/Components/Converter/CineViewMLACamInfo.py
 usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/plugin.py
 usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/image_adapter.py
 usr/share/enigma2/CineView_FHD_MLA/mla/engine/composer.py

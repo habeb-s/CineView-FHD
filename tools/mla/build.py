@@ -109,6 +109,26 @@ CACHE_ROOT = _mla_cache_root()
 '''
 
 
+CAMINFO_CHANGED = """
+
+def _cv_cam_changed(self, what):
+    # The CAM field is polled every 1.5 s. Element.changed() makes RunningText reset its scroll on every call, and
+    # its start delay (2.2-2.5 s) is longer than the poll, so a field that needs scrolling (2-line boxes, horizontal
+    # Cinema field) never moved. A poll with an unchanged text is now dropped; real changes still go through at once.
+    if what and what[0] == self.CHANGED_POLL:
+        text = self.getText()
+        if text == getattr(self, "_cv_last", None):
+            return
+        self._cv_last = text
+    else:
+        self._cv_last = None
+    Converter.changed(self, what)
+
+
+CineViewMLACamInfo.changed = _cv_cam_changed
+"""
+
+
 IMDB_PATCHES = [
 	("        self.mode = (type or 'plain').lower()\n",
 	 "        args = [a.strip() for a in (type or 'plain').lower().split(',')]\n        self.mode = args[0] or 'plain'\n        self.empty = '' if 'hide' in args[1:] else '--'\n"),
@@ -1644,6 +1664,9 @@ def main(golden, comps, control, out):
 					assert src.count(old) == 1, "imdb patch anchor not unique: %r" % old[:50]
 					src = src.replace(old, new)
 				src += IMDB_GENERIC_HELPER
+			if base == "CineViewCamInfo":
+				assert "def changed" not in src and "class CineViewMLACamInfo(Poll, Converter)" in src
+				src += CAMINFO_CHANGED
 			if base == "CineViewPosterX":
 				assert src.count(POSTER_PATCH_OLD) == 1
 				for old, new in RENDERER_PATCHES:
