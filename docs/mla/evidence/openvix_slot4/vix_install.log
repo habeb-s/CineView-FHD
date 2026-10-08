@@ -1,0 +1,52 @@
+8e51cebded2b307d4cc645d2c341f6d815fda125989ed807cfc0c756c068c469  /home/root/mla-backup-20261008-openvix/settings
+mla_state_before.txt
+opkg-installed.txt
+settings
+skins.txt
+CineView MLA: image openvix 6.9 on vuduo4kse
+CineView MLA: factory design (Classic, Navy) active.
+CineView MLA installed. Select it in Menu > Setup > User Interface > Skin, then restart the GUI.
+Installing enigma2-plugin-skins-cineview-fhd-mla (1.0.0~openvix1) on root
+Configuring enigma2-plugin-skins-cineview-fhd-mla.
+Version: 1.0.0~openvix1
+Status: install ok installed
+pin: /tmp/CINEVIEW-MLA/poster
+devtool ok
+260:config.skin.primary_skin=CineView_FHD_MLA/skin.xml
+276:config.crash.enabledebug=True
+new e2 pid=31621
+config.skin.primary_skin=CineView_FHD_MLA/skin.xml
+messages
+Enigma2_debug_2026-10-08_13-05-25.log
+messages.0
+LOG /home/root/logs/Enigma2_debug_2026-10-08_13-05-25.log
+0
+<  1348.253538> 13:05:53.0746 [CineViewMLA] posters-off names: EMCSelection unavailable: No module named 'Plugins.Extensions.EnhancedMovieCenter'
+<  1348.253672> 13:05:53.0747 [CineViewMLA] posters-off names installed for SecondInfoBar
+<  1348.253747> 13:05:53.0748 [CineViewMLA] posters-off names installed for EventViewSimple
+<  1348.253816> 13:05:53.0748 [CineViewMLA] posters-off names installed for EPGSelection
+<  1348.253878> 13:05:53.0749 [CineViewMLA] posters-off names installed for MovieSelection
+<  1348.254099> 13:05:53.0751 [CineViewMLA] channel names installed (OpenBH: shortened display names, bar right name column)
+<  1348.254195> 13:05:53.0752 [CineViewMLA] EPG event view name installed
+<  1348.254287> 13:05:53.0753 [CineViewMLA] package waiting installed (PluginDownloadBrowser)
+<  1348.830095> 13:05:53.6511 [Screen] Warning: Skin is missing element 'epg_description' in <class 'Screens.InfoBarGenerics.SecondInfoBar'>.
+<  1348.830251> 13:05:53.6513 [Screen] Warning: Skin is missing element 'channel' in <class 'Screens.InfoBarGenerics.SecondInfoBar'>.
+<  1348.830366> 13:05:53.6514 [Screen] Warning: Skin is missing element 'key_red' in <class 'Screens.InfoBarGenerics.SecondInfoBar'>.
+<  1348.830486> 13:05:53.6515 [Screen] Warning: Skin is missing element 'key_green' in <class 'Screens.InfoBarGenerics.SecondInfoBar'>.
+<  1348.830598> 13:05:53.6516 [Screen] Warning: Skin is missing element 'key_yellow' in <class 'Screens.InfoBarGenerics.SecondInfoBar'>.
+<  1348.830703> 13:05:53.6517 [Screen] Warning: Skin is missing element 'key_blue' in <class 'Screens.InfoBarGenerics.SecondInfoBar'>.
+<  1348.995386> 13:05:53.8164 [Screen] Warning: Skin is missing element 'Tuner' in <class 'Screens.Dish.Dish'>.
+<  1349.021508> 13:05:53.8425 [Screen] Warning: Skin is missing element 'eventname' in <class 'Screens.PVRState.TimeshiftState'>.
+<  1349.022566> 13:05:53.8436 [Screen] Warning: Skin is missing element 'state' in <class 'Screens.PVRState.TimeshiftState'>.
+<  1349.026459> 13:05:53.8475 [Screen] Warning: Skin is missing element 'PTSSeekBack' in <class 'Screens.PVRState.TimeshiftState'>.
+<  1349.026592> 13:05:53.8476 [Screen] Warning: Skin is missing element 'PTSSeekPointer' in <class 'Screens.PVRState.TimeshiftState'>.
+<  1349.031113> 13:05:53.8521 [Screen] Warning: Skin is missing element 'subtitles' in <class 'Screens.SubtitleDisplay.SubtitleDisplay'>.
+<  1349.100397> 13:05:53.9214 [Screen] Warning: Skin is missing element 'key_red' in <class 'Screens.InfoBar.InfoBar'>.
+<  1349.100539> 13:05:53.9216 [Screen] Warning: Skin is missing element 'key_yellow' in <class 'Screens.InfoBar.InfoBar'>.
+<  1349.100655> 13:05:53.9217 [Screen] Warning: Skin is missing element 'key_blue' in <class 'Screens.InfoBar.InfoBar'>.
+<  1349.100778> 13:05:53.9218 [Screen] Warning: Skin is missing element 'key_green' in <class 'Screens.InfoBar.InfoBar'>.
+<  1349.915151> 13:05:54.7362 [Screen] Warning: Skin is missing element 'VolumeText' in <class 'Screens.Volume.Volume'>.
+<  1350.204785> 13:05:55.0258 [CineViewMLA] channel names (OpenBH): 68 rows, 64 services, 0 measured (estimate error <= 0 px), 0 shortened (0 rows without programme), budget 506 px, column 408, 16 ms (names 5, widths 11, refill 0)
+poster
+poster.log
+VIX_INSTALL_DONE

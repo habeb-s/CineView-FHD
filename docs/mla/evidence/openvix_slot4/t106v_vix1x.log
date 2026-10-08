@@ -1,0 +1,9 @@
+pin: /tmp/CINEVIEW-MLA/poster
+playing: HBO HD | now: '' | next: 'Leonardo. Odkrywca'
+mark           tb=0 skinerr=0 missing=0 notimpl=1 screens: 
+chansel_down   tb=0 skinerr=0 missing=0 notimpl=1 screens: 
+pkgremove      tb=0 skinerr=0 missing=0 notimpl=0 screens: PluginDownloadBrowser 
+pkgdownload    tb=0 skinerr=0 missing=0 notimpl=0 screens: PluginDownloadBrowser 
+console        tb=1 skinerr=2 missing=0 notimpl=0 screens: Console 
+poster cache /tmp: 32 files; crash logs today: 0
+T106_DONE

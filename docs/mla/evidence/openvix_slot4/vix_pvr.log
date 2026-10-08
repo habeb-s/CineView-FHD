@@ -1,0 +1,50 @@
+/dev/sdb1                56.1G      4.1G     52.0G   7% /
+== timer 1791462070..1791462160 -> /home/root/cvmla-testmedia/
+   timeradd: True Timer 'CineView MLA PVR test' added
+   files: drwxr-xr-x    2 root     root          4096 Oct  8 15:22 .
+drwx------   11 root     root          4096 Oct  8 13:05 ..
+-rw-r--r--    1 root     root           638 Oct  8 15:20 20261008 1521 - HBO HD - CineView MLA PVR test.eit
+-rw-r--r--    1 root     root      41197568 Oct  8 15:22 20261008 1521 - HBO HD - CineView MLA PVR test.ts
+-rw-r--r--    1 root     root          1344 Oct  8 15:22 20261008 1521 - HBO HD - CineView MLA PVR test.ts.ap
+-rw-r--r--    1 root     root             0 Oct  8 15:22 20261008 1521 - HBO HD - CineView MLA PVR test.ts.cuts
+-rw-r--r--    1 root     root           191 Oct  8 15:20 20261008 1521 - HBO HD - CineView MLA PVR test.ts.meta
+-rw-r--r--    1 root     root         71936 Oct  8 15:22 20261008 1521 - HBO HD - CineView MLA PVR test.ts.sc
+== native PVR
+   cap 01_list
+   cap 02_info
+   cap 03_down
+   cap 04_up
+   cap 05_select
+   cap 06_playing
+<  9602.079950> 15:23:26.8975 [Skin] Processing screen 'MoviePlayer', position=(150, 67), size=(1620 x 150) for module '
+   cap 07_player_info
+   cap 07b_player_infobar
+   cap 08_after_stop
+   tracebacks=1 skin_errors=1
+g000042
+   cap 10_layout_cover
+   tracebacks=0 skin_errors=0
+g000043
+   cap 10_layout_cinema
+   tracebacks=0 skin_errors=0
+g000044
+   cap 10_layout_modern
+   tracebacks=0 skin_errors=0
+g000045
+   cap 10_layout_minimal
+   tracebacks=0 skin_errors=0
+g000046
+   pvr layout restored: classic
+== cleanup
+   timerdelete: True The timer 'CineView MLA PVR test' has been deleted successfully
+   deleted 20261008 1521 - HBO HD - CineView MLA PVR test.eit
+   deleted 20261008 1521 - HBO HD - CineView MLA PVR test.ts
+   deleted 20261008 1521 - HBO HD - CineView MLA PVR test.ts.ap
+   deleted 20261008 1521 - HBO HD - CineView MLA PVR test.ts.cuts
+   deleted 20261008 1521 - HBO HD - CineView MLA PVR test.ts.meta
+   deleted 20261008 1521 - HBO HD - CineView MLA PVR test.ts.sc
+drwxr-xr-x    2 root     root          4096 Oct  8 15:31 .
+drwx------   11 root     root          4096 Oct  8 13:05 ..
+   folder removed
+   timers.xml identical to the backup
+T107P_DONE

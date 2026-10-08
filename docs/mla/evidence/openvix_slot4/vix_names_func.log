@@ -1,0 +1,23 @@
+g000001
+== barleft
+   [CineViewMLA] channel names (OpenBH): 147 rows, 0 services, 0 measured (estimate error <= 0 px), 0 shortened (0 rows without programme), budget 232 px, column None, 2 ms (names 2, widths 0, refill 0)
+   [CineViewMLA] channel names (OpenBH): 87 rows, 72 services, 1 measured (estimate error <= 1 px), 5 shortened (17 rows without programme), budget 232 px, column None, 13 ms (names 3, widths 8, refill 1)
+   tracebacks=0 skin_errors=0
+   playing: name='TV CORAN' ref='1:0:1:6A5:3138:13E:822B1A:0:0:0:'
+   playing: name='AL MALAKOOT SAT – THE KINGDOM SAT الملكوت سات' ref='1:0:1:233A:2328:13E:8230E8:0:0:0:'
+   [CineViewMLA] channel names (OpenBH): 87 rows, 72 services, 1 measured (estimate error <= 1 px), 5 shortened (17 rows without programme), budget 232 px, column None, 13 ms (names 3, widths 8, refill 1)
+   [CineViewMLA] channel names (OpenBH): 12637 rows, 12637 services, 604 measured (estimate error <= 7 px), 270 shortened (1820 rows without programme), budget 232 px, column None, 3526 ms (names 644, widths 293, refill 2588)
+   tracebacks=0 skin_errors=0
+== barright
+   [CineViewMLA] channel names (OpenBH): 87 rows, 72 services, 2 measured (estimate error <= 1 px), 7 shortened (17 rows without programme), budget 226 px, column None, 80 ms (names 5, widths 74, refill 1)
+   [CineViewMLA] channel names (OpenBH): 87 rows, 72 services, 2 measured (estimate error <= 1 px), 7 shortened (17 rows without programme), budget 226 px, column None, 7 ms (names 3, widths 2, refill 1)
+   tracebacks=0 skin_errors=0
+   playing: name='TV CORAN' ref='1:0:1:6A5:3138:13E:822B1A:0:0:0:'
+   playing: name='AL MALAKOOT SAT – THE KINGDOM SAT الملكوت سات' ref='1:0:1:233A:2328:13E:8230E8:0:0:0:'
+   [CineViewMLA] channel names (OpenBH): 87 rows, 72 services, 2 measured (estimate error <= 1 px), 7 shortened (17 rows without programme), budget 226 px, column None, 7 ms (names 3, widths 2, refill 1)
+   [CineViewMLA] channel names (OpenBH): 12637 rows, 12637 services, 664 measured (estimate error <= 7 px), 344 shortened (2039 rows without programme), budget 226 px, column None, 3377 ms (names 649, widths 307, refill 2419)
+   tracebacks=0 skin_errors=0
+   saved last service: 1:0:1:233A:2328:13E:8230E8:0:0:0:
+g000002
+bar restored: 'barright'
+T106N_DONE

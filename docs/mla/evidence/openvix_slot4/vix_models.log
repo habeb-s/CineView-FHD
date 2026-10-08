@@ -1,0 +1,84 @@
+selection before: --theme navy --set channelselection=classic --set epg=classic --set eventview=classic --set infobar=classic --set pvr=classic --set secondinfobar=classic
+== apply --theme navy --set infobar=classic --set secondinfobar=classic --set channelselection=classic --set epg=classic --set pvr=classic --set eventview=classic
+g000015
+pin: /tmp/CINEVIEW-MLA/poster
+playing: HBO HD | now: 'Pewny kandydat. Jak nie zostać prezydentem' | next: 'Makbet'
+infobar        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+sib            tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+chansel        tb=0 skinerr=0 missing=0 notimpl=1 screens: 
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPGPIG 
+single         tb=0 skinerr=0 missing=2 notimpl=1 screens: EPGSelection 
+multi          tb=0 skinerr=0 missing=1 notimpl=1 screens: EPGSelectionMulti 
+ibgrid         tb=0 skinerr=0 missing=4 notimpl=1 screens: GraphicalInfoBarEPG 
+evinfo         tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPGPIG 
+eventview      tb=0 skinerr=0 missing=10 notimpl=2 screens: EventView 
+pvr            tb=0 skinerr=0 missing=0 notimpl=0 screens: MovieSelection 
+poster cache /tmp: 54 files; crash logs today: 0
+T106_DONE
+== apply --theme navy --set infobar=details --set secondinfobar=details --set channelselection=posterlist --set epg=graphicalplus --set pvr=cover --set eventview=detailscard
+g000016
+pin: /tmp/CINEVIEW-MLA/poster
+playing: HBO HD | now: 'Pewny kandydat. Jak nie zostać prezydentem' | next: 'Makbet'
+infobar        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+sib            tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+chansel        tb=0 skinerr=0 missing=0 notimpl=1 screens: 
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPGPIG 
+single         tb=0 skinerr=0 missing=2 notimpl=1 screens: EPGSelection 
+multi          tb=0 skinerr=0 missing=1 notimpl=1 screens: EPGSelectionMulti 
+ibgrid         tb=0 skinerr=0 missing=4 notimpl=1 screens: GraphicalInfoBarEPG 
+evinfo         tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPGPIG 
+eventview      tb=0 skinerr=0 missing=6 notimpl=0 screens: EventView 
+pvr            tb=0 skinerr=0 missing=0 notimpl=0 screens: MovieSelection 
+poster cache /tmp: 60 files; crash logs today: 0
+T106_DONE
+== apply --theme navy --set infobar=cinema --set secondinfobar=cinema --set channelselection=videofirst --set epg=graphicalplus --set pvr=cinema --set eventview=feature
+g000017
+pin: /tmp/CINEVIEW-MLA/poster
+playing: HBO HD | now: 'Pewny kandydat. Jak nie zostać prezydentem' | next: 'Makbet'
+infobar        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+sib            tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+chansel        tb=0 skinerr=0 missing=0 notimpl=1 screens: 
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPGPIG 
+single         tb=0 skinerr=0 missing=2 notimpl=1 screens: EPGSelection 
+multi          tb=0 skinerr=0 missing=1 notimpl=1 screens: EPGSelectionMulti 
+ibgrid         tb=0 skinerr=0 missing=4 notimpl=1 screens: GraphicalInfoBarEPG 
+evinfo         tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPGPIG 
+eventview      tb=0 skinerr=0 missing=6 notimpl=0 screens: EventView 
+pvr            tb=0 skinerr=0 missing=0 notimpl=0 screens: MovieSelection 
+poster cache /tmp: 65 files; crash logs today: 0
+T106_DONE
+== apply --theme navy --set infobar=modern --set secondinfobar=modern --set channelselection=modern --set epg=modern --set pvr=modern --set eventview=modern
+g000018
+pin: /tmp/CINEVIEW-MLA/poster
+playing: HBO HD | now: 'Pewny kandydat. Jak nie zostać prezydentem' | next: 'Makbet'
+infobar        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+sib            tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+chansel        tb=0 skinerr=0 missing=0 notimpl=1 screens: 
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPGPIG 
+single         tb=0 skinerr=0 missing=2 notimpl=1 screens: EPGSelection 
+multi          tb=0 skinerr=0 missing=1 notimpl=1 screens: EPGSelectionMulti 
+ibgrid         tb=0 skinerr=0 missing=4 notimpl=1 screens: GraphicalInfoBarEPG 
+evinfo         tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPGPIG 
+eventview      tb=0 skinerr=0 missing=10 notimpl=0 screens: EventView 
+pvr            tb=0 skinerr=0 missing=0 notimpl=0 screens: MovieSelection 
+poster cache /tmp: 69 files; crash logs today: 0
+T106_DONE
+== apply --theme navy --set infobar=minimal --set secondinfobar=minimal --set channelselection=minimal --set epg=minimal --set pvr=minimal --set eventview=minimal
+g000019
+pin: /tmp/CINEVIEW-MLA/poster
+playing: HBO HD | now: 'Pewny kandydat. Jak nie zostać prezydentem' | next: 'Makbet'
+infobar        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+sib            tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+chansel        tb=0 skinerr=0 missing=0 notimpl=1 screens: 
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPGPIG 
+single         tb=0 skinerr=0 missing=2 notimpl=1 screens: EPGSelection 
+multi          tb=0 skinerr=0 missing=1 notimpl=1 screens: EPGSelectionMulti 
+ibgrid         tb=0 skinerr=0 missing=4 notimpl=1 screens: GraphicalInfoBarEPG 
+evinfo         tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPGPIG 
+eventview      tb=0 skinerr=0 missing=6 notimpl=0 screens: EventView 
+pvr            tb=0 skinerr=0 missing=0 notimpl=0 screens: MovieSelection 
+poster cache /tmp: 73 files; crash logs today: 0
+T106_DONE
+== restore: --theme navy --set channelselection=classic --set epg=classic --set eventview=classic --set infobar=classic --set pvr=classic --set secondinfobar=classic
+g000020
+T106X_DONE

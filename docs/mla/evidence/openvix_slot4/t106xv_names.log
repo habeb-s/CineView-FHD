@@ -1,0 +1,71 @@
+selection before: --theme navy --set channelselection=classic --set epg=classic --set eventview=classic --set infobar=classic --set pvr=classic --set secondinfobar=classic
+progress bar before: '(default)'
+g000001
+pin: /tmp/CINEVIEW-MLA/poster
+playing: AL MALAKOOT SAT – THE KINGDOM SAT الملكوت سات | now: '' | next: ''
+chansel        tb=0 skinerr=0 missing=0 notimpl=1 screens: 
+poster cache /tmp: 32 files; crash logs today: 0
+T106_DONE
+pin: /tmp/CINEVIEW-MLA/poster
+playing: HBO HD | now: 'Green Book' | next: 'Leonardo. Odkrywca'
+chansel        tb=0 skinerr=0 missing=0 notimpl=1 screens: 
+poster cache /tmp: 34 files; crash logs today: 0
+T106_DONE
+g000002
+pin: /tmp/CINEVIEW-MLA/poster
+playing: AL MALAKOOT SAT – THE KINGDOM SAT الملكوت سات | now: '' | next: ''
+chansel        tb=0 skinerr=0 missing=0 notimpl=1 screens: 
+poster cache /tmp: 34 files; crash logs today: 0
+T106_DONE
+pin: /tmp/CINEVIEW-MLA/poster
+playing: HBO HD | now: 'Green Book' | next: 'Pewny kandydat. Jak nie zostać prezydentem'
+chansel        tb=0 skinerr=0 missing=0 notimpl=1 screens: 
+poster cache /tmp: 38 files; crash logs today: 0
+T106_DONE
+g000003
+pin: /tmp/CINEVIEW-MLA/poster
+playing: AL MALAKOOT SAT – THE KINGDOM SAT الملكوت سات | now: '' | next: ''
+chansel        tb=0 skinerr=0 missing=0 notimpl=1 screens: 
+poster cache /tmp: 38 files; crash logs today: 0
+T106_DONE
+pin: /tmp/CINEVIEW-MLA/poster
+playing: HBO HD | now: 'Green Book' | next: 'Pewny kandydat. Jak nie zostać prezydentem'
+chansel        tb=0 skinerr=0 missing=0 notimpl=1 screens: 
+poster cache /tmp: 39 files; crash logs today: 0
+T106_DONE
+g000004
+pin: /tmp/CINEVIEW-MLA/poster
+playing: AL MALAKOOT SAT – THE KINGDOM SAT الملكوت سات | now: '' | next: ''
+chansel        tb=0 skinerr=0 missing=0 notimpl=1 screens: 
+poster cache /tmp: 39 files; crash logs today: 0
+T106_DONE
+pin: /tmp/CINEVIEW-MLA/poster
+playing: HBO HD | now: 'Green Book' | next: 'Pewny kandydat. Jak nie zostać prezydentem'
+chansel        tb=0 skinerr=0 missing=0 notimpl=1 screens: 
+poster cache /tmp: 39 files; crash logs today: 0
+T106_DONE
+g000005
+pin: /tmp/CINEVIEW-MLA/poster
+playing: AL MALAKOOT SAT – THE KINGDOM SAT الملكوت سات | now: '' | next: ''
+chansel        tb=0 skinerr=0 missing=0 notimpl=1 screens: 
+poster cache /tmp: 39 files; crash logs today: 0
+T106_DONE
+pin: /tmp/CINEVIEW-MLA/poster
+playing: HBO HD | now: 'Green Book' | next: 'Pewny kandydat. Jak nie zostać prezydentem'
+chansel        tb=0 skinerr=0 missing=0 notimpl=1 screens: 
+poster cache /tmp: 40 files; crash logs today: 0
+T106_DONE
+g000006
+pin: /tmp/CINEVIEW-MLA/poster
+playing: AL MALAKOOT SAT – THE KINGDOM SAT الملكوت سات | now: '' | next: ''
+chansel        tb=0 skinerr=0 missing=0 notimpl=1 screens: 
+poster cache /tmp: 40 files; crash logs today: 0
+T106_DONE
+pin: /tmp/CINEVIEW-MLA/poster
+playing: HBO HD | now: 'Green Book' | next: 'Pewny kandydat. Jak nie zostać prezydentem'
+chansel        tb=0 skinerr=0 missing=0 notimpl=1 screens: 
+poster cache /tmp: 41 files; crash logs today: 0
+T106_DONE
+killed after default loop
+barright
+T106X_DONE

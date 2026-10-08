@@ -1,0 +1,70 @@
+selection before: --theme navy --set channelselection=classic --set epg=classic --set eventview=classic --set infobar=classic --set pvr=classic --set secondinfobar=classic
+== apply --theme black --set infobar=classic --set secondinfobar=classic --set channelselection=classic --set epg=classic --set pvr=classic --set eventview=classic
+g000021
+pin: /tmp/CINEVIEW-MLA/poster
+playing: HBO HD | now: 'Pewny kandydat. Jak nie zostać prezydentem' | next: 'Makbet'
+infobar        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+chansel        tb=0 skinerr=0 missing=0 notimpl=1 screens: 
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPGPIG 
+designs        tb=0 skinerr=0 missing=1 notimpl=0 screens: CineViewMLASetup 
+msg_yesno      tb=0 skinerr=0 missing=0 notimpl=0 screens: MessageBox 
+poster cache /tmp: 73 files; crash logs today: 0
+T106_DONE
+== apply --theme burgundy --set infobar=classic --set secondinfobar=classic --set channelselection=classic --set epg=classic --set pvr=classic --set eventview=classic
+g000022
+pin: /tmp/CINEVIEW-MLA/poster
+playing: HBO HD | now: 'Pewny kandydat. Jak nie zostać prezydentem' | next: 'Makbet'
+infobar        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+chansel        tb=0 skinerr=0 missing=0 notimpl=1 screens: 
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPGPIG 
+designs        tb=0 skinerr=0 missing=1 notimpl=0 screens: CineViewMLASetup 
+msg_yesno      tb=0 skinerr=0 missing=0 notimpl=0 screens: MessageBox 
+poster cache /tmp: 73 files; crash logs today: 0
+T106_DONE
+== apply --theme graphite --set infobar=classic --set secondinfobar=classic --set channelselection=classic --set epg=classic --set pvr=classic --set eventview=classic
+g000023
+pin: /tmp/CINEVIEW-MLA/poster
+playing: HBO HD | now: 'Pewny kandydat. Jak nie zostać prezydentem' | next: 'Makbet'
+infobar        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+chansel        tb=0 skinerr=0 missing=0 notimpl=1 screens: 
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPGPIG 
+designs        tb=0 skinerr=0 missing=1 notimpl=0 screens: CineViewMLASetup 
+msg_yesno      tb=0 skinerr=0 missing=0 notimpl=0 screens: MessageBox 
+poster cache /tmp: 73 files; crash logs today: 0
+T106_DONE
+== apply --theme green --set infobar=classic --set secondinfobar=classic --set channelselection=classic --set epg=classic --set pvr=classic --set eventview=classic
+g000024
+pin: /tmp/CINEVIEW-MLA/poster
+playing: HBO HD | now: 'Pewny kandydat. Jak nie zostać prezydentem' | next: 'Makbet'
+infobar        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+chansel        tb=0 skinerr=0 missing=0 notimpl=1 screens: 
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPGPIG 
+designs        tb=0 skinerr=0 missing=1 notimpl=0 screens: CineViewMLASetup 
+msg_yesno      tb=0 skinerr=0 missing=0 notimpl=0 screens: MessageBox 
+poster cache /tmp: 73 files; crash logs today: 0
+T106_DONE
+== apply --theme navy --set infobar=classic --set secondinfobar=classic --set channelselection=classic --set epg=classic --set pvr=classic --set eventview=classic
+g000025
+pin: /tmp/CINEVIEW-MLA/poster
+playing: HBO HD | now: 'Pewny kandydat. Jak nie zostać prezydentem' | next: 'Makbet'
+infobar        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+chansel        tb=0 skinerr=0 missing=0 notimpl=1 screens: 
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPGPIG 
+designs        tb=0 skinerr=0 missing=1 notimpl=0 screens: CineViewMLASetup 
+msg_yesno      tb=0 skinerr=0 missing=0 notimpl=0 screens: MessageBox 
+poster cache /tmp: 73 files; crash logs today: 0
+T106_DONE
+== apply --theme purple --set infobar=classic --set secondinfobar=classic --set channelselection=classic --set epg=classic --set pvr=classic --set eventview=classic
+g000026
+pin: /tmp/CINEVIEW-MLA/poster
+playing: HBO HD | now: 'Pewny kandydat. Jak nie zostać prezydentem' | next: 'Makbet'
+infobar        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+chansel        tb=0 skinerr=0 missing=0 notimpl=1 screens: 
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPGPIG 
+designs        tb=0 skinerr=0 missing=1 notimpl=0 screens: CineViewMLASetup 
+msg_yesno      tb=0 skinerr=0 missing=0 notimpl=0 screens: MessageBox 
+poster cache /tmp: 73 files; crash logs today: 0
+T106_DONE
+== restore: --theme navy --set channelselection=classic --set epg=classic --set eventview=classic --set infobar=classic --set pvr=classic --set secondinfobar=classic
+g000027
+T106X_DONE

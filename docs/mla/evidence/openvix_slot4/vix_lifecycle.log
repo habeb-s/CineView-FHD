@@ -1,0 +1,43 @@
+selection before: navy channelselection=classic,epg=classic,eventview=classic,infobar=classic,pvr=classic,secondinfobar=classic
+== L1 removal while selected
+Removing enigma2-plugin-skins-cineview-fhd-mla (1.0.0~openvix1) from root...
+You can force removal of packages with failed prerm scripts with the option: 
+	--force-remove
+Status: deinstall ok installed
+== L2 previous skin, then remove
+CineView MLA removed (/etc/enigma2/cineview_mla kept unless purged).
+Removing enigma2-plugin-skins-cineview-fhd-mla (1.0.0~openvix1) from root...
+0
+   ls: /usr/share/enigma2/CineView_FHD_MLA: No such file or directory
+   ls: /usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA: No such file or directory
+0
+boot.count clean_exit healthy history.log lkg profiles runtime.json selection.json txn.json 
+config.skin.primary_skin=CineView_FHD/skin.xml
+< 11371.630758> 15:52:56.4478 [Skin] Loading skin file '/usr/share/enigma2/CineView_FHD/skin.xml' complete.
+< 11392.882980> 15:53:17.7000 [Skin] Loading skin file '/usr/lib/enigma2/python/Plugins/Extensions/DreamFin/skins/default_FHD/skin_jellyfin.xml'.
+< 11392.903402> 15:53:17.7204 [Skin] Loading skin file '/usr/lib/enigma2/python/Plugins/Extensions/DreamFin/skins/default_FHD/skin_jellyfin.xml' complete.
+   cap L2_after_remove_infobar_previous_skin
+   tracebacks=0 skin_errors=0 crashlogs_today=0
+== L3 restore
+CineView MLA: image openvix 6.9 on vuduo4kse
+CineView MLA: factory design (Classic, Navy) active.
+CineView MLA installed. Select it in Menu > Setup > User Interface > Skin, then restart the GUI.
+Installing enigma2-plugin-skins-cineview-fhd-mla (1.0.0~openvix1) on root
+Configuring enigma2-plugin-skins-cineview-fhd-mla.
+Version: 1.0.0~openvix1
+Status: install ok installed
+selection after restore: navy channelselection=classic,epg=classic,eventview=classic,infobar=classic,pvr=classic,secondinfobar=classic
+   SELECTION KEPT
+config.skin.primary_skin=CineView_FHD_MLA/skin.xml
+generations/g000000
+pin: /tmp/CINEVIEW-MLA/poster
+   cap L3_restored_infobar
+   tracebacks=0 skin_errors=0 crashlogs_today=0
+== L4 reinstall + preinst 100x
+Installing enigma2-plugin-skins-cineview-fhd-mla (1.0.0~openvix1) on root
+Configuring enigma2-plugin-skins-cineview-fhd-mla.
+Version: 1.0.0~openvix1
+Status: install ok installed
+   preinst crashes: 0/100
+   tracebacks=0 skin_errors=0 crashlogs_today=0
+T108V_DONE
