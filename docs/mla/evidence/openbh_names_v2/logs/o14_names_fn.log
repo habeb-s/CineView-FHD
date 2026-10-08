@@ -1,0 +1,23 @@
+g000157
+== barleft
+   [CineViewMLA] channel names (OpenBH): 101 services, 91 measured, 24 shortened, budget 191 px, column None, 27 ms (names 3, measure 22, refill 1)
+   [CineViewMLA] channel names (OpenBH): 101 services, 91 measured, 24 shortened, budget 191 px, column None, 6 ms (names 2, measure 2, refill 1)
+   tracebacks=0 skin_errors=0
+   playing: name='CineStar Comedy' ref='1:0:1:685:9FC4:16E:A00000:0:0:0:'
+   playing: name='CineStar TV Action and Thriller HD' ref='1:0:19:71B:C5A8:16E:A00000:0:0:0:'
+   [CineViewMLA] channel names (OpenBH): 101 services, 91 measured, 24 shortened, budget 191 px, column None, 6 ms (names 2, measure 2, refill 1)
+   [CineViewMLA] channel names (OpenBH): 12911 services, 10903 measured, 3956 shortened, budget 191 px, column None, 12051 ms (names 385, measure 1673, refill 9992)
+   tracebacks=0 skin_errors=0
+== barright
+   [CineViewMLA] channel names (OpenBH): 101 services, 93 measured, 37 shortened, budget 151 px, column 183, 30 ms (names 3, measure 25, refill 1)
+   [CineViewMLA] channel names (OpenBH): 101 services, 93 measured, 37 shortened, budget 151 px, column 183, 6 ms (names 2, measure 2, refill 1)
+   tracebacks=0 skin_errors=0
+   playing: name='CineStar Comedy' ref='1:0:1:685:9FC4:16E:A00000:0:0:0:'
+   playing: name='CineStar TV Action and Thriller HD' ref='1:0:19:71B:C5A8:16E:A00000:0:0:0:'
+   [CineViewMLA] channel names (OpenBH): 101 services, 93 measured, 37 shortened, budget 151 px, column 183, 6 ms (names 2, measure 2, refill 1)
+   [CineViewMLA] channel names (OpenBH): 12911 services, 11573 measured, 6583 shortened, budget 151 px, column 183, 10173 ms (names 382, measure 2118, refill 7671)
+   tracebacks=0 skin_errors=0
+   saved last service: 1:0:19:71B:C5A8:16E:A00000:0:0:0:
+g000158
+bar restored: ''
+T106N_DONE

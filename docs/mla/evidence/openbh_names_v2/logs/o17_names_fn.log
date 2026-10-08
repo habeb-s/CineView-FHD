@@ -1,0 +1,23 @@
+g000180
+== barleft
+   [CineViewMLA] channel names (OpenBH): 111 rows, 101 services, 3 measured (estimate error <= 0 px), 4 shortened (24 rows without programme), budget 191 px, column None, 18 ms (names 3, widths 13, refill 1)
+   [CineViewMLA] channel names (OpenBH): 111 rows, 101 services, 3 measured (estimate error <= 0 px), 21 shortened (4 rows without programme), budget 191 px, column None, 8 ms (names 2, widths 4, refill 0)
+   tracebacks=0 skin_errors=0
+   playing: name='CineStar Comedy' ref='1:0:1:685:9FC4:16E:A00000:0:0:0:'
+   playing: name='CineStar TV Action and Thriller HD' ref='1:0:19:71B:C5A8:16E:A00000:0:0:0:'
+   [CineViewMLA] channel names (OpenBH): 111 rows, 101 services, 3 measured (estimate error <= 0 px), 21 shortened (4 rows without programme), budget 191 px, column None, 8 ms (names 2, widths 4, refill 0)
+   [CineViewMLA] channel names (OpenBH): 12912 rows, 12912 services, 933 measured (estimate error <= 8 px), 952 shortened (3826 rows without programme), budget 191 px, column None, 2881 ms (names 383, widths 363, refill 2135)
+   tracebacks=0 skin_errors=0
+== barright
+   [CineViewMLA] channel names (OpenBH): 111 rows, 101 services, 5 measured (estimate error <= 1 px), 4 shortened (26 rows without programme), budget 183 px, column None, 20 ms (names 3, widths 15, refill 1)
+   [CineViewMLA] channel names (OpenBH): 111 rows, 101 services, 5 measured (estimate error <= 1 px), 21 shortened (6 rows without programme), budget 183 px, column None, 8 ms (names 3, widths 4, refill 0)
+   tracebacks=0 skin_errors=0
+   playing: name='CineStar Comedy' ref='1:0:1:685:9FC4:16E:A00000:0:0:0:'
+   playing: name='CineStar TV Action and Thriller HD' ref='1:0:19:71B:C5A8:16E:A00000:0:0:0:'
+   [CineViewMLA] channel names (OpenBH): 111 rows, 101 services, 5 measured (estimate error <= 1 px), 21 shortened (6 rows without programme), budget 183 px, column None, 8 ms (names 3, widths 4, refill 0)
+   [CineViewMLA] channel names (OpenBH): 12912 rows, 12912 services, 1025 measured (estimate error <= 9 px), 1084 shortened (4312 rows without programme), budget 183 px, column None, 2829 ms (names 388, widths 377, refill 2063)
+   tracebacks=0 skin_errors=0
+   saved last service: 1:0:19:71B:C5A8:16E:A00000:0:0:0:
+g000181
+bar restored: ''
+T106N_DONE

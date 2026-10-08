@@ -1,0 +1,16 @@
+pin: /tmp/CINEVIEW-MLA/poster
+playing: CineStar TV Action and Thriller HD | now: '48 sati straha' | next: 'Grof Monte Cristo'
+infobar        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+sib            tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+chansel        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+mark           tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPGPIG 
+single         tb=0 skinerr=0 missing=2 notimpl=0 screens: EPGSelection 
+multi          tb=0 skinerr=0 missing=1 notimpl=0 screens: EPGSelectionMulti 
+eventview      tb=0 skinerr=0 missing=10 notimpl=2 screens: EventView 
+pvr            tb=0 skinerr=0 missing=0 notimpl=0 screens: MovieSelection 
+plugins        tb=0 skinerr=0 missing=0 notimpl=0 screens: PluginBrowser 
+designs        tb=0 skinerr=0 missing=1 notimpl=0 screens: CineViewMLASetup 
+msg_yesno      tb=0 skinerr=0 missing=0 notimpl=0 screens: MessageBox 
+poster cache /tmp: 151 files; crash logs today: 0
+T106_DONE

@@ -1,0 +1,23 @@
+g000164
+== barleft
+   [CineViewMLA] channel names (OpenBH): 111 rows, 101 services, 3 measured (estimate error <= 0 px), 24 shortened, budget 191 px, column None, 17 ms (names 3, widths 13, refill 0)
+   [CineViewMLA] channel names (OpenBH): 111 rows, 101 services, 3 measured (estimate error <= 0 px), 24 shortened, budget 191 px, column None, 6 ms (names 2, widths 2, refill 0)
+   tracebacks=0 skin_errors=0
+   playing: name='CineStar Comedy' ref='1:0:1:685:9FC4:16E:A00000:0:0:0:'
+   playing: name='CineStar TV Action and Thriller HD' ref='1:0:19:71B:C5A8:16E:A00000:0:0:0:'
+   [CineViewMLA] channel names (OpenBH): 111 rows, 101 services, 3 measured (estimate error <= 0 px), 24 shortened, budget 191 px, column None, 6 ms (names 2, widths 2, refill 0)
+   [CineViewMLA] channel names (OpenBH): 12912 rows, 12912 services, 933 measured (estimate error <= 8 px), 3957 shortened, budget 191 px, column None, 2973 ms (names 384, widths 473, refill 2116)
+   tracebacks=0 skin_errors=0
+== barright
+   [CineViewMLA] channel names (OpenBH): 111 rows, 101 services, 5 measured (estimate error <= 1 px), 26 shortened, budget 183 px, column None, 19 ms (names 3, widths 15, refill 0)
+   [CineViewMLA] channel names (OpenBH): 111 rows, 101 services, 5 measured (estimate error <= 1 px), 26 shortened, budget 183 px, column None, 6 ms (names 2, widths 2, refill 0)
+   tracebacks=0 skin_errors=0
+   playing: name='CineStar Comedy' ref='1:0:1:685:9FC4:16E:A00000:0:0:0:'
+   playing: name='CineStar TV Action and Thriller HD' ref='1:0:19:71B:C5A8:16E:A00000:0:0:0:'
+   [CineViewMLA] channel names (OpenBH): 111 rows, 101 services, 5 measured (estimate error <= 1 px), 26 shortened, budget 183 px, column None, 6 ms (names 2, widths 2, refill 0)
+   [CineViewMLA] channel names (OpenBH): 12912 rows, 12912 services, 1025 measured (estimate error <= 9 px), 4454 shortened, budget 183 px, column None, 3037 ms (names 382, widths 494, refill 2160)
+   tracebacks=0 skin_errors=0
+   saved last service: 1:0:19:71B:C5A8:16E:A00000:0:0:0:
+g000165
+bar restored: ''
+T106N_DONE
