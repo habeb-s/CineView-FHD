@@ -978,32 +978,56 @@ def _openbh_apply_names(lst):
 	sc = eServiceCenter.getInstance()
 	font, fk, budget = lst.ServiceNameFont, lay["font_key"], lay["budget"]
 	refs = lst.l.getList()
-	names, out, widest, changed = {}, [], 0, False
-	for r in refs:
-		if not r.valid() or r.flags & (eServiceReference.isMarker | eServiceReference.isDirectory):
-			out.append(r)
-			continue
-		info = sc.info(r)
-		name = info and info.getName(r) or ""
-		w = _cvmla_text_width(fk, font, name) if name else 0
+	rows = []  # (characters, index, name) of every service row
+	for i, r in enumerate(refs):
+		if r.valid() and not r.flags & (eServiceReference.isMarker | eServiceReference.isDirectory):
+			info = sc.info(r)
+			name = info and info.getName(r) or ""
+			if name:
+				rows.append((len(name), i, name))
+	t1 = time.time()
+	# No glyph is wider than maxw, so a name of n characters is at most n * maxw wide: the names are measured from
+	# the longest down and only while they can still need shortening (or widen the bar-right column).
+	fsize = getattr(lst, "ServiceNameFontSize", 30) + int(config.usage.servicename_fontsize.value)
+	maxw = max([fsize + 4] + [_cvmla_text_width(fk, font, c) for c in ("W", "M", "\u0416", "\u4e2d")])
+	rows.sort(reverse=True)
+	names, widest, measured = {}, 0, 0
+	for n, i, name in rows:
+		if n * maxw <= (widest if lay["column"] else budget):
+			break
+		measured += 1
+		w = _cvmla_text_width(fk, font, name)
 		if w > budget:
 			short = _cvmla_shorten(fk, font, name, budget)
 			if short:
+				r = refs[i]
 				names[r.toCompareString()] = r.getName()  # the entry's own name field ("" = channel database)
 				r.setName(short)  # r is a copy made by getList()
 				w = _cvmla_text_width(fk, font, short)
-				changed = True
 		widest = max(widest, w)
-		out.append(r)
-	if changed:
+	t2 = time.time()
+	first = min((i for n, i, name in rows), default=None)  # the first service row
+	if names and first is not None:
+		# Refill through the native path.  The first entry added is a service row so the listbox cursor is always
+		# on a selectable row while the list grows (eListbox::moveSelection(justCheck) never terminates when the
+		# only entries are markers); the rows before it are inserted in front of it, the rest appended.
 		cur = eServiceReference()
 		lst.l.getCurrent(cur)
-		lst.l.setRoot(lst.root, True)  # native refill path (ChannelSelection.showSatellites does the same)
-		for r in out:
-			lst.l.addService(r)
-		lst.l.FillFinished()
+		lst._cvmla_filling = True
+		try:
+			lst.l.setRoot(lst.root, True)
+			lst.l.FillFinished()  # empty list: the first addService starts with a fresh cursor
+			lst.l.addService(refs[first])
+			for r in refs[:first]:
+				lst.l.addService(r, True)
+			for r in refs[first + 1:]:
+				lst.l.addService(r)
+			lst.l.FillFinished()
+		finally:
+			lst._cvmla_filling = False
 		if cur.valid():
 			lst.l.setCurrent(cur)
+	t3 = time.time()
 	lst._cvmla_names = names
 	_cvmla_short_names = names
 	col = None
@@ -1017,8 +1041,8 @@ def _openbh_apply_names(lst):
 		lst.l.setColumnWidth(int(config.usage.servicelist_column.value))  # the native value again
 		lst._cvmla_col = None
 	lst.instance and lst.instance.invalidate()
-	print("[CineViewMLA] channel names (OpenBH): %d rows, %d shortened, budget %d px, column %s, %d ms" % (
-		len(refs), len(names), budget, col, int((time.time() - t0) * 1000)))
+	print("[CineViewMLA] channel names (OpenBH): %d services, %d measured, %d shortened, budget %d px, column %s, %d ms (names %d, measure %d, refill %d)" % (
+		len(rows), measured, len(names), budget, col, int((time.time() - t0) * 1000), int((t1 - t0) * 1000), int((t2 - t1) * 1000), int((t3 - t2) * 1000)))
 
 
 def _cvmla_original(lst, r):
@@ -1087,6 +1111,10 @@ def _install_openbh_name_column():
 		_orig(self)
 		run(self)
 
+	def selectionChanged(self, _orig=ServiceList.selectionChanged):
+		if not getattr(self, "_cvmla_filling", False):  # not once per row while the list is refilled
+			return _orig(self)
+
 	def getCurrent(self, _orig=ServiceList.getCurrent):
 		return _cvmla_original(self, _orig(self))
 
@@ -1103,6 +1131,7 @@ def _install_openbh_name_column():
 	ServiceList.setMode = setMode
 	ServiceList.setRoot = setRoot
 	ServiceList.resetRoot = resetRoot
+	ServiceList.selectionChanged = selectionChanged
 	ServiceList.getCurrent = getCurrent
 	ServiceList.getPrev = getPrev
 	ServiceList.getNext = getNext
