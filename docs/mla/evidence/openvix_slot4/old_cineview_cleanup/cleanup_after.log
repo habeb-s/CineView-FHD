@@ -1,0 +1,25 @@
+lastservice before the tests: 1:0:1:290E:1EDC:71:822FFC:0:0:0:
+logs archived: 10
+--- settings vs backup:
+new e2 pid=16568
+Version: 1.0.0~openvix1
+Status: install ok installed
+config.skin.primary_skin=CineView_FHD_MLA/skin.xml
+generations/g000006
+boot.count
+healthy
+history.log
+lkg
+profiles
+runtime.json
+selection.json
+txn.json
+ls: /usr/lib/enigma2/python/Plugins/Extensions/CineViewMLAScreenOpen: No such file or directory
+messages
+messages.0
+mla_state_before.txt
+opkg-installed.txt
+settings
+skins.txt
+playing: HBO HD
+CLEANUP_DONE

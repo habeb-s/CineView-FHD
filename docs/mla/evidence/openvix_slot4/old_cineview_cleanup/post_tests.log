@@ -1,0 +1,120 @@
+== screens (t106v), devtool installed for the test
+pin: /tmp/CINEVIEW-MLA/poster
+== GUI restart
+00_startup     tb=0 skinerr=0 missing=17 notimpl=5 screens: <embedded-in-HideVBILine> <embedded-in-VBMain> BufferIndicator CacheFlushAutoScreen ChannelSelection Dish InfoBar Mute RdsInfoDisplay Screensaver SecondInfoBar SlimChannelSelection SubtitleDisplay TimeshiftState UnhandledKey Volume 
+playing: HBO HD | now: 'Makbet' | next: 'W stronę słońca'
+infobar        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+sib            tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+chansel        tb=0 skinerr=0 missing=0 notimpl=1 screens: 
+mark           tb=0 skinerr=0 missing=0 notimpl=1 screens: 
+chansel_down   tb=0 skinerr=0 missing=0 notimpl=1 screens: 
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPGPIG 
+single         tb=0 skinerr=0 missing=2 notimpl=1 screens: EPGSelection 
+multi          tb=0 skinerr=0 missing=1 notimpl=1 screens: EPGSelectionMulti 
+ibgrid         tb=0 skinerr=0 missing=4 notimpl=1 screens: GraphicalInfoBarEPG 
+eventview      tb=0 skinerr=0 missing=10 notimpl=2 screens: EventView 
+evsimple       tb=0 skinerr=0 missing=2 notimpl=0 screens: EventViewSimple 
+pvr            tb=0 skinerr=0 missing=0 notimpl=0 screens: MovieSelection 
+plugins        tb=0 skinerr=0 missing=0 notimpl=0 screens: PluginBrowser 
+pkgremove      tb=0 skinerr=0 missing=0 notimpl=0 screens: PluginDownloadBrowser 
+pkgdownload    tb=0 skinerr=0 missing=0 notimpl=0 screens: PluginDownloadBrowser 
+designs        tb=0 skinerr=0 missing=1 notimpl=0 screens: CineViewMLASetup 
+setup_ui       tb=0 skinerr=0 missing=0 notimpl=0 screens: Setup 
+msg_yesno      tb=0 skinerr=0 missing=0 notimpl=0 screens: MessageBox 
+poster cache /tmp: 124 files; crash logs today: 0
+T106_DONE
+== CineView Designs functions + guardian (t106fv)
+selection before: navy channelselection=classic,epg=classic,eventview=classic,infobar=classic,pvr=classic,secondinfobar=classic
+== F0 design model Modern from the Profiles menu -> Apply -> Keep
+   cap F0_menu
+   cap F0_models
+   cap F0_model_selected
+   cap F0_apply_q
+   cap F0_keep_prompt
+   after keep: navy channelselection=modern,epg=modern,eventview=modern,infobar=modern,pvr=modern,secondinfobar=modern
+   tracebacks=0 skin_errors=0 crashlogs_today=0
+   cap F0_modern_infobar
+== F1 profiles: save / load / delete
+   cap F1_keyboard
+   cap F1_saved
+   saved file: My CineView.json
+   cap F1_pick
+   cap F1_loaded
+   cap F1_delete_q
+   profiles after delete: ''
+== F2 theme -> Apply -> Keep
+   theme -> Deep Purple
+   cap F2_apply_q
+   cap F2_keep_prompt
+   kept: purple channelselection=modern,epg=modern,eventview=modern,infobar=modern,pvr=modern,secondinfobar=modern
+   tracebacks=0 skin_errors=0 crashlogs_today=0
+== F3 theme -> Apply -> no answer -> automatic rollback
+   theme -> Black
+   cap F3_keep_prompt
+   not answered ...
+   before: purple channelselection=modern,epg=modern,eventview=modern,infobar=modern,pvr=modern,secondinfobar=modern
+   after:  purple channelselection=modern,epg=modern,eventview=modern,infobar=modern,pvr=modern,secondinfobar=modern
+   ROLLED BACK
+2026-10-08 17:16:16 trial: session started on g000003, awaiting confirmation
+2026-10-08 17:17:38 trial: revert (declined by user / prompt timeout)
+2026-10-08 17:17:38 rollback: active -> g000002
+   tracebacks=0 skin_errors=0 crashlogs_today=0
+== F4 Restore Factory Design
+   cap F4_factory_q
+   after factory: navy channelselection=classic,epg=classic,eventview=classic,infobar=classic,pvr=classic,secondinfobar=classic
+   cap F4_infobar_factory
+   tracebacks=0 skin_errors=0 crashlogs_today=0
+== R guardian recovery: active != last-known-good, 3rd unclean start -> rollback
+g000004
+   active=generations/g000004 lkg=g000000
+   active=generations/g000000 lkg=g000000 boot.count=3
+2026-10-08 17:20:16 apply: g000000 -> g000004 trial=True selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "cinema", "pvr": "classic", "secondinfobar": "classic"}, "theme": "black"}
+2026-10-08 17:20:26 rollback: active -> g000000
+2026-10-08 17:20:26 guardian: count=3: rollback to last-known-good
+   tracebacks=0 skin_errors=0 crashlogs_today=0
+   cap R_after_recovery
+== restore: --theme navy --set channelselection=classic --set epg=classic --set eventview=classic --set infobar=classic --set pvr=classic --set secondinfobar=classic
+g000005
+   selection: navy channelselection=classic,epg=classic,eventview=classic,infobar=classic,pvr=classic,secondinfobar=classic
+   tracebacks=0 skin_errors=0 crashlogs_today=0
+T106F_DONE
+== native PVR with a real recording (t107pv, no layout loop)
+/dev/sdb1                56.1G      4.0G     52.0G   7% /
+== timer 1791469405..1791469495 -> /home/root/cvmla-testmedia/
+   timeradd: True Timer 'CineView MLA PVR test' added
+   files: drwxr-xr-x    2 root     root          4096 Oct  8 17:24 .
+drwx------   12 root     root          4096 Oct  8 17:02 ..
+-rw-r--r--    1 root     root           643 Oct  8 17:23 20261008 1723 - HBO HD - CineView MLA PVR test.eit
+-rw-r--r--    1 root     root      35422208 Oct  8 17:24 20261008 1723 - HBO HD - CineView MLA PVR test.ts
+-rw-r--r--    1 root     root          1392 Oct  8 17:24 20261008 1723 - HBO HD - CineView MLA PVR test.ts.ap
+-rw-r--r--    1 root     root            12 Oct  8 17:24 20261008 1723 - HBO HD - CineView MLA PVR test.ts.cuts
+-rw-r--r--    1 root     root           191 Oct  8 17:23 20261008 1723 - HBO HD - CineView MLA PVR test.ts.meta
+-rw-r--r--    1 root     root         71264 Oct  8 17:24 20261008 1723 - HBO HD - CineView MLA PVR test.ts.sc
+== native PVR
+   cap 01_list
+   cap 02_info
+   cap 03_down
+   cap 04_up
+   cap 05_select
+   cap 06_playing
+< 16936.417183> 17:25:41.2325 [Skin] Processing screen 'MoviePlayer', position=(150, 67), size=(1620 x 150) for module '
+   cap 07_player_info
+   cap 07b_player_infobar
+   cap 08_after_stop
+   tracebacks=1 skin_errors=1
+g000006
+   pvr layout restored: classic
+== cleanup
+   timerdelete: True The timer 'CineView MLA PVR test' has been deleted successfully
+   deleted 20261008 1723 - HBO HD - CineView MLA PVR test.eit
+   deleted 20261008 1723 - HBO HD - CineView MLA PVR test.ts
+   deleted 20261008 1723 - HBO HD - CineView MLA PVR test.ts.ap
+   deleted 20261008 1723 - HBO HD - CineView MLA PVR test.ts.cuts
+   deleted 20261008 1723 - HBO HD - CineView MLA PVR test.ts.meta
+   deleted 20261008 1723 - HBO HD - CineView MLA PVR test.ts.sc
+drwxr-xr-x    2 root     root          4096 Oct  8 17:27 .
+drwx------   12 root     root          4096 Oct  8 17:02 ..
+   folder removed
+   timers.xml identical to the backup
+T107P_DONE
+POST_TESTS_DONE

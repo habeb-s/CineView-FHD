@@ -1,0 +1,171 @@
+== packages
+enigma2-plugin-skins-cineview-fhd-mla - 1.0.0~openvix1
+-- enigma2-plugin-skins-cineview-fhd-mla
+Version: 1.0.0~openvix1
+Depends: python3-requests, python3-pillow
+Status: install ok installed
+Installed-Time: 1791466264
+   postinst (lines with actions):
+3:# CineView MLA postinst: activate factory on first install; re-apply the user's selection on upgrade.
+5:S=/usr/share/enigma2/CineView_FHD_MLA
+7:mkdir -p /etc/enigma2/cineview_mla
+8:if [ ! -e "$S/active" ]; then  # first install (or a dangling link)
+9:  # factory = active, last-known-good and the stored selection (also resets a selection kept from an earlier install)
+10:  $E rollback --to factory >/tmp/cineview_mla_postinst.log 2>&1 || { rm -f "$S/active"; ln -s generations/g000000 "$S/active"; }
+20:echo "CineView MLA installed. Select it in Menu > Setup > User Interface > Skin, then restart the GUI."
+   prerm:
+#!/bin/sh
+[ -z "$CVMLA_BBSH" ] && [ -x /bin/busybox ] && CVMLA_BBSH=1 exec /bin/busybox sh "$0" "$@"  # OpenViX: /bin/sh is bash, as on OpenBH (rare SIGSEGV)
+# CineView MLA prerm: do not remove the skin that is currently selected (the box would boot without its skin).
+[ -n "$D" ] && exit 0
+if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
+  if grep -q "^config.skin.primary_skin=CineView_FHD_MLA/" /etc/enigma2/settings 2>/dev/null; then
+    echo "CineView MLA is the selected skin. Select another skin first (Menu > Setup > User Interface > Skin), then remove the package."
+    exit 1
+  fi
+fi
+exit 0
+   postrm:
+#!/bin/sh
+[ -z "$CVMLA_BBSH" ] && [ -x /bin/busybox ] && CVMLA_BBSH=1 exec /bin/busybox sh "$0" "$@"  # OpenViX: /bin/sh is bash, as on OpenBH (rare SIGSEGV)
+# CineView MLA postrm: remove MLA runtime state only.
+[ -n "$D" ] && exit 0
+if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
+  # The whole skin directory is MLA's own namespace (runtime generations, links and the .pyc files OpenATV
+  # compiles next to the sources).  Leftover sourceless .pyc converters would stay importable (T8 00:33).
+  rm -rf /usr/share/enigma2/CineView_FHD_MLA /usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA 2>/dev/null
+  P=/usr/lib/enigma2/python/Components
+  rm -f $P/CineViewMLA*.pyc $P/Renderer/CineViewMLA*.pyc $P/Converter/CineViewMLA*.pyc 2>/dev/null
+  rm -f $P/__pycache__/CineViewMLA* $P/Renderer/__pycache__/CineViewMLA* $P/Converter/__pycache__/CineViewMLA* 2>/dev/null
+  [ "$1" = "purge" ] && rm -rf /etc/enigma2/cineview_mla
+  echo "CineView MLA removed (/etc/enigma2/cineview_mla kept unless purged)."
+fi
+exit 0
+== payload contents
+-- /usr/share/cineview-fhd-offline/openvix/payload.tar.gz
+tar: can't open '/usr/share/cineview-fhd-offline/openvix/payload.tar.gz': No such file or directory
+-- /usr/share/cineview-fhd-offline/universal/openvix/payload.tar.gz
+tar: can't open '/usr/share/cineview-fhd-offline/universal/openvix/payload.tar.gz': No such file or directory
+== paths named CineView / PosterX (rootfs only; /media /proc /sys /mnt /tmp excluded)
+/etc/enigma2/cineview_mla
+/etc/enigma2/skin_user_YouViX-PosterX.xml
+/home/root/oldcv-backup-20261008/opkg-info/enigma2-plugin-skins-cineview-fhd-offline-openvix.control
+/home/root/oldcv-backup-20261008/opkg-info/enigma2-plugin-skins-cineview-fhd-offline-openvix.list
+/home/root/oldcv-backup-20261008/opkg-info/enigma2-plugin-skins-cineview-fhd-offline-openvix.postinst
+/home/root/oldcv-backup-20261008/opkg-info/enigma2-plugin-skins-cineview-fhd-offline-openvix.preinst
+/home/root/oldcv-backup-20261008/opkg-info/enigma2-plugin-skins-cineview-fhd-offline-openvix.status
+/home/root/oldcv-backup-20261008/opkg-info/enigma2-plugin-skins-cineview-fhd-universal-offline.control
+/home/root/oldcv-backup-20261008/opkg-info/enigma2-plugin-skins-cineview-fhd-universal-offline.list
+/home/root/oldcv-backup-20261008/opkg-info/enigma2-plugin-skins-cineview-fhd-universal-offline.postinst
+/home/root/oldcv-backup-20261008/opkg-info/enigma2-plugin-skins-cineview-fhd-universal-offline.preinst
+/home/root/oldcv-backup-20261008/opkg-info/enigma2-plugin-skins-cineview-fhd-universal-offline.status
+/usr/lib/enigma2/python/Components/CineViewMLAPosterMatch.pyc
+/usr/lib/enigma2/python/Components/CineViewMLAPosterState.pyc
+/usr/lib/enigma2/python/Components/Converter/CineViewMLABitrate.pyc
+/usr/lib/enigma2/python/Components/Converter/CineViewMLACPUTemp.pyc
+/usr/lib/enigma2/python/Components/Converter/CineViewMLACamInfo.pyc
+/usr/lib/enigma2/python/Components/Converter/CineViewMLAIMDb.pyc
+/usr/lib/enigma2/python/Components/Converter/CineViewMLAServiceInfo.pyc
+/usr/lib/enigma2/python/Components/Converter/CineViewMLAShowIf.pyc
+/usr/lib/enigma2/python/Components/Converter/CineViewMLATransponder.pyc
+/usr/lib/enigma2/python/Components/Converter/CineViewMLATransponderInfo.pyc
+/usr/lib/enigma2/python/Components/Renderer/AglarePosterX.py
+/usr/lib/enigma2/python/Components/Renderer/AglarePosterX.pyc
+/usr/lib/enigma2/python/Components/Renderer/CineViewMLALineText.pyc
+/usr/lib/enigma2/python/Components/Renderer/CineViewMLAPosterX.pyc
+/usr/lib/enigma2/python/Components/Renderer/LukaPosterX.py
+/usr/lib/enigma2/python/Components/Renderer/LukaPosterX.pyc
+/usr/lib/enigma2/python/Components/Renderer/PosterX.py
+/usr/lib/enigma2/python/Components/Renderer/PosterX.pyc
+/usr/lib/enigma2/python/Components/Renderer/iPosterX.py
+/usr/lib/enigma2/python/Components/Renderer/iPosterX.pyc
+/usr/lib/enigma2/python/Components/Renderer/iPosterXDownloadThread.py
+/usr/lib/enigma2/python/Components/Renderer/iPosterXDownloadThread.pyc
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/sample_FHD/channellist-channellist_backdrop_h_posterx.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/sample_FHD/channellist-channellist_backdrop_v_posterx.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/sample_FHD/emc-emcscreen_posterx.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/sample_FHD/infobar-infobar_posters_posterx_cd1.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/sample_FHD/infobar-infobar_posters_posterx_cd2.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/sample_FHD/infobar-infobar_posters_posterx_ecm.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/sample_FHD/infobar-infobar_posters_posterx_off.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/sample_FHD/infobar-infobar_posters_posterx_on.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/sample_FHD/infobar-infobar_posters_posterx_on_all1.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/sample_FHD/infobar-infobar_posters_posterx_on_all2.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/sample_FHD/secondinfobar-secondinfobar_posters_posterx_off.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/sample_FHD/secondinfobar-secondinfobar_posters_posterx_on.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/sample_FHD/secondinfobar-secondinfobar_posters_posterx_on_all1.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/sample_WQHD/channellist-channellist_backdrop_h_posterx.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/sample_WQHD/channellist-channellist_backdrop_v_posterx.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/sample_WQHD/emc-emcscreen_posterx.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/sample_WQHD/infobar-infobar_posters_posterx_cd1.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/sample_WQHD/infobar-infobar_posters_posterx_cd2.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/sample_WQHD/infobar-infobar_posters_posterx_ecm.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/sample_WQHD/infobar-infobar_posters_posterx_off.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/sample_WQHD/infobar-infobar_posters_posterx_on.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/sample_WQHD/infobar-infobar_posters_posterx_on_all1.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/sample_WQHD/infobar-infobar_posters_posterx_on_all2.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/sample_WQHD/secondinfobar-secondinfobar_posters_posterx_off.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/sample_WQHD/secondinfobar-secondinfobar_posters_posterx_on.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/sample_WQHD/secondinfobar-secondinfobar_posters_posterx_on_all1.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/screens/channellist_backdrop_h_posterx.jpg
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/screens/channellist_backdrop_v_posterx.jpg
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/screens/infobar_posters_posterx_cd1.jpg
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/screens/infobar_posters_posterx_off.jpg
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/screens/infobar_posters_posterx_on.jpg
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/screens/infobar_posters_posterx_on_all1.jpg
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/screens/secondinfobar_posters_posterx_off.jpg
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/screens/secondinfobar_posters_posterx_on.jpg
+/usr/lib/enigma2/python/Plugins/Extensions/Aglare/screens/secondinfobar_posters_posterx_on_all1.jpg
+/usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA
+/usr/lib/enigma2/python/Plugins/Extensions/Luka/sample/infobar-infobar_posters_posterx_off.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Luka/sample/infobar-infobar_posters_posterx_on.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Luka/sample/secondinfobar-secondinfobar_posters_posterx_off.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Luka/sample/secondinfobar-secondinfobar_posters_posterx_on.xml
+/usr/lib/enigma2/python/Plugins/Extensions/Luka/screens/infobar_posters_posterx_off.jpg
+/usr/lib/enigma2/python/Plugins/Extensions/Luka/screens/infobar_posters_posterx_on.jpg
+/usr/lib/enigma2/python/Plugins/Extensions/Luka/screens/secondinfobar_posters_posterx_off.jpg
+/usr/lib/enigma2/python/Plugins/Extensions/Luka/screens/secondinfobar_posters_posterx_on.jpg
+/usr/share/enigma2/CineView_FHD_MLA
+/usr/share/enigma2/CineView_FHD_MLA/CineView_preview.png
+/var/lib/opkg/info/enigma2-plugin-skins-cineview-fhd-mla.control
+/var/lib/opkg/info/enigma2-plugin-skins-cineview-fhd-mla.list
+/var/lib/opkg/info/enigma2-plugin-skins-cineview-fhd-mla.postinst
+/var/lib/opkg/info/enigma2-plugin-skins-cineview-fhd-mla.postrm
+/var/lib/opkg/info/enigma2-plugin-skins-cineview-fhd-mla.preinst
+/var/lib/opkg/info/enigma2-plugin-skins-cineview-fhd-mla.prerm
+== /usr/share/enigma2 skins
+drwxr-xr-x   18 root     root          4096 Oct  8 16:58 .
+drwxr-xr-x   38 root     root          4096 Oct  8 16:58 ..
+drwxr-xr-x   18 root     root          4096 Aug 26 16:13 Aglare-FHD
+drwxr-xr-x   17 root     root          4096 Oct  8 16:31 CineView_FHD_MLA
+drwxr-xr-x   17 root     root          4096 Aug 26 16:14 Luka-FHD
+drwxr-xr-x   11 root     root          4096 Sep 17 16:23 Simple_Ten_Eighty
+drwxr-xr-x   14 root     root          4096 Aug 23 00:57 YouViX-Blue
+drwxr-xr-x   20 root     root          4096 Aug 23 00:57 YouViX-Blue-Mod
+drwxr-xr-x   12 root     root          4096 Aug 23 00:57 YouViX-Common
+drwxr-xr-x    2 root     root          4096 Aug 26 15:47 defaults
+drwxr-xr-x   13 root     root          4096 Aug 26 16:41 display
+lrwxrwxrwx    1 root     root            70 Aug 26 16:09 emu -> /usr/lib/enigma2/python/Plugins/Extensions/RaedQuickSignal/PICONS/emu/
+drwxr-xr-x    2 root     root          4096 Sep  4 08:38 hardware
+lrwxrwxrwx    1 root     root            77 Aug 26 16:09 piconCrypt -> /usr/lib/enigma2/python/Plugins/Extensions/RaedQuickSignal/PICONS/piconCrypt/
+lrwxrwxrwx    1 root     root            76 Aug 26 16:09 piconProv -> /usr/lib/enigma2/python/Plugins/Extensions/RaedQuickSignal/PICONS/piconProv/
+lrwxrwxrwx    1 root     root            75 Aug 26 16:09 piconSat -> /usr/lib/enigma2/python/Plugins/Extensions/RaedQuickSignal/PICONS/piconSat/
+drwxr-xr-x   41 root     root          4096 Aug 26 15:47 po
+drwxr-xr-x    2 root     root          4096 Sep  4 08:38 rc
+drwxr-xr-x    3 root     root          4096 Aug 26 15:47 rc_models
+drwxr-xr-x   12 root     root          4096 Aug 26 15:47 skin_default
+drwxr-xr-x    7 root     root          4096 Aug 26 15:47 skin_fallback_1080
+drwxr-xr-x    2 root     root          4096 Aug 26 15:47 spinner
+lrwxrwxrwx    1 root     root            74 Aug 26 16:09 weather -> /usr/lib/enigma2/python/Plugins/Extensions/RaedQuickSignal/PICONS/weather/
+== settings lines
+258:config.skin.primary_skin=CineView_FHD_MLA/skin.xml
+== pre-start hook
+-rwxr-xr-x    1 root     root           283 Oct  8 13:00 /usr/bin/enigma2_pre_start.sh
+#!/bin/sh
+# Installed as /usr/bin/enigma2_pre_start.sh (native OpenATV hook, run by enigma2.sh before each start).
+# Only calls the CineView MLA guardian; never blocks Enigma2 startup.
+G=/usr/share/enigma2/CineView_FHD_MLA/mla/guardian/guardian.sh
+[ -x "$G" ] && "$G" || true
+== cron / init
+== symlinks pointing to CineView
+INV_DONE

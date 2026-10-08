@@ -1,0 +1,146 @@
+== package owner of each candidate file
+/usr/lib/enigma2/python/Components/Renderer/PosterX.py -> enigma2-plugin-extensions-youvixpostersettings 
+/usr/lib/enigma2/python/Components/Renderer/iPosterX.py -> (no package)
+/usr/lib/enigma2/python/Components/Renderer/iPosterXDownloadThread.py -> (no package)
+/usr/lib/enigma2/python/Components/Renderer/AglarePosterX.py -> enigma2-plugin-skins-aglare-fhd 
+/usr/lib/enigma2/python/Components/Renderer/LukaPosterX.py -> enigma2-plugin-skins-luka-fhd 
+/usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.py -> (no package)
+/usr/lib/enigma2/python/Components/Converter/CineViewBitrate.py -> (no package)
+/usr/lib/enigma2/python/Components/Converter/CineViewCamInfo.py -> (no package)
+/etc/enigma2/skin_user_YouViX-PosterX.xml -> (no package)
+/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/plugin.py -> (no package)
+/usr/share/enigma2/CineView_FHD/skin.xml -> (no package)
+/usr/bin/enigma2_pre_start.sh -> enigma2-plugin-skins-cineview-fhd-mla 
+== activate.sh
+#!/bin/sh
+SKIN=/usr/share/enigma2/CineView_FHD
+PLUGIN=/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl
+SETTINGS=/etc/enigma2/settings
+[ -f "$SETTINGS" ] || touch "$SETTINGS"
+get_key(){ grep "^$1=" "$SETTINGS" 2>/dev/null | tail -1 | cut -d= -f2-; }
+set_key(){ key="$1"; val="$2"; if grep -q "^${key}=" "$SETTINGS" 2>/dev/null; then sed -i "s|^${key}=.*|${key}=${val}|" "$SETTINGS"; else echo "${key}=${val}" >> "$SETTINGS"; fi; }
+have(){ ls "$1".py* >/dev/null 2>&1; }
+bool_digit(){ case "$1" in False|false|0|no|No) echo 0;; *) echo 1;; esac; }
+I=$(bool_digit "$(get_key config.plugins.cineview.poster_infobar)")
+S=$(bool_digit "$(get_key config.plugins.cineview.poster_second)")
+C=$(bool_digit "$(get_key config.plugins.cineview.poster_channels)")
+REQ=$(get_key config.plugins.cineview.weatherprovider); [ -n "$REQ" ] || REQ=oa
+OA=0; MSN=0
+have /usr/lib/enigma2/python/Components/Sources/OAWeather && have /usr/lib/enigma2/python/Components/Converter/OAWeather && OA=1
+have /usr/lib/enigma2/python/Components/Sources/MSNWeather && have /usr/lib/enigma2/python/Components/Converter/MSNWeather && MSN=1
+if [ "$REQ" = msn ] && [ "$MSN" = 1 ]; then W=msn; elif [ "$OA" = 1 ]; then W=oa; elif [ "$MSN" = 1 ]; then W=msn; else W=none; fi
+if have /usr/lib/enigma2/python/Components/Renderer/CineViewPosterX; then SRC="$SKIN/skin.layout-${I}${S}${C}-${W}.xml"; else SRC="$SKIN/skin.safe-noposterx-${W}.xml"; fi
+[ -f "$SRC" ] || SRC="$SKIN/skin.layout-000-${W}.xml"
+[ -f "$SRC" ] || SRC="$SKIN/skin.layout-000-none.xml"
+cp -f "$SRC" "$SKIN/skin.xml"
+THEME=$(get_key config.plugins.cineview.theme); case "$THEME" in black|navy|graphite|burgundy|green|purple) ;; *) THEME=black;; esac
+PY=python3; command -v "$PY" >/dev/null 2>&1 || PY=python
+"$PY" "$PLUGIN/theme.py" "$SKIN" "$THEME" >/dev/null 2>&1 || true
+FMT=$(get_key config.plugins.cineview.timeformat); [ "$FMT" = 12 ] || FMT=24
+"$PY" "$PLUGIN/timeformat.py" "$SKIN" "$FMT" >/dev/null 2>&1 || true
+"$PY" "$PLUGIN/compat.py" "$SKIN" /usr/lib/enigma2/python /tmp/cineview-compat-report.json >/dev/null 2>&1 || true
+IMGLOW=$(cat /etc/image-version /etc/issue /etc/os-release 2>/dev/null | tr 'A-Z' 'a-z' | tr '\n' ' ')
+case "$IMGLOW" in
+  *openvix*) "$PY" "$PLUGIN/openvix_final.py" "$SKIN/skin.xml" >/dev/null 2>&1 || true ;;
+  *openatv*) "$PY" "$PLUGIN/openatv_v5.py" "$SKIN/skin.xml" >/dev/null 2>&1 || true ;;
+esac
+exit 0
+== smartdeps.sh (head)
+#!/bin/sh
+# CineView FHD Smart Dependency Doctor. Installs only from the current image's own feed.
+PLUGIN=/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl
+LOG=${CINEVIEW_LOG:-/tmp/cineview-smartdeps.log}
+MODE=${1:---scan}
+: > "$LOG"
+log(){ echo "[CineView] $*" | tee -a "$LOG"; }
+havepy(){ ls "$1".py* >/dev/null 2>&1; }
+image_text(){ cat /etc/image-version /etc/issue /etc/os-release /etc/hostname 2>/dev/null | tr 'A-Z' 'a-z'; }
+TXT=$(image_text)
+case "$TXT" in *openpli*) FAMILY=openpli;; *dreamos*|*dreambox*|*gemini*|*merlin*) FAMILY=dreamos;; *openatv*|*openvix*|*openbh*|*openblackhole*|*opendroid*|*openspa*|*pure2*|*puree2*|*egami*|*teamblue*|*openhdf*|*nonsolosat*|*opentr*|*cobralib*|*satlodge*|*foxbob*|*pkteam*|*hyperion*|*vti*) FAMILY=oealliance;; *) FAMILY=generic;; esac
+if command -v opkg >/dev/null 2>&1; then PM=opkg; elif command -v apt-get >/dev/null 2>&1; then PM=apt; else PM=none; fi
+log "family=$FAMILY package_manager=$PM"
+
+feed_updated=0
+update_feed(){
+  [ "$feed_updated" = 1 ] && return 0
+  if [ "$PM" = opkg ]; then opkg update >>"$LOG" 2>&1 || true
+  elif [ "$PM" = apt ]; then apt-get update >>"$LOG" 2>&1 || true
+  fi
+  feed_updated=1
+}
+installed_pkg(){
+  p="$1"
+  if [ "$PM" = opkg ]; then opkg status "$p" 2>/dev/null | grep -q 'Status:.* installed'
+  elif [ "$PM" = apt ]; then dpkg-query -W -f='${Status}' "$p" 2>/dev/null | grep -q 'install ok installed'
+  else return 1; fi
+}
+feed_has(){
+  p="$1"
+== CineViewControl: writes outside its own folder? (open/write/copy/patch targets)
+/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/compat.py:87:        open(path,'w').write(data)
+/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/compat.py:101:        try: open(report_path,'w').write(json.dumps(report,indent=2,sort_keys=True))
+/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openatv_compat.py:20:    with io.open(path, "w", encoding="utf-8") as f:
+/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openatv_v5.py:20:    with io.open(p,'w',encoding='utf-8') as f:
+/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openbh_compat.py:27:    with io.open(path, "w", encoding="utf-8") as f:
+/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/openvix_final.py:40:open(path, 'w', encoding='utf-8').write(data)
+/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/plugin.py:16:POSTERX='/usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.py'
+/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/plugin.py:17:OA_SOURCE='/usr/lib/enigma2/python/Components/Sources/OAWeather.py'
+/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/plugin.py:18:MSN_SOURCE='/usr/lib/enigma2/python/Components/Sources/MSNWeather.py'
+/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/plugin.py:87:            os.system("(sleep 8; sh '%s' --install) >/tmp/cineview-smartdeps-launch.log 2>&1 &" % SMARTDEPS)
+/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/plugin.py:129:            shutil.copy2(src,ACTIVE); apply_theme(SKIN_DIR,config.plugins.cineview.theme.value); apply_time_format(True)
+/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/plugin.py:139:            except Exception: os.system('killall -9 enigma2')
+/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/theme.py:30:    open(path,'w').write(data); return True
+/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/theme.py:41:            shutil.copy2(f,dst)
+/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/timeformat.py:45:                    open(path,'w',encoding='utf-8').write(new)
+/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/timeformat.py:47:                    open(path,'w').write(new)
+== who references the old components (outside the old CineView folders)
+-- CineViewPosterX
+-- CineViewBitrate
+-- CineViewCPUTemp
+/usr/lib/enigma2/python/Components/Converter/CineViewCPUTemp.py
+/usr/lib/enigma2/python/Components/Converter/CineViewCPUTemp.pyc
+-- CineViewCamInfo
+/usr/lib/enigma2/python/Components/Converter/CineViewCamInfo.py
+/usr/lib/enigma2/python/Components/Converter/CineViewCamInfo.pyc
+-- CineViewIMDb
+/usr/lib/enigma2/python/Components/Converter/CineViewIMDb.py
+/usr/lib/enigma2/python/Components/Converter/CineViewIMDb.pyc
+-- CineViewTransponder
+/usr/lib/enigma2/python/Components/Converter/CineViewTransponderInfo.py
+/usr/lib/enigma2/python/Components/Converter/CineViewTransponderInfo.pyc
+-- CineViewControl
+/etc/enigma2/profile
+/etc/enigma2/settings
+-- config.plugins.cineview\b
+/usr/lib/enigma2/python/Components/Converter/CineViewCamInfo.py
+/etc/enigma2/settings
+== old config namespace owner
+/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/plugin.py:27:    if not hasattr(config.plugins,'cineview'): config.plugins.cineview=ConfigSubsection()
+/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/plugin.py:28:    if not hasattr(config.plugins.cineview,'poster_infobar'): config.plugins.cineview.poster_infobar=ConfigYesNo(default=True)
+/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/plugin.py:29:    if not hasattr(config.plugins.cineview,'poster_second'): config.plugins.cineview.poster_second=ConfigYesNo(default=True)
+/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/plugin.py:30:    if not hasattr(config.plugins.cineview,'poster_channels'): config.plugins.cineview.poster_channels=ConfigYesNo(default=True)
+/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/plugin.py:31:    if not hasattr(config.plugins.cineview,'servermode'): config.plugins.cineview.servermode=ConfigSelection(default='profile',choices=[('full','Full server details'),('profile','EMU + subscription only (hide server URL)'),('hide','Hide server information')])
+== /root
+drwx------    4 root     root          4096 Sep 23 15:41 .
+drwxr-xr-x   17 root     root          4096 Oct  8 13:10 ..
+drwx------    2 root     root          4096 Sep 10 11:00 .ssh
+drwxr-xr-x    3 root     root          4096 Sep 23 15:41 cineview-openvix-backups
+10.5M	/root/cineview-openvix-backups
+9.9M	/etc/enigma2/CineView_FHD-before-latest-merge-20260922-221719
+116.0K	/etc/enigma2/CineViewControl-before-update-20260922-185907.tar.gz
+10.0M	/usr/share/enigma2/CineView_FHD
+11.3M	/usr/share/enigma2/CineView_FHD.rollback-broken-20260922
+11.5M	/usr/share/cineview-fhd-offline
+444.0K	/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl
+== CineView_FHD files not from the payload
+/tmp/cvinv2.sh: line 26: comm: command not found
+/tmp/cvinv2.sh: line 26: comm: command not found
+count not in payload: 0
+== pyc of old converters/renderer
+-rw-r--r--    1 root     root          8941 Sep 18 16:55 /usr/lib/enigma2/python/Components/Converter/CineViewBitrate.pyc
+-rw-r--r--    1 root     root          2212 Sep 18 16:55 /usr/lib/enigma2/python/Components/Converter/CineViewCPUTemp.pyc
+-rw-r--r--    1 root     root          7102 Sep 18 16:55 /usr/lib/enigma2/python/Components/Converter/CineViewCamInfo.pyc
+-rw-r--r--    1 root     root         11476 Sep 18 16:55 /usr/lib/enigma2/python/Components/Converter/CineViewIMDb.pyc
+-rw-------    1 root     root          1862 Sep 22 22:30 /usr/lib/enigma2/python/Components/Converter/CineViewTransponderInfo.pyc
+-rw-r--r--    1 root     root         27696 Sep 23 21:36 /usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.pyc
+INV2_DONE

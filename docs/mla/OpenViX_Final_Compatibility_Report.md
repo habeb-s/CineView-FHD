@@ -304,3 +304,116 @@ opkg install enigma2-plugin-skins-cineview-fhd-mla_1.0.0~openvix1_all.ipk
 - **شرط `key_menu` الجديد في فرع OpenBH من المثبّت:** تحقق ثابت فقط. يُختبر على OpenBH عند إقلاع Slot 5.
 - **عنوان حزمة OpenViX في المثبّت:** placeholder حتى يُنشأ المستودع الخاص وتُنشر الحزمة فيه.
 - **الرفع والنشر:** لا رفع ولا نشر إلى GitHub قبل موافقتك. الفرع `dev/mla-openvix` محلي فقط.
+
+---
+
+## الأرشيف الخاص (2026-10-08 16:44)
+
+- **المستودع:** https://github.com/habeb-s/CineView-MLA-OpenViX
+  - **Private:** نعم، ومحقق: الوصول بدون توثيق يعطي 404 من API وraw والويب.
+  - **الفروع:** `openvix-6.9` (الافتراضي) و`main`.
+- **الإصدار:** Tag `openvix-6.9-final-1.0.0-openvix1`، وRelease خاص بعنوان "CineView MLA 1.0.0~openvix1 (OpenViX 6.9) - private".
+  - الأصول: ipk، و`cineview-install.sh`، و`cineview-uninstall.sh`، و`SHA256SUMS`.
+  - GitHub يغيّر "~" إلى "." في اسم ملف الأصل فقط.
+- **التحقق بعد إعادة التنزيل:**
+  - الـclone يطابق الـsnapshot بايتاً ببايت (1603 ملفاً).
+  - `sha256sum -c` نجح لكل الملفات.
+  - الحزمة في المستودع وفي الـRelease مطابقة (`cmp`) للحزمة المختبرة على Slot 4 (`955d1028…`).
+  - السكربتات وSHA256SUMS في الـRelease مطابقة لملفات المستودع.
+- **رابط التحميل العام:** غير مفعّل (`@OPENVIX_URL@`).
+- **شرط كشف OpenBH الجديد:** يحتاج Runtime Regression على Slot 5.
+- **المستودعات الأخرى:** CineView-FHD وCineView-MLA وCineView-MLA-OpenBH لم تُلمس. آخر push لها كان قبل 09:00 UTC.
+
+---
+
+## تنظيف CineView FHD القديم من Slot 4 (2026-10-08، من 16:50 إلى 17:30)
+
+### الجرد قبل التنظيف
+
+| الفئة | العنصر | المالك (دليل) | القرار |
+|---|---|---|---|
+| **CineView القديم** | حزمة `enigma2-plugin-skins-cineview-fhd-offline-openvix` 2.1.20260923-r1 | opkg. تملك فقط `/usr/share/cineview-fhd-offline/openvix/payload.tar.gz`. بلا prerm/postrm | أُزيلت |
+| **CineView القديم** | حزمة `enigma2-plugin-skins-cineview-fhd-universal-offline` 2.1.20260923-r1 | opkg. تملك فقط payloads في `/usr/share/cineview-fhd-offline/universal/` | أُزيلت |
+| **CineView القديم** | `/usr/share/enigma2/CineView_FHD/` (السكين القديم، 362 ملفاً) | فكّه postinst الحزمتين من الـpayload. كل ملفاته من الـpayload | أُزيل |
+| **CineView القديم** | `Plugins/Extensions/CineViewControl/` (البلجن "CineView Control") | من الـpayload. ظهر في Plugin Browser | أُزيل |
+| **CineView القديم** | Converters: `CineViewBitrate`، `CineViewCPUTemp`، `CineViewCamInfo`، `CineViewIMDb`، `CineViewTransponder`، `CineViewTransponderInfo` (`.py`/`.pyc`). Renderer: `CineViewPosterX` (`.py`/`.pyc`) | من الـpayload. بلا حزمة مالكة (`opkg search`) | أُزيلت (13 ملفاً) |
+| **CineView القديم** | `/usr/share/enigma2/CineView_FHD.rollback-broken-20260922/` | نسخة احتياطية قديمة للسكين القديم | أُزيلت |
+| **CineView القديم** | `/etc/enigma2/CineView_FHD-before-latest-merge-20260922-221719/` و`/etc/enigma2/CineViewControl-before-update-20260922-185907.tar.gz` | نسخ احتياطية قديمة | أُزيلت |
+| **CineView القديم** | `/root/cineview-openvix-backups/` (10.5 MB) | نسخ احتياطية قديمة للنسخة القديمة | أُزيلت |
+| **CineView القديم** | إعدادات `config.plugins.cineview.poster_infobar` و`config.plugins.cineview.theme` | namespace البلجن القديم (`CineViewControl/plugin.py:27`) | أُزيلت |
+| **CineView القديم** | `Plugins/Extensions/CineViewControl` داخل `config.misc.pluginbrowser.plugin_order` | مرجع لبلجن محذوف | أُزيل هذا العنصر وحده من القائمة |
+| **CineView MLA** | `enigma2-plugin-skins-cineview-fhd-mla` 1.0.0~openvix1، `/usr/share/enigma2/CineView_FHD_MLA/`، `Plugins/Extensions/CineViewMLA/`، `Components/CineViewMLA*`، `Converter/CineViewMLA*`، `Renderer/CineViewMLA*`، `/etc/enigma2/cineview_mla/` | opkg (الحزمة الحالية) | **أُبقي** |
+| **CineView MLA** | `/usr/bin/enigma2_pre_start.sh` (يستدعي guardian) | opkg: `enigma2-plugin-skins-cineview-fhd-mla` | **أُبقي** |
+| **إضافات أخرى** | `Renderer/PosterX.py` | opkg: `enigma2-plugin-extensions-youvixpostersettings` | **أُبقي** |
+| **إضافات أخرى** | `Renderer/AglarePosterX.py` و`Renderer/LukaPosterX.py` وملفات `Aglare`/`Luka` | opkg: `skins-aglare-fhd` و`skins-luka-fhd` | **أُبقيت** |
+| **ملكية غير مؤكدة** | `Renderer/iPosterX.py` و`iPosterXDownloadThread.py` | بلا حزمة مالكة، وليست من payload CineView القديم، ولا تحمل اسمه | **أُبقيت ووُثّقت** (ممنوع حذف المشكوك فيه) |
+| **إضافات أخرى** | `/etc/enigma2/skin_user_YouViX-PosterX.xml` | تخص سكين YouViX | **أُبقي** |
+| **الصورة** | `/etc/enigma2/profile` (يذكر "plugin CineViewControl") | ملف توقيت الإقلاع الذي يكتبه Enigma2 نفسه | **أُبقي**، ويتجدد تلقائياً |
+| **نسخ الاختبار** | `/home/root/mla-backup-20261008-openvix/` و`/home/root/oldcv-backup-20261008/` | نسخ احتياطية لهذه المرحلة | **أُبقيت** للاسترجاع |
+
+**التحقق قبل الحذف:**
+- لا يوجد أي مرجع لمكونات CineView القديم داخل CineView MLA، ولا في أي سكين أو بلجن آخر. تم البحث في `/usr/share/enigma2` و`/usr/lib/enigma2/python` و`/etc/enigma2`، وفي حزمة MLA المبنية.
+- لا cron، ولا init، ولا symlinks تشير إلى CineView القديم.
+- الـpayloadان متطابقان في قائمة الملفات (390 مدخلاً).
+- كل ملفات `CineView_FHD/` و`CineViewControl/` الموجودة على القرص مصدرها الـpayload.
+
+### النسخة الاحتياطية قبل الحذف
+
+**المكان على Slot 4:** `/home/root/oldcv-backup-20261008/`
+- `oldcv-files.tgz`: 1637 مدخلاً، 24.6 MB. SHA256 `dfeec0ce37bd4061afc50ab75804d2449ba42929eec073c13ae6b69fe8fa3f8b`.
+- `settings`: SHA256 `fff2fc0f7b761157…`.
+- `opkg-info/`: ملفات control وlist وpostinst وpreinst للحزمتين، مع حالة opkg لكل منهما.
+
+**نسخة مطابقة على الـagent:** `~/cineview-mla/oldcv/`، بنفس البصمة.
+
+**الاسترجاع إن لزم:**
+```
+tar -C / -xzf /home/root/oldcv-backup-20261008/oldcv-files.tgz
+```
+- إذا لزمت السطور الحذوفة من `settings`، تُستعاد مع إيقاف الواجهة.
+
+### التنفيذ
+
+- تم مع إيقاف الواجهة (`init 4`)، ثم أُعيد تشغيلها (`init 3`).
+- الحذف بمسارات صريحة فقط، دون wildcard يمكن أن يصل إلى `CineViewMLA*`.
+- **النتيجة:** opkg أزال الحزمتين، ثم حُذف 13 ملفاً و5 مجلدات، وأُزيل سطرا الإعدادات. بقي 0 مرجع قديم في `settings`.
+
+**الجرد بعد التنظيف:**
+- حزمة CineView الوحيدة المثبتة: `enigma2-plugin-skins-cineview-fhd-mla 1.0.0~openvix1`.
+- في `/usr/share/enigma2` لا يوجد إلا `CineView_FHD_MLA` من CineView.
+- لا يوجد أي ملف `CineView*` غير MLA في `Components`.
+- لا يوجد `CineViewControl`.
+- Plugin Browser لم يعد يعرض "CineView Control".
+
+### الاختبار الفعلي بعد التنظيف
+
+| الاختبار | النتيجة |
+|---|---|
+| بدء Enigma2 بعد الحذف | PASS: لا Traceback، و`missing`/`notimpl` مطابقة لما قبل الحذف |
+| t106v (18 خطوة): InfoBar، SIB، ChannelSelection، العلامة، التمرير، Grid/Single/Multi/IB EPG، EventView/Simple، PVR، Plugin Browser، Install/Remove Plugins، CineView Designs، Setup، MessageBox | **PASS**: 0 Traceback و0 Skin Error في كل الخطوات. البوسترات تظهر، والكاش فيه 124 ملفاً في `/tmp` |
+| CineView Designs (t106fv): F0 نموذج Modern مع Keep، F1 Profiles، F2 ثيم مع Keep، F3 رجوع تلقائي، F4 Factory، R Guardian | **PASS** (كلها) |
+| PVR بتسجيل حقيقي 90 ثانية على USB، ثم القائمة وINFO والتشغيل في MoviePlayer والإيقاف | **PASS**، وحُذفت ملفات الاختبار، و`timers.xml` مطابق للأصل |
+| أخطاء السجل | فقط أخطاء سكين LCD الأصلي `OE-A_LCDSkin_9`، الموثقة سابقاً: `IsHDHDR` عند MoviePlayer، و`RemainingToText` بوسيط فارغ في الأسطر 211 و925 و1164 من `skin_display.xml` |
+| Crash logs | **0** |
+
+### الحالة النهائية بعد التنظيف
+
+**تنظيف بعد الاختبار:**
+- حُذفت أداة الاختبار، وسطر `enabledebug`، ولوجات الاختبار بعد أرشفتها.
+- القناة الحالية HBO HD.
+
+**الفرق في settings مقارنة بما قبل التنظيف:**
+- حذف عنصر `CineViewControl` من `plugin_order`.
+- حذف سطري `config.plugins.cineview.*`.
+- `startCounter` (عداد طبيعي).
+- `config.audio.volume` (انظر أدناه).
+
+**الصوت:**
+- تغيّر `config.audio.volume` من 40 إلى 5.
+- **السبب مثبت من سجل Enigma2:**
+  - في 17:14:32–17:14:33 وصلت 7 ضغطات `KEY_VOLUMEDOWN` من مدخل الريموت الفعلي (InfoBarGenerics Make/Break بفواصل بشرية تقريباً 0.2 ثانية).
+  - لم يكن معها أي طلب `/api/remotecontrol` من OpenWebif.
+- أدوات الاختبار ترسل الأزرار عبر OpenWebif فقط، ولم ترسل أي زر صوت.
+- الأرجح أن شخصاً عند الرسيفر استخدم الريموت.
+- **لم أغيّر القيمة.**
+- **البند المفتوح:** تغيّر 55→40 أثناء اختبار المثبّت (I4) لم أتحقق من مصدره، لأن سجلات debug كانت متوقفة وقتها.

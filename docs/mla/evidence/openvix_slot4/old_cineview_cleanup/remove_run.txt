@@ -1,0 +1,31 @@
+oldcv-files.tgz: OK
+settings: OK
+== packages
+Removing enigma2-plugin-skins-cineview-fhd-universal-offline (2.1.20260923) from root...
+Removing enigma2-plugin-skins-cineview-fhd-offline-openvix (2.1.20260923) from root...
+== files and folders of the old CineView FHD
+removed /usr/lib/enigma2/python/Components/Converter/CineViewBitrate.py
+removed /usr/lib/enigma2/python/Components/Converter/CineViewBitrate.pyc
+removed /usr/lib/enigma2/python/Components/Converter/CineViewCPUTemp.py
+removed /usr/lib/enigma2/python/Components/Converter/CineViewCPUTemp.pyc
+removed /usr/lib/enigma2/python/Components/Converter/CineViewCamInfo.py
+removed /usr/lib/enigma2/python/Components/Converter/CineViewCamInfo.pyc
+removed /usr/lib/enigma2/python/Components/Converter/CineViewIMDb.py
+removed /usr/lib/enigma2/python/Components/Converter/CineViewIMDb.pyc
+removed /usr/lib/enigma2/python/Components/Converter/CineViewTransponder.py
+removed /usr/lib/enigma2/python/Components/Converter/CineViewTransponderInfo.py
+removed /usr/lib/enigma2/python/Components/Converter/CineViewTransponderInfo.pyc
+removed /usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.py
+removed /usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.pyc
+removed /etc/enigma2/CineViewControl-before-update-20260922-185907.tar.gz
+removed /usr/share/enigma2/CineView_FHD/
+removed /usr/share/enigma2/CineView_FHD.rollback-broken-20260922/
+removed /usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/
+removed /etc/enigma2/CineView_FHD-before-latest-merge-20260922-221719/
+removed /root/cineview-openvix-backups/
+== settings lines of the old plugin
+199:config.plugins.cineview.poster_infobar=False
+200:config.plugins.cineview.theme=navy
+remaining old references in settings: 0
+REMOVE_DONE
+old pid 1110
