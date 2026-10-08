@@ -1,0 +1,4 @@
+== decisions: TOTAL 37  PASS 37  FAIL 0
+   (package source: distribution point)
+NET TOTAL 26  PASS 26  FAIL 0
+PASS  untrusted certificate: ca-certificates update once, then stop (no bypass)

@@ -1,0 +1,61 @@
+19:49:38 == R0 identity + golden
+Version: 1.0.0
+Status: install ok installed
+19:49:39 == R1 backup
+190c216788478c0ff2c09b3c8fac2bdd54ab79abeafd85ef558dc3141fe2addb  /home/root/inst120-backup-20261008/settings
+8a159c7895e563eebfc4b61d5275bf2c999e3ad932baec86cfe02080c21a4a5f  /home/root/inst120-backup-20261008/cineview_mla.tgz
+19:49:39 == R2 official command: installer downloaded from GitHub on the receiver
+e4ef2622c1f17cf73c7eaa3435f7c6df77b8b2cc44cdc60b7a3ed9de67159639  /tmp/cvmla-dist/cineview-install.sh
+19:49:40 == R3 test setup (GUI stopped): poster cache pin to /tmp, screen-open devtool
+19:51:10 GUI healthy
+19:51:10 == R4 DRYRUN
+  [OK] Upgrade: your design, theme, profiles, settings and poster cache are kept
+
+All checks passed. Check-only run: nothing was downloaded or installed.
+
+19:51:11 == R5 upgrade 1.0.0 -> 1.0.1 downloaded from the GitHub release, GUI restarted by the installer
+installer rc=0
+19:52:55 GUI healthy after upgrade
+Version: 1.0.1
+Status: install ok installed
+{"layouts": {"channelselection": "modern", "epg": "modern", "eventview": "modern", "infobar": "modern", "pvr": "modern", "secondinfobar": "modern"}, "theme": "black"}tracebacks=0 skin_errors=4 crashlogs_today=0
+19:52:55 == R6 CineView Designs (version line)
+CineView MLA 1.0.1 · build_fatv · 76098d8 / Design & Development by habeb-s © 2026
+tracebacks=0 skin_errors=4 crashlogs_today=0
+19:53:10 == R7 same version again
+installer rc=0
+  CineView MLA 1.0.1 is already installed and verified.
+19:53:11 == R8 ROLLBACK=1 -> Golden 1.0.0 (SHA256-pinned previous release)
+installer rc=0
+19:54:58 GUI healthy after rollback
+Version: 1.0.0
+Status: install ok installed
+{"layouts": {"channelselection": "modern", "epg": "modern", "eventview": "modern", "infobar": "modern", "pvr": "modern", "secondinfobar": "modern"}, "theme": "black"}tracebacks=0 skin_errors=4 crashlogs_today=0
+19:54:58 == R9 cleanup (GUI stopped): pin, devtool, test files, installer restore points made by this test, last service
+removed test restore point 20261008-225115
+removed test restore point 20261008-225315
+19:56:33 GUI healthy after cleanup
+19:56:33 == R10 Golden verification
+receiver: 615 files + 7 links; published: 615 files + 7 links
+19:56:38 GOLDEN 1.0.0: ALL FILES AND LINKS IDENTICAL TO THE PUBLISHED PACKAGE
+selection now:    {"layouts": {"channelselection": "modern", "epg": "modern", "eventview": "modern", "infobar": "modern", "pvr": "modern", "secondinfobar": "modern"}, "theme": "black"}
+selection backup: {"layouts": {"channelselection": "modern", "epg": "modern", "eventview": "modern", "infobar": "modern", "pvr": "modern", "secondinfobar": "modern"}, "theme": "black"}
+-config.misc.nextWakeup=1791485189,-1,-1,0,0,-1,0
++config.misc.nextWakeup=1791489299,-1,-1,0,0,-1,0
+-config.misc.startCounter=1154
++config.misc.startCounter=1158
+-config.volumeControl.volume=28
++config.volumeControl.volume=17
+playing: HBO HD
+backup
+boot.count
+healthy
+history.log
+lkg
+profiles
+selection.json
+txn.json
+  ls: /usr/lib/enigma2/python/Plugins/Extensions/CineViewMLAScreenOpen: No such file or directory
+  ls: /tmp/cvmla-dist: No such file or directory
+  ls: /etc/enigma2/cineview_mla/runtime.json: No such file or directory
+19:56:39 SLOT8_DONE
