@@ -1,0 +1,5 @@
+[ -z "$CVMLA_BBSH" ] && [ -x /bin/busybox ] && CVMLA_BBSH=1 exec /bin/
+runs recorded: 100, seconds: 12
+exit codes:
+    100 0
+crashes (exit >= 128): 0/100

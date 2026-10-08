@@ -1,0 +1,52 @@
+
+  CineView MLA Smart Installer    version 1.1.0
+  Design & Development by habeb-s (c) 2026
+
+Device
+  [OK] Vu+ Duo4K SE
+
+Image
+  [OK] OpenViX 6.9 detected
+
+Version
+  [OK] OpenViX 6.9 is supported (tested on OpenViX 6.9)
+
+Python
+  [OK] Python 3.14 compatible
+
+Architecture
+  [OK] Architecture: cortexa15hf-neon-vfpv4 (CineView MLA is architecture-independent)
+
+Compatibility
+  [OK] Required components present (python3-pillow, python3-requests)
+  [OK] Package matches this receiver
+
+Storage
+  [OK] Free space: 53257 MB
+  [OK] Poster cache: /tmp/CINEVIEW-MLA/poster (your setting, kept)
+
+Existing installation
+  [..] No earlier CineView MLA installation
+  [..] CineView FHD (classic edition) found - it stays installed and independent
+
+Package
+  [OK] Package verified (SHA256)
+
+Installing
+  [OK] Restore point saved
+  [OK] CineView MLA 1.0.0~openvix1 installed
+
+Verification
+  [OK] Package version 1.0.0~openvix1
+  [OK] Skin files present
+  [OK] Plugin loadable
+  [OK] Plugin icon present
+  [OK] CineView Designs available in the Plugin Browser
+
+Result
+  CineView MLA 1.0.0~openvix1 installed successfully.
+
+  Next step: Menu > Setup > User Interface > Skin > CineView_FHD_MLA, then restart the GUI.
+  [..] Then open CineView Designs from the Plugin Browser to choose designs and themes.
+
+exit=0

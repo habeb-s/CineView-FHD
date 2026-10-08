@@ -1,0 +1,4 @@
+pkg: 1.0.0~openvix1 / install ok installed
+settings: 2f085319f7b5b931 skin=CineView_FHD_MLA/skin.xml
+selection: navy channelselection=classic,epg=classic,eventview=classic,infobar=classic,pvr=classic,secondinfobar=classic active=generations/g000002
+restore points: 

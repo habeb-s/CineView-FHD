@@ -1,0 +1,5 @@
+CineView MLA is the selected skin: stopping Enigma2 to switch back to the image default skin.
+CineView MLA removed (/etc/enigma2/cineview_mla kept unless purged).
+Removing enigma2-plugin-skins-cineview-fhd-mla (1.0.0~openvix1) from root...
+CineView MLA removed. Your poster cache is kept.
+exit=0

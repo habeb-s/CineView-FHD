@@ -1,0 +1,656 @@
+atv.info
+bh.info
+cineview-install.sh
+cineview-uninstall.sh
+crash_test.ipk
+enigma2-plugin-skins-cineview-fhd-mla_1.0.0~openvix1_all.ipk
+enigma2-plugin-skins-cineview-fhd-mla_1.0.0~openvix2_all.ipk
+nodistro.info
+othermodel.info
+real.info
+vix68.info
+vix70.info
+== start
+pkg: 1.0.0~openvix1 / install ok installed
+settings: 2f085319f7b5b931 skin=CineView_FHD_MLA/skin.xml
+selection: navy channelselection=classic,epg=classic,eventview=classic,infobar=classic,pvr=classic,secondinfobar=classic active=generations/g000002
+restore points: 
+
+################ I1_default_not_released
+
+  CineView MLA Smart Installer    version 1.1.0
+  Design & Development by habeb-s (c) 2026
+
+Device
+  [OK] Vu+ Duo4K SE
+
+Image
+  [OK] OpenViX 6.9 detected
+
+Version
+  [OK] OpenViX 6.9 is supported (tested on OpenViX 6.9)
+  [XX] The OpenViX package of CineView MLA is not released yet.
+
+CineView MLA was not installed. Nothing was changed on this receiver.
+
+exit=1
+
+################ I1b_dryrun
+
+  CineView MLA Smart Installer    version 1.1.0
+  Design & Development by habeb-s (c) 2026
+
+Device
+  [OK] Vu+ Duo4K SE
+
+Image
+  [OK] OpenViX 6.9 detected
+
+Version
+  [OK] OpenViX 6.9 is supported (tested on OpenViX 6.9)
+
+Python
+  [OK] Python 3.14 compatible
+
+Architecture
+  [OK] Architecture: cortexa15hf-neon-vfpv4 (CineView MLA is architecture-independent)
+
+Compatibility
+  [OK] Required components present (python3-pillow, python3-requests)
+  [OK] Package matches this receiver
+
+Storage
+  [OK] Free space: 53237 MB
+  [OK] Poster cache: /tmp/CINEVIEW-MLA/poster (your setting, kept)
+
+Existing installation
+  [..] Current version: 1.0.0~openvix1
+  [..] New version:     1.0.0~openvix1
+  [..] CineView FHD (classic edition) found - it stays installed and independent
+
+All checks passed. Check-only run: nothing was downloaded or installed.
+
+exit=0
+
+################ N1_info_openatv
+
+  CineView MLA Smart Installer    version 1.1.0
+  Design & Development by habeb-s (c) 2026
+
+Device
+  [OK] Vu+ Duo4K SE
+
+Image
+  [XX] enigma.info names OpenATV, but the image's screens are not OpenATV's: the image cannot be identified reliably.
+
+CineView MLA was not installed. Nothing was changed on this receiver.
+
+exit=1
+
+################ N2_info_openbh
+
+  CineView MLA Smart Installer    version 1.1.0
+  Design & Development by habeb-s (c) 2026
+
+Device
+  [OK] Vu+ Duo4K SE
+
+Image
+  [OK] OpenBH 6.9 detected
+
+Version
+  [XX] OpenBH 6.9 has not been checked with CineView MLA yet.
+
+CineView MLA was not installed. Nothing was changed on this receiver.
+
+exit=1
+
+################ N3_info_nodistro
+
+  CineView MLA Smart Installer    version 1.1.0
+  Design & Development by habeb-s (c) 2026
+
+Device
+  [OK] Vu+ Duo4K SE
+
+Image
+  [XX] This image does not name itself in /usr/lib/enigma.info: it cannot be identified.
+
+CineView MLA was not installed. Nothing was changed on this receiver.
+
+exit=1
+
+################ N4_info_vix68
+
+  CineView MLA Smart Installer    version 1.1.0
+  Design & Development by habeb-s (c) 2026
+
+Device
+  [OK] Vu+ Duo4K SE
+
+Image
+  [OK] OpenViX 6.8 detected
+
+Version
+  [XX] OpenViX 6.8 is too old: CineView MLA for OpenViX is built and tested for OpenViX 6.9.
+
+CineView MLA was not installed. Nothing was changed on this receiver.
+
+exit=1
+
+################ N5_info_vix70
+
+  CineView MLA Smart Installer    version 1.1.0
+  Design & Development by habeb-s (c) 2026
+
+Device
+  [OK] Vu+ Duo4K SE
+
+Image
+  [OK] OpenViX 7.0 detected
+
+Version
+  [XX] OpenViX 7.0 has not been checked with CineView MLA yet.
+
+CineView MLA was not installed. Nothing was changed on this receiver.
+
+exit=1
+
+################ N6_info_othermodel
+
+  CineView MLA Smart Installer    version 1.1.0
+  Design & Development by habeb-s (c) 2026
+
+Device
+  [XX] The receiver model is ambiguous (image: vuuno4kse, Vu+ driver: duo4kse): nothing is installed.
+
+CineView MLA was not installed. Nothing was changed on this receiver.
+
+exit=1
+
+################ N7_info_missing
+
+  CineView MLA Smart Installer    version 1.1.0
+  Design & Development by habeb-s (c) 2026
+
+Device
+  [XX] The image information (/usr/lib/enigma.info) is missing: the image cannot be identified.
+
+CineView MLA was not installed. Nothing was changed on this receiver.
+
+exit=1
+
+== state after the check-only and refusal runs (must equal the start)
+pkg: 1.0.0~openvix1 / install ok installed
+settings: 2f085319f7b5b931 skin=CineView_FHD_MLA/skin.xml
+selection: navy channelselection=classic,epg=classic,eventview=classic,infobar=classic,pvr=classic,secondinfobar=classic active=generations/g000002
+restore points: 
+
+################ I2_same_version
+
+  CineView MLA Smart Installer    version 1.1.0
+  Design & Development by habeb-s (c) 2026
+
+Device
+  [OK] Vu+ Duo4K SE
+
+Image
+  [OK] OpenViX 6.9 detected
+
+Version
+  [OK] OpenViX 6.9 is supported (tested on OpenViX 6.9)
+
+Python
+  [OK] Python 3.14 compatible
+
+Architecture
+  [OK] Architecture: cortexa15hf-neon-vfpv4 (CineView MLA is architecture-independent)
+
+Compatibility
+  [OK] Required components present (python3-pillow, python3-requests)
+  [OK] Package matches this receiver
+
+Storage
+  [OK] Free space: 53237 MB
+  [OK] Poster cache: /tmp/CINEVIEW-MLA/poster (your setting, kept)
+
+Existing installation
+  [..] Current version: 1.0.0~openvix1
+  [..] New version:     1.0.0~openvix1
+  [..] CineView FHD (classic edition) found - it stays installed and independent
+
+Verification
+  [OK] Package version 1.0.0~openvix1
+  [OK] Skin files present
+  [OK] Plugin loadable
+  [OK] Plugin icon present
+  [OK] CineView Designs available in the Plugin Browser
+
+Result
+  CineView MLA 1.0.0~openvix1 is already installed and verified.
+
+exit=0
+
+################ I3_sha_mismatch
+
+  CineView MLA Smart Installer    version 1.1.0
+  Design & Development by habeb-s (c) 2026
+
+Device
+  [OK] Vu+ Duo4K SE
+
+Image
+  [OK] OpenViX 6.9 detected
+
+Version
+  [OK] OpenViX 6.9 is supported (tested on OpenViX 6.9)
+
+Python
+  [OK] Python 3.14 compatible
+
+Architecture
+  [OK] Architecture: cortexa15hf-neon-vfpv4 (CineView MLA is architecture-independent)
+
+Compatibility
+  [OK] Required components present (python3-pillow, python3-requests)
+  [OK] Package matches this receiver
+
+Storage
+  [OK] Free space: 53237 MB
+  [OK] Poster cache: /tmp/CINEVIEW-MLA/poster (your setting, kept)
+
+Existing installation
+  [..] Current version: 1.0.0~openvix1
+  [..] New version:     1.0.0~openvix2
+  [OK] Upgrade: your design, theme, profiles, settings and poster cache are kept
+  [..] CineView FHD (classic edition) found - it stays installed and independent
+
+Package
+  [XX] The package failed the SHA256 check (damaged or not the official file).
+
+CineView MLA was not installed. Nothing was changed on this receiver.
+
+exit=1
+pkg: 1.0.0~openvix1 / install ok installed
+settings: 2f085319f7b5b931 skin=CineView_FHD_MLA/skin.xml
+selection: navy channelselection=classic,epg=classic,eventview=classic,infobar=classic,pvr=classic,secondinfobar=classic active=generations/g000002
+restore points: 
+
+################ I4_upgrade_restart
+
+  CineView MLA Smart Installer    version 1.1.0
+  Design & Development by habeb-s (c) 2026
+
+Device
+  [OK] Vu+ Duo4K SE
+
+Image
+  [OK] OpenViX 6.9 detected
+
+Version
+  [OK] OpenViX 6.9 is supported (tested on OpenViX 6.9)
+
+Python
+  [OK] Python 3.14 compatible
+
+Architecture
+  [OK] Architecture: cortexa15hf-neon-vfpv4 (CineView MLA is architecture-independent)
+
+Compatibility
+  [OK] Required components present (python3-pillow, python3-requests)
+  [OK] Package matches this receiver
+
+Storage
+  [OK] Free space: 53237 MB
+  [OK] Poster cache: /tmp/CINEVIEW-MLA/poster (your setting, kept)
+
+Existing installation
+  [..] Current version: 1.0.0~openvix1
+  [..] New version:     1.0.0~openvix2
+  [OK] Upgrade: your design, theme, profiles, settings and poster cache are kept
+  [..] CineView FHD (classic edition) found - it stays installed and independent
+
+Package
+  [OK] Package verified (SHA256)
+
+Installing
+  [OK] Restore point saved
+  [OK] CineView MLA 1.0.0~openvix2 installed
+
+Verification
+  [OK] Package version 1.0.0~openvix2
+  [OK] Skin files present
+  [OK] Plugin loadable
+  [OK] Plugin icon present
+  [OK] CineView Designs available in the Plugin Browser
+
+Result
+  CineView MLA 1.0.0~openvix2 installed successfully.
+
+  +-----------------------------------------------------+
+  |  Restart the GUI to load CineView MLA 1.0.0~openvix2. |
+  +-----------------------------------------------------+
+  [..] Restarting the GUI ...
+
+exit=0
+   GUI pid 17021 -> 29757, webif up, crash logs today: 0
+pkg: 1.0.0~openvix2 / install ok installed
+settings: eb86498c9fce3590 skin=CineView_FHD_MLA/skin.xml
+selection: navy channelselection=classic,epg=classic,eventview=classic,infobar=classic,pvr=classic,secondinfobar=classic active=generations/g000003
+restore points: 20261008-162646 
+
+################ I5_shell_crash_twice
+
+  CineView MLA Smart Installer    version 1.1.0
+  Design & Development by habeb-s (c) 2026
+
+Device
+  [OK] Vu+ Duo4K SE
+
+Image
+  [OK] OpenViX 6.9 detected
+
+Version
+  [OK] OpenViX 6.9 is supported (tested on OpenViX 6.9)
+
+Python
+  [OK] Python 3.14 compatible
+
+Architecture
+  [OK] Architecture: cortexa15hf-neon-vfpv4 (CineView MLA is architecture-independent)
+
+Compatibility
+  [OK] Required components present (python3-pillow, python3-requests)
+  [OK] Package matches this receiver
+
+Storage
+  [OK] Free space: 53237 MB
+  [OK] Poster cache: /tmp/CINEVIEW-MLA/poster (your setting, kept)
+
+Existing installation
+  [..] Current version: 1.0.0~openvix2
+  [..] New version:     1.0.0~openvix2
+  [!!] Reinstall requested
+  [..] CineView FHD (classic edition) found - it stays installed and independent
+
+Package
+  [OK] Package verified (SHA256)
+
+Installing
+  [OK] Restore point saved
+  [!!] The image's shell crashed during the installation (signal 11) - one more attempt
+  [XX] The package manager stopped the installation twice (package state: install ok half-installed).
+
+CineView MLA was not installed. Run the installer again: it repairs the incomplete installation first.
+
+exit=1
+pkg: 1.0.0~openvix2 / install ok half-installed
+settings: eb86498c9fce3590 skin=CineView_FHD_MLA/skin.xml
+selection: navy channelselection=classic,epg=classic,eventview=classic,infobar=classic,pvr=classic,secondinfobar=classic active=generations/g000003
+restore points: 20261008-162646 20261008-162813 
+
+################ I6_repair
+
+  CineView MLA Smart Installer    version 1.1.0
+  Design & Development by habeb-s (c) 2026
+
+Device
+  [OK] Vu+ Duo4K SE
+
+Image
+  [OK] OpenViX 6.9 detected
+
+Version
+  [OK] OpenViX 6.9 is supported (tested on OpenViX 6.9)
+
+Python
+  [OK] Python 3.14 compatible
+
+Architecture
+  [OK] Architecture: cortexa15hf-neon-vfpv4 (CineView MLA is architecture-independent)
+
+Compatibility
+  [OK] Required components present (python3-pillow, python3-requests)
+  [OK] Package matches this receiver
+
+Storage
+  [OK] Free space: 53237 MB
+  [OK] Poster cache: /tmp/CINEVIEW-MLA/poster (your setting, kept)
+
+Existing installation
+  [!!] An earlier CineView MLA installation was not completed (package state: install ok half-installed)
+  [..] It is repaired with a verified reinstall of CineView MLA 1.0.0~openvix2
+  [..] CineView FHD (classic edition) found - it stays installed and independent
+
+Package
+  [OK] Package verified (SHA256)
+
+Installing
+  [OK] Restore point saved
+  [OK] CineView MLA 1.0.0~openvix2 installed
+
+Verification
+  [OK] Package version 1.0.0~openvix2
+  [OK] Skin files present
+  [OK] Plugin loadable
+  [OK] Plugin icon present
+  [OK] CineView Designs available in the Plugin Browser
+
+Result
+  CineView MLA 1.0.0~openvix2 installed successfully.
+
+  +-----------------------------------------------------+
+  |  Restart the GUI to load CineView MLA 1.0.0~openvix2. |
+  +-----------------------------------------------------+
+  [..] Later: Menu > Standby / Restart > Restart GUI
+
+exit=0
+pkg: 1.0.0~openvix2 / install ok installed
+settings: eb86498c9fce3590 skin=CineView_FHD_MLA/skin.xml
+selection: navy channelselection=classic,epg=classic,eventview=classic,infobar=classic,pvr=classic,secondinfobar=classic active=generations/g000004
+restore points: 20261008-162646 20261008-162813 20261008-162820 
+
+################ I7_return_to_openvix1
+
+  CineView MLA Smart Installer    version 1.1.0
+  Design & Development by habeb-s (c) 2026
+
+Device
+  [OK] Vu+ Duo4K SE
+
+Image
+  [OK] OpenViX 6.9 detected
+
+Version
+  [OK] OpenViX 6.9 is supported (tested on OpenViX 6.9)
+
+Python
+  [OK] Python 3.14 compatible
+
+Architecture
+  [OK] Architecture: cortexa15hf-neon-vfpv4 (CineView MLA is architecture-independent)
+
+Compatibility
+  [OK] Required components present (python3-pillow, python3-requests)
+  [OK] Package matches this receiver
+
+Storage
+  [OK] Free space: 53236 MB
+  [OK] Poster cache: /tmp/CINEVIEW-MLA/poster (your setting, kept)
+
+Existing installation
+  [..] Current version: 1.0.0~openvix2
+  [..] New version:     1.0.0~openvix1
+  [!!] Return to the earlier version 1.0.0~openvix1 requested (your design, theme and profiles are kept)
+  [..] CineView FHD (classic edition) found - it stays installed and independent
+
+Package
+  [OK] Package verified (SHA256)
+
+Installing
+  [OK] Restore point saved
+  [OK] CineView MLA 1.0.0~openvix1 installed
+
+Verification
+  [OK] Package version 1.0.0~openvix1
+  [OK] Skin files present
+  [OK] Plugin loadable
+  [OK] Plugin icon present
+  [OK] CineView Designs available in the Plugin Browser
+
+Result
+  CineView MLA 1.0.0~openvix1 installed successfully.
+
+  +-----------------------------------------------------+
+  |  Restart the GUI to load CineView MLA 1.0.0~openvix1. |
+  +-----------------------------------------------------+
+  [..] Restarting the GUI ...
+
+exit=0
+   GUI pid 29757 -> 31342, webif up, crash logs today: 0
+pkg: 1.0.0~openvix1 / install ok installed
+settings: e7ca8fa262889782 skin=CineView_FHD_MLA/skin.xml
+selection: navy channelselection=classic,epg=classic,eventview=classic,infobar=classic,pvr=classic,secondinfobar=classic active=generations/g000005
+restore points: 20261008-162646 20261008-162813 20261008-162820 20261008-162826 
+
+################ I8_uninstall (MLA selected)
+CineView MLA is the selected skin: stopping Enigma2 to switch back to the image default skin.
+CineView MLA removed (/etc/enigma2/cineview_mla kept unless purged).
+Removing enigma2-plugin-skins-cineview-fhd-mla (1.0.0~openvix1) from root...
+CineView MLA removed. Your poster cache is kept.
+exit=0
+   GUI pid 31342 -> 32405, webif up, crash logs today: 0
+pkg:  / 
+settings: 5fad6971f7f64e3d skin=
+selection: navy channelselection=classic,epg=classic,eventview=classic,infobar=classic,pvr=classic,secondinfobar=classic active=
+restore points: 20261008-162646 20261008-162813 20261008-162820 20261008-162826 settings.before-uninstall 
+ls: /usr/share/enigma2/CineView_FHD_MLA: No such file or directory
+ls: /usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA: No such file or directory
+backup
+boot.count
+clean_exit
+healthy
+history.log
+lkg
+profiles
+runtime.json
+selection.json
+txn.json
+
+################ I9_fresh_install
+
+  CineView MLA Smart Installer    version 1.1.0
+  Design & Development by habeb-s (c) 2026
+
+Device
+  [OK] Vu+ Duo4K SE
+
+Image
+  [OK] OpenViX 6.9 detected
+
+Version
+  [OK] OpenViX 6.9 is supported (tested on OpenViX 6.9)
+
+Python
+  [OK] Python 3.14 compatible
+
+Architecture
+  [OK] Architecture: cortexa15hf-neon-vfpv4 (CineView MLA is architecture-independent)
+
+Compatibility
+  [OK] Required components present (python3-pillow, python3-requests)
+  [OK] Package matches this receiver
+
+Storage
+  [OK] Free space: 53257 MB
+  [OK] Poster cache: /tmp/CINEVIEW-MLA/poster (your setting, kept)
+
+Existing installation
+  [..] No earlier CineView MLA installation
+  [..] CineView FHD (classic edition) found - it stays installed and independent
+
+Package
+  [OK] Package verified (SHA256)
+
+Installing
+  [OK] Restore point saved
+  [OK] CineView MLA 1.0.0~openvix1 installed
+
+Verification
+  [OK] Package version 1.0.0~openvix1
+  [OK] Skin files present
+  [OK] Plugin loadable
+  [OK] Plugin icon present
+  [OK] CineView Designs available in the Plugin Browser
+
+Result
+  CineView MLA 1.0.0~openvix1 installed successfully.
+
+  Next step: Menu > Setup > User Interface > Skin > CineView_FHD_MLA, then restart the GUI.
+  [..] Then open CineView Designs from the Plugin Browser to choose designs and themes.
+
+exit=0
+   GUI pid 32405 -> 1110, webif up, crash logs today: 0
+pkg: 1.0.0~openvix1 / install ok installed
+settings: fff2fc0f7b761157 skin=CineView_FHD_MLA/skin.xml
+selection: navy channelselection=classic,epg=classic,eventview=classic,infobar=classic,pvr=classic,secondinfobar=classic active=generations/g000000
+restore points: 20261008-162646 20261008-162813 20261008-162820 20261008-162826 20261008-163102 settings.before-uninstall 
+
+################ I9b_verify_same
+
+  CineView MLA Smart Installer    version 1.1.0
+  Design & Development by habeb-s (c) 2026
+
+Device
+  [OK] Vu+ Duo4K SE
+
+Image
+  [OK] OpenViX 6.9 detected
+
+Version
+  [OK] OpenViX 6.9 is supported (tested on OpenViX 6.9)
+
+Python
+  [OK] Python 3.14 compatible
+
+Architecture
+  [OK] Architecture: cortexa15hf-neon-vfpv4 (CineView MLA is architecture-independent)
+
+Compatibility
+  [OK] Required components present (python3-pillow, python3-requests)
+  [OK] Package matches this receiver
+
+Storage
+  [OK] Free space: 53237 MB
+  [OK] Poster cache: /tmp/CINEVIEW-MLA/poster (your setting, kept)
+
+Existing installation
+  [..] Current version: 1.0.0~openvix1
+  [..] New version:     1.0.0~openvix1
+  [..] CineView FHD (classic edition) found - it stays installed and independent
+
+Verification
+  [OK] Package version 1.0.0~openvix1
+  [OK] Skin files present
+  [OK] Plugin loadable
+  [OK] Plugin icon present
+  [OK] CineView Designs available in the Plugin Browser
+
+Result
+  CineView MLA 1.0.0~openvix1 is already installed and verified.
+
+exit=0
+
+################ I10 preinst x100
+[ -z "$CVMLA_BBSH" ] && [ -x /bin/busybox ] && CVMLA_BBSH=1 exec /bin/
+runs recorded: 100, seconds: 12
+exit codes:
+    100 0
+crashes (exit >= 128): 0/100
+
+== end
+pkg: 1.0.0~openvix1 / install ok installed
+settings: fff2fc0f7b761157 skin=CineView_FHD_MLA/skin.xml
+selection: navy channelselection=classic,epg=classic,eventview=classic,infobar=classic,pvr=classic,secondinfobar=classic active=generations/g000000
+restore points: 20261008-162646 20261008-162813 20261008-162820 20261008-162826 20261008-163102 settings.before-uninstall 
+T109V_DONE

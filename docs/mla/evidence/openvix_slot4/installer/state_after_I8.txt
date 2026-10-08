@@ -1,0 +1,16 @@
+pkg:  / 
+settings: 5fad6971f7f64e3d skin=
+selection: navy channelselection=classic,epg=classic,eventview=classic,infobar=classic,pvr=classic,secondinfobar=classic active=
+restore points: 20261008-162646 20261008-162813 20261008-162820 20261008-162826 settings.before-uninstall 
+ls: /usr/share/enigma2/CineView_FHD_MLA: No such file or directory
+ls: /usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA: No such file or directory
+backup
+boot.count
+clean_exit
+healthy
+history.log
+lkg
+profiles
+runtime.json
+selection.json
+txn.json

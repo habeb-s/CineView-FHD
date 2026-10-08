@@ -1,0 +1,16 @@
+
+  CineView MLA Smart Installer    version 1.1.0
+  Design & Development by habeb-s (c) 2026
+
+Device
+  [OK] Vu+ Duo4K SE
+
+Image
+  [OK] OpenViX 6.8 detected
+
+Version
+  [XX] OpenViX 6.8 is too old: CineView MLA for OpenViX is built and tested for OpenViX 6.9.
+
+CineView MLA was not installed. Nothing was changed on this receiver.
+
+exit=1

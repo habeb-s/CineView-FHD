@@ -1,0 +1,8 @@
+  CineView MLA Smart Installer    version 1.1.0
+  Design & Development by habeb-s (c) 2026
+Device
+  [OK] Vu+ Duo4K SE
+Image
+  [XX] enigma.info names OpenBH, but the image's screens are not OpenBH's: the image cannot be identified reliably.
+CineView MLA was not installed. Nothing was changed on this receiver.
+exit=1

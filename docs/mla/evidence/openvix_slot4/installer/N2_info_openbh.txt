@@ -1,0 +1,16 @@
+
+  CineView MLA Smart Installer    version 1.1.0
+  Design & Development by habeb-s (c) 2026
+
+Device
+  [OK] Vu+ Duo4K SE
+
+Image
+  [OK] OpenBH 6.9 detected
+
+Version
+  [XX] OpenBH 6.9 has not been checked with CineView MLA yet.
+
+CineView MLA was not installed. Nothing was changed on this receiver.
+
+exit=1
