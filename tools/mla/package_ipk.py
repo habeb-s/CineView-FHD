@@ -19,8 +19,8 @@ NOT packaged (runtime state, created/kept on the receiver): the 'active'/'lkg' l
 factory one, /etc/enigma2/cineview_mla (selection, journal, profiles).
 
 Maintainer scripts:
-  preinst  : OpenATV 7.6 or 8.0 only (distro/imageversion from /usr/lib/enigma.info; device-verified on 8.0.1 /
-             enigma2 57b7a51, contracts of 7.6 checked statically: tools/mla/compat_image.py) and refuses to replace a foreign
+  preinst  : OpenATV 8.0 only (distro/imageversion from /usr/lib/enigma.info; device-verified on 8.0.1 / enigma2
+             57b7a51; 7.6 is refused until it is tested on a device - user 2026-10-08) and refuses to replace a foreign
              /usr/bin/enigma2_pre_start.sh.  Missing/ambiguous image data -> stop (no guessing).
   postinst : first install -> 'active' = factory (Classic, navy).  Upgrade -> the user's current selection is
              re-applied with the new packs (new sealed generation); if that fails, factory is activated.
@@ -63,14 +63,12 @@ VER=$(sed -n "s/^imageversion='\{0,1\}\([^']*\)'\{0,1\}$/\1/p" $INFO | head -1)
 MODEL=$(sed -n "s/^machinebuild='\{0,1\}\([^']*\)'\{0,1\}$/\1/p" $INFO | head -1)
 echo "CineView MLA: image $DISTRO $VER on $MODEL"
 # Supported = the OpenATV enigma2 versions whose contracts were checked against this package (tools/mla/compat_image.py):
-#   7.6 and 8.0: no difference.  7.5 and older lack the 'addon' widgets (ColorButtonsSequence / ButtonSequence),
-#   MovieInfo FullDescription (7.3: also ServiceListLegacy), so the screens would not build.  Newer versions are
-#   refused until they are checked.  No receiver model is excluded.
+#   only versions tested on a device are accepted: 8.0 (8.0.1).  7.6 has the same contracts statically but is refused
+#   until it is tested; 7.5 and older lack the 'addon' widgets and MovieInfo FullDescription.  No model is excluded.
 if [ "$DISTRO" != "openatv" ]; then echo "CineView MLA: image '$DISTRO' is not OpenATV - this package uses OpenATV-only screen contracts. Stopped."; exit 1; fi
 case "$VER" in
-  7.6|7.6.*|8.0|8.0.*) ;;
-  7.[0-5]|7.[0-5].*|6.*|5.*) echo "CineView MLA: OpenATV '$VER' lacks skin features this package needs ('addon' widgets, MovieInfo FullDescription); OpenATV 7.6 or 8.0 required. Stopped."; exit 1;;
-  *) echo "CineView MLA: OpenATV '$VER' has not been checked against this package yet (checked: 7.6, 8.0). Stopped."; exit 1;;
+  8.0|8.0.*) ;;
+  *) echo "CineView MLA: OpenATV '$VER' is not a tested version for this package (tested: 8.0). Stopped."; exit 1;;
 esac
 PYNEED="@PYNEED@"
 if [ -n "$PYNEED" ]; then
@@ -211,12 +209,13 @@ OPENATV_IMAGE_CHECK_START = 'if [ "$DISTRO" != "openatv" ]'
 OPENATV_IMAGE_CHECK_END = "esac\n"
 IMAGE_CHECKS = {
 	# OpenBH: contracts from BlackHole/enigma2 52dedddc314a (5.6.008) and c06a87ef4c09 (6.0.003) - identical
-	# differences vs OpenATV (docs/mla/OpenBH_P2_Discovery.md).  TEST BUILDS ONLY until device QA passes.
+	# differences vs OpenATV (docs/mla/OpenBH_P2_Discovery.md).  Accepted: 5.6 only, the version tested on a device
+	# (6.0 = Python 3.14, needs its own .pyc build and a device test first - user 2026-10-08).
 	"openbh": (
 		'if [ "$DISTRO" != "openbh" ]; then echo "CineView MLA: image \'$DISTRO\' is not OpenBH - this is the OpenBH build. Stopped."; exit 1; fi\n'
 		'case "$VER" in\n'
-		'  5.6|5.6.*|6.0|6.0.*) ;;\n'
-		'  *) echo "CineView MLA: OpenBH \'$VER\' has not been checked against this package yet (checked: 5.6, 6.0). Stopped."; exit 1;;\n'
+		'  5.6|5.6.*) ;;\n'
+		'  *) echo "CineView MLA: OpenBH \'$VER\' is not a tested version for this package (tested: 5.6). Stopped."; exit 1;;\n'
 		'esac\n'),
 	# OpenViX: contracts from OpenViX/enigma2 d3f089af4e (6.9.002, Slot 4) - ViX family, same as OpenBH except
 	# PluginBrowser key_menu (docs/mla/OpenViX_P3_Discovery.md).  TEST BUILDS ONLY until device QA passes.
@@ -258,7 +257,8 @@ def image_scripts(image, control, preinst, pyneed):
 	preinst = preinst[:a] + IMAGE_CHECKS[image] + preinst[b:]
 	preinst = preinst.replace("(OpenATV 8.0.x)", "(%s)" % image).replace("OpenATV 8.0.x only", "%s only" % image)
 	name = {"openbh": "OpenBH", "openvix": "OpenViX"}[image]
-	control = control.replace("for OpenATV 8.0 / Python %s" % pyneed, "for %s / Python %s (test build)" % (name, pyneed))
+	tag = "" if os.environ.get("MLA_RELEASE") == "1" else " (test build)"  # MLA_RELEASE=1: final package
+	control = control.replace("for OpenATV 8.0 / Python %s" % pyneed, "for %s / Python %s%s" % (name, pyneed, tag))
 	return control, preinst
 
 
