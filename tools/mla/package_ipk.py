@@ -218,6 +218,14 @@ IMAGE_CHECKS = {
 		'  5.6|5.6.*|6.0|6.0.*) ;;\n'
 		'  *) echo "CineView MLA: OpenBH \'$VER\' has not been checked against this package yet (checked: 5.6, 6.0). Stopped."; exit 1;;\n'
 		'esac\n'),
+	# OpenViX: contracts from OpenViX/enigma2 d3f089af4e (6.9.002, Slot 4) - ViX family, same as OpenBH except
+	# PluginBrowser key_menu (docs/mla/OpenViX_P3_Discovery.md).  TEST BUILDS ONLY until device QA passes.
+	"openvix": (
+		'if [ "$DISTRO" != "openvix" ]; then echo "CineView MLA: image \'$DISTRO\' is not OpenViX - this is the OpenViX build. Stopped."; exit 1; fi\n'
+		'case "$VER" in\n'
+		'  6.9|6.9.*) ;;\n'
+		'  *) echo "CineView MLA: OpenViX \'$VER\' has not been checked against this package yet (checked: 6.9). Stopped."; exit 1;;\n'
+		'esac\n'),
 }
 
 
@@ -228,6 +236,8 @@ IMAGE_CHECKS = {
 # /bin/busybox the script just continues under /bin/sh, as before.  OpenATV packages are not touched.
 SHELL_REEXEC = {
 	"openbh": '[ -z "$CVMLA_BBSH" ] && [ -x /bin/busybox ] && CVMLA_BBSH=1 exec /bin/busybox sh "$0" "$@"  # OpenBH: bash /bin/sh crashes rarely (SIGSEGV)\n',
+	# OpenViX 6.9 (Slot 4): /bin/sh -> /bin/bash.bash as on OpenBH (same OE-A bash) - same protection
+	"openvix": '[ -z "$CVMLA_BBSH" ] && [ -x /bin/busybox ] && CVMLA_BBSH=1 exec /bin/busybox sh "$0" "$@"  # OpenViX: /bin/sh is bash, as on OpenBH (rare SIGSEGV)\n',
 }
 
 
@@ -247,7 +257,7 @@ def image_scripts(image, control, preinst, pyneed):
 	b = preinst.index(OPENATV_IMAGE_CHECK_END, a) + len(OPENATV_IMAGE_CHECK_END)
 	preinst = preinst[:a] + IMAGE_CHECKS[image] + preinst[b:]
 	preinst = preinst.replace("(OpenATV 8.0.x)", "(%s)" % image).replace("OpenATV 8.0.x only", "%s only" % image)
-	name = {"openbh": "OpenBH"}[image]
+	name = {"openbh": "OpenBH", "openvix": "OpenViX"}[image]
 	control = control.replace("for OpenATV 8.0 / Python %s" % pyneed, "for %s / Python %s (test build)" % (name, pyneed))
 	return control, preinst
 

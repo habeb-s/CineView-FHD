@@ -64,8 +64,18 @@ check("openbh: Arabic EPG red key -> 'بحث IMDb' only", m.label_overrides() ==
 m = load("distro='openatv'\n")
 check("missing native setting is skipped, never AttributeError", [k for k, *_ in m.native_rows(usage_bh)] == ["show_second_infobar"])
 
-m = load("distro='openvix'\n")
-check("unknown image -> default spec, rows filtered by existence", m.image() == "openvix" and len(m.native_rows(usage_bh)) == 1)
+m = load("distro='openvix'\nimageversion='6.9'\nimagebuild='002'\n")
+rows = m.native_rows(usage_bh)
+check("openvix detected", m.image() == "openvix")
+check("openvix: one native row show_second_infobar (d3f089af4e UsageConfig)", [k for k, *_ in rows] == ["show_second_infobar"])
+check("openvix shutdown hook = WHERE_AUTOSTART reason 1", m.shutdown_hook() == "autostart")
+check("openvix ChoiceBox items keyword = list (d3f089af4e signature)", m.choice_list([1]) == {"list": [1]})
+check("openvix package wait = PluginDownloadBrowser", m.package_wait() == "plugindownloadbrowser")
+check("openvix name clip = complexcolumn (same listboxservice name code)", m.name_clip() == "complexcolumn")
+check("openvix: no label override (its ar.po is already short)", m.label_overrides() == ())
+
+m = load("distro='openspa'\n")
+check("unknown image -> default spec, rows filtered by existence", m.image() == "openspa" and len(m.native_rows(usage_bh)) == 1)
 
 m = load(None)
 check("no enigma.info -> openatv (1.0.0 behaviour)", m.image() == "openatv")

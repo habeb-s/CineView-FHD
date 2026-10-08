@@ -1,0 +1,16 @@
+{
+ "note": "OpenViX replacements of section requirements = OpenBH's: OpenViX 6.9 (OpenViX/enigma2 d3f089af4e) has the same Screens/EpgSelection*.py as BlackHole/enigma2 52dedddc314a (byte-identical): no vertical EPG, no GraphMultiEPG plugin screens.",
+ "sections": {
+  "epg": {
+   "required": [
+    "EPGSelection",
+    "EPGSelectionMulti",
+    "QuickEPG",
+    "GraphicalEPG",
+    "GraphicalEPGPIG",
+    "GraphicalInfoBarEPG"
+   ],
+   "optional": []
+  }
+ }
+}

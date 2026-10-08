@@ -28,6 +28,12 @@
 #   label_overrides one-line CineView texts for native labels whose translation does not fit the CineView key slot:
 #                   (module, class, widget, enigma2 msgid, language prefix, text).  Applied after the native screen
 #                   set its text, only when that text is still the native translation of msgid in that language.
+# OpenViX 6.9.002 (OpenViX/enigma2 d3f089af4e, the image of Slot 4, proven by the .pyc source hashes 409/409) is the
+# ViX family OpenBH was forked from: ChoiceBox(list=), Session without onShutdown + PluginComponent reason=1,
+# PluginDownloadBrowser (no PackageAction), eListboxServiceContent visModeComplex (same name paragraph code; only a
+# picon margin added, which changes the picon height, not its width), the same EPG screens and the same
+# show_second_infobar setting.  Its Arabic translation of "IMDb Search" is already the short "\u0628\u062d\u062b IMDb"
+# (po/ar.po), so no label override.
 # Adding an image = one entry in IMAGES (+ skin overrides only where its native screens differ).
 import os
 
@@ -63,6 +69,8 @@ IMAGES = {
 	"openbh": {"rows": _OPENBH_ROWS, "shutdown_hook": "autostart", "choicebox_list": "list",
 		"package_wait": "plugindownloadbrowser", "name_clip": "complexcolumn",
 		"label_overrides": _OPENBH_LABELS},
+	"openvix": {"rows": _OPENBH_ROWS, "shutdown_hook": "autostart", "choicebox_list": "list",
+		"package_wait": "plugindownloadbrowser", "name_clip": "complexcolumn"},
 }
 
 _image = None
