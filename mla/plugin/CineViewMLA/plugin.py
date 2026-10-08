@@ -875,6 +875,9 @@ NAME_EVENT_SHARE = 0.32
 NAME_EVENT_MIN = 90
 NAME_EVENT_MAX = 220
 NAME_GAP = 32
+NAME_COLUMN_MIN_AREA = 520  # bar right: lists with at least this text area keep one aligned name column (option C);
+                            # narrower lists use the native name-then-programme flow so short names leave the
+                            # programme more room (maximum readable text in Videofirst / Modern / Minimal)
 NAME_ELLIPSIS = "…"
 _cvmla_short_names = {}  # compare string -> original name field, entries shortened in the current channel list
 _cvmla_text_widths = {}
@@ -935,7 +938,7 @@ def _openbh_name_layout(lst):
 		return None
 	reserve = min(max(int(area * NAME_EVENT_SHARE), NAME_EVENT_MIN), NAME_EVENT_MAX)
 	user_col = int(cu.servicelist_column.value)
-	column = right and user_col == -1
+	column = right and user_col == -1 and area >= NAME_COLUMN_MIN_AREA
 	budget = area - reserve - after
 	if column:
 		budget -= NAME_GAP
@@ -946,16 +949,31 @@ def _openbh_name_layout(lst):
 	return {"budget": budget, "column": column, "after": after, "dist": dist, "font_key": fk, "area": area}
 
 
+def _cvmla_advance(fk, font, c):
+	"""Advance of one character (kerning against 'x' included): width of x<c>x minus width of xx."""
+	return max(0, _cvmla_text_width(fk, font, "x" + c + "x") - _cvmla_text_width(fk, font, "xx"))
+
+
+def _cvmla_estimate(fk, font, name):
+	return sum(_cvmla_advance(fk, font, c) for c in name)
+
+
 def _cvmla_shorten(fk, font, name, budget):
-	lo, hi, best = 1, len(name) - 1, ""
-	while lo <= hi:
-		mid = (lo + hi) // 2
-		s = name[:mid].rstrip(" -_.,:;|/(") + NAME_ELLIPSIS
+	"""Longest prefix + ellipsis that really fits: first guess from the character advances, then measured."""
+	room = budget - _cvmla_text_width(fk, font, "x" + NAME_ELLIPSIS) + _cvmla_text_width(fk, font, "x")
+	k, total = 0, 0
+	for c in name:
+		total += _cvmla_advance(fk, font, c)
+		if total > room:
+			break
+		k += 1
+	k = min(k + 1, len(name) - 1)
+	while k > 0:
+		s = name[:k].rstrip(" -_.,:;|/(") + NAME_ELLIPSIS
 		if _cvmla_text_width(fk, font, s) <= budget:
-			best, lo = s, mid + 1
-		else:
-			hi = mid - 1
-	return best
+			return s
+		k -= 1
+	return ""
 
 
 def _openbh_editing(lst):
@@ -986,35 +1004,37 @@ def _openbh_apply_names(lst):
 			if name:
 				rows.append((len(name), i, name))
 	t1 = time.time()
-	# No glyph is wider than maxw, so a name of n characters is at most n * maxw wide: the names are measured from
-	# the longest down and only while they can still need shortening (or widen the bar-right column).
-	fsize = getattr(lst, "ServiceNameFontSize", 30) + int(config.usage.servicename_fontsize.value)
-	maxw = max([fsize + 4] + [_cvmla_text_width(fk, font, c) for c in ("W", "M", "\u0416", "\u4e2d")])
-	rows.sort(reverse=True)
-	names, widest, measured = {}, 0, 0
+	# Estimated widths (sum of character advances) decide; a name is really measured only near the budget.
+	names, shown, measured = {}, [], 0
 	for n, i, name in rows:
-		if n * maxw <= (widest if lay["column"] else budget):
-			break
-		measured += 1
-		w = _cvmla_text_width(fk, font, name)
-		if w > budget:
-			short = _cvmla_shorten(fk, font, name, budget)
-			if short:
-				r = refs[i]
-				names[r.toCompareString()] = r.getName()  # the entry's own name field ("" = channel database)
-				r.setName(short)  # r is a copy made by getList()
-				w = _cvmla_text_width(fk, font, short)
-		widest = max(widest, w)
+		w = _cvmla_estimate(fk, font, name)
+		if w > budget - 6:
+			measured += 1
+			w = _cvmla_text_width(fk, font, name)
+			if w > budget:
+				short = _cvmla_shorten(fk, font, name, budget)
+				if short:
+					r = refs[i]
+					names[r.toCompareString()] = r.getName()  # the entry's own name field ("" = channel database)
+					r.setName(short)  # r is a copy made by getList()
+					name = short
+					w = _cvmla_text_width(fk, font, short)
+		shown.append((w, name))
+	shown.sort(reverse=True)
+	# the column follows the real (measured) width of the widest names shown
+	widest = max([0] + [_cvmla_text_width(fk, font, nm) for w, nm in shown[:8]])
 	t2 = time.time()
 	first = min((i for n, i, name in rows), default=None)  # the first service row
 	if names and first is not None:
-		# Refill through the native path.  The first entry added is a service row so the listbox cursor is always
-		# on a selectable row while the list grows (eListbox::moveSelection(justCheck) never terminates when the
-		# only entries are markers); the rows before it are inserted in front of it, the rest appended.
+		# Refill through the native path (setRoot(justSet) + addService + FillFinished).  The listbox is detached
+		# meanwhile (eListbox::moveSelection does nothing without content), so adding a row costs no selection
+		# walk and no callback; in addition the first row added is a service, so a cursor on a selectable row
+		# exists from the start (eListbox::moveSelection(justCheck) never ends on a list of markers only).
 		cur = eServiceReference()
 		lst.l.getCurrent(cur)
 		lst._cvmla_filling = True
 		try:
+			lst.instance.setContent(None)
 			lst.l.setRoot(lst.root, True)
 			lst.l.FillFinished()  # empty list: the first addService starts with a fresh cursor
 			lst.l.addService(refs[first])
@@ -1024,6 +1044,7 @@ def _openbh_apply_names(lst):
 				lst.l.addService(r)
 			lst.l.FillFinished()
 		finally:
+			lst.instance.setContent(lst.l)
 			lst._cvmla_filling = False
 		if cur.valid():
 			lst.l.setCurrent(cur)
