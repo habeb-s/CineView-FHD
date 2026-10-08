@@ -64,6 +64,8 @@ names)
 			$R "$E apply --set channelselection=$cs 2>&1 | tail -1"
 			restart_gui
 			ZAP=$LONG DEVTOOL=1 bash ~/cineview-mla/t106.sh names_${cs}_${bar:-default} chansel
+			# a bouquet of short names too (the column follows the bouquet's longest name)
+			ZAP=1:0:19:786:C6D4:16E:A00000:0:0:0: DEVTOOL=1 bash ~/cineview-mla/t106.sh names_${cs}_${bar:-default}_short chansel
 		done
 	done
 	restart_gui "sed -i '/^config.usage.show_event_progress_in_servicelist=/d' /etc/enigma2/settings; [ -n '$PB' ] && echo 'config.usage.show_event_progress_in_servicelist=$PB' >> /etc/enigma2/settings;"
