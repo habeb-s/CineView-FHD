@@ -21,7 +21,7 @@ EOT
 chmod +x $W/rbin/opkg
 for mode in halfthenok halfalways; do
 	rm -f $W/rbin/state
-	out=$(env -i PATH="$W/rbin:/usr/bin:/bin" HOME=/tmp FAKE_DIR=$W/rbin FAKE_INSTALL=$mode FAKE_CUR=1.0.0 CVMLA_ROOT=$W/atv CVMLA_PYV=3.14 \
+	out=$(env -i PATH="$W/rbin:/usr/bin:/bin" HOME=/tmp CVMLA_SERVICE=https://127.0.0.1:18443 SSL_CERT_FILE=$H/../svc/tls/ca.crt FAKE_DIR=$W/rbin FAKE_INSTALL=$mode FAKE_CUR=1.0.0 CVMLA_ROOT=$W/atv CVMLA_PYV=3.14 \
 		PKG_DIR=$H/../dist/packages/openatv sh "$INST" 2>&1)
 	echo "== $mode"; echo "$out" | sed -n '/^Installing/,$p' | head -9 | sed 's/^/   /'
 	echo "   leftovers: $(ls -d /tmp/.cvmla.* 2>/dev/null | wc -l)"

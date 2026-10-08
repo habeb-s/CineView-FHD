@@ -1,0 +1,24 @@
+PASS  fault:none               retries=0 -> fetch-only test: package downloaded and verified
+PASS  fault:slow               retries=0 -> fetch-only test: package downloaded and verified
+PASS  fault:drop               retries=1 -> fetch-only test: package downloaded and verified
+PASS  fault:stall              retries=1 -> fetch-only test: package downloaded and verified
+PASS  fault:norange            retries=1 -> fetch-only test: package downloaded and verified
+PASS  fault:corruptonce        retries=1 -> fetch-only test: package downloaded and verified
+PASS  fault:flaky              retries=2 -> fetch-only test: package downloaded and verified
+PASS  fault:corrupt            retries=2 -> failed the SHA256 check
+PASS  fault:dead               retries=2 -> could not be downloaded
+PASS  link expired -> new link retries=0 -> fetch-only test: package downloaded and verified
+PASS  link always expired      retries=0 -> not available from the CineView MLA service
+PASS  service down             retries=0 -> service cannot be reached
+PASS  no service configured    retries=0 -> service is not available yet
+PASS  untrusted certificate    retries=0 -> could not be verified (HTTPS certificate)
+      (opkg calls: update;install ca-certificates;)
+PASS  test CA not trusted (system CAs) retries=0 -> could not be verified (HTTPS certificate)
+PASS  no certificate bypass anywhere in the installer
+PASS  INT during download: nothing left
+PASS  HUP during download: nothing left
+svc_net_sim.sh: line 14: 1717601 Killed                  env -i PATH="${PYBIN:+$PYBIN:}$W/bin:/usr/bin:/bin" HOME=/tmp CVMLA_ROOT=$W/atv CVMLA_PYV=3.14 FAKE_CUR=1.0.0 CVMLA_FETCH_ONLY=1 CVMLA_TIMEOUT=10 CVMLA_SERVICE=$svc ${ca:+SSL_CERT_FILE=$ca} "$@" sh "$INST" 2>&1
+PASS  next run after kill -9   retries=0 -> fetch-only test: package downloaded and verified
+      (leftovers after kill -9: 2 -> after the next run: 0)
+PASS  second installer refused while the first runs; first completed; nothing left
+SVC NET TOTAL 20  PASS 20  FAIL 0

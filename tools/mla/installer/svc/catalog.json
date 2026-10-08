@@ -1,0 +1,77 @@
+{
+ "probe": [
+  "Components/International",
+  "Components/Opkg",
+  "Screens/BpBlue",
+  "Plugins/SystemPlugins/OBH/plugin",
+  "Plugins/SystemPlugins/ViX/plugin",
+  "Plugins/SystemPlugins/ViX/ImageManager"
+ ],
+ "supported_text": "OpenATV, OpenBH and OpenViX",
+ "tested_text": "OpenATV 8.0, OpenBH 5.6, OpenViX 6.9",
+ "images": {
+  "openatv": {
+   "name": "OpenATV",
+   "markers": [
+    0,
+    1
+   ],
+   "tested": [
+    "8.0"
+   ],
+   "python": "3.14",
+   "current": {
+    "version": "1.0.1",
+    "file": "enigma2-plugin-skins-cineview-fhd-mla_1.0.1_all.ipk",
+    "sha256": "80808b77c716c912366ce10f948aa5e3270e7730b61c0e9ed9b4d717ad60fab3"
+   },
+   "previous": {
+    "version": "1.0.0",
+    "file": "enigma2-plugin-skins-cineview-fhd-mla_1.0.0_all.ipk",
+    "sha256": "4709881b66ae9e5b8cc8dfa7f5b7e3fafdfb57d779431709b8c5c1b48c4cb0a8"
+   }
+  },
+  "openbh": {
+   "name": "OpenBH",
+   "markers": [
+    2,
+    3
+   ],
+   "tested": [
+    "5.6"
+   ],
+   "python": "3.13",
+   "current": {
+    "version": "1.0.1~openbh1",
+    "file": "enigma2-plugin-skins-cineview-fhd-mla_1.0.1~openbh1_all.ipk",
+    "sha256": "9fe54774c82b122f7be189e7e065b1c35fea4390358871c23f866c8e665bb2b6"
+   },
+   "previous": {
+    "version": "1.0.0~openbh17",
+    "file": "enigma2-plugin-skins-cineview-fhd-mla_1.0.0~openbh17_all.ipk",
+    "sha256": "deee7938c13325ecd18ff40b1ec0b5fbe5780d7c5458608bbde3d0c357c7ee39"
+   }
+  },
+  "openvix": {
+   "name": "OpenViX",
+   "markers": [
+    4,
+    5
+   ],
+   "tested": [
+    "6.9"
+   ],
+   "python": "3.14",
+   "current": {
+    "version": "1.0.1~openvix1",
+    "file": "enigma2-plugin-skins-cineview-fhd-mla_1.0.1~openvix1_all.ipk",
+    "sha256": "5b99135e2f27c888061b61b9d667d8a0c56423ed1e764479c103f2ac4fe06793"
+   },
+   "previous": {
+    "version": "1.0.0~openvix1",
+    "file": "enigma2-plugin-skins-cineview-fhd-mla_1.0.0~openvix1_all.ipk",
+    "sha256": "955d102826bf30854003a7f5cd8e5d75b4f9e808b783bfe1fb53571acfa76d87"
+   }
+  }
+ }
+}

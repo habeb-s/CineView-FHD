@@ -1,0 +1,1 @@
+Superseded by release/unified-1.2.1 (2026-10-08 21:52 conditions): this 1.2.0 script lists the packages, SHA256 values and image rules and assumes public package files - NOT for publication.

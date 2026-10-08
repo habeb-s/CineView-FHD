@@ -1,0 +1,47 @@
+PASS  atv_8.0_fresh                      -> PASS
+PASS  atv_8.0_upgrade_from_1.0.0         -> PASS
+      (mode: upgrade 1.0.0 -> 1.0.1 confirmed)
+PASS  atv_same_1.0.1                     -> PASS
+PASS  atv_newer_installed                -> A newer CineView MLA (1.0.2) is already installed.
+PASS  atv_halfinstalled_repair           -> PASS
+      (mode: repair confirmed)
+PASS  atv_rollback_to_1.0.0              -> PASS
+      (mode: downgrade 1.0.1 -> 1.0.0 confirmed)
+PASS  atv_force_reinstall                -> PASS
+      (mode: reinstall confirmed)
+PASS  atv_pkg_dir                        -> PASS
+      (package source: local file confirmed)
+PASS  atv_wrong_python                   -> Python 3.13 found; this package is built for Python 3.14 (OpenATV).
+PASS  bh_5.6                             -> PASS
+PASS  bh_rollback_to_openbh17            -> PASS
+      (mode: downgrade -> 1.0.0~openbh17 confirmed)
+PASS  bh_upgrade_from_openbh17           -> PASS
+      (mode: upgrade 1.0.0~openbh17 -> 1.0.1~openbh1 confirmed)
+PASS  vix_6.9                            -> PASS
+PASS  vix_upgrade_from_openvix1          -> PASS
+      (mode: upgrade 1.0.0~openvix1 -> 1.0.1~openvix1 confirmed)
+PASS  atv_7.6_refused                    -> OpenATV 7.6.0 has not been tested with CineView MLA, so it is not installed (tested: OpenATV 8.0, OpenBH 5.6, OpenViX 
+PASS  atv_8.1_refused                    -> OpenATV 8.1 has not been tested with CineView MLA, so it is not installed (tested: OpenATV 8.0, OpenBH 5.6, OpenViX 6.
+PASS  bh_6.0_refused                     -> OpenBH 6.0.003 has not been tested with CineView MLA, so it is not installed (tested: OpenATV 8.0, OpenBH 5.6, OpenViX
+PASS  vix_7.0_refused                    -> OpenViX 7.0.001 has not been tested with CineView MLA, so it is not installed (tested: OpenATV 8.0, OpenBH 5.6, OpenVi
+PASS  openvix_files_says_openbh          -> enigma.info names OpenBH, but the image's own files point to 'openvix': the image cannot be identified reliably.
+PASS  openbh_files_says_openvix          -> enigma.info names OpenViX, but the image's own files point to 'openbh': the image cannot be identified reliably.
+PASS  atv_with_obh_file                  -> enigma.info names OpenATV, but the image's own files point to 'openatv openbh': the image cannot be identified reliabl
+PASS  bh_one_marker_enough               -> PASS
+PASS  atv_no_image_files                 -> enigma.info names OpenATV, but the image's own files point to 'no known image': the image cannot be identified reliabl
+PASS  openpli_refused                    -> This image is 'openpli'. CineView MLA supports OpenATV, OpenBH and OpenViX.
+PASS  distro_missing                     -> This image does not name itself in /usr/lib/enigma.info: it cannot be identified.
+PASS  vu_model_mismatch_not_blocking     -> PASS
+PASS  vu_brand_without_driver            -> PASS
+PASS  vumodel_on_other_brand             -> PASS
+PASS  gigablue_gbmodel                   -> PASS
+      (model confirmed by gbmodel)
+PASS  dreambox_model_file                -> PASS
+PASS  zgemma_boxtype                     -> PASS
+PASS  hwmodel                            -> PASS
+PASS  legacy_model_not_blocking          -> PASS
+PASS  no_driver_file_single_source       -> PASS
+PASS  machinebuild_missing_not_blocking  -> PASS
+PASS  foreign_prestart_hook              -> /home/aiadmin/cineview-mla/final/sim/work/hook/usr/bin/enigma2_pre_start.sh belongs to another add-on; CineView MLA do
+PASS  own_prestart_hook                  -> PASS
+TOTAL 37  PASS 37  FAIL 0
