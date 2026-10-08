@@ -1,0 +1,55 @@
+
+  CineView MLA Smart Installer    version 1.2.2
+  Design & Development by habeb-s (c) 2026
+
+Device
+  [OK] Vu+ Duo4K SE (vuduo4kse, confirmed by the receiver driver)
+
+Image
+  [OK] OpenViX 6.9 detected (image information and the image's own files agree)
+
+Version
+  [OK] OpenViX 6.9 is supported (tested on OpenViX 6.9)
+  [OK] Package source: CineView MLA distribution point
+
+Python
+  [OK] Python 3.14 compatible
+
+Architecture
+  [OK] Architecture: cortexa15hf-neon-vfpv4 (CineView MLA is architecture-independent)
+
+Compatibility
+  [OK] Required components present (python3-pillow, python3-requests)
+  [OK] Package matches this receiver
+
+Storage
+  [OK] Free space: 53243 MB
+  [OK] Poster cache: /tmp/CINEVIEW-MLA/poster (your setting, kept)
+
+Existing installation
+  [..] Current version: 1.0.0~openvix1
+  [..] New version:     1.0.1~openvix1
+  [OK] Upgrade: your design, theme, profiles, settings and poster cache are kept
+
+Package
+  [OK] Package verified (SHA256)
+
+Installing
+  [OK] Restore point saved
+  [OK] CineView MLA 1.0.1~openvix1 installed
+
+Verification
+  [OK] Package version 1.0.1~openvix1
+  [OK] Skin files present
+  [OK] Plugin loadable
+  [OK] Plugin icon present
+  [OK] CineView Designs available in the Plugin Browser
+
+Result
+  CineView MLA 1.0.1~openvix1 installed successfully.
+
+  +-----------------------------------------------------+
+  |  Restart the GUI to load CineView MLA 1.0.1~openvix1. |
+  +-----------------------------------------------------+
+  [..] Restarting the GUI ...
+

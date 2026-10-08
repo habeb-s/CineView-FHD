@@ -1,0 +1,50 @@
+20:19:13 == R0 identity + golden
+Version: 1.0.0~openvix1
+Status: install ok installed
+20:19:14 == R1 backup
+7fbdaf41976881ff02cbe24e12cd8f40a3c8d09584511dfb580d0d7918d828fa  /home/root/inst122vix-backup-20261008/settings
+e9e5ed815bb8bce45b7c7de94c7847dfd4e5af31ece976a4032e1658dca7f91e  /home/root/inst122vix-backup-20261008/cineview_mla.tgz
+20:19:14 == R2 official command: installer downloaded from GitHub on the receiver
+39429c27897772194553ee6feaf7327e482a39fa4ee250038b8881b1d56e7854  /tmp/cvmla-dist/cineview-install.sh
+20:19:15 == R3 test setup (GUI stopped): screen-open devtool (the poster cache is already on /tmp by the user's own setting)
+20:20:53 GUI healthy
+20:20:53 == R4 DRYRUN
+  [OK] Upgrade: your design, theme, profiles, settings and poster cache are kept
+
+All checks passed. Check-only run: nothing was downloaded or installed.
+
+20:20:54 == R5 upgrade 1.0.0~openvix1 -> 1.0.1~openvix1 downloaded from the GitHub release, GUI restarted by the installer
+installer rc=0
+20:22:44 GUI healthy after upgrade
+Version: 1.0.1~openvix1
+Status: install ok installed
+{"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}enigma2 pid=4693 crash logs=0 boot.count=0 skin=CineView_FHD_MLA/skin.xml
+20:22:44 == R6 CineView Designs (version line)
+{ "version": "1.0.1~openvix1", "build": "build_fopenvix", "commit": "76098d8", "date": "2026-10-08", "python": "3.14", "copyright": "Design & Development by habeb-s (c) 2026"}enigma2 pid=4693 crash logs=0 boot.count=0 skin=CineView_FHD_MLA/skin.xml
+20:22:59 == R7 same version again
+installer rc=0
+  CineView MLA 1.0.1~openvix1 is already installed and verified.
+20:23:00 == R8 ROLLBACK=1 -> 1.0.0~openvix1 (SHA256-pinned previous release)
+installer rc=0
+20:24:50 GUI healthy after rollback
+Version: 1.0.0~openvix1
+Status: install ok installed
+{"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}enigma2 pid=6723 crash logs=0 boot.count=0 skin=CineView_FHD_MLA/skin.xml
+20:24:51 == R9 cleanup (GUI stopped): devtool, test files, installer restore points made by this test, last service
+removed test restore point 20261008-232057
+removed test restore point 20261008-232304
+20:26:28 GUI healthy after cleanup
+20:26:28 == R10 1.0.0~openvix1 verification
+receiver: 623 files + 7 links; published: 623 files + 7 links
+20:26:33 1.0.0~openvix1: ALL FILES AND LINKS IDENTICAL TO THE APPROVED PACKAGE
+selection now:    {"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+selection backup: {"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+-config.misc.startCounter=265
++config.misc.startCounter=269
+playing: HBO HD
+{"poster_cache":"/tmp/CINEVIEW-MLA/poster"}
+  ls: /usr/lib/enigma2/python/Plugins/Extensions/CineViewMLAScreenOpen: No such file or directory
+  ls: /tmp/cvmla-dist: No such file or directory
+  ls: /tmp/.cvmla*: No such file or directory
+  ls: /tmp/*.ipk: No such file or directory
+20:26:34 OPENVIX_DONE
