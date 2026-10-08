@@ -1,0 +1,18 @@
+== halfthenok
+   Installing
+     [!!] The installation was interrupted - repairing it with the verified package
+     [OK] Installation repaired
+     [OK] CineView MLA 1.0.1 installed
+   
+   Verification
+     [OK] Package version 1.0.1
+     [XX] Skin files are incomplete.
+   
+   leftovers: 0
+== halfalways
+   Installing
+     [!!] The installation was interrupted - repairing it with the verified package
+     [XX] The package manager stopped the installation. Collected errors:
+   
+   CineView MLA was not installed and its package entry is incomplete (install reinstreq half-installed). Run the installer again to repair it.
+   leftovers: 0

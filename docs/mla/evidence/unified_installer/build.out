@@ -1,0 +1,14 @@
+76098d8 package_ipk: accept only device-tested image versions (OpenATV 8.0, OpenBH 5.6); MLA_RELEASE=1 drops '(test build)' from the control description
+   usr/share/enigma2/CineView_FHD_MLA/mla/guardian/guardian.sh
+PARITY: PASS (skin XML, layouts, themes, previews, assets identical; only the listed shared code changed)
+  openbh: BUILD OK
+  openvix: BUILD OK
+  pyc: 15 modules, Python Python 3.14.8
+  pyc: 15 modules, Python Python 3.13.16
+  pyc: 15 modules, Python Python 3.14.8
+final/pkg/enigma2-plugin-skins-cineview-fhd-mla_1.0.1_all.ipk  (753 entries, data 15.9 MB)
+final/pkg/enigma2-plugin-skins-cineview-fhd-mla_1.0.1~openbh1_all.ipk  (760 entries, data 15.9 MB)
+final/pkg/enigma2-plugin-skins-cineview-fhd-mla_1.0.1~openvix1_all.ipk  (760 entries, data 15.9 MB)
+80808b77c716c912366ce10f948aa5e3270e7730b61c0e9ed9b4d717ad60fab3  enigma2-plugin-skins-cineview-fhd-mla_1.0.1_all.ipk
+9fe54774c82b122f7be189e7e065b1c35fea4390358871c23f866c8e665bb2b6  enigma2-plugin-skins-cineview-fhd-mla_1.0.1~openbh1_all.ipk
+5b99135e2f27c888061b61b9d667d8a0c56423ed1e764479c103f2ac4fe06793  enigma2-plugin-skins-cineview-fhd-mla_1.0.1~openvix1_all.ipk

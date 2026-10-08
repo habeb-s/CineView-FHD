@@ -1,0 +1,35 @@
+
+  CineView MLA Smart Installer    version 1.2.0
+  Design & Development by habeb-s (c) 2026
+
+Device
+  [OK] Vu+ Duo4K SE (vuduo4kse, confirmed by the receiver driver)
+
+Image
+  [OK] OpenATV 8.0.1 detected (image information and the image's own files agree)
+
+Version
+  [OK] OpenATV 8.0.1 is supported (tested on OpenATV 8.0)
+  [!!] Package source: none - CineView MLA is not published yet (copy the package to the receiver and use PKG_DIR=<folder>)
+
+Python
+  [OK] Python 3.14 compatible
+
+Architecture
+  [OK] Architecture: cortexa15hf-neon-vfpv4 (CineView MLA is architecture-independent)
+
+Compatibility
+  [OK] Required components present (python3-pillow, python3-requests)
+  [OK] Package matches this receiver
+
+Storage
+  [OK] Free space: 53242 MB
+  [OK] Poster cache: /tmp/CINEVIEW-MLA/poster (your setting, kept)
+
+Existing installation
+  [..] Current version: 1.0.0
+  [..] New version:     1.0.1
+  [OK] Upgrade: your design, theme, profiles, settings and poster cache are kept
+
+All checks passed. Check-only run: nothing was downloaded or installed.
+

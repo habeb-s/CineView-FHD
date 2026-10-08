@@ -1,0 +1,29 @@
+PASS  gnu  ok             0s retries=0 -> fetch-only test: package downloaded and verified
+PASS  gnu  slow          11s retries=0 -> fetch-only test: package downloaded and verified
+PASS  gnu  drop           1s retries=0 -> fetch-only test: package downloaded and verified
+PASS  gnu  stall         11s retries=0 -> fetch-only test: package downloaded and verified
+PASS  gnu  dropnorange    1s retries=0 -> fetch-only test: package downloaded and verified
+PASS  gnu  corruptonce    4s retries=1 -> fetch-only test: package downloaded and verified
+PASS  gnu  flaky          3s retries=0 -> fetch-only test: package downloaded and verified
+PASS  gnu  corrupt        9s retries=2 -> failed the SHA256 check
+PASS  gnu  404            0s retries=0 -> not found at the distribution point
+PASS  gnu  dead          18s retries=2 -> could not be downloaded
+PASS  gnu  refused       10s retries=2 -> could not be downloaded
+PASS  bb   ok             0s retries=0 -> fetch-only test: package downloaded and verified
+PASS  bb   slow          10s retries=0 -> fetch-only test: package downloaded and verified
+PASS  bb   drop           4s retries=1 -> fetch-only test: package downloaded and verified
+PASS  bb   stall         14s retries=1 -> fetch-only test: package downloaded and verified
+PASS  bb   dropnorange    3s retries=1 -> fetch-only test: package downloaded and verified
+PASS  bb   corruptonce    3s retries=1 -> fetch-only test: package downloaded and verified
+PASS  bb   flaky          9s retries=2 -> fetch-only test: package downloaded and verified
+PASS  bb   corrupt       10s retries=2 -> failed the SHA256 check
+PASS  bb   404            0s retries=0 -> not found at the distribution point
+PASS  bb   dead           9s retries=2 -> could not be downloaded
+PASS  bb   refused        9s retries=2 -> could not be downloaded
+PASS  INT during download: no temporary files or lock left
+PASS  HUP during download: no temporary files or lock left
+net_sim.sh: line 41: 1646911 Killed                  env -i PATH="$W/bin:/usr/bin:/bin" HOME=/tmp CVMLA_ROOT=$W/atv CVMLA_PYV=3.14 FAKE_CUR=1.0.0 CVMLA_FETCH_ONLY=1 CVMLA_DIST_BASE=http://127.0.0.1:18765/slow-kill sh "$INST" > $W/kill.out 2>&1
+PASS  gnu  ok-afterkill   0s retries=0 -> fetch-only test: package downloaded and verified
+      (leftovers after kill -9: 2 -> after the next run: 0)
+PASS  second installer refused while the first runs; the first completed; nothing left
+NET TOTAL 26  PASS 26  FAIL 0

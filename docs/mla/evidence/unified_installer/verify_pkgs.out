@@ -1,0 +1,62 @@
+== OpenATV 1.0.1 vs runtime-tested candidate 1.0.1~atv1
+   changed: usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/plugin.pyc
+   changed: usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/version.json
+   script/control differs: control
+   script/control differs: preinst
+   pyc identical: 14 of 15
+== OpenATV 1.0.1 vs Golden 1.0.0
+   list: > ./usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/image_adapter.pyc
+   changed: usr/lib/enigma2/python/Components/Converter/CineViewMLACamInfo.pyc
+   changed: usr/lib/enigma2/python/Components/Converter/CineViewMLAServiceInfo.pyc
+   changed: usr/lib/enigma2/python/Components/Converter/CineViewMLAShowIf.pyc
+   changed: usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/plugin.pyc
+   changed: usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/version.json
+   changed: usr/share/enigma2/CineView_FHD_MLA/generations/g000000/MANIFEST.sha256
+   changed: usr/share/enigma2/CineView_FHD_MLA/generations/g000000/eventview.xml
+   changed: usr/share/enigma2/CineView_FHD_MLA/generations/g000000/infobar.xml
+   changed: usr/share/enigma2/CineView_FHD_MLA/generations/g000000/pvr.xml
+   changed: usr/share/enigma2/CineView_FHD_MLA/generations/g000000/secondinfobar.xml
+   changed: usr/share/enigma2/CineView_FHD_MLA/layouts/eventview/classic-lines/screens.openatv.xml
+   changed: usr/share/enigma2/CineView_FHD_MLA/layouts/eventview/classic/screens.openatv.xml
+   changed: usr/share/enigma2/CineView_FHD_MLA/layouts/infobar/classic/screens.openatv.xml
+   changed: usr/share/enigma2/CineView_FHD_MLA/layouts/infobar/details/screens.openatv.xml
+   changed: usr/share/enigma2/CineView_FHD_MLA/layouts/pvr/classic/screens.openatv.xml
+   changed: usr/share/enigma2/CineView_FHD_MLA/layouts/pvr/cover/screens.openatv.xml
+   changed: usr/share/enigma2/CineView_FHD_MLA/layouts/secondinfobar/classic/screens.openatv.xml
+   changed: usr/share/enigma2/CineView_FHD_MLA/layouts/secondinfobar/details/screens.openatv.xml
+   changed: usr/share/enigma2/CineView_FHD_MLA/mla/engine/composer.py
+   changed: usr/share/enigma2/CineView_FHD_MLA/mla/guardian/guardian.sh
+   script/control differs: control
+   script/control differs: preinst
+   pyc identical: 10 of 15
+== OpenBH 1.0.1~openbh1 vs approved 1.0.0~openbh17
+   changed: usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/image_adapter.pyc
+   changed: usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/plugin.pyc
+   changed: usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/version.json
+   script/control differs: control
+   script/control differs: preinst
+   pyc identical: 13 of 15
+== OpenViX 1.0.1~openvix1 vs approved 1.0.0~openvix1
+   changed: usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/plugin.pyc
+   changed: usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/version.json
+   script/control differs: control
+   script/control differs: preinst
+   pyc identical: 14 of 15
+== plugin.pyc: version line
+   atv_new   old-format(version on screen)=0  new-format(name only)=3
+   bh_new    old-format(version on screen)=0  new-format(name only)=3
+   vix_new   old-format(version on screen)=0  new-format(name only)=3
+   atv_gold  old-format(version on screen)=0  new-format(name only)=1
+   bh_old    old-format(version on screen)=0  new-format(name only)=2
+   vix_old   old-format(version on screen)=0  new-format(name only)=2
+== control (new)
+   atv_new Version: 1.0.1
+   atv_new Description: CineView MLA - multi-layout skin for OpenATV 8.0 / Python 3.14: five design models, six themes, CineView Designs - Design & Development by habeb-s (c) 2026
+   bh_new Version: 1.0.1~openbh1
+   bh_new Description: CineView MLA - multi-layout skin for OpenBH / Python 3.13: five design models, six themes, CineView Designs - Design & Development by habeb-s (c) 2026
+   vix_new Version: 1.0.1~openvix1
+   vix_new Description: CineView MLA - multi-layout skin for OpenViX / Python 3.14: five design models, six themes, CineView Designs - Design & Development by habeb-s (c) 2026
+== preinst version gate (new)
+   atv_new   8.0|8.0.*) ;;
+   bh_new   5.6|5.6.*) ;;
+   vix_new   6.9|6.9.*) ;;

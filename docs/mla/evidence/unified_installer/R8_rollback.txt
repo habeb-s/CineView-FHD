@@ -1,0 +1,56 @@
+
+  CineView MLA Smart Installer    version 1.2.0
+  Design & Development by habeb-s (c) 2026
+
+Device
+  [OK] Vu+ Duo4K SE (vuduo4kse, confirmed by the receiver driver)
+
+Image
+  [OK] OpenATV 8.0.1 detected (image information and the image's own files agree)
+
+Version
+  [OK] OpenATV 8.0.1 is supported (tested on OpenATV 8.0)
+  [..] Rollback requested: CineView MLA 1.0.0 (previous release for OpenATV)
+  [OK] Package source: /tmp/cvmla-dist/packages/openatv/enigma2-plugin-skins-cineview-fhd-mla_1.0.0_all.ipk (local file)
+
+Python
+  [OK] Python 3.14 compatible
+
+Architecture
+  [OK] Architecture: cortexa15hf-neon-vfpv4 (CineView MLA is architecture-independent)
+
+Compatibility
+  [OK] Required components present (python3-pillow, python3-requests)
+  [OK] Package matches this receiver
+
+Storage
+  [OK] Free space: 53241 MB
+  [OK] Poster cache: /tmp/CINEVIEW-MLA/poster (your setting, kept)
+
+Existing installation
+  [..] Current version: 1.0.1
+  [..] New version:     1.0.0
+  [!!] Return to the earlier version 1.0.0 requested (your design, theme and profiles are kept)
+
+Package
+  [OK] Package verified (SHA256)
+
+Installing
+  [OK] Restore point saved
+  [OK] CineView MLA 1.0.0 installed
+
+Verification
+  [OK] Package version 1.0.0
+  [OK] Skin files present
+  [OK] Plugin loadable
+  [OK] Plugin icon present
+  [OK] CineView Designs available in the Plugin Browser
+
+Result
+  CineView MLA 1.0.0 installed successfully.
+
+  +-----------------------------------------------------+
+  |  Restart the GUI to load CineView MLA 1.0.0.        |
+  +-----------------------------------------------------+
+  [..] Restarting the GUI ...
+

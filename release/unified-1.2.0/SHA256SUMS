@@ -1,0 +1,9 @@
+9fe790cf14ca253532cf6937ce9f4847503cc02cf68773f6d4b66f2c9f21c04e  cineview-install.sh
+563b67acde741d6ea75314b1a16dd10da61bd3587c5010965d2545889ccfd756  cineview-uninstall.sh
+fc690cd28010be626e7815bbefbbe136b26bfce7381c98e586f9d5195d232ed9  manifest.json
+4709881b66ae9e5b8cc8dfa7f5b7e3fafdfb57d779431709b8c5c1b48c4cb0a8  packages/openatv/enigma2-plugin-skins-cineview-fhd-mla_1.0.0_all.ipk
+80808b77c716c912366ce10f948aa5e3270e7730b61c0e9ed9b4d717ad60fab3  packages/openatv/enigma2-plugin-skins-cineview-fhd-mla_1.0.1_all.ipk
+deee7938c13325ecd18ff40b1ec0b5fbe5780d7c5458608bbde3d0c357c7ee39  packages/openbh/enigma2-plugin-skins-cineview-fhd-mla_1.0.0~openbh17_all.ipk
+9fe54774c82b122f7be189e7e065b1c35fea4390358871c23f866c8e665bb2b6  packages/openbh/enigma2-plugin-skins-cineview-fhd-mla_1.0.1~openbh1_all.ipk
+955d102826bf30854003a7f5cd8e5d75b4f9e808b783bfe1fb53571acfa76d87  packages/openvix/enigma2-plugin-skins-cineview-fhd-mla_1.0.0~openvix1_all.ipk
+5b99135e2f27c888061b61b9d667d8a0c56423ed1e764479c103f2ac4fe06793  packages/openvix/enigma2-plugin-skins-cineview-fhd-mla_1.0.1~openvix1_all.ipk
