@@ -949,28 +949,43 @@ def _openbh_name_layout(lst):
 	return {"budget": budget, "column": column, "after": after, "dist": dist, "font_key": fk, "area": area}
 
 
-def _cvmla_advance(fk, font, c):
-	"""Advance of one character (kerning against 'x' included): width of x<c>x minus width of xx."""
-	return max(0, _cvmla_text_width(fk, font, "x" + c + "x") - _cvmla_text_width(fk, font, "xx"))
+_cvmla_advances = {}  # font key -> {character: advance}
+NAME_EST_MARGIN = 8   # px: an estimate this far from the budget decides without measuring
+NAME_REFILL_MAX = 15000  # rows: a larger list is left as the image draws it (refilling costs O(rows^2) in the engine)
+
+
+def _cvmla_adv_table(fk, font, text):
+	"""Advances of the characters of text (kerning against 'x' included: width of x<c>x minus width of xx)."""
+	t = _cvmla_advances.setdefault(fk, {})
+	for c in text:
+		if c not in t:
+			t[c] = max(0, _cvmla_text_width(fk, font, "x" + c + "x") - _cvmla_text_width(fk, font, "xx"))
+	return t
 
 
 def _cvmla_estimate(fk, font, name):
-	return sum(_cvmla_advance(fk, font, c) for c in name)
+	t = _cvmla_advances.get(fk)
+	try:
+		return sum(map(t.__getitem__, name))
+	except (KeyError, AttributeError):
+		return sum(map(_cvmla_adv_table(fk, font, name).__getitem__, name))
 
 
-def _cvmla_shorten(fk, font, name, budget):
-	"""Longest prefix + ellipsis that really fits: first guess from the character advances, then measured."""
-	room = budget - _cvmla_text_width(fk, font, "x" + NAME_ELLIPSIS) + _cvmla_text_width(fk, font, "x")
+def _cvmla_shorten(fk, font, name, budget, verify):
+	"""Longest prefix + ellipsis within the budget, from the character advances.  verify: measure the result and
+	step back while it is too wide (bar-right column, where the column edge clips); otherwise a safety margin."""
+	t = _cvmla_adv_table(fk, font, name + NAME_ELLIPSIS)
+	room = budget - t[NAME_ELLIPSIS] - (0 if verify else NAME_EST_MARGIN)
 	k, total = 0, 0
 	for c in name:
-		total += _cvmla_advance(fk, font, c)
+		total += t[c]
 		if total > room:
 			break
 		k += 1
-	k = min(k + 1, len(name) - 1)
+	k = min(k + (1 if verify else 0), len(name) - 1)
 	while k > 0:
 		s = name[:k].rstrip(" -_.,:;|/(") + NAME_ELLIPSIS
-		if _cvmla_text_width(fk, font, s) <= budget:
+		if not verify or _cvmla_text_width(fk, font, s) <= budget:
 			return s
 		k -= 1
 	return ""
@@ -997,32 +1012,38 @@ def _openbh_apply_names(lst):
 	font, fk, budget = lst.ServiceNameFont, lay["font_key"], lay["budget"]
 	refs = lst.l.getList()
 	rows = []  # (characters, index, name) of every service row
-	for i, r in enumerate(refs):
+	for i, r in enumerate(refs if len(refs) <= NAME_REFILL_MAX else ()):
 		if r.valid() and not r.flags & (eServiceReference.isMarker | eServiceReference.isDirectory):
 			info = sc.info(r)
 			name = info and info.getName(r) or ""
 			if name:
 				rows.append((len(name), i, name))
 	t1 = time.time()
-	# Estimated widths (sum of character advances) decide; a name is really measured only near the budget.
-	names, shown, measured = {}, [], 0
+	# Estimated widths (sum of character advances) decide; only names within NAME_EST_MARGIN of the budget are
+	# measured.  In the flow layout the programme always starts after the drawn name, so an estimate never causes
+	# an overlap; the bar-right column (wide lists only) measures every shortened name.
+	names, shown, measured, err = {}, [], 0, 0
+	verify = lay["column"]
 	for n, i, name in rows:
 		w = _cvmla_estimate(fk, font, name)
-		if w > budget - 6:
-			measured += 1
-			w = _cvmla_text_width(fk, font, name)
+		if w > budget - NAME_EST_MARGIN:
+			if verify or w <= budget + NAME_EST_MARGIN:
+				measured += 1
+				real = _cvmla_text_width(fk, font, name)
+				err = max(err, abs(real - w))
+				w = real
 			if w > budget:
-				short = _cvmla_shorten(fk, font, name, budget)
+				short = _cvmla_shorten(fk, font, name, budget, verify)
 				if short:
 					r = refs[i]
 					names[r.toCompareString()] = r.getName()  # the entry's own name field ("" = channel database)
 					r.setName(short)  # r is a copy made by getList()
 					name = short
-					w = _cvmla_text_width(fk, font, short)
+					w = _cvmla_estimate(fk, font, short)
 		shown.append((w, name))
 	shown.sort(reverse=True)
 	# the column follows the real (measured) width of the widest names shown
-	widest = max([0] + [_cvmla_text_width(fk, font, nm) for w, nm in shown[:8]])
+	widest = max([0] + [_cvmla_text_width(fk, font, nm) for w, nm in shown[:8]]) if verify else 0
 	t2 = time.time()
 	first = min((i for n, i, name in rows), default=None)  # the first service row
 	if names and first is not None:
@@ -1062,8 +1083,8 @@ def _openbh_apply_names(lst):
 		lst.l.setColumnWidth(int(config.usage.servicelist_column.value))  # the native value again
 		lst._cvmla_col = None
 	lst.instance and lst.instance.invalidate()
-	print("[CineViewMLA] channel names (OpenBH): %d services, %d measured, %d shortened, budget %d px, column %s, %d ms (names %d, measure %d, refill %d)" % (
-		len(rows), measured, len(names), budget, col, int((time.time() - t0) * 1000), int((t1 - t0) * 1000), int((t2 - t1) * 1000), int((t3 - t2) * 1000)))
+	print("[CineViewMLA] channel names (OpenBH): %d rows, %d services, %d measured (estimate error <= %d px), %d shortened, budget %d px, column %s, %d ms (names %d, widths %d, refill %d)" % (
+		len(refs), len(rows), measured, err, len(names), budget, col, int((time.time() - t0) * 1000), int((t1 - t0) * 1000), int((t2 - t1) * 1000), int((t3 - t2) * 1000)))
 
 
 def _cvmla_original(lst, r):
