@@ -953,7 +953,8 @@ def _install_openbh_name_column():
 			print("[CineViewMLA] name column (OpenBH): %s" % err)
 
 	def setMode(self, mode, _orig=ServiceList.setMode):
-		_orig(self, mode)
+		_orig(self, mode)  # sets the native column width again
+		self._cvmla_col = None
 		apply(self)
 
 	def setRoot(self, root, justSet=False, _orig=ServiceList.setRoot):
