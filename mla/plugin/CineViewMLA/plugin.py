@@ -276,14 +276,9 @@ def _active_names():
 
 
 def status_text(sel):
-	"""What the user sees: product + version, design, theme, rights.  Generation / build / commit stay in the log
-	and in version.json (user 2026-10-07)."""
-	ver = "1.0.0"
-	try:
-		ver = json.load(open(VERSION_FILE)).get("version", ver)
-	except Exception:
-		pass
-	return "CineView MLA %s\n%s: %s   %s: %s\n%s" % (ver, _("Design"), design_name(sel.get("layouts")), _("Theme"), theme_label(sel.get("theme", "navy")), COPYRIGHT)
+	"""What the user sees: product name, design, theme, rights.  No version on screen (user 2026-10-08): version /
+	build / commit stay in the package metadata, version.json and the log (about())."""
+	return "CineView MLA\n%s: %s   %s: %s\n%s" % (_("Design"), design_name(sel.get("layouts")), _("Theme"), theme_label(sel.get("theme", "navy")), COPYRIGHT)
 
 
 class CineViewMLASetup(Screen, ConfigListScreen):
