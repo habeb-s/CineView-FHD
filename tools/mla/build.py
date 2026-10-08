@@ -1073,11 +1073,13 @@ def apply_caminfo_wrap(skin):
 	'wrap', and RunningText without RT_WRAP turns the line breaks into spaces (Components/Renderer/RunningText.py,
 	OpenATV 57b7a51 and OpenBH 52dedddc314a alike) -> one line, cut at 225 px: the Full-mode server never shows
 	(OpenBH t106e 2026-10-07; same renderer and XML on OpenATV).  'wrap' gives the intended lines in the same box.
-	PROTOTYPE behind MLA_CAMINFO_WRAP=1 until the user approves the look."""
+	Approved by the user 2026-10-08 ("CAM multi-line inside the same box").  Only the vertical (direction=top)
+	fields get 'wrap'; the horizontal ones (direction=left, Cinema) keep scrolling the whole text on one line - with
+	'wrap' a 30 px high horizontal field would show only the first line."""
 	done = []
 	for f in sorted(glob.glob(os.path.join(skin, "layouts", "*", "*", "screens.openatv.xml"))):
 		x = open(f, encoding="utf-8").read()
-		x2, n = re.subn(r'(<widget [^>]*render="RunningText"[^>]*options=")([^"]*)("[^>]*>\s*<convert type="CineViewMLACamInfo">)',
+		x2, n = re.subn(r'(<widget [^>]*render="RunningText"[^>]*options=")([^"]*direction=top[^"]*)("[^>]*>\s*<convert type="CineViewMLACamInfo">)',
 			lambda m: m.group(1) + (m.group(2) if ",wrap" in m.group(2) else m.group(2) + ",wrap") + m.group(3), x)
 		if n:
 			open(f, "w", encoding="utf-8").write(x2)
@@ -1421,9 +1423,9 @@ def main(golden, comps, control, out):
 			if lx2 != lx:
 				open(lp, "w", encoding="utf-8").write(lx2)
 				print("MOVIELIST legacy attributes removed:", os.path.relpath(lp, skin))
-	if os.environ.get("MLA_CAMINFO_WRAP", "0") == "1":
+	if os.environ.get("MLA_CAMINFO_WRAP", "1") == "1":  # approved by the user 2026-10-08 (default on)
 		for f, n in apply_caminfo_wrap(skin):
-			print("CAMINFO wrap (prototype): %s %d widget(s)" % (f, n))
+			print("CAMINFO wrap: %s %d widget(s)" % (f, n))
 	for pack, nscr in apply_pvr_header_icons(skin):
 		print("PVR header icons moved to the clock row: %s (%d screen(s))" % (pack, nscr))
 	# Accelerated-pool optimizer for every non-Classic pack (tools/mla/accel_opt.py; device t67-t74)

@@ -850,24 +850,19 @@ def _clip_service_name_cell(lst, mode):
 	return width, shift
 
 
-NAME_COLUMN_SHARE = 0.6  # OpenBH bar-right: share of the room between name start and bar given to the name column
+NAME_COLUMN_MAX = 0.68  # bar right: the name column never takes more than this share of the room before the bar
+NAME_COLUMN_SCAN = 800  # names measured per bouquet (a very large root: the column is capped instead)
 
 
-def _openbh_name_column(lst):
+def _openbh_name_room(lst):
 	"""OpenBH 52dedddc314a lib/service/listboxservice.cpp, single-line visModeComplex: xoffs = sidesMargin
 	[+ number field "00000" + itemsDistances] [+ picon itemHeight*1.67 + itemsDistances] [+ type / crypto icon
-	(mode 1) + itemsDistances]; the name paragraph is m_itemsize.width() wide unless m_column_width > -1, the event
-	text then starts at xoffs + column width and ends before the bar; bar right: pb_xpos = row - bar - 2*distances
-	- 2*sidesMargin - 2*border.  Returns the column width that ends the name before the bar with room for the event
-	text, or None when the list is not in that case (bar left = OpenBH default: nothing to do)."""
+	(mode 1) + itemsDistances]; the name paragraph is as wide as the row unless m_column_width > -1 (then it is
+	clipped at the column and the event text starts there); bar right: pb_xpos = row - bar - 2*distances
+	- 2*sidesMargin - 2*border.  Returns (room for name + event text, item distance), or None when the list is not
+	in that case - bar left (OpenBH default), two lines, a user column width, another screen or skin."""
 	cu = config.usage
-	# PENDING the user's look decision (2026-10-07): the column look (event text starts at a fixed column) is only
-	# used when this flag file exists - test builds / prototype screenshots; nothing changes for users otherwise.
-	if not os.path.exists(os.path.join(STATE, "openbh_name_column")):
-		return None
-	if getattr(lst, "instance", None) is None:
-		return None
-	if not mla_active() or _active_layout("channelselection") not in NAME_CLIP_LAYOUTS:
+	if getattr(lst, "instance", None) is None or not mla_active():
 		return None
 	if type(getattr(lst, "serviceList", None)).__name__ != "ChannelSelection":
 		return None
@@ -877,7 +872,7 @@ def _openbh_name_column(lst):
 	if bar not in ("barright", "percright"):
 		return None
 	from enigma import eLabel, eSize
-	from skin import parameters
+	from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
 	dist, border = 8, 2  # eListboxServiceContent defaults (m_items_distances, m_progressbar_border_width)
 	row = lst.instance.size().width()
 	sides = getattr(lst, "sidesMargin", 0)
@@ -890,14 +885,47 @@ def _openbh_name_column(lst):
 		x += int(lst.ItemHeight * 1.67) + dist
 	for mode_cfg, icon in ((cu.servicetype_icon_mode, "icons/ico_dvb-s.png"), (cu.crypto_icon_mode, "icons/icon_crypt.png")):
 		if mode_cfg.value == "1":
-			from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
 			pic = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, icon))
 			if pic:
 				x += pic.size().width() + dist
 	room = pb_x - x - 2 * dist
-	if room < 160:
+	return (room, dist) if room >= 160 else None
+
+
+def _openbh_fit_column(lst):
+	"""Bar on the right (user decision 2026-10-08, option C): one name column for the whole bouquet, as wide as its
+	longest channel name + a gap, so every name ends before the event text and the event text ends before the bar
+	(native eListboxServiceContent::setColumnWidth).  Short bouquets keep the name-then-programme look with aligned
+	programmes; only a name longer than NAME_COLUMN_MAX of the room is cut, at the column.  None = not applicable."""
+	r = _openbh_name_room(lst)
+	if not r:
 		return None
-	return int(room * NAME_COLUMN_SHARE)
+	room, dist = r
+	from enigma import eLabel, eSize, eServiceCenter, eServiceReference
+	widest = 0
+	try:
+		sc = eServiceCenter.getInstance()
+		services = sc.list(lst.root) if lst.root is not None else None
+		size = eSize(room * 4, lst.ItemHeight)
+		n = 0
+		while services is not None and n < NAME_COLUMN_SCAN:
+			ref = services.getNext()
+			if not ref.valid():
+				break
+			n += 1
+			if ref.flags & (eServiceReference.isMarker | eServiceReference.isDirectory):
+				continue
+			info = sc.info(ref)
+			name = info and info.getName(ref) or ""
+			if name:
+				widest = max(widest, eLabel.calculateTextSize(lst.ServiceNameFont, name, size).width())
+		if n >= NAME_COLUMN_SCAN:
+			widest = room  # very large root: use the cap
+	except Exception as err:
+		print("[CineViewMLA] name column (OpenBH): names: %s" % err)
+		widest = room
+	gap = 2 * dist
+	return max(80, min(widest + gap, int(room * NAME_COLUMN_MAX)))
 
 
 def _install_openbh_name_column():
@@ -906,22 +934,35 @@ def _install_openbh_name_column():
 	except Exception as err:
 		print("[CineViewMLA] name column (OpenBH): unavailable: %s" % err)
 		return
-	orig = ServiceList.setMode
-	if getattr(orig, "_cvmla_name_clip", False):
+	if getattr(ServiceList.setMode, "_cvmla_name_clip", False):
 		return
 
-	def setMode(self, mode, _orig=orig):
-		_orig(self, mode)
+	def apply(self):
 		try:
-			w = _openbh_name_column(self)
+			w = _openbh_fit_column(self)
 			if w:
-				self.l.setColumnWidth(w)
-				print("[CineViewMLA] name column (OpenBH, bar right): %d px" % w)
+				if w != getattr(self, "_cvmla_col", None):
+					self.l.setColumnWidth(w)
+					self._cvmla_col = w
+					self.instance and self.instance.invalidate()
+			elif getattr(self, "_cvmla_col", None):
+				self.l.setColumnWidth(int(config.usage.servicelist_column.value))  # the native value again
+				self._cvmla_col = None
+				self.instance and self.instance.invalidate()
 		except Exception as err:
 			print("[CineViewMLA] name column (OpenBH): %s" % err)
+
+	def setMode(self, mode, _orig=ServiceList.setMode):
+		_orig(self, mode)
+		apply(self)
+
+	def setRoot(self, root, justSet=False, _orig=ServiceList.setRoot):
+		_orig(self, root, justSet)
+		apply(self)
 	setMode._cvmla_name_clip = True
 	ServiceList.setMode = setMode
-	print("[CineViewMLA] name column installed (OpenBH)")
+	ServiceList.setRoot = setRoot
+	print("[CineViewMLA] name column installed (OpenBH, bar right only)")
 
 
 def _install_service_name_clip():
