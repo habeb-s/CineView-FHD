@@ -1,0 +1,84 @@
+selection before: --theme navy --set channelselection=classic --set epg=classic --set eventview=classic --set infobar=classic --set pvr=classic --set secondinfobar=classic
+== apply --theme navy --set infobar=classic --set secondinfobar=classic --set channelselection=classic --set epg=classic --set pvr=classic --set eventview=classic
+g000122
+pin: /tmp/CINEVIEW-MLA/poster
+playing: Cinemax HD | now: 'Jerry Maguire' | next: 'Za Adamovo dobro'
+infobar        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+sib            tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+chansel        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPGPIG 
+single         tb=0 skinerr=0 missing=2 notimpl=0 screens: EPGSelection 
+multi          tb=0 skinerr=0 missing=1 notimpl=0 screens: EPGSelectionMulti 
+ibgrid         tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalInfoBarEPG 
+evinfo         tb=0 skinerr=0 missing=10 notimpl=2 screens: EventView 
+eventview      tb=0 skinerr=0 missing=10 notimpl=2 screens: EventView 
+pvr            tb=0 skinerr=0 missing=0 notimpl=0 screens: MovieSelection 
+poster cache /tmp: 125 files; crash logs today: 0
+T106_DONE
+== apply --theme navy --set infobar=details --set secondinfobar=details --set channelselection=posterlist --set epg=graphicalplus --set pvr=cover --set eventview=detailscard
+g000123
+pin: /tmp/CINEVIEW-MLA/poster
+playing: Cinemax HD | now: 'Jerry Maguire' | next: 'Za Adamovo dobro'
+infobar        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+sib            tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+chansel        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPGPIG 
+single         tb=0 skinerr=0 missing=2 notimpl=0 screens: EPGSelection 
+multi          tb=0 skinerr=0 missing=1 notimpl=0 screens: EPGSelectionMulti 
+ibgrid         tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalInfoBarEPG 
+evinfo         tb=0 skinerr=0 missing=6 notimpl=0 screens: EventView 
+eventview      tb=0 skinerr=0 missing=6 notimpl=0 screens: EventView 
+pvr            tb=0 skinerr=0 missing=0 notimpl=0 screens: MovieSelection 
+poster cache /tmp: 126 files; crash logs today: 0
+T106_DONE
+== apply --theme navy --set infobar=cinema --set secondinfobar=cinema --set channelselection=videofirst --set epg=graphicalplus --set pvr=cinema --set eventview=feature
+g000124
+pin: /tmp/CINEVIEW-MLA/poster
+playing: Cinemax HD | now: 'Jerry Maguire' | next: 'Za Adamovo dobro'
+infobar        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+sib            tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+chansel        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPGPIG 
+single         tb=0 skinerr=0 missing=2 notimpl=0 screens: EPGSelection 
+multi          tb=0 skinerr=0 missing=1 notimpl=0 screens: EPGSelectionMulti 
+ibgrid         tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalInfoBarEPG 
+evinfo         tb=0 skinerr=0 missing=6 notimpl=0 screens: EventView 
+eventview      tb=0 skinerr=0 missing=6 notimpl=0 screens: EventView 
+pvr            tb=0 skinerr=0 missing=0 notimpl=0 screens: MovieSelection 
+poster cache /tmp: 127 files; crash logs today: 0
+T106_DONE
+== apply --theme navy --set infobar=modern --set secondinfobar=modern --set channelselection=modern --set epg=modern --set pvr=modern --set eventview=modern
+g000125
+pin: /tmp/CINEVIEW-MLA/poster
+playing: Cinemax HD | now: 'Jerry Maguire' | next: 'Za Adamovo dobro'
+infobar        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+sib            tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+chansel        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPGPIG 
+single         tb=0 skinerr=0 missing=2 notimpl=0 screens: EPGSelection 
+multi          tb=0 skinerr=0 missing=1 notimpl=0 screens: EPGSelectionMulti 
+ibgrid         tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalInfoBarEPG 
+evinfo         tb=0 skinerr=0 missing=10 notimpl=0 screens: EventView 
+eventview      tb=0 skinerr=0 missing=10 notimpl=0 screens: EventView 
+pvr            tb=0 skinerr=0 missing=0 notimpl=0 screens: MovieSelection 
+poster cache /tmp: 129 files; crash logs today: 0
+T106_DONE
+== apply --theme navy --set infobar=minimal --set secondinfobar=minimal --set channelselection=minimal --set epg=minimal --set pvr=minimal --set eventview=minimal
+g000126
+pin: /tmp/CINEVIEW-MLA/poster
+playing: Cinemax HD | now: 'Jerry Maguire' | next: 'Za Adamovo dobro'
+infobar        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+sib            tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+chansel        tb=0 skinerr=0 missing=0 notimpl=0 screens: 
+grid           tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalEPGPIG 
+single         tb=0 skinerr=0 missing=2 notimpl=0 screens: EPGSelection 
+multi          tb=0 skinerr=0 missing=1 notimpl=0 screens: EPGSelectionMulti 
+ibgrid         tb=0 skinerr=0 missing=4 notimpl=0 screens: GraphicalInfoBarEPG 
+evinfo         tb=0 skinerr=0 missing=6 notimpl=0 screens: EventView 
+eventview      tb=0 skinerr=0 missing=6 notimpl=0 screens: EventView 
+pvr            tb=0 skinerr=0 missing=0 notimpl=0 screens: MovieSelection 
+poster cache /tmp: 132 files; crash logs today: 0
+T106_DONE
+== restore: --theme navy --set channelselection=classic --set epg=classic --set eventview=classic --set infobar=classic --set pvr=classic --set secondinfobar=classic
+g000127
+T106X_DONE

@@ -1,0 +1,9 @@
+   usr/share/enigma2/CineView_FHD_MLA/mla/engine/composer.py
+   usr/share/enigma2/CineView_FHD_MLA/mla/guardian/guardian.sh
+PARITY: PASS (skin XML, layouts, themes, previews, assets identical; only the listed shared code changed)
+IMAGE-OVERLAY openbh: 9 files
+BUILD OK: 628 files -> build_bh
+compiled 15 modules with Python 3.13.12
+PYVER 3.13; 15 pyc files in pyc_bh
+pkg_bh/enigma2-plugin-skins-cineview-fhd-mla_1.0.0~openbh12_all.ipk  (760 entries, data 15.9 MB)
+7e08d1be299579aaf06055256b4b23327f589537c91958be9c937b14ae12c112  pkg_bh/enigma2-plugin-skins-cineview-fhd-mla_1.0.0~openbh12_all.ipk
