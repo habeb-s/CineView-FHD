@@ -1,0 +1,82 @@
+### A0 start
+  image: openatv 8.0.1 | cineview: 1.0.4 | oaweather: 1 | cvtest: 0
+  pre-start hook: 14456a41a22b owner=enigma2-plugin-skins-cineview-fhd-mla (# Installed as /usr/bin/enigma2_pre_start.sh (native OpenATV)
+  start-up hook: none | skin: CineView_FHD_MLA/skin.xml | active: generations/g000058 {"omitted": []}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=0 written 14:45:25 | enigma2 pid 23893 started Fri Oct  9 14:44:00 2026 | cvtest log lines: 0 | crash logs: 0
+/tmp/ci134.sh:INSTALLER_VERSION="1.3.4"
+/tmp/ci135.sh:INSTALLER_VERSION="1.3.5"
+
+### A1 CineView 1.0.4 (owns the hook): the other add-on cannot be installed
+	But that file is already provided by package enigma2-plugin-skins-cineview-fhd-mla
+Installing enigma2-plugin-extensions-cvtest-prestart (1.0) on root
+To remove package debris, try `opkg remove enigma2-plugin-extensions-cvtest-prestart`.
+To re-attempt the install, try `opkg install enigma2-plugin-extensions-cvtest-prestart`.
+  image: openatv 8.0.1 | cineview: 1.0.4 | oaweather: 1 | cvtest: 0
+  pre-start hook: 14456a41a22b owner=enigma2-plugin-skins-cineview-fhd-mla (# Installed as /usr/bin/enigma2_pre_start.sh (native OpenATV)
+  start-up hook: none | skin: CineView_FHD_MLA/skin.xml | active: generations/g000058 {"omitted": []}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=0 written 14:45:25 | enigma2 pid 23893 started Fri Oct  9 14:44:00 2026 | cvtest log lines: 0 | crash logs: 0
+
+### A2 upgrade 1.0.4 -> 1.0.5 with Smart Installer 1.3.5 (PKG_DIR)
+Compatibility
+  [OK] Enigma2 components used by the design present (Addons, MovieInfo FullDescription)
+  [OK] Required components present (python3-pillow, python3-requests)
+  [OK] Weather: OAWeather installed
+  [OK] Package matches this receiver (OpenATV 8.0.1, Python 3.14, cortexa15hf-neon-vfpv4)
+Storage
+  [OK] Free space: 53236 MB
+  [OK] Poster cache: /media/hdd/poster (hard disk)
+Existing installation
+  [..] Current version: 1.0.4
+  [..] New version:     1.0.5
+  [OK] Upgrade: your design, theme, profiles, settings and poster cache are kept
+Package
+  [OK] Package verified (SHA256)
+Installing
+  [OK] Restore point saved
+  [OK] CineView MLA 1.0.5 installed
+Verification
+  image: openatv 8.0.1 | cineview: 1.0.5 | oaweather: 1 | cvtest: 0
+  pre-start hook: none
+  start-up hook: /usr/lib/python3.14/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000059 {"omitted": []}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=0 written 14:52:58 | enigma2 pid 23893 started Fri Oct  9 14:44:00 2026 | cvtest log lines: 0 | crash logs: 0
+  restart:
+  GUI restarted: enigma2 pid 23893 -> 31505
+  image: openatv 8.0.1 | cineview: 1.0.5 | oaweather: 1 | cvtest: 0
+  pre-start hook: none
+  start-up hook: /usr/lib/python3.14/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000059 {"omitted": []}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=1 written 14:53:05 | enigma2 pid 31505 started Fri Oct  9 14:53:03 2026 | cvtest log lines: 0 | crash logs: 0
+
+### A3 the other add-on is installed next to CineView 1.0.5
+error: opkg_solver_install: No candidates to install /tmp/cvtest-prestart_1.0_all.ipk (null)!
+Refusing to load file '/tmp/cvtest-prestart_1.0_all.ipk' as it matches the installed version of enigma2-plugin-extensions-cvtest-prestart (1.0).
+  image: openatv 8.0.1 | cineview: 1.0.5 | oaweather: 1 | cvtest: 0
+  pre-start hook: none
+  start-up hook: /usr/lib/python3.14/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000059 {"omitted": []}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=1 written 14:53:05 | enigma2 pid 31505 started Fri Oct  9 14:53:03 2026 | cvtest log lines: 0 | crash logs: 0
+  restart:
+  GUI restarted: enigma2 pid 31505 -> 32176
+  image: openatv 8.0.1 | cineview: 1.0.5 | oaweather: 1 | cvtest: 0
+  pre-start hook: none
+  start-up hook: /usr/lib/python3.14/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000059 {"omitted": []}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=1 written 14:53:45 | enigma2 pid 32176 started Fri Oct  9 14:53:43 2026 | cvtest log lines: 0 | crash logs: 0
+cat: can't open '/tmp/cvtest_prestart.log': No such file or directory
+
+### A4 Smart Installer 1.3.4 (public link before the fix) with the other add-on present - reproduction
+  [XX] A newer CineView MLA (1.0.5) is already installed.
+CineView MLA was not installed. Nothing was changed on this receiver.
+### A4b Smart Installer 1.3.5, reinstall with the other add-on present
+  [OK] CineView MLA 1.0.5 installed
+  [OK] Package version 1.0.5
+  CineView MLA 1.0.5 installed successfully.
+  image: openatv 8.0.1 | cineview: 1.0.5 | oaweather: 1 | cvtest: 0
+  pre-start hook: none
+  start-up hook: /usr/lib/python3.14/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000060 {"omitted": []}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=0 written 14:54:28 | enigma2 pid 32176 started Fri Oct  9 14:53:43 2026 | cvtest log lines: 0 | crash logs: 0
+  restart:

@@ -1,0 +1,101 @@
+### openbh56 U0 start
+  image: openbh 5.6 | cineview: 1.0.5~openbh1 | oaweather: 1 | cvtest: 0
+  pre-start hook: none
+  start-up hook: /usr/lib/python3.13/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000199 {"omitted": []}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=1 written 15:10:37 | enigma2 pid 5622 started Fri Oct  9 15:10:36 2026 | cvtest log lines: 0 | crash logs: 0
+
+### openbh56 U1 upgrade to 1.0.5 with Smart Installer 1.3.5 (PKG_DIR)
+  [OK] Weather: OAWeather installed
+  [OK] Package version 1.0.5~openbh1
+  image: openbh 5.6 | cineview: 1.0.5~openbh1 | oaweather: 1 | cvtest: 0
+  pre-start hook: none
+  start-up hook: /usr/lib/python3.13/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000199 {"omitted": []}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=1 written 15:10:37 | enigma2 pid 5622 started Fri Oct  9 15:10:36 2026 | cvtest log lines: 0 | crash logs: 0
+  restart:
+  GUI restarted: enigma2 pid 5622 -> 6314
+  image: openbh 5.6 | cineview: 1.0.5~openbh1 | oaweather: 1 | cvtest: 0
+  pre-start hook: none
+  start-up hook: /usr/lib/python3.13/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000199 {"omitted": []}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=1 written 15:11:13 | enigma2 pid 6314 started Fri Oct  9 15:11:11 2026 | cvtest log lines: 0 | crash logs: 0
+
+### openbh56 U2 every design with OAWeather (apply, GUI restart, InfoBar / Second InfoBar / Event View)
+=== openbh56 weather design=factory
+  g000000 weather widgets: 12 | OAWeather installed: True
+  STRICT OK (no missing renderer/converter/source)
+  RESULT PASS (apply rc=0, enigma2 pid 6860 stable, crash logs 0->0)
+=== openbh56 weather design=classic
+  g000200 weather widgets: 12 | OAWeather installed: True
+  STRICT OK (no missing renderer/converter/source)
+  RESULT PASS (apply rc=0, enigma2 pid 7786 stable, crash logs 0->0)
+=== openbh56 weather design=classiclines
+  g000201 weather widgets: 12 | OAWeather installed: True
+  STRICT OK (no missing renderer/converter/source)
+  RESULT PASS (apply rc=0, enigma2 pid 8664 stable, crash logs 0->0)
+=== openbh56 weather design=details
+  g000202 weather widgets: 15 | OAWeather installed: True
+  STRICT OK (no missing renderer/converter/source)
+  RESULT PASS (apply rc=0, enigma2 pid 9536 stable, crash logs 0->0)
+=== openbh56 weather design=cinema
+  g000203 weather widgets: 2 | OAWeather installed: True
+  STRICT OK (no missing renderer/converter/source)
+  RESULT PASS (apply rc=0, enigma2 pid 10417 stable, crash logs 0->0)
+=== openbh56 weather design=modern
+  g000204 weather widgets: 0 | OAWeather installed: True
+  STRICT OK (no missing renderer/converter/source)
+  RESULT PASS (apply rc=0, enigma2 pid 11280 stable, crash logs 0->0)
+=== openbh56 weather design=minimal
+  g000205 weather widgets: 0 | OAWeather installed: True
+  STRICT OK (no missing renderer/converter/source)
+  RESULT PASS (apply rc=0, enigma2 pid 12139 stable, crash logs 0->0)
+MATRIX openbh56 weather: 7 pass, 0 fail
+
+### openbh56 U3 the other add-on (owns /usr/bin/enigma2_pre_start.sh) installed next to CineView 1.0.5
+Configuring enigma2-plugin-extensions-cvtest-prestart.
+  image: openbh 5.6 | cineview: 1.0.5~openbh1 | oaweather: 1 | cvtest: 1
+  pre-start hook: b42d19e77ba7 owner=enigma2-plugin-extensions-cvtest-prestart (# cvtest-prestart (QA stand-in for a third-party add-on): re)
+  start-up hook: /usr/lib/python3.13/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000205 {"omitted": []}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=1 written 15:18:08 | enigma2 pid 12139 started Fri Oct  9 15:18:06 2026 | cvtest log lines: 0 | crash logs: 0
+  restart:
+  GUI restarted: enigma2 pid 12139 -> 13088
+  image: openbh 5.6 | cineview: 1.0.5~openbh1 | oaweather: 1 | cvtest: 1
+  pre-start hook: b42d19e77ba7 owner=enigma2-plugin-extensions-cvtest-prestart (# cvtest-prestart (QA stand-in for a third-party add-on): re)
+  start-up hook: /usr/lib/python3.13/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000205 {"omitted": []}
+  guardian: boot.count=1 written 15:19:12 | enigma2 pid 13088 started Fri Oct  9 15:19:10 2026 | cvtest log lines: 1 | crash logs: 0
+  [OK] Pre-start hook of enigma2-plugin-extensions-cvtest-prestart found - kept as it is (CineView MLA does not use that file)
+  CineView MLA 1.0.5~openbh1 is already installed and verified.
+
+### openbh56 U4 uninstaller with the other add-on present, then fresh install with the Smart Installer
+CineView MLA removed (/etc/enigma2/cineview_mla kept unless purged).
+Removing enigma2-plugin-skins-cineview-fhd-mla (1.0.5~openbh1) from root...
+CineView MLA removed. Your poster cache is kept.
+  image: openbh 5.6 | cineview:  | oaweather: 1 | cvtest: 1
+  pre-start hook: b42d19e77ba7 owner=enigma2-plugin-extensions-cvtest-prestart (# cvtest-prestart (QA stand-in for a third-party add-on): re)
+  start-up hook: none | skin:  | active:  
+  guardian: boot.count=1 written 15:19:12 | enigma2 pid 13758 started Fri Oct  9 15:19:44 2026 | cvtest log lines: 2 | crash logs: 0
+  [OK] Pre-start hook of enigma2-plugin-extensions-cvtest-prestart found - kept as it is (CineView MLA does not use that file)
+  [..] No earlier CineView MLA installation
+  CineView MLA 1.0.5~openbh1 installed successfully.
+  image: openbh 5.6 | cineview: 1.0.5~openbh1 | oaweather: 1 | cvtest: 1
+  pre-start hook: b42d19e77ba7 owner=enigma2-plugin-extensions-cvtest-prestart (# cvtest-prestart (QA stand-in for a third-party add-on): re)
+  start-up hook: /usr/lib/python3.13/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000000 
+  guardian: boot.count=1 written 15:20:27 | enigma2 pid 14498 started Fri Oct  9 15:20:25 2026 | cvtest log lines: 3 | crash logs: 0
+
+### openbh56 U5 the other add-on removed; original design restored
+Removing enigma2-plugin-extensions-cvtest-prestart (1.0) from root...
+g000001
+  restart:
+  GUI restarted: enigma2 pid 14498 -> 15024
+  image: openbh 5.6 | cineview: 1.0.5~openbh1 | oaweather: 1 | cvtest: 0
+  pre-start hook: none
+  start-up hook: /usr/lib/python3.13/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000001 {"omitted": []}
+  guardian: boot.count=1 written 15:21:01 | enigma2 pid 15024 started Fri Oct  9 15:20:59 2026 | cvtest log lines: 3 | crash logs: 0
+g000001 weather widgets: 12 | OAWeather installed: True
+STRICT OK (no missing renderer/converter/source)
+{"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}2026-10-09 15:19:11 cvtest-prestart hook ran (pid 13066)
+2026-10-09 15:19:45 cvtest-prestart hook ran (pid 13736)
+2026-10-09 15:20:26 cvtest-prestart hook ran (pid 14487)
+### DONE openbh56

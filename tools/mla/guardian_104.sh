@@ -1,9 +1,7 @@
 #!/bin/sh
 # CineView MLA boot guardian (busybox sh; no Enigma2, no skin, no UI needed).
-# Runs before EVERY Enigma2 start (including the automatic respawn after a crash), before Enigma2 loads its
-# settings and skin.  Since 1.0.5 it is started by Python's start-up hook inside the enigma2 process
-# (site-packages/cineview_mla_guardian.pth -> mla/guardian/prestart.py, CVMLA_GUARDIAN_HOOK=python), no longer
-# by /usr/bin/enigma2_pre_start.sh: that single shared hook file may belong to another add-on.
+# Called by /usr/bin/enigma2_pre_start.sh, which OpenATV's enigma2.sh runs before EVERY
+# Enigma2 start (including the automatic respawn after a crash).
 #
 # Escalation (boot.count = consecutive starts without a "healthy"/"clean" signal):
 #   >=3  rollback to last-known-good generation
@@ -18,11 +16,6 @@ PY=${MLA_PY:-python3}
 ENGINE="$SKIN_DIR/mla/engine/composer.py"
 
 grep -q '^config.skin.primary_skin=CineView_FHD_MLA/' "$SETTINGS" 2>/dev/null || exit 0
-# Exactly one run per Enigma2 start: with the start-up hook installed, any other caller (for example a pre-start
-# hook file left by an earlier version) does nothing, so the crash-loop counter never counts one start twice.
-if [ "${CVMLA_GUARDIAN_HOOK:-}" != "python" ] && ls /usr/lib/python3*/site-packages/cineview_mla_guardian.pth >/dev/null 2>&1; then
-	exit 0
-fi
 mkdir -p "$STATE"
 log() { echo "$(date '+%Y-%m-%d %H:%M:%S') guardian: $*" >> "$STATE/history.log"; }
 put() { echo "$2" > "$1.tmp" && sync && mv -f "$1.tmp" "$1"; }

@@ -1,0 +1,37 @@
+### openbh60 X1 uninstaller (test branch: public steps + recording check), other add-on present
+CineView MLA removed (/etc/enigma2/cineview_mla kept unless purged).
+Removing enigma2-plugin-skins-cineview-fhd-mla (1.0.5~openbh.py314) from root...
+CineView MLA removed. Your poster cache is kept.
+  image: openbh 6.0 | cineview:  | oaweather: 0 | cvtest: 1
+  pre-start hook: b42d19e77ba7 owner=enigma2-plugin-extensions-cvtest-prestart (# cvtest-prestart (QA stand-in for a third-party add-on): re)
+  start-up hook: none | skin:  | active:  
+  guardian: boot.count=0 written 16:41:35 | enigma2 pid 4994 started Fri Oct  9 16:42:48 2026 | cvtest log lines: 3 | crash logs: 0
+    enigma2-plugin-extensions-cvtest-prestart - 1.0
+    2026-10-09 16:40:16 cvtest-prestart hook ran (pid 4760)
+    2026-10-09 16:42:48 cvtest-prestart hook ran (pid 4983)
+### openbh60 X2 fresh install with Smart Installer 1.3.5 (PKG_DIR) - OAWeather installed and healthy
+  [OK] Pre-start hook of enigma2-plugin-extensions-cvtest-prestart found - kept as it is (CineView MLA does not use that file)
+  [..] Weather: this image's feed does not offer OAWeather - CineView's own weather (Open-Meteo) is used
+  [..] No earlier CineView MLA installation
+  CineView MLA 1.0.5~openbh.py314 installed successfully.
+config.skin.primary_skin=CineView_FHD_MLA/skin.xml
+  image: openbh 6.0 | cineview: 1.0.5~openbh.py314 | oaweather: 0 | cvtest: 1
+  pre-start hook: b42d19e77ba7 owner=enigma2-plugin-extensions-cvtest-prestart (# cvtest-prestart (QA stand-in for a third-party add-on): re)
+  start-up hook: /usr/lib/python3.14/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000001 {"omitted": [], "builtin": ["weather"]}
+  guardian: boot.count=1 written 16:43:30 | enigma2 pid 5303 started Fri Oct  9 16:43:29 2026 | cvtest log lines: 4 | crash logs: 0
+    source=cineview | city='Riyadh' | temperature_current='38 °C' | weathericon,current=/usr/share/enigma2/CineView_FHD_MLA/mla_assets/weather/clear_day.png | status age 54s | CineView data: Riyadh 38.3 °C clear_day
+    WEATHER OK
+    g000001 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 12 | CineView weather components present, icons 10 | OAWeather installed: False
+    STRICT OK (no missing renderer/converter/source)
+### openbh60 X3 slot back to its state before the test (CineView + test add-on removed, original skin; OAWeather kept)
+Removing enigma2-plugin-skins-cineview-fhd-mla (1.0.5~openbh.py314) from root...
+CineView MLA removed. Your poster cache is kept.
+Removing enigma2-plugin-extensions-cvtest-prestart (1.0) from root...
+primary_skin: image default
+  image: openbh 6.0 | cineview:  | oaweather: 0 | cvtest: 0
+  pre-start hook: none
+  start-up hook: none | skin:  | active:  
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count= written  | enigma2 pid 5593 started Fri Oct  9 16:45:17 2026 | cvtest log lines: 0 | crash logs: 0
+    ls: /usr/bin/enigma2_pre_start.sh: No such file or directory
+### DONE openbh60 X

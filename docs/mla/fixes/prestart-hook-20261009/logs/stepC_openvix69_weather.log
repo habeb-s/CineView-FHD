@@ -1,0 +1,103 @@
+### openvix69 U0 start
+  image: openvix 6.9 | cineview: 1.0.0~openvix1 | oaweather: 1 | cvtest: 0
+  pre-start hook: 14456a41a22b owner=enigma2-plugin-skins-cineview-fhd-mla (# Installed as /usr/bin/enigma2_pre_start.sh (native OpenATV)
+  start-up hook: none | skin: CineView_FHD_MLA/skin.xml | active: generations/g000010 
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=1 written 15:33:07 | enigma2 pid 2219 started Fri Oct  9 15:33:07 2026 | cvtest log lines: 0 | crash logs: 0
+
+### openvix69 U1 upgrade to 1.0.5 with Smart Installer 1.3.5 (PKG_DIR)
+  [OK] Weather: OAWeather installed
+  [OK] Upgrade: your design, theme, profiles, settings and poster cache are kept
+  [OK] Package version 1.0.5~openvix1
+  CineView MLA 1.0.5~openvix1 installed successfully.
+  image: openvix 6.9 | cineview: 1.0.5~openvix1 | oaweather: 1 | cvtest: 0
+  pre-start hook: none
+  start-up hook: /usr/lib/python3.14/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000011 {"omitted": []}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=0 written 15:34:54 | enigma2 pid 2219 started Fri Oct  9 15:33:07 2026 | cvtest log lines: 0 | crash logs: 0
+  restart:
+  GUI restarted: enigma2 pid 2219 -> 3311
+  image: openvix 6.9 | cineview: 1.0.5~openvix1 | oaweather: 1 | cvtest: 0
+  pre-start hook: none
+  start-up hook: /usr/lib/python3.14/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000011 {"omitted": []}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=1 written 15:35:00 | enigma2 pid 3311 started Fri Oct  9 15:34:58 2026 | cvtest log lines: 0 | crash logs: 0
+
+### openvix69 U2 every design with OAWeather (apply, GUI restart, InfoBar / Second InfoBar / Event View)
+=== openvix69 weather design=factory
+  g000000 weather widgets: 12 | OAWeather installed: True
+  STRICT OK (no missing renderer/converter/source)
+  RESULT PASS (apply rc=0, enigma2 pid 3917 stable, crash logs 0->0)
+=== openvix69 weather design=classic
+  g000012 weather widgets: 12 | OAWeather installed: True
+  STRICT OK (no missing renderer/converter/source)
+  RESULT PASS (apply rc=0, enigma2 pid 4884 stable, crash logs 0->0)
+=== openvix69 weather design=classiclines
+  g000013 weather widgets: 12 | OAWeather installed: True
+  STRICT OK (no missing renderer/converter/source)
+  RESULT PASS (apply rc=0, enigma2 pid 5860 stable, crash logs 0->0)
+=== openvix69 weather design=details
+  g000014 weather widgets: 15 | OAWeather installed: True
+  STRICT OK (no missing renderer/converter/source)
+  RESULT PASS (apply rc=0, enigma2 pid 6827 stable, crash logs 0->0)
+=== openvix69 weather design=cinema
+  g000015 weather widgets: 2 | OAWeather installed: True
+  STRICT OK (no missing renderer/converter/source)
+  RESULT PASS (apply rc=0, enigma2 pid 7788 stable, crash logs 0->0)
+=== openvix69 weather design=modern
+  g000016 weather widgets: 0 | OAWeather installed: True
+  STRICT OK (no missing renderer/converter/source)
+  RESULT PASS (apply rc=0, enigma2 pid 8760 stable, crash logs 0->0)
+=== openvix69 weather design=minimal
+  g000017 weather widgets: 0 | OAWeather installed: True
+  STRICT OK (no missing renderer/converter/source)
+  RESULT PASS (apply rc=0, enigma2 pid 9708 stable, crash logs 0->0)
+MATRIX openvix69 weather: 7 pass, 0 fail
+
+### openvix69 U3 the other add-on (owns /usr/bin/enigma2_pre_start.sh) installed next to CineView 1.0.5
+Configuring enigma2-plugin-extensions-cvtest-prestart.
+  image: openvix 6.9 | cineview: 1.0.5~openvix1 | oaweather: 1 | cvtest: 1
+  pre-start hook: b42d19e77ba7 owner=enigma2-plugin-extensions-cvtest-prestart (# cvtest-prestart (QA stand-in for a third-party add-on): re)
+  start-up hook: /usr/lib/python3.14/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000017 {"omitted": []}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=1 written 15:42:35 | enigma2 pid 9708 started Fri Oct  9 15:42:34 2026 | cvtest log lines: 0 | crash logs: 0
+  restart:
+  GUI restarted: enigma2 pid 9708 -> 10747
+  image: openvix 6.9 | cineview: 1.0.5~openvix1 | oaweather: 1 | cvtest: 1
+  pre-start hook: b42d19e77ba7 owner=enigma2-plugin-extensions-cvtest-prestart (# cvtest-prestart (QA stand-in for a third-party add-on): re)
+  start-up hook: /usr/lib/python3.14/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000017 {"omitted": []}
+  guardian: boot.count=1 written 15:43:46 | enigma2 pid 10747 started Fri Oct  9 15:43:45 2026 | cvtest log lines: 1 | crash logs: 0
+  [OK] Pre-start hook of enigma2-plugin-extensions-cvtest-prestart found - kept as it is (CineView MLA does not use that file)
+  CineView MLA 1.0.5~openvix1 is already installed and verified.
+
+### openvix69 U4 uninstaller with the other add-on present, then fresh install with the Smart Installer
+CineView MLA removed (/etc/enigma2/cineview_mla kept unless purged).
+Removing enigma2-plugin-skins-cineview-fhd-mla (1.0.5~openvix1) from root...
+CineView MLA removed. Your poster cache is kept.
+  image: openvix 6.9 | cineview:  | oaweather: 1 | cvtest: 1
+  pre-start hook: b42d19e77ba7 owner=enigma2-plugin-extensions-cvtest-prestart (# cvtest-prestart (QA stand-in for a third-party add-on): re)
+  start-up hook: none | skin:  | active:  
+  guardian: boot.count=1 written 15:43:46 | enigma2 pid 11558 started Fri Oct  9 15:44:28 2026 | cvtest log lines: 2 | crash logs: 0
+  [OK] Pre-start hook of enigma2-plugin-extensions-cvtest-prestart found - kept as it is (CineView MLA does not use that file)
+  [..] No earlier CineView MLA installation
+  CineView MLA 1.0.5~openvix1 installed successfully.
+  image: openvix 6.9 | cineview: 1.0.5~openvix1 | oaweather: 1 | cvtest: 1
+  pre-start hook: b42d19e77ba7 owner=enigma2-plugin-extensions-cvtest-prestart (# cvtest-prestart (QA stand-in for a third-party add-on): re)
+  start-up hook: /usr/lib/python3.14/site-packages/cineview_mla_guardian.pth | skin:  | active: generations/g000000 
+  guardian: boot.count=1 written 15:43:46 | enigma2 pid 12457 started Fri Oct  9 15:45:22 2026 | cvtest log lines: 3 | crash logs: 0
+
+### openvix69 U5 the other add-on removed; original design restored
+Removing enigma2-plugin-extensions-cvtest-prestart (1.0) from root...
+g000001
+  restart:
+  GUI restarted: enigma2 pid 12457 -> 13074
+  image: openvix 6.9 | cineview: 1.0.5~openvix1 | oaweather: 1 | cvtest: 0
+  pre-start hook: none
+  start-up hook: /usr/lib/python3.14/site-packages/cineview_mla_guardian.pth | skin:  | active: generations/g000001 {"omitted": []}
+  guardian: boot.count=0 written 15:45:58 | enigma2 pid 13074 started Fri Oct  9 15:46:01 2026 | cvtest log lines: 3 | crash logs: 0
+g000001 weather widgets: 15 | OAWeather installed: True
+STRICT OK (no missing renderer/converter/source)
+{"layouts": {"channelselection": "posterlist", "epg": "graphicalplus", "eventview": "detailscard", "infobar": "details", "pvr": "cover", "secondinfobar": "details"}, "theme": "black"}2026-10-09 15:43:45 cvtest-prestart hook ran (pid 10736)
+2026-10-09 15:44:28 cvtest-prestart hook ran (pid 11544)
+2026-10-09 15:45:21 cvtest-prestart hook ran (pid 12446)
+### DONE openvix69

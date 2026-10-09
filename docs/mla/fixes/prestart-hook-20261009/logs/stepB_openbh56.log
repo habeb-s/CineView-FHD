@@ -1,0 +1,56 @@
+### openbh56 R0 start
+  image: openbh 5.6 | cineview: 1.0.0~openbh17 | oaweather: 1 | cvtest: 0
+  pre-start hook: 14456a41a22b owner=enigma2-plugin-skins-cineview-fhd-mla (# Installed as /usr/bin/enigma2_pre_start.sh (native OpenATV)
+  start-up hook: none | skin: CineView_FHD_MLA/skin.xml | active: generations/g000196 
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=0 written 15:07:56 | enigma2 pid 2277 started Fri Oct  9 15:06:18 2026 | cvtest log lines: 0 | crash logs: 0
+  original selection: {"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+  previous skin: unknown
+INSTALLER_VERSION="1.3.5"
+1
+
+### openbh56 R1 OAWeather removed, CineView 1.0.3 installed (upgrade with opkg)
+
+CineView MLA: image openbh 5.6 on vuduo4kse
+CineView MLA: your design, theme and settings were kept.
+CineView MLA installed. Select it in Menu > Setup > User Interface > Skin, then restart the GUI.
+Upgrading enigma2-plugin-skins-cineview-fhd-mla (1.0.0~openbh17) to enigma2-plugin-skins-cineview-fhd-mla (1.0.3~openbh1) on root
+  image: openbh 5.6 | cineview: 1.0.3~openbh1 | oaweather: 1 | cvtest: 0
+  pre-start hook: 14456a41a22b owner=enigma2-plugin-skins-cineview-fhd-mla (# Installed as /usr/bin/enigma2_pre_start.sh (native OpenATV)
+  start-up hook: none | skin: CineView_FHD_MLA/skin.xml | active: generations/g000197 
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=0 written 15:09:07 | enigma2 pid 2277 started Fri Oct  9 15:06:18 2026 | cvtest log lines: 0 | crash logs: 0
+  R2 validate Classic (what CineView Designs runs on Apply):
+    VALID
+    warnings (core/plugin screens, non-blocking): 1
+    rc=0
+  R3 apply Details:
+2026-10-09 15:09:10 apply: g000197 -> g000198 trial=False selection={"layouts": {"channelselection": "posterlist", "epg": "graphicalplus", "eventview": "detailscard", "infobar": "details", "pvr": "cover", "secondinfobar": "details"}, "theme": "purple"}
+2026-10-09 15:09:10 commit: lkg=g000198
+    g000198
+    rc=0
+  R4 GUI restart with 1.0.3 (active generations/g000198, OAWeather missing) - watch 70 s:
+    t+10s enigma2=4475 boot.count=1 crash logs=0
+    t+20s enigma2=4475 boot.count=1 crash logs=0
+    t+30s enigma2=4475 boot.count=1 crash logs=0
+    t+40s enigma2=4475 boot.count=1 crash logs=0
+    t+50s enigma2=4475 boot.count=1 crash logs=0
+    t+60s enigma2=4475 boot.count=1 crash logs=0
+    t+70s enigma2=4475 boot.count=1 crash logs=0
+    2026-10-09 15:09:07 apply: g000196 -> g000197 trial=False selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+    2026-10-09 15:09:07 commit: lkg=g000197
+    2026-10-09 15:09:10 apply: g000197 -> g000198 trial=False selection={"layouts": {"channelselection": "posterlist", "epg": "graphicalplus", "eventview": "detailscard", "infobar": "details", "pvr": "cover", "secondinfobar": "details"}, "theme": "purple"}
+    2026-10-09 15:09:10 commit: lkg=g000198
+scp: open local "shots/openbh56_R4_103_noweather_after_restart.jpg": No such file or directory
+
+### openbh56 F1 CineView 1.0.5 (upgrade with opkg), OAWeather still missing
+CineView MLA: image openbh 5.6 on vuduo4kse
+CineView MLA: your design, theme and settings were kept.
+CineView MLA installed. Select it in Menu > Setup > User Interface > Skin, then restart the GUI.
+Upgrading enigma2-plugin-skins-cineview-fhd-mla (1.0.3~openbh1) to enigma2-plugin-skins-cineview-fhd-mla (1.0.5~openbh1) on root
+  image: openbh 5.6 | cineview: 1.0.5~openbh1 | oaweather: 1 | cvtest: 0
+  pre-start hook: none
+  start-up hook: /usr/lib/python3.13/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000199 {"omitted": []}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=0 written 15:10:32 | enigma2 pid 4475 started Fri Oct  9 15:09:13 2026 | cvtest log lines: 0 | crash logs: 0
+  restart:

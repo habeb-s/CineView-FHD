@@ -1,0 +1,4 @@
+# CineView MLA boot guardian: Python start-up hook (installed in the image's site-packages by the CineView MLA package).
+# Acts only inside the enigma2 process, before Enigma2 loads its settings and skin (see mla/guardian/prestart.py);
+# any other Python program only reads /proc/self/comm and continues.  Shares no file with other add-ons.
+import os; c = open('/proc/self/comm').read().strip() if os.path.exists('/proc/self/comm') else ''; p = '/usr/share/enigma2/CineView_FHD_MLA/mla/guardian/prestart.py'; c == 'enigma2' and os.path.isfile(p) and exec(compile(open(p).read(), p, 'exec'), {'__name__': 'cineview_mla_prestart', '__file__': p})

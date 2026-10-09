@@ -127,7 +127,9 @@ grep -q "from the image information only" $W/no_driver_file_single_source.out &&
 r=$(mkroot nomb openatv 8.0.1 vuplus "" $ATV); vu duo4kse $r;          run machinebuild_missing_not_blocking PASS $r CVMLA_PYV=3.14
 # --- foreign pre-start hook
 r=$(mkroot hook openatv 8.0.1 vuplus vuduo4kse $ATV); vu duo4kse $r; printf '#!/bin/sh\n# other\n' > $r/usr/bin/enigma2_pre_start.sh
-run foreign_prestart_hook "belongs to another add-on" $r CVMLA_PYV=3.14
+run foreign_prestart_hook PASS $r CVMLA_PYV=3.14   # 1.3.5: another add-on's hook is kept, CineView does not use it
+grep -q "kept as it is" $W/foreign_prestart_hook.out && echo "      (foreign hook reported as kept, not replaced)"
+run foreign_prestart_hook_rollback "uses /usr/bin/enigma2_pre_start.sh" $r CVMLA_PYV=3.14 ROLLBACK=1   # 1.0.4 still needs the file
 r=$(mkroot ownhook openatv 8.0.1 vuplus vuduo4kse $ATV); vu duo4kse $r; printf '#!/bin/sh\n# CineView MLA guardian\n' > $r/usr/bin/enigma2_pre_start.sh
 run own_prestart_hook PASS $r CVMLA_PYV=3.14
 echo "TOTAL $N  PASS $NP  FAIL $NF"

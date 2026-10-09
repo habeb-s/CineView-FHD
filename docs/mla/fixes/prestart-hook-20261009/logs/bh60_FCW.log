@@ -1,0 +1,35 @@
+
+### openbh60 F4 the other add-on (owns /usr/bin/enigma2_pre_start.sh) next to CineView 1.0.5
+Configuring enigma2-plugin-extensions-cvtest-prestart.
+  image: openbh 6.0 | cineview: 1.0.5~openbh.py314 | oaweather: 0 | cvtest: 1
+  pre-start hook: b42d19e77ba7 owner=enigma2-plugin-extensions-cvtest-prestart (# cvtest-prestart (QA stand-in for a third-party add-on): re)
+  start-up hook: /usr/lib/python3.14/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000009 {"omitted": [], "builtin": ["weather"]}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=0 written 16:39:05 | enigma2 pid 4163 started Fri Oct  9 16:37:46 2026 | cvtest log lines: 0 | crash logs: 0
+  restart:
+  GUI restarted: enigma2 pid 4163 -> 4438
+  image: openbh 6.0 | cineview: 1.0.5~openbh.py314 | oaweather: 0 | cvtest: 1
+  pre-start hook: b42d19e77ba7 owner=enigma2-plugin-extensions-cvtest-prestart (# cvtest-prestart (QA stand-in for a third-party add-on): re)
+  start-up hook: /usr/lib/python3.14/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000009 {"omitted": [], "builtin": ["weather"]}
+  guardian: boot.count=1 written 16:39:45 | enigma2 pid 4438 started Fri Oct  9 16:39:44 2026 | cvtest log lines: 1 | crash logs: 0
+### DONE openbh60 FC
+### openbh60 W1 Smart Installer 1.3.5 (same version installed): OAWeather from the OpenBH feed, other add-on kept
+  [OK] Pre-start hook of enigma2-plugin-extensions-cvtest-prestart found - kept as it is (CineView MLA does not use that file)
+  [..] Weather: this image's feed does not offer OAWeather - CineView's own weather (Open-Meteo) is used
+  CineView MLA 1.0.5~openbh.py314 is already installed and verified.
+  image: openbh 6.0 | cineview: 1.0.5~openbh.py314 | oaweather: 0 | cvtest: 1
+  pre-start hook: b42d19e77ba7 owner=enigma2-plugin-extensions-cvtest-prestart (# cvtest-prestart (QA stand-in for a third-party add-on): re)
+  start-up hook: /usr/lib/python3.14/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000009 {"omitted": [], "builtin": ["weather"]}
+  guardian: boot.count=1 written 16:39:45 | enigma2 pid 4438 started Fri Oct  9 16:39:44 2026 | cvtest log lines: 1 | crash logs: 0
+  restart (OAWeather starts with the GUI):
+  GUI restarted: enigma2 pid 4438 -> 4771
+  image: openbh 6.0 | cineview: 1.0.5~openbh.py314 | oaweather: 0 | cvtest: 1
+  pre-start hook: b42d19e77ba7 owner=enigma2-plugin-extensions-cvtest-prestart (# cvtest-prestart (QA stand-in for a third-party add-on): re)
+  start-up hook: /usr/lib/python3.14/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000009 {"omitted": [], "builtin": ["weather"]}
+  guardian: boot.count=1 written 16:40:17 | enigma2 pid 4771 started Fri Oct  9 16:40:16 2026 | cvtest log lines: 2 | crash logs: 0
+  OAWeather is not offered by this image's feed: CineView's own weather stays in use
+    design g000009: no weather widgets
+    NO WEATHER WIDGETS
+    g000009 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 0 | CineView weather components present, icons 10 | OAWeather installed: False
+    STRICT OK (no missing renderer/converter/source)
+### DONE openbh60 W
