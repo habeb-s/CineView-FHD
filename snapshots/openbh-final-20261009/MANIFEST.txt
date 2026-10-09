@@ -1,0 +1,25 @@
+CineView FHD — OpenBH smart-install snapshot 2026-10-09 (issue #8)
+
+cineview-live-openbh-final-20261009.tar.gz
+SHA256 b27edd0ffaa02e66210f3c71a20764b472c4bc2fa4dc47c9d19bbbc4401feede
+Built reproducibly by tools/build_openbh_snapshot.py (fixed mtime; two builds are byte-identical).
+
+Composition
+- Every member of snapshots/openbh-final-20260923/cineview-live-openbh-final-20260923.tar.gz at commit 9397853
+  ("Fix OpenBH Plugin Browser and EPG contracts", the OpenBH smart-install snapshot since f1a6b09), unchanged:
+  436 entries.
+- Restored from the same snapshot path at commit 26d1390 (the OpenBH smart-install snapshot 2026-09-23 .. 2026-09-25),
+  kept in components/openbh/:
+    usr/lib/enigma2/python/Components/Converter/CineViewMoviePath.py   (added; md5 17f2baf0fc6561aa4cedb9a234a1b606)
+    usr/lib/enigma2/python/Components/Renderer/LukaPosterXEMC.py       (added; md5 8b2891a870d0f6a1efe065415d72a5dd)
+    usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.py      (replaced; md5 bad2f648b82077808eae069694528847)
+  Result: 438 entries.
+
+Why
+- 9397853 was rebuilt from the OpenBH ipk contents and lost these three files. install-openbh-live.sh requires
+  them, so the OpenBH smart install stopped with "required file missing: .../LukaPosterXEMC.py".
+- The OpenBH MovieSelection screen injected by openbh_compat.py still uses LukaPosterXEMC (poster) and
+  CineViewMoviePath (FILE / PATH lines); without them OpenBH skips those widgets.
+- The 26d1390 CineViewPosterX.py is the 9397853 file plus the persistent poster cache
+  (_cineview_poster_cache_root: writable /media/hdd/poster, then other local /media storage, multiboot media
+  excluded, /tmp fallback) — the only difference between the two files.
