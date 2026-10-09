@@ -1664,6 +1664,14 @@ def main(golden, comps, control, out):
 					assert src.count(old) == 1, "imdb patch anchor not unique: %r" % old[:50]
 					src = src.replace(old, new)
 				src += IMDB_GENERIC_HELPER
+			if base == "CineViewCPUTemp":
+				# 2026-10-09 (Octagon SF8008, HiSilicon): the golden converter knows only three fixed sensor paths and
+				# shows "CPU: --°C" on receivers whose driver reports the temperature elsewhere.  Replaced by
+				# patches/cputemp.py (same class, label and poll interval; more sources, probed by existence; "N/A").
+				for path in ("/sys/class/thermal/thermal_zone0/temp", "/proc/stb/sensors/temp0/value", "/proc/stb/fp/temp_sensor"):
+					assert path in src, "golden CineViewCPUTemp changed: %s" % path
+				assert "class CineViewMLACPUTemp(Poll, Converter)" in src
+				src = open(os.path.join(HERE, "patches", "cputemp.py"), encoding="utf-8").read()
 			if base == "CineViewCamInfo":
 				assert "def changed" not in src and "class CineViewMLACamInfo(Poll, Converter)" in src
 				src += CAMINFO_CHANGED
