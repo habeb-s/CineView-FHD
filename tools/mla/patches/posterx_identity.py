@@ -56,15 +56,21 @@ def _mla_cached(ident):
 
 
 def _mla_candidates(ident):
+    # The work's own title from the EPG description ("Tytuł oryginalny: ER") is searched first; the localised
+    # title only when the original title finds nothing (device 2026-10-09, Polish EPG).
     q = ident["title"]
     out = []
-    data = _http_get(API_IMDB % _quote(q), timeout=6.0, want_json=True) or {}
-    out += _mla_imdb(data)
-    if ident["kind"] != "movie":
+    for qq in [x for x in (ident.get("orig"), ident["title"]) if x]:
+        q = qq
+        out += _mla_imdb(_http_get(API_IMDB % _quote(q), timeout=6.0, want_json=True) or {})
+        if out:
+            break
+    if ident["kind"] != "movie" or ident.get("kind_soft"):
         out += _mla_tvmaze(_http_get(API_SEARCH, params={"q": q}, timeout=6.0, want_json=True) or [])
     if not out:
         for media, entity in (("movie", "movie"), ("tvShow", "tvSeason")):
-            if ident["kind"] and ident["kind"] != ("movie" if media == "movie" else "series"):
+            k = None if ident.get("kind_soft") else ident["kind"]
+            if k and k != ("movie" if media == "movie" else "series"):
                 continue
             out += _mla_itunes(_http_get(API_ITUNES, params={"term": q, "media": media, "entity": entity, "limit": 5, "country": "US"}, timeout=6.0, want_json=True) or {}, media)
     return out

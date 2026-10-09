@@ -1,0 +1,11 @@
+1.0.3                    data diff=['CineViewMLAPosterMatch.pyc', 'CineViewMLAPosterX.pyc', 'version.json'] control=['./control'] pyc(Python 3.14)=['ok', 'ok'] OK
+1.0.3~openatv.py313      data diff=['CineViewMLAPosterMatch.pyc', 'CineViewMLAPosterX.pyc', 'version.json'] control=['./control'] pyc(Python 3.13)=['ok', 'ok'] OK
+1.0.3~openatv.py314      data diff=['CineViewMLAPosterMatch.pyc', 'CineViewMLAPosterX.pyc', 'version.json'] control=['./control'] pyc(Python 3.14)=['ok', 'ok'] OK
+1.0.3~openbh.py313       data diff=['CineViewMLAPosterMatch.pyc', 'CineViewMLAPosterX.pyc', 'version.json'] control=['./control'] pyc(Python 3.13)=['ok', 'ok'] OK
+1.0.3~openbh.py314       data diff=['CineViewMLAPosterMatch.pyc', 'CineViewMLAPosterX.pyc', 'version.json'] control=['./control'] pyc(Python 3.14)=['ok', 'ok'] OK
+1.0.3~openbh1            data diff=['CineViewMLAPosterMatch.pyc', 'CineViewMLAPosterX.pyc', 'version.json'] control=['./control'] pyc(Python 3.13)=['ok', 'ok'] OK
+1.0.3~openvix.py312      data diff=['CineViewMLAPosterMatch.pyc', 'CineViewMLAPosterX.pyc', 'version.json'] control=['./control'] pyc(Python 3.12)=['ok', 'ok'] OK
+1.0.3~openvix.py313      data diff=['CineViewMLAPosterMatch.pyc', 'CineViewMLAPosterX.pyc', 'version.json'] control=['./control'] pyc(Python 3.13)=['ok', 'ok'] OK
+1.0.3~openvix.py314      data diff=['CineViewMLAPosterMatch.pyc', 'CineViewMLAPosterX.pyc', 'version.json'] control=['./control'] pyc(Python 3.14)=['ok', 'ok'] OK
+1.0.3~openvix1           data diff=['CineViewMLAPosterMatch.pyc', 'CineViewMLAPosterX.pyc', 'version.json'] control=['./control'] pyc(Python 3.14)=['ok', 'ok'] OK
+RESULT PASS

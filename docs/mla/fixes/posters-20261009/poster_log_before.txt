@@ -1,0 +1,31 @@
+engine=identity (default; runtime.json poster_engine=legacy selects the old engine)
+identity key=bez hitu~~2025 title=Bez hitu kind=None year=2025 candidates=8 -> no-reliable-match best=imdb/Gezhi Town/2025 0.66 sim=0.56,year=2025
+identity key=ona~~2013 title=Ona kind=None year=2013 candidates=11 -> no-reliable-match best=imdb/Her/2013 0.00 sim=0.00,year=2013,cast,rank=3
+identity key=na planie~series~2026 title=Na planie kind=series year=2026 candidates=5 -> no-reliable-match best=tvmaze/Lež na pláži/2024 0.79 sim=0.67,kind=series,year 2026 in 2024-,similar-title-only
+identity key=szybcy i wsciekli hobbs i shaw~movie~2019 title=Szybcy i wściekli: Hobbs i Shaw kind=movie year=2019 candidates=8 -> match imdb/Fast & Furious Presents: Hobbs & Shaw/2019/movie 0.95 sim=0.51,kind=movie,year=2019,cast
+sized make 120x180 (PIL, no gPixmap) szybcy i wsciekli hobbs i shaw~movie~2019.jpg
+identity key=eddie zwany orłem~movie~2016 title=Eddie zwany Orłem kind=movie year=2016 candidates=1 -> no-reliable-match best=imdb/Eddie the Eagle/2015 0.72 sim=0.57,kind=movie,year~2016/2015
+identity key=rozwod~series~2019 title=Rozwód kind=series year=2019 candidates=9 -> no-reliable-match best=tvmaze/Rownd a Rownd/2017 0.79 sim=0.59,kind=series,year 2019 in 2017-
+identity key=krolewskie swieta~~2023 title=Królewskie święta kind=None year=2023 candidates=4 -> match imdb/A Royal Christmas Holiday/2023/movie 0.95 sim=0.30,year=2023,cast
+identity key=dotknieci miłoscia~~2024 title=Dotknięci miłością kind=None year=2024 candidates=1 -> match imdb/Four Letters of Love/2024/movie 0.95 sim=0.26,year=2024,cast
+identity key=eddie zwany orłem~~ title=Eddie zwany orłem kind=None year=None candidates=1 -> no-reliable-match best=imdb/Eddie the Eagle/2015 0.57 sim=0.57
+engine=identity (default; runtime.json poster_engine=legacy selects the old engine)
+identity key=krolewskie swieta 1~series~ title=Królewskie święta 1 ( ) kind=series year=None candidates=3 -> no-reliable-match best=imdb/A Royal Christmas/2014 0.00 sim=0.29,kind series!=movie
+identity key=anioły i demony~movie~ title=Anioły i demony kind=movie year=None candidates=2 -> no-reliable-match best=imdb/Angels & Demons/2009 0.61 sim=0.56,kind=movie
+identity key=kroniki shannary 1~series~ title=Kroniki Shannary 1 ( ) kind=series year=None candidates=1 -> no-reliable-match best=imdb/The Shannara Chronicles/2016 0.48 sim=0.43,kind=series
+identity key=y2k pluskwa milenijna~~ title=Y2K: Pluskwa milenijna kind=None year=None candidates=0 -> no-reliable-match
+identity key=nade mna niebo w dolinie ja~~ title=Nade mną niebo, w dolinie ja kind=None year=None candidates=1 -> no-reliable-match best=imdb/Promise, I'll Be Fine/2024 0.34 sim=0.34
+identity key=happyish~series~2015 title=Happyish kind=series year=2015 candidates=10 -> match imdb/Happyish/2015/series 1.00 sim=1.00,kind=series,year 2015 in 2015-2015
+identity key=czarodziejki 5~series~ title=Czarodziejki 5 ( ) kind=series year=None candidates=8 -> no-reliable-match best=imdb/Charmed/1998 0.43 sim=0.38,kind=series
+identity key=prawo agaty 1~series~ title=Prawo Agaty 1 ( ) kind=series year=None candidates=1 -> no-reliable-match best=imdb/True Law/2012 0.34 sim=0.29,kind=series
+identity key=game shakers~series~2015 title=Game Shakers kind=series year=2015 candidates=6 -> match imdb/Game Shakers/2015/series 1.00 sim=1.00,kind=series,year 2015 in 2015-2019
+identity key=dp fantasies 5~~ title=DP Fantasies #5 kind=None year=None candidates=8 -> no-reliable-match best=imdb/Fantasies/2003 0.78 sim=0.78
+identity key=agent szczescia~~ title=Agent szczęścia kind=None year=None candidates=1 -> no-reliable-match best=imdb/Agent of Happiness/2024 0.48 sim=0.48
+identity key=simpsonowie~series~2019 title=Simpsonowie kind=series year=2019 candidates=7 -> no-reliable-match best=imdb/The Simpsons/1989 0.79 sim=0.74,kind=series,year 2019 in 1989-,similar-title-only
+identity key=kosci 2~series~ title=Kości 2 ( ) kind=series year=None candidates=6 -> no-reliable-match best=imdb/Bones/2005 0.38 sim=0.33,kind=series
+identity key=kosmiczna kolizja~~ title=Kosmiczna kolizja kind=None year=None candidates=1 -> no-reliable-match best=imdb/Collision Earth/2020 0.31 sim=0.31
+identity key=ostry dyzur~series~1999 title=Ostry dyżur kind=series year=1999 candidates=6 -> no-reliable-match best=imdb/Bardzo ostry dyzur/2000 0.79 sim=0.76,kind=series,year 1999 in 2000-,similar-title-only
+engine=identity (default; runtime.json poster_engine=legacy selects the old engine)
+identity key=bez hitu~~ title=Bez hitu kind=None year=None candidates=8 -> no-reliable-match best=imdb/Gezhi Town/2025 0.56 sim=0.56
+identity key=zdrowi seniorzy zdrowe kolana~~ title=Zdrowi seniorzy: Zdrowe kolana kind=None year=None candidates=0 -> no-reliable-match
+identity key=dotknieci miłoscia~~ title=Dotknięci miłością kind=None year=None candidates=1 -> no-reliable-match best=imdb/Four Letters of Love/2024 0.26 sim=0.26

@@ -13,6 +13,10 @@
 # same event to the same file.
 import re
 import unicodedata
+try:
+	from html import unescape as _unescape
+except ImportError:  # Python 2
+	_unescape = lambda text: text
 from difflib import SequenceMatcher
 
 THRESHOLD = 0.80
@@ -28,17 +32,34 @@ _GENERIC_WORDS = {
 	# magazines / talk / studio
 	"magazin", "magazine", "studio", "emisija", "talk", "kviz", "quiz", "agenda", "fokusu",
 }
-_GENERIC_PHRASES = ("promet info", "kraj programa", "end of programme", "program note", "u fokusu")
+_GENERIC_PHRASES = ("promet info", "kraj programa", "end of programme", "program note", "u fokusu",
+	# Polish EPG (device 2026-10-09, Octagon SF8008, 13.0E): live sport and service slots
+	"piłka nozna", "pilka nozna", "przerwa w programie")
+_GENERIC_WORDS |= {"wiadomosci", "teleexpress", "pogoda", "sport"}
+# live sport: "Piłka nożna: Premier League: ...", original title "Football: Premier League" (a series such as
+# "Galactik Football" is not sport: only the "<sport>:" prefix counts)
+_SPORT_PREFIX = re.compile(r"(?i)^\s*(football|soccer|calcio|futsal|tennis|tenis|piłka nożna|pilka nozna|piłka ręczna|"
+	r"siatkówka|koszykówka|basketball|volleyball|handball|hockey|hokej|żużel|zuzel|boks|boxing|snooker|darts|rugby|"
+	r"mma|ufc|ksw|wrestling|kolarstwo|cycling|lekkoatletyka|athletics|formuła 1|formula 1|f1|motogp|golf|skoki narciarskie)\s*:")
 
 _MOVIE_WORDS = ("film", "tv film", "movie", "spielfilm", "igrani film", "dugometražni film", "animirani film",
 	"dokumentarni film", "kinofilm")
 _SERIES_WORDS = ("serija", "series", "serie", "miniserija", "humoristična serija", "dramska serija",
-	"dokumentarna serija", "telenovela", "sitcom", "episode", "epizoda", "staffel")
+	"dokumentarna serija", "telenovela", "sitcom", "episode", "epizoda", "staffel",
+	"serial")  # Polish: "serial fantasy (USA, 2002)", "serial animowany (Wielka Brytania, 2004)"
 
 _TITLE_KIND_SUFFIX = re.compile(r"\s*[,(\-:]\s*(tv film|film|serija|movie|series)\s*\)?\s*$", re.I)
 _EPISODE = re.compile(r"(?i)\b(s\d{1,2}\s*e\d{1,3}|ep\.?\s*\d+|epizoda\s*\d+|episode\s*\d+|odc\.?\s*\d+|\d+\s*/\s*\d+)\b")
 _PAREN = re.compile(r"\(([^()]{2,120})\)")
 _YEAR = re.compile(r"\b(19[0-9]{2}|20[0-9]{2})\b")
+# The work's own title, as many EPG providers state it in the description (device 2026-10-09: 110 of 1929 Polish
+# events, e.g. "Tytuł oryginalny: ER" + "US, 2000" for "Ostry dyżur 6 (odc. 22)").  It is searched and compared
+# instead of the localised title, so a translated title no longer hides a known work.
+_ORIG = re.compile(r"(?i)(?:tytu[lł] oryginalny|original title|originaltitel|originalni naslov|originalni naziv|"
+	r"titre original|titolo originale|t[ií]tulo original|p[uů]vodn[ií] n[aá]zev|p[oô]vodn[yý] n[aá]zov|eredeti c[ií]m|"
+	r"originele titel)\s*:\s*([^\n]{1,150})")
+# "US, 2000" / "US/GB, 2014" on a line of its own (production country + year after the original title)
+_COUNTRY_YEAR = re.compile(r"(?m)^\s*[A-Z]{2,3}(?:\s*[/,]\s*[A-Z]{2,3})*\s*,\s*((?:19|20)\d{2})\s*$")
 
 
 def norm(text):
@@ -85,35 +106,56 @@ def identify(name, short="", extended="", now_year=None):
 	if m:
 		kind = "series" if m.group(1).lower() in ("serija", "series") else "movie"
 		title = title[:m.start()]
+	kind_soft = False
 	if _EPISODE.search(title):
-		kind = kind or "series"
+		# "(odc. 5)" makes a series likely but not certain (device: HBO2 lists the film "A Royal Christmas Holiday"
+		# as "Królewskie święta 1 (odc. 5)"): a soft kind, used for the key, never to reject a candidate.
+		if kind is None:
+			kind, kind_soft = "series", True
 		title = _EPISODE.sub(" ", title)
 	title = re.sub(r"\s+", " ", title).strip(" ,-:|.")
 	title = re.sub(r"\s+([:,])", r"\1", title)
 	if kind == "series":
 		title = re.sub(r"\s+\d{1,2}$", "", title)  # season number ("Chicago u plamenu 10")
-	desc = " ".join(x for x in (short or "", extended or "") if x)
+	desc = _unescape("\n".join(x for x in (short or "", extended or "") if x))
+	orig = ""
+	om = _ORIG.search(desc)
+	if om:
+		orig = re.sub(r"\s+", " ", om.group(1)).strip(" ,.;\"'")
+		cy = _COUNTRY_YEAR.search(desc[om.end():om.end() + 80])
+		if cy and not year:
+			year = int(cy.group(1))
 	# "(SAD, 2012, film)", "(Engleska/SAD, 2001, film)", "(Hrvatska, 2019.)", "(USA 1987, Serie)"
 	for inner in _PAREN.findall(desc[:600]):
 		y = _YEAR.search(inner)
 		k = _kind_of(re.sub(r"[,./;]", " ", inner))
 		if y and (k or "," in inner or len(inner) < 40):
 			year = year or int(y.group(1))
+			if k and kind_soft:
+				kind, kind_soft = k, False
 			kind = kind or k
 			break
-	if kind is None and desc:
-		kind = _kind_of(re.sub(r"[,./;()]", " ", desc[:160]))
+	if (kind is None or kind_soft) and desc:
+		k = _kind_of(re.sub(r"[,./;()]", " ", desc[:160]))
+		if k:
+			kind, kind_soft = k, False
 	if year and now_year and year > now_year + 1:
 		year = None
 	n = norm(title)
-	words = set(n.split())
+	on = norm(orig)
+	if on == n:
+		orig, on = "", ""  # Polish production: the "original" title is the same title
+	words = set(n.split()) | set(on.split())
 	generic = None
 	if not n or len(n) < 2:
 		generic = "empty"
-	elif words & _GENERIC_WORDS or any(p in n for p in _GENERIC_PHRASES):
+	elif words & _GENERIC_WORDS or any(p in n or p in on for p in _GENERIC_PHRASES):
 		generic = "generic-word"
-	key = "%s~%s~%s" % (n[:150], kind or "", year or "")
-	return {"title": title, "norm": n, "kind": kind, "year": year, "key": key, "generic": generic, "desc_norm": norm(desc)}
+	elif _SPORT_PREFIX.search(raw) or (orig and _SPORT_PREFIX.search(orig)):
+		generic = "sport"
+	key = "%s~%s~%s" % ((on or n)[:150], kind or "", year or "")
+	return {"title": title, "norm": n, "orig": orig, "orig_norm": on, "kind": kind, "kind_soft": kind_soft,
+		"year": year, "key": key, "generic": generic, "desc_norm": norm(desc)}
 
 
 # ------------------------------------------------------------------ provider candidates
@@ -209,20 +251,46 @@ def score(ident, cand):
 	reasons = []
 	strong = False  # exact production year (+ similar title or cast confirmation) identifies a film by itself
 	sim = similarity(ident["title"], cand["title"])
+	if ident.get("orig"):
+		osim = similarity(ident["orig"], cand["title"])
+		if osim > sim:
+			sim = osim
+			reasons.append("orig")
 	conf = sim
 	reasons.append("sim=%.2f" % sim)
-	if ident["kind"] and cand["kind"]:
-		if ident["kind"] != cand["kind"]:
-			return 0.0, reasons + ["kind %s!=%s" % (ident["kind"], cand["kind"])]
+	ikind = None if ident.get("kind_soft") else ident["kind"]
+	soft_mismatch = False
+	if ident.get("kind_soft") and cand["kind"]:
+		# "(odc. 5)": a hint, not a fact - the matching kind is preferred, the other kind is not rejected but can
+		# only win with a near-identical title (no exact-year shortcut; device: "Ghostforce" vs "Ghostface" 2021)
+		if cand["kind"] == ident["kind"]:
+			conf += 0.05
+			reasons.append("kind~%s" % cand["kind"])
+		else:
+			soft_mismatch = True
+			conf -= 0.15
+			reasons.append("kind~%s!=%s" % (ident["kind"], cand["kind"]))
+	if ikind and cand["kind"]:
+		if ikind != cand["kind"]:
+			return 0.0, reasons + ["kind %s!=%s" % (ikind, cand["kind"])]
 		conf += 0.05
 		reasons.append("kind=%s" % cand["kind"])
 	year, y0, y1 = ident["year"], cand.get("year"), cand.get("year_end")
 	if year and y0:
-		if cand["kind"] == "series" or ident["kind"] == "series":
+		if cand["kind"] == "series" or ikind == "series":
 			# A description year of a series is usually the season/episode year: inside the run is fine.
 			if y0 - 1 <= year <= (y1 or 9999) + 1:
 				conf += 0.15
 				reasons.append("year %d in %s-%s" % (year, y0, y1 or ""))
+				# Localised series title without an original title in the EPG (device 2026-10-09: "Przyjaciele"
+				# = Friends, "serial komediowy (USA, 1997)", cast listed): the same rule as for films - IMDb's own
+				# top answer for the localised title, the same kind, the year inside the run AND a lead actor of
+				# the candidate named in the description.  Without the cast it stays below the threshold.
+				if (sim < 0.6 and ikind == "series" and cand["kind"] == "series" and cand["provider"] == "imdb"
+						and cand.get("rank", 9) <= 1 and cast_hit(ident, cand)):
+					strong = True
+					conf = max(conf, 0.70) + 0.25
+					reasons.append("cast")
 			else:
 				return 0.0, reasons + ["year %d outside %s-%s" % (year, y0, y1 or "")]
 		else:
@@ -231,7 +299,7 @@ def score(ident, cand):
 				# is identical: same film even when the canonical title differs (Croatian EPG title vs.
 				# English IMDb title).  Only trusted for IMDb's top two answers; elsewhere the title must match.
 				cast = cast_hit(ident, cand)
-				if sim >= 0.6 or (cand["provider"] == "imdb" and cand.get("rank", 9) <= 1 and cast):
+				if not soft_mismatch and (sim >= 0.6 or (cand["provider"] == "imdb" and cand.get("rank", 9) <= 1 and cast)):
 					strong = True
 					# A localised title is trusted only when the cast in the EPG description confirms the
 					# work (device case: "Nitko" 2021 = "Nobody", IMDb's top answer "No One Gets Out Alive").

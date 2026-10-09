@@ -1,0 +1,64 @@
+engine=identity (default; runtime.json poster_engine=legacy selects the old engine)
+identity key=bez hitu~~2025 title=Bez hitu kind=None year=2025 candidates=8 -> no-reliable-match best=imdb/Gezhi Town/2025 0.66 sim=0.56,year=2025
+identity key=ona~~2013 title=Ona kind=None year=2013 candidates=11 -> no-reliable-match best=imdb/Her/2013 0.00 sim=0.00,year=2013,cast,rank=3
+identity key=na planie~series~2026 title=Na planie kind=series year=2026 candidates=5 -> no-reliable-match best=tvmaze/Lež na pláži/2024 0.79 sim=0.67,kind=series,year 2026 in 2024-,similar-title-only
+identity key=szybcy i wsciekli hobbs i shaw~movie~2019 title=Szybcy i wściekli: Hobbs i Shaw kind=movie year=2019 candidates=8 -> match imdb/Fast & Furious Presents: Hobbs & Shaw/2019/movie 0.95 sim=0.51,kind=movie,year=2019,cast
+sized make 120x180 (PIL, no gPixmap) szybcy i wsciekli hobbs i shaw~movie~2019.jpg
+identity key=eddie zwany orłem~movie~2016 title=Eddie zwany Orłem kind=movie year=2016 candidates=1 -> no-reliable-match best=imdb/Eddie the Eagle/2015 0.72 sim=0.57,kind=movie,year~2016/2015
+identity key=rozwod~series~2019 title=Rozwód kind=series year=2019 candidates=9 -> no-reliable-match best=tvmaze/Rownd a Rownd/2017 0.79 sim=0.59,kind=series,year 2019 in 2017-
+identity key=krolewskie swieta~~2023 title=Królewskie święta kind=None year=2023 candidates=4 -> match imdb/A Royal Christmas Holiday/2023/movie 0.95 sim=0.30,year=2023,cast
+identity key=dotknieci miłoscia~~2024 title=Dotknięci miłością kind=None year=2024 candidates=1 -> match imdb/Four Letters of Love/2024/movie 0.95 sim=0.26,year=2024,cast
+identity key=eddie zwany orłem~~ title=Eddie zwany orłem kind=None year=None candidates=1 -> no-reliable-match best=imdb/Eddie the Eagle/2015 0.57 sim=0.57
+engine=identity (default; runtime.json poster_engine=legacy selects the old engine)
+identity key=krolewskie swieta 1~series~ title=Królewskie święta 1 ( ) kind=series year=None candidates=3 -> no-reliable-match best=imdb/A Royal Christmas/2014 0.00 sim=0.29,kind series!=movie
+identity key=anioły i demony~movie~ title=Anioły i demony kind=movie year=None candidates=2 -> no-reliable-match best=imdb/Angels & Demons/2009 0.61 sim=0.56,kind=movie
+identity key=kroniki shannary 1~series~ title=Kroniki Shannary 1 ( ) kind=series year=None candidates=1 -> no-reliable-match best=imdb/The Shannara Chronicles/2016 0.48 sim=0.43,kind=series
+identity key=y2k pluskwa milenijna~~ title=Y2K: Pluskwa milenijna kind=None year=None candidates=0 -> no-reliable-match
+identity key=nade mna niebo w dolinie ja~~ title=Nade mną niebo, w dolinie ja kind=None year=None candidates=1 -> no-reliable-match best=imdb/Promise, I'll Be Fine/2024 0.34 sim=0.34
+identity key=happyish~series~2015 title=Happyish kind=series year=2015 candidates=10 -> match imdb/Happyish/2015/series 1.00 sim=1.00,kind=series,year 2015 in 2015-2015
+identity key=czarodziejki 5~series~ title=Czarodziejki 5 ( ) kind=series year=None candidates=8 -> no-reliable-match best=imdb/Charmed/1998 0.43 sim=0.38,kind=series
+identity key=prawo agaty 1~series~ title=Prawo Agaty 1 ( ) kind=series year=None candidates=1 -> no-reliable-match best=imdb/True Law/2012 0.34 sim=0.29,kind=series
+identity key=game shakers~series~2015 title=Game Shakers kind=series year=2015 candidates=6 -> match imdb/Game Shakers/2015/series 1.00 sim=1.00,kind=series,year 2015 in 2015-2019
+identity key=dp fantasies 5~~ title=DP Fantasies #5 kind=None year=None candidates=8 -> no-reliable-match best=imdb/Fantasies/2003 0.78 sim=0.78
+identity key=agent szczescia~~ title=Agent szczęścia kind=None year=None candidates=1 -> no-reliable-match best=imdb/Agent of Happiness/2024 0.48 sim=0.48
+identity key=simpsonowie~series~2019 title=Simpsonowie kind=series year=2019 candidates=7 -> no-reliable-match best=imdb/The Simpsons/1989 0.79 sim=0.74,kind=series,year 2019 in 1989-,similar-title-only
+identity key=kosci 2~series~ title=Kości 2 ( ) kind=series year=None candidates=6 -> no-reliable-match best=imdb/Bones/2005 0.38 sim=0.33,kind=series
+identity key=kosmiczna kolizja~~ title=Kosmiczna kolizja kind=None year=None candidates=1 -> no-reliable-match best=imdb/Collision Earth/2020 0.31 sim=0.31
+identity key=ostry dyzur~series~1999 title=Ostry dyżur kind=series year=1999 candidates=6 -> no-reliable-match best=imdb/Bardzo ostry dyzur/2000 0.79 sim=0.76,kind=series,year 1999 in 2000-,similar-title-only
+engine=identity (default; runtime.json poster_engine=legacy selects the old engine)
+identity key=bez hitu~~ title=Bez hitu kind=None year=None candidates=8 -> no-reliable-match best=imdb/Gezhi Town/2025 0.56 sim=0.56
+identity key=zdrowi seniorzy zdrowe kolana~~ title=Zdrowi seniorzy: Zdrowe kolana kind=None year=None candidates=0 -> no-reliable-match
+identity key=dotknieci miłoscia~~ title=Dotknięci miłością kind=None year=None candidates=1 -> no-reliable-match best=imdb/Four Letters of Love/2024 0.26 sim=0.26
+engine=identity (default; runtime.json poster_engine=legacy selects the old engine)
+identity key=royal christmas holiday~series~2023 title=Królewskie święta 1 ( ) kind=series year=2023 candidates=8 -> match imdb/A Royal Christmas Holiday/2023/movie 1.00 orig,sim=1.00,year=2023,cast
+sized make 146x218 (PIL, no gPixmap) royal christmas holiday~series~2023.jpg
+sized make 400x600 (PIL, no gPixmap) royal christmas holiday~series~2023.jpg
+identity key=four letters of love~~2024 title=Dotknięci miłością kind=None year=2024 candidates=7 -> match imdb/Four Letters of Love/2024/movie 1.00 orig,sim=1.00,year=2024,cast
+sized make 110x165 (PIL, no gPixmap) four letters of love~~2024.jpg
+identity key=spongebob kanciastoporty~series~2018 title=SpongeBob Kanciastoporty kind=series year=2018 candidates=4 -> no-reliable-match best=imdb/SpongeBob SquarePants/1999 0.78 sim=0.58,kind=series,year 2018 in 1999-
+identity key=loud house~series~2022 title=Harmidom 6 ( ) kind=series year=2022 candidates=11 -> match imdb/The Loud House/2015/series 1.00 orig,sim=1.00,year 2022 in 2015-
+sized make 400x600 (PIL, no gPixmap) loud house~series~2022.jpg
+identity key=harmidom~series~2022 title=Harmidom kind=series year=2022 candidates=7 -> no-reliable-match best=imdb/The Loud House/2015 0.42 sim=0.22,kind=series,year 2022 in 2015-
+identity key=castle~series~2015 title=Castle kind=series year=2015 candidates=16 -> match imdb/Castle/2009/series 1.00 sim=1.00,kind=series,year 2015 in 2009-2016
+sized make 146x218 (PIL, no gPixmap) castle~series~2015.jpg
+sized make 400x600 (PIL, no gPixmap) castle~series~2015.jpg
+sized make 110x165 (PIL, no gPixmap) castle~series~2015.jpg
+sized make 270x405 (PIL, no gPixmap) castle~series~2015.jpg
+identity key=z pamietnika połoznej~series~2022 title=Z pamiętnika położnej kind=series year=2022 candidates=2 -> no-reliable-match best=imdb/Call the Midwife/2012 0.44 sim=0.24,kind=series,year 2022 in 2012-
+identity key=csi kryminalne zagadki las vegas~series~2013 title=CSI: Kryminalne zagadki Las Vegas kind=series year=2013 candidates=5 -> no-reliable-match best=imdb/CSI: Crime Scene Investigation/2000 0.59 sim=0.39,kind=series,year 2013 in 2000-2015
+identity key=policyjna grupa poscigowa~series~2022 title=Policyjna grupa pościgowa kind=series year=2022 candidates=0 -> no-reliable-match
+identity key=megalomani~~2025 title=Megalomani kind=None year=2025 candidates=6 -> match imdb/The Megalomaniacs/2025/movie 1.00 sim=0.87,year=2025,cast
+identity key=anioły i demony~~2009 title=Anioły i demony kind=None year=2009 candidates=2 -> match imdb/Angels & Demons/2009/movie 0.95 sim=0.56,year=2009,cast
+sized make 270x405 (PIL, no gPixmap) anioły i demony~~2009.jpg
+identity key=przyjaciele~series~1997 title=Przyjaciele kind=series year=1997 candidates=12 -> no-reliable-match best=tvmaze/El diario de Daniela/1998 0.56 sim=0.36,kind=series,year 1997 in 1998-1999
+sized make 146x218 (PIL, no gPixmap) krolewskie swieta~~2023.jpg
+sized make 140x208 (PIL, no gPixmap) krolewskie swieta~~2023.jpg
+engine=identity (default; runtime.json poster_engine=legacy selects the old engine)
+sized make 270x405 (PIL, no gPixmap) royal christmas holiday~series~2023.jpg
+identity key=friends~series~1998 title=Przyjaciele 4 ( ) kind=series year=1998 candidates=17 -> match imdb/Friends/1994/series 1.00 orig,sim=1.00,year 1998 in 1994-2004
+identity key=police interceptors~series~2021 title=Policyjne pościgi 21 ( ) kind=series year=2021 candidates=7 -> match imdb/Police Interceptors/2008/series 1.00 orig,sim=1.00,year 2021 in 2008-
+identity key=krolowa chmur~~2003 title=Królowa chmur kind=None year=2003 candidates=4 -> match imdb/Królowa chmur/2004/movie 1.00 sim=1.00,year~2003/2004
+identity key=diabli nadali~series~2002 title=Diabli nadali kind=series year=2002 candidates=5 -> match imdb/The King of Queens/1998/series 0.95 sim=0.22,kind=series,year 2002 in 1998-2007,cast
+sized make 270x405 (PIL, no gPixmap) diabli nadali~series~2002.jpg
+sized make 140x208 (PIL, no gPixmap) royal christmas holiday~series~2023.jpg
+engine=identity (default; runtime.json poster_engine=legacy selects the old engine)
