@@ -1,0 +1,45 @@
+PASS  Octagon SF8008 / HiSilicon pm_cpu              CPU: 48°C
+PASS  HiSilicon: value updates on next poll          CPU: 48°C -> next poll: CPU: 53°C
+PASS  HiSilicon variant: pm_temp only                CPU: 51°C
+PASS  Vu+ style /proc/stb/fp/temp_sensor (unchanged) CPU: 44°C
+PASS  thermal_zone0 millidegrees (unchanged)         CPU: 52°C
+PASS  sensors/temp0 Celsius (unchanged)              CPU: 47°C
+PASS  sensors/temp0 Fahrenheit -> Celsius            CPU: 50°C
+PASS  only thermal_zone1 (cpu)                       CPU: 61°C
+PASS  temp_sensor_avs                                CPU: 39°C
+PASS  sensor reports 0 -> not a reading              CPU: N/A
+PASS  0 on one sensor, valid on another              CPU: 46°C
+PASS  unreadable content                             CPU: N/A
+PASS  implausible 255 -> rejected                    CPU: N/A
+PASS  no sensor at all                               CPU: N/A
+RESULT pass=14 fail=0
+
+== openatv vs build_fatv:
+Files usr/lib/enigma2/python/Components/Converter/CineViewMLACPUTemp.py and usr/lib/enigma2/python/Components/Converter/CineViewMLACPUTemp.py differ
+   converter = patches/cputemp.py
+== openbh vs build_fopenbh:
+Files usr/lib/enigma2/python/Components/Converter/CineViewMLACPUTemp.py and usr/lib/enigma2/python/Components/Converter/CineViewMLACPUTemp.py differ
+   converter = patches/cputemp.py
+== openvix vs build_fopenvix:
+Files usr/lib/enigma2/python/Components/Converter/CineViewMLACPUTemp.py and usr/lib/enigma2/python/Components/Converter/CineViewMLACPUTemp.py differ
+   converter = patches/cputemp.py
+DONE
+
+1.0.2                      vs 1.0.1                      data diff=['CineViewMLACPUTemp.pyc', 'version.json'] control diff=['./control'] pyc(Python 3.14)=ok OK
+1.0.2~openatv.py313        vs 1.0.1~openatv.py313        data diff=['CineViewMLACPUTemp.pyc', 'version.json'] control diff=['./control'] pyc(Python 3.13)=ok OK
+1.0.2~openatv.py314        vs 1.0.1~openatv.py314        data diff=['CineViewMLACPUTemp.pyc', 'version.json'] control diff=['./control'] pyc(Python 3.14)=ok OK
+1.0.2~openbh.py313         vs 1.0.1~openbh.py313         data diff=['CineViewMLACPUTemp.pyc', 'version.json'] control diff=['./control'] pyc(Python 3.13)=ok OK
+1.0.2~openbh.py314         vs 1.0.1~openbh.py314         data diff=['CineViewMLACPUTemp.pyc', 'version.json'] control diff=['./control'] pyc(Python 3.14)=ok OK
+1.0.2~openbh1              vs 1.0.1~openbh1              data diff=['CineViewMLACPUTemp.pyc', 'version.json'] control diff=['./control'] pyc(Python 3.13)=ok OK
+1.0.2~openvix.py312        vs 1.0.1~openvix.py312        data diff=['CineViewMLACPUTemp.pyc', 'version.json'] control diff=['./control'] pyc(Python 3.12)=ok OK
+1.0.2~openvix.py313        vs 1.0.1~openvix.py313        data diff=['CineViewMLACPUTemp.pyc', 'version.json'] control diff=['./control'] pyc(Python 3.13)=ok OK
+1.0.2~openvix.py314        vs 1.0.1~openvix.py314        data diff=['CineViewMLACPUTemp.pyc', 'version.json'] control diff=['./control'] pyc(Python 3.14)=ok OK
+1.0.2~openvix1             vs 1.0.1~openvix1             data diff=['CineViewMLACPUTemp.pyc', 'version.json'] control diff=['./control'] pyc(Python 3.14)=ok OK
+RESULT PASS
+
+05:52:05 InfoBar sample 1: sensor 'temperature = 45'
+05:52:49 InfoBar sample 2: sensor 'temperature = 45'
+05:53:33 InfoBar sample 3: sensor 'temperature = 45'
+05:54:20 Second InfoBar: sensor 'temperature = 46'
+05:54:30 Event View (INFO): sensor 'temperature = 45'
+DONE
