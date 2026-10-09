@@ -1,0 +1,16 @@
+{
+  "comment": "Release packages = the packages of release v<base> with the managed files below replaced. The new version is PLUGIN_VERSION in updater/CineViewUpdater/plugin.py. Built by tools/build_release.py, checked by tools/verify_release.py, published by .github/workflows/build-cineview-release.yml.",
+  "base": "2.3.5",
+  "images": ["openatv", "openvix", "openbh"],
+  "files": {
+    "all": {
+      "components/Converter/CineViewCPUTemp.py": "usr/lib/enigma2/python/Components/Converter/CineViewCPUTemp.py",
+      "updater/CineViewUpdater/plugin.py": "usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/updater.py"
+    },
+    "openbh": {
+      "components/openbh/Components/Converter/CineViewMoviePath.py": "usr/lib/enigma2/python/Components/Converter/CineViewMoviePath.py",
+      "components/openbh/Components/Renderer/LukaPosterXEMC.py": "usr/lib/enigma2/python/Components/Renderer/LukaPosterXEMC.py",
+      "components/openbh/Components/Renderer/CineViewPosterX.py": "usr/lib/enigma2/python/Components/Renderer/CineViewPosterX.py"
+    }
+  }
+}

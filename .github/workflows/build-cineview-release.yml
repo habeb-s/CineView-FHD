@@ -1,0 +1,98 @@
+name: Build CineView release packages
+
+# The release version is PLUGIN_VERSION in updater/CineViewUpdater/plugin.py: the packages the online updater
+# installs always carry the same version as the updater source.
+# - v<version> not published yet: build it from the base release in packaging/release.json, verify, publish.
+# - v<version> already published: never rebuilt or replaced.  The published packages are checked against the
+#   source; if the source changed without a new PLUGIN_VERSION the run fails and nothing is uploaded.
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'updater/CineViewUpdater/plugin.py'
+      - 'components/**'
+      - 'packaging/**'
+      - 'tools/build_release.py'
+      - 'tools/verify_release.py'
+      - 'tools/release_common.py'
+      - '.github/workflows/build-cineview-release.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cineview-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Versions
+        run: |
+          set -euo pipefail
+          VER=$(python3 -c 'import sys; sys.path.insert(0,"tools"); import release_common as r; print(r.new_version())')
+          BASE=$(python3 -c 'import json; print(json.load(open("packaging/release.json"))["base"])')
+          echo "VER=$VER" >> "$GITHUB_ENV"
+          echo "BASE=$BASE" >> "$GITHUB_ENV"
+          echo "updater source version: $VER, base release: $BASE"
+
+      - name: Static checks
+        run: |
+          set -euo pipefail
+          python3 -m py_compile updater/CineViewUpdater/plugin.py components/Converter/*.py components/openbh/Components/*/*.py tools/*.py
+          python3 tools/tests/test_cputemp.py
+          python3 tools/tests/test_updater_restart.py
+          python3 tools/sync_recording_guard.py --check
+          sh -n packaging/postinst.in
+
+      - name: Base packages
+        run: |
+          set -euo pipefail
+          mkdir -p base
+          gh release download "v$BASE" -D base -p 'enigma2-plugin-skins-cineview-*_'"$BASE"'_all.ipk'
+          ls -l base
+
+      - name: Published already?
+        run: |
+          set -euo pipefail
+          if gh release view "v$VER" >/dev/null 2>&1; then
+            echo "PUBLISHED=1" >> "$GITHUB_ENV"
+          else
+            echo "PUBLISHED=0" >> "$GITHUB_ENV"
+          fi
+
+      - name: Check published packages against the source
+        if: env.PUBLISHED == '1'
+        run: |
+          set -euo pipefail
+          mkdir -p published
+          gh release download "v$VER" -D published -p 'enigma2-plugin-skins-cineview-*_'"$VER"'_all.ipk'
+          if ! python3 tools/verify_release.py base published "$VER"; then
+            echo "::error::v$VER is already published and differs from the source. Published assets are never replaced: raise PLUGIN_VERSION in updater/CineViewUpdater/plugin.py."
+            exit 1
+          fi
+          echo "v$VER is published and matches the source - nothing to do."
+
+      - name: Build and verify
+        if: env.PUBLISHED == '0'
+        run: |
+          set -euo pipefail
+          python3 tools/build_release.py base dist
+          python3 tools/verify_release.py base dist
+          sha256sum dist/*.ipk | tee dist/SHA256SUMS
+
+      - name: Publish (new tag only, no overwrite)
+        if: env.PUBLISHED == '0'
+        run: |
+          set -euo pipefail
+          NOTES="packaging/release-notes/$VER.md"
+          [ -f "$NOTES" ] || { echo "::error::$NOTES missing"; exit 1; }
+          { cat "$NOTES"; echo; echo "SHA256"; sed 's|  dist/|  |' dist/SHA256SUMS | sed 's/^/    /'; } > notes.md
+          gh release create "v$VER" --target "$GITHUB_SHA" --title "CineView FHD $VER" --notes-file notes.md \
+            dist/enigma2-plugin-skins-cineview-*_"$VER"_all.ipk

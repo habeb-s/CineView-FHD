@@ -13,7 +13,7 @@ from Components.ActionMap import ActionMap
 from Components.Label import Label
 from Components.ProgressBar import ProgressBar
 
-PLUGIN_VERSION = "2.3.4"
+PLUGIN_VERSION = "2.3.6"
 OWNER = "habeb-s/CineView-FHD"
 BASE_RAW = "https://raw.githubusercontent.com/%s/main" % OWNER
 MANIFEST_URL = BASE_RAW + "/update.json"
@@ -188,7 +188,8 @@ class CineViewUpdater(Screen):
         self["progress"].setValue(100)
         self["percent"].setText("100%")
         self["status"].setText("Installing update...")
-        cmd = "opkg install --force-reinstall '%s'" % TMP_IPK
+        # The package postinst must not restart Enigma2 itself: this screen restarts it after the recording check.
+        cmd = "CINEVIEW_NO_RESTART=1 opkg install --force-reinstall '%s'" % TMP_IPK
         self._run(cmd, self._installDone)
 
     def _installDone(self, retval):
@@ -204,6 +205,19 @@ class CineViewUpdater(Screen):
             self.session.open(MessageBox, "CineView FHD update installation failed.", MessageBox.TYPE_ERROR, timeout=8)
             return
         remote_version = str((self.remote or {}).get("version", ""))
+        recording = self._recordingState()
+        if recording is not False:  # recording now (True) or could not be checked (None): never restart
+            self["status"].setText("Update installed - restart Enigma2 later")
+            if recording:
+                why = "A recording is in progress, so Enigma2 was not restarted."
+            else:
+                why = "Running recordings could not be checked, so Enigma2 was not restarted."
+            self.session.open(
+                MessageBox,
+                "CineView FHD %s installed successfully.\n%s\nRestart Enigma2 after the recording has finished to activate it." % (remote_version, why),
+                MessageBox.TYPE_INFO,
+            )
+            return
         self["status"].setText("Update installed successfully - restarting Enigma2")
         self.session.openWithCallback(
             self._restart,
@@ -213,7 +227,28 @@ class CineViewUpdater(Screen):
             timeout=4,
         )
 
+    def _recordingState(self):
+        """True while Enigma2 records, False when it does not, None when it cannot be checked."""
+        nav = getattr(self.session, "nav", None)
+        checked = False
+        try:
+            if nav.RecordTimer.isRecording():
+                return True
+            checked = True
+        except Exception:
+            pass
+        try:
+            if nav.getRecordings():
+                return True
+            checked = True
+        except Exception:
+            pass
+        return False if checked else None
+
     def _restart(self, *args):
+        if self._recordingState() is not False:  # a recording may have started while the message was shown
+            self["status"].setText("Update installed - restart Enigma2 later")
+            return
         quitMainloop(3)
 
 
