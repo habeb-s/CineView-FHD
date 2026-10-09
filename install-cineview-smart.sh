@@ -43,7 +43,7 @@ cv_recording_warn(){
 }
 # <<< cineview recording guard <<<
 
-# CineView FHD 2.3.5 Smart Multi-Image Installer
+# CineView FHD 2.3.6 Smart Multi-Image Installer
 # Designed by habeb-s
 
 SELF="$0"
@@ -71,7 +71,7 @@ cleanup(){
 trap cleanup EXIT INT TERM
 
 printf "\n%s%s============================================================%s\n" "$BOLD" "$CYAN" "$RESET"
-printf "%s%s        CineView FHD 2.3.5 Smart Installer%s\n" "$BOLD" "$GREEN" "$RESET"
+printf "%s%s        CineView FHD 2.3.6 Smart Installer%s\n" "$BOLD" "$GREEN" "$RESET"
 printf "%s              Designed by habeb-s%s\n" "$CYAN" "$RESET"
 printf "%s%s============================================================%s\n" "$BOLD" "$CYAN" "$RESET"
 printf "%sInstallation requirements / شروط التثبيت:%s\n" "$BOLD" "$RESET"
@@ -175,9 +175,9 @@ if [ "$RC" -ne 0 ]; then
   fail "Installation failed with exit code $RC"
 fi
 
-# Install the CineView 2.3.5 update layer (CineView Control + receiver-temperature converter) without replacing
+# Install the CineView 2.3.6 update layer (CineView Control + receiver-temperature converter) without replacing
 # the accepted image-specific skin/layout files.  The package is pinned by SHA256.
-UPDATE_TAG="v2.3.5"
+UPDATE_TAG="v2.3.6"
 UPDATE_TMP="${TMP}.control"
 UPDATE_IPK="$UPDATE_TMP/cineview-control.ipk"
 UPDATE_STAGE="$UPDATE_TMP/stage"
@@ -186,15 +186,15 @@ cleanup_update(){ rm -rf "$UPDATE_TMP" 2>/dev/null || true; }
 trap cleanup_update EXIT INT TERM
 
 case "$DISTRO" in
-  openatv) UPDATE_PKG="enigma2-plugin-skins-cineview-openatv_2.3.5_all.ipk"; UPDATE_SHA="8befd18388aad0d6fc0e07d553bdc90d70709eb23e5583228e545c3f60a81f7d" ;;
-  openvix) UPDATE_PKG="enigma2-plugin-skins-cineview-openvix_2.3.5_all.ipk"; UPDATE_SHA="d2b2bbe2399485d5621f996c2d77a04d78d4f25b8426145f4f38c1aef9c7fdff" ;;
-  openbh|openblackhole) UPDATE_PKG="enigma2-plugin-skins-cineview-openbh_2.3.5_all.ipk"; UPDATE_SHA="0954dfcb262d5010a2ca6cb602c014ff3bbd8864669a67c28d8e1d2abccb707c" ;;
+  openatv) UPDATE_PKG="enigma2-plugin-skins-cineview-openatv_2.3.6_all.ipk"; UPDATE_SHA="b3ce89ac7e4ad994fff9fe9275676260e5cde128a2ba786ecf046cc75b654b4e" ;;
+  openvix) UPDATE_PKG="enigma2-plugin-skins-cineview-openvix_2.3.6_all.ipk"; UPDATE_SHA="5f82cecefae99db1e525018bb79c7d33bdb0a78f2451f5b8ac04ae535f760b69" ;;
+  openbh|openblackhole) UPDATE_PKG="enigma2-plugin-skins-cineview-openbh_2.3.6_all.ipk"; UPDATE_SHA="e954415459e507945a1d1f0d19feacdc46381dad1b8976b66e2e56ad44d3993a" ;;
   *) UPDATE_PKG=""; UPDATE_SHA="" ;;
 esac
 
 if [ -n "$UPDATE_PKG" ]; then
-  UPDATE_URL="https://github.com/habeb-s/CineView-FHD/releases/download/$UPDATE_TAG/$UPDATE_PKG?cv=20261009"
-  info "Applying CineView 2.3.5 update layer..."
+  UPDATE_URL="https://github.com/habeb-s/CineView-FHD/releases/download/$UPDATE_TAG/$UPDATE_PKG?cv=20261009-236"
+  info "Applying CineView 2.3.6 update layer..."
   if command -v wget >/dev/null 2>&1; then
     wget -q --no-check-certificate -O "$UPDATE_IPK" "$UPDATE_URL" || fail "CineView Control update download failed"
   elif command -v curl >/dev/null 2>&1; then
@@ -209,7 +209,7 @@ if [ -n "$UPDATE_PKG" ]; then
     UPDATE_ACTUAL="$(python3 -c 'import hashlib,sys; print(hashlib.sha256(open(sys.argv[1],"rb").read()).hexdigest())' "$UPDATE_IPK")"
   fi
   [ "$UPDATE_ACTUAL" = "$UPDATE_SHA" ] || fail "CineView update package SHA256 mismatch: $UPDATE_ACTUAL"
-  ok "CineView 2.3.5 update package checksum verified"
+  ok "CineView 2.3.6 update package checksum verified"
 
   if command -v dpkg-deb >/dev/null 2>&1; then
     dpkg-deb -x "$UPDATE_IPK" "$UPDATE_STAGE" || fail "Unable to extract CineView Control update"
@@ -235,7 +235,7 @@ for p in sys.argv[1:]:
         ast.parse(f.read(), filename=p)
 with open(sys.argv[3],'r',encoding='utf-8') as f:
     assert 'class CineViewCPUTemp(Poll, Converter)' in f.read()
-print('[CineView][OK] CineView 2.3.5 Python validation passed')
+print('[CineView][OK] CineView 2.3.6 Python validation passed')
 PY
 
   CONTROL_DST="/usr/lib/enigma2/python/Plugins/Extensions/CineViewControl"
@@ -244,12 +244,12 @@ PY
   cp -af "$CONTROL_SRC/updater.py" "$CONTROL_DST/updater.py"
   cp -af "$CONTROL_SRC/plugin.png" "$CONTROL_DST/plugin.png"
   chmod 644 "$CONTROL_DST/plugin.py" "$CONTROL_DST/updater.py" "$CONTROL_DST/plugin.png" 2>/dev/null || true
-  ok "CineView Control 2.3.5 installed; image-specific skin design preserved"
+  ok "CineView Control 2.3.6 installed; image-specific skin design preserved"
   TEMP_DST="/usr/lib/enigma2/python/Components/Converter"
   mkdir -p "$TEMP_DST"
   cp -af "$TEMP_SRC" "$TEMP_DST/CineViewCPUTemp.py"
   chmod 644 "$TEMP_DST/CineViewCPUTemp.py" 2>/dev/null || true
-  ok "Receiver temperature converter 2.3.5 installed"
+  ok "Receiver temperature converter 2.3.6 installed"
 fi
 
 rm -rf "$UPDATE_TMP" 2>/dev/null || true
@@ -261,7 +261,7 @@ ok "All CineView files installed and temporary files cleaned"
 if cv_recording_active; then
   cv_recording_warn
 else
-  info "Restarting Enigma2 to activate CineView FHD 2.3.5..."
+  info "Restarting Enigma2 to activate CineView FHD 2.3.6..."
   if command -v systemctl >/dev/null 2>&1 && systemctl list-unit-files 2>/dev/null | grep -q '^enigma2.service'; then
     systemctl restart enigma2.service || true
   else
@@ -279,7 +279,7 @@ case "$SELF" in
 esac
 
 printf "\n%s%s============================================================%s\n" "$BOLD" "$GREEN" "$RESET"
-printf "%s%s       CineView FHD 2.3.5 installation complete%s\n" "$BOLD" "$GREEN" "$RESET"
+printf "%s%s       CineView FHD 2.3.6 installation complete%s\n" "$BOLD" "$GREEN" "$RESET"
 printf "%s              Designed by habeb-s%s\n" "$CYAN" "$RESET"
 printf "%s%s============================================================%s\n\n" "$BOLD" "$GREEN" "$RESET"
 exit 0
