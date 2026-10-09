@@ -272,3 +272,105 @@ exit 1
   | [CineView Activate] FAIL: A recording is in progress - nothing was changed. Run this again after the recording has finished.
   settings unchanged
   no settings backup written (nothing touched)
+
+## Release workflow on GitHub
+- run 37896266117 (push 0523f3b): updater source version 2.3.6, base 2.3.5; tests 15/15, 9/9; built, verified (RESULT PASS), published v2.3.6:
+    b3ce89ac7e4ad994fff9fe9275676260e5cde128a2ba786ecf046cc75b654b4e  enigma2-plugin-skins-cineview-openatv_2.3.6_all.ipk
+    e954415459e507945a1d1f0d19feacdc46381dad1b8976b66e2e56ad44d3993a  enigma2-plugin-skins-cineview-openbh_2.3.6_all.ipk
+    5f82cecefae99db1e525018bb79c7d33bdb0a78f2451f5b8ac04ae535f760b69  enigma2-plugin-skins-cineview-openvix_2.3.6_all.ipk
+- local re-verification of the downloaded v2.3.6 assets: RESULT PASS; v2.3.4 / v2.3.5 asset timestamps unchanged.
+- run 37896356087 (workflow_dispatch, same source): "v2.3.6 is published and matches the source - nothing to do." (assets not touched, still 06:57:22Z).
+- receiver unpack of the CI-built OpenBH 2.3.6 package on the SF8008 (ar + tar, /tmp, removed): control Version 2.3.6, postinst syntax ok, restored components and updater parse.
+
+## Smart installer with the 2.3.6 layer (commit 878d8a2)
+######## openbh 6.0 878d8a22581f818f515a1037db1ee88fa19af574 false
+PIN=878d8a22581f818f515a1037db1ee88fa19af574
+  | [INFO] Detected: OpenBH 6.0 build 001
+  | [OK] Image-specific installer downloaded
+  | [CineView][OK] Snapshot checksum verified: b27edd0ffaa02e66210f3c71a20764b472c4bc2fa4dc47c9d19bbbc4401feede
+  | [CineView][OK] Persistent poster-cache policy verified
+  | [CineView][OK] Rollback backup: /tmp/cineview-before-openbh-final-20261009-065913.tar.gz
+  | [CineView][OK] installed validation passed (34 XML files)
+  | [CineView][OK] Final OpenBH CineView snapshot installed
+  | [CineView][OK] Pinned source commit: 1bd5d01c24675e37eb64a6aa760feedd9cd07515
+  | [CineView][OK] Snapshot SHA256: b27edd0ffaa02e66210f3c71a20764b472c4bc2fa4dc47c9d19bbbc4401feede
+  | [CineView][OK] No /media/hdd data was modified
+  | [OK] Temporary image-specific installer removed
+  | [OK] CineView 2.3.6 update package checksum verified
+  | [CineView][OK] CineView 2.3.6 Python validation passed
+  | [OK] CineView Control 2.3.6 installed; image-specific skin design preserved
+  | [OK] Receiver temperature converter 2.3.6 installed
+  | [OK] CineView Control temporary update files removed
+  | [OK] All CineView files installed and temporary files cleaned
+  | [INFO] Restarting Enigma2 to activate CineView FHD 2.3.6...
+  | [OK] Downloaded smart installer file removed
+installer exit: 0
+restart attempted: 1  recording warning: 0
+  6c7860291f987af8c80cc99795872b94  Components/Converter/CineViewCPUTemp.py
+  17f2baf0fc6561aa4cedb9a234a1b606  Components/Converter/CineViewMoviePath.py
+  8b2891a870d0f6a1efe065415d72a5dd  Components/Renderer/LukaPosterXEMC.py
+  bad2f648b82077808eae069694528847  Components/Renderer/CineViewPosterX.py
+  poster cache policy: 2
+  updater: PLUGIN_VERSION = "2.3.6"
+  skin: config.skin.primary_skin=CineView_FHD/skin.xml files=371
+  MovieSelection uses:       1 render="LukaPosterXEMC"       2 type="CineViewMoviePath" 
+######## openvix 6.7 878d8a22581f818f515a1037db1ee88fa19af574 true
+PIN=878d8a22581f818f515a1037db1ee88fa19af574
+  | [INFO] Detected: OpenViX 6.7 build 001
+  | [OK] Image-specific installer downloaded
+  | [CineView][OK] Snapshot checksum verified: 06e08ab6498832680645f2eb29c44f47bed984148d786bc08a2def042ebe3ffa
+  | [CineView][OK] Persistent poster-cache policy verified
+  | [CineView][OK] Temporary rollback backup: /tmp/cineview-before-live-20261009-065923.tar.gz
+  | [CineView][OK] Final OpenViX CineView snapshot installed exactly from pinned GitHub commit.
+  | [CineView][OK] Source commit: 26d1390db22d41a1de29920a8d7a0cc446848a9c
+  | [CineView][OK] Rollback backup: /tmp/cineview-before-live-20261009-065923.tar.gz
+  | [OK] Temporary image-specific installer removed
+  | [OK] CineView 2.3.6 update package checksum verified
+  | [CineView][OK] CineView 2.3.6 Python validation passed
+  | [OK] CineView Control 2.3.6 installed; image-specific skin design preserved
+  | [OK] Receiver temperature converter 2.3.6 installed
+  | [OK] CineView Control temporary update files removed
+  | [OK] All CineView files installed and temporary files cleaned
+  | [CineView][WARN] A recording is in progress - Enigma2 was NOT restarted.
+  | [CineView][WARN] Restart Enigma2 after the recording has finished to activate the changes.
+  | [OK] Downloaded smart installer file removed
+installer exit: 0
+restart attempted: 0  recording warning: 1
+  6c7860291f987af8c80cc99795872b94  Components/Converter/CineViewCPUTemp.py
+  (absent)                          Components/Converter/CineViewMoviePath.py
+  (absent)                          Components/Renderer/LukaPosterXEMC.py
+  bad2f648b82077808eae069694528847  Components/Renderer/CineViewPosterX.py
+  poster cache policy: 2
+  updater: PLUGIN_VERSION = "2.3.6"
+  skin: config.skin.primary_skin=CineView_FHD/skin.xml files=362
+  MovieSelection uses: 
+######## openatv 7.6 878d8a22581f818f515a1037db1ee88fa19af574 false
+PIN=878d8a22581f818f515a1037db1ee88fa19af574
+  | [INFO] Detected: OpenATV 7.6
+  | [OK] Image-specific installer downloaded
+  | [CineView][OK] Snapshot checksum verified
+  | [CineView][OK] Persistent poster-cache policy verified
+  | [CineView][OK] Rollback backup: /tmp/cineview-before-openatv-final-20261009-065932.tar.gz
+  | [CineView][OK] Final OpenATV snapshot installed
+  | [CineView][OK] Pinned source commit: 0364c172fd0688a4147602432448861dd0b53ebd
+  | [CineView][OK] Snapshot SHA256: 1101ccdb8b27142f09e5aa64c9fc0079139d7e17ceb13568665173bf89f602a6
+  | [CineView][OK] No /media/hdd data was modified
+  | [OK] Temporary image-specific installer removed
+  | [OK] CineView 2.3.6 update package checksum verified
+  | [CineView][OK] CineView 2.3.6 Python validation passed
+  | [OK] CineView Control 2.3.6 installed; image-specific skin design preserved
+  | [OK] Receiver temperature converter 2.3.6 installed
+  | [OK] CineView Control temporary update files removed
+  | [OK] All CineView files installed and temporary files cleaned
+  | [INFO] Restarting Enigma2 to activate CineView FHD 2.3.6...
+  | [OK] Downloaded smart installer file removed
+installer exit: 0
+restart attempted: 1  recording warning: 0
+  6c7860291f987af8c80cc99795872b94  Components/Converter/CineViewCPUTemp.py
+  (absent)                          Components/Converter/CineViewMoviePath.py
+  (absent)                          Components/Renderer/LukaPosterXEMC.py
+  c86b307f8affbbdb9f1086bbd1094bb7  Components/Renderer/CineViewPosterX.py
+  poster cache policy: 2
+  updater: PLUGIN_VERSION = "2.3.6"
+  skin: config.skin.primary_skin=CineView_FHD/skin.xml files=364
+  MovieSelection uses: 
