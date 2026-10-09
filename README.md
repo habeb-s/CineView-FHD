@@ -2,6 +2,16 @@
 
 Official Full HD CineView skin.
 
+## CineView FHD 2.3.6 — recording-safe restarts, OpenBH smart install (issue #8)
+
+* Installers, the package and the online updater no longer restart Enigma2 while it records; the change is
+  installed and you are asked to restart Enigma2 after the recording.
+* OpenBH: the smart link works again (snapshot `snapshots/openbh-final-20261009`), and the OpenBH package restores
+  the PVR poster / FILE / PATH lines and the persistent poster cache.
+* Releases are built by `.github/workflows/build-cineview-release.yml` from `PLUGIN_VERSION` in
+  `updater/CineViewUpdater/plugin.py`; published releases are never rebuilt or replaced.
+* Details, tests and the checks that still need a real OpenBH receiver: `docs/fixes/issue-8-20261009.md`.
+
 ## CineView FHD 2.3.5 — receiver temperature fix (2026-10-09)
 
 The `CPU: xx°C` label in the InfoBar / Second InfoBar showed `CPU: --°C` on receivers whose driver reports the
