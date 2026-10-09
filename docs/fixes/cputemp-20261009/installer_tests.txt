@@ -1,0 +1,133 @@
+# Smart installer end-to-end, Alpine container (BusyBox userland, no dpkg-deb), 2026-10-09T06:24:10Z
+# install.sh from branch release-2.3.5 (= the commit merged to main); pinned snapshots and v2.3.5 packages downloaded from GitHub
+######## openatv 7.6
+  | [INFO] Detected: OpenATV 7.6
+  | [OK] Image-specific installer downloaded
+  | [CineView][OK] Snapshot checksum verified
+  | [CineView][OK] Persistent poster-cache policy verified
+  | [CineView][OK] plugin UI/FHD contracts verified
+  | [CineView][OK] GraphicalEPG verified at 1920x1080
+  | [CineView][OK] validated 34 skin XML files
+  | [CineView][OK] Rollback backup: /tmp/cineview-before-openatv-final-20261009-062224.tar.gz
+  | [CineView][INFO] EnhancedMovieCenter not installed; EMC extras skipped
+  | [CineView][OK] Final OpenATV snapshot installed
+  | [CineView][OK] Pinned source commit: 0364c172fd0688a4147602432448861dd0b53ebd
+  | [CineView][OK] Snapshot SHA256: 1101ccdb8b27142f09e5aa64c9fc0079139d7e17ceb13568665173bf89f602a6
+  | [CineView][OK] No /media/hdd data was modified
+  | [OK] Temporary image-specific installer removed
+  | [INFO] Applying CineView 2.3.5 update layer...
+  | [OK] CineView 2.3.5 update package checksum verified
+  | [CineView][OK] CineView 2.3.5 Python validation passed
+  | [OK] CineView Control 2.3.5 installed; image-specific skin design preserved
+  | [OK] Receiver temperature converter 2.3.5 installed
+  | [OK] CineView Control temporary update files removed
+  | [OK] All CineView files installed and temporary files cleaned
+  | [INFO] Restarting Enigma2 to activate CineView FHD 2.3.5...
+  | [OK] Downloaded smart installer file removed
+installer exit: 0
+converter md5: 6c7860291f987af8c80cc99795872b94 (expected 6c7860291f987af8c80cc99795872b94) MATCH
+updater: PLUGIN_VERSION = "2.3.5"
+control: Official 2.3.5
+skin: config.skin.primary_skin=CineView_FHD/skin.xml files=364
+converter ast OK
+tmp left: /tmp/cineview-before-openatv-final-20261009-062224.tar.gz 
+######## openvix 6.9
+  | [INFO] Detected: OpenViX 6.9 build 001
+  | [OK] Image-specific installer downloaded
+  | [CineView][OK] Snapshot checksum verified: 06e08ab6498832680645f2eb29c44f47bed984148d786bc08a2def042ebe3ffa
+  | [CineView][OK] Persistent poster-cache policy verified
+  | [CineView][OK] validated 34 XML files
+  | [CineView][OK] Temporary rollback backup: /tmp/cineview-before-live-20261009-062232.tar.gz
+  | [CineView][OK] Final OpenViX CineView snapshot installed exactly from pinned GitHub commit.
+  | [CineView][OK] Source commit: 26d1390db22d41a1de29920a8d7a0cc446848a9c
+  | [CineView][OK] Rollback backup: /tmp/cineview-before-live-20261009-062232.tar.gz
+  | [OK] Temporary image-specific installer removed
+  | [INFO] Applying CineView 2.3.5 update layer...
+  | [OK] CineView 2.3.5 update package checksum verified
+  | [CineView][OK] CineView 2.3.5 Python validation passed
+  | [OK] CineView Control 2.3.5 installed; image-specific skin design preserved
+  | [OK] Receiver temperature converter 2.3.5 installed
+  | [OK] CineView Control temporary update files removed
+  | [OK] All CineView files installed and temporary files cleaned
+  | [INFO] Restarting Enigma2 to activate CineView FHD 2.3.5...
+  | [OK] Downloaded smart installer file removed
+installer exit: 0
+converter md5: 6c7860291f987af8c80cc99795872b94 (expected 6c7860291f987af8c80cc99795872b94) MATCH
+updater: PLUGIN_VERSION = "2.3.5"
+control: Official 2.3.5
+skin: config.skin.primary_skin=CineView_FHD/skin.xml files=362
+converter ast OK
+tmp left: /tmp/cineview-before-live-20261009-062232.tar.gz 
+######## openbh 6.0
+  | [INFO] Detected: OpenBH 6.0 build 001
+  | [OK] Image-specific installer downloaded
+  | [CineView][OK] Snapshot checksum verified: b6cc4d73f827c6473deee3bdf223f8403aa29a1ba46bb36db28e43a019be3995
+  | [CineView][FAIL] required file missing: usr/lib/enigma2/python/Components/Renderer/LukaPosterXEMC.py
+  | [OK] Temporary image-specific installer removed
+  | [FAIL] Installation failed with exit code 1
+installer exit: 1
+md5sum: can't open '/usr/lib/enigma2/python/Components/Converter/CineViewCPUTemp.py': No such file or directory
+md5sum: can't open '/usr/lib/enigma2/python/Components/Converter/CineViewCPUTemp.py': No such file or directory
+converter md5:  (expected 6c7860291f987af8c80cc99795872b94) DIFF
+grep: /usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/updater.py: No such file or directory
+updater: 
+grep: /usr/lib/enigma2/python/Plugins/Extensions/CineViewControl/plugin.py: No such file or directory
+control: 
+find: /usr/share/enigma2/CineView_FHD: No such file or directory
+skin: config.skin.primary_skin=Default/skin.xml files=0
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+    import ast,sys; ast.parse(open(sys.argv[1]).read()); print("converter ast OK")
+                              ~~~~^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/usr/lib/enigma2/python/Components/Converter/CineViewCPUTemp.py'
+tmp left: 
+
+######## openbh 6.0 against main BEFORE this change (pre-existing failure, pinned OpenBH snapshot lacks files its installer requires)
+  | [INFO] Detected: OpenBH 6.0 build 001
+  | [OK] Image-specific installer downloaded
+  | [CineView][OK] Snapshot checksum verified: b6cc4d73f827c6473deee3bdf223f8403aa29a1ba46bb36db28e43a019be3995
+  | [CineView][FAIL] required file missing: usr/lib/enigma2/python/Components/Renderer/LukaPosterXEMC.py
+  | [OK] Temporary image-specific installer removed
+  | [FAIL] Installation failed with exit code 1
+installer exit: 1
+converter md5:  (expected 6c7860291f987af8c80cc99795872b94) DIFF
+updater: 
+control: 
+skin: config.skin.primary_skin=Default/skin.xml files=0
+    import ast,sys; ast.parse(open(sys.argv[1]).read()); print("converter ast OK")
+tmp left: 
+
+######## openbh 6.0, 2.3.5 layer only (snapshot step skipped)
+  | [INFO] Detected: OpenBH 6.0 build 001
+  | [OK] Image-specific installer downloaded
+  | [OK] Temporary image-specific installer removed
+  | [INFO] Applying CineView 2.3.5 update layer...
+  | [OK] CineView 2.3.5 update package checksum verified
+  | [CineView][OK] CineView 2.3.5 Python validation passed
+  | [OK] CineView Control 2.3.5 installed; image-specific skin design preserved
+  | [OK] Receiver temperature converter 2.3.5 installed
+  | [OK] CineView Control temporary update files removed
+  | [OK] All CineView files installed and temporary files cleaned
+  | [INFO] Restarting Enigma2 to activate CineView FHD 2.3.5...
+  | [OK] Downloaded smart installer file removed
+installer exit: 0
+converter md5: 6c7860291f987af8c80cc99795872b94 (expected 6c7860291f987af8c80cc99795872b94) MATCH
+updater: PLUGIN_VERSION = "2.3.5"
+control: Official 2.3.5
+skin: config.skin.primary_skin=Default/skin.xml files=0
+converter ast OK
+tmp left: 
+
+######## negative: tampered SHA256 pin (openatv)
+  | [INFO] Detected: OpenATV 7.6
+  | [OK] Image-specific installer downloaded
+  | [OK] Temporary image-specific installer removed
+  | [INFO] Applying CineView 2.3.5 update layer...
+  | [FAIL] CineView update package SHA256 mismatch: 8befd18388aad0d6fc0e07d553bdc90d70709eb23e5583228e545c3f60a81f7d
+installer exit: 1
+converter md5:  (expected 6c7860291f987af8c80cc99795872b94) DIFF
+updater: 
+control: 
+skin: config.skin.primary_skin=Default/skin.xml files=0
+    import ast,sys; ast.parse(open(sys.argv[1]).read()); print("converter ast OK")
+tmp left: 
