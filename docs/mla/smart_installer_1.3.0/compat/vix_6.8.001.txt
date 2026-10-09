@@ -1,0 +1,7 @@
+renderers 15, converters 26, attributes 182, layout files 37, enigma API names 15, image modules 38
+NOTE Renderer OAWeatherPixmap: in neither tree (C++ or plugin component?)
+NOTE Converter OAWeather: in neither tree (C++ or plugin component?)
+DIFF Converter RemainingToText token 'InMinutes': handled on the reference, not found on the target
+DIFF module Components.ServiceList: name ServiceListLegacy not defined on the target
+DIFF module Screens.PluginBrowser: name PackageAction not defined on the target
+RESULT 3 difference(s)
