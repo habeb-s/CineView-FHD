@@ -98,6 +98,18 @@ returned the same temperatures (Riyadh 38.3 °C at 16:15), and they fell through
 After the tests every slot was returned to its design, skin and settings from before (slot 1: CineView removed
 again). OAWeather was never removed, reinstalled or changed anywhere.
 
+**After publication** (OpenATV 8.0.1, slot 8, nothing recording), the Smart Installer downloaded on the receiver from
+the published link (1.3.5, same SHA256 as `SHA256SUMS`):
+
+- `DRYRUN=1`: all checks passed; `FORCE=1 CVMLA_FETCH_ONLY=1`: the published 1.0.5 package downloaded from the
+  release and passed the SHA256 check, nothing installed, Enigma2 not restarted (`logs/pub135_atv801.log`). The
+  digests of all ten 1.0.5 release assets (GitHub API) equal `SHA256SUMS` and the installer's own table.
+- Its OAWeather check (`oaw_state`, taken from the published installer), run with the receiver's Python 3.14 against
+  copies of OAWeather's six modules in `/tmp` — the installed OAWeather only read (120 files identical before /
+  after): as installed → `ok`; a module missing, byte code of another Python, an unreadable source file, a
+  half-installed package → `broken` (OAWeather left as it is, CineView's own weather used); not installed →
+  `missing`, and this image's feed offers it (`logs/oawchk_atv801.log`).
+
 ## Remaining
 
 - The weather location is the one saved in OAWeather, else the city chosen in CineView Designs; with neither, no
@@ -106,3 +118,7 @@ again). OAWeather was never removed, reinstalled or changed anywhere.
   lookup uses Open-Meteo — the two can differ by a degree or two.
 - OpenATV 7.6 / 8.1+, OpenBH 5.7+, OpenViX 6.7 / 6.8 / 7.0+: the same files, compiled for that line's Python;
   verified statically, not run on a receiver in this round.
+- Installing OAWeather from the feed with 1.3.5 (OAWeather missing on an image whose feed offers it) was not run on a
+  receiver in this round: it would need OAWeather removed. The same `opkg install` step was device-tested with Smart
+  Installer 1.3.4 on OpenATV 8.0.1 (`../weather-20261009/`); 1.3.5 changes only when it runs and how its result is
+  checked (`oaw_state` above).
