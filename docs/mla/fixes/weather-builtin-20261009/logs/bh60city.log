@@ -1,0 +1,26 @@
+slot 1 requested; running: openvix 6.9 ; "isRecording": "false"
+kernel=/linuxrootfs1/zImage root=/dev/mmcblk0p9 rootsubdir=linuxrootfs1up: distro='openbh' imageversion='6.0' 1
+### openbh60 I0 state
+  image: openbh 6.0 | cineview:  | oaweather: 0 | cvtest: 0
+  pre-start hook: none
+  start-up hook: none | skin:  | active:  
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count= written  | enigma2 pid 1910 started Fri Oct  9 17:55:35 2026 | cvtest log lines: 0 | crash logs: 0
+### openbh60 I1 fresh install of the final 1.0.5 with the Smart Installer 1.3.5 (PKG_DIR)
+  [..] Weather: this image's feed does not offer OAWeather - CineView's own weather (Open-Meteo) is used
+  [..] Weather: no location set yet - choose your city once in CineView Designs > Weather city (or save a location in OAWeather)
+  [..] No earlier CineView MLA installation
+  CineView MLA 1.0.5~openbh.py314 installed successfully.
+  image: openbh 6.0 | cineview: 1.0.5~openbh.py314 | oaweather: 0 | cvtest: 0
+  pre-start hook: none
+  start-up hook: /usr/lib/python3.14/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000001 {"omitted": [], "builtin": ["weather"]}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=1 written 17:56:32 | enigma2 pid 2229 started Fri Oct  9 17:56:31 2026 | cvtest log lines: 0 | crash logs: 0
+grep: /etc/enigma2/cineview_mla/runtime.json: No such file or directory
+    {"source": "none", "location": null, "time": 1791557811.0004952, "shown": {"city": {"text": "", "file": ""}, "temperature_current": {"text": "", "file": ""}, "weathericon,current": {"text": "", "file": ""}}, "cineview_data": null}
+    ls: /etc/enigma2/cineview_mla/weather.json: No such file or directory
+    no weather_city
+    g000001 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 12 | CineView weather components present, icons 10 | OAWeather installed: False
+    STRICT OK (no missing renderer/converter/source)
+### DONE openbh60 I
+finished

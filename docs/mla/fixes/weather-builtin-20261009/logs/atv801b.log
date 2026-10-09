@@ -1,0 +1,132 @@
+### openatv801 U1 ROLLBACK=1 with the Smart Installer 1.3.5 -> published 1.0.4
+  [..] Rollback requested: CineView MLA 1.0.4 (previous release for OpenATV)
+  [OK] Weather: OAWeather installed and built for this image's Python - its weather data is used as it is
+  [!!] Return to the earlier version 1.0.4 requested (your design, theme and profiles are kept)
+  [OK] Package version 1.0.4
+  CineView MLA 1.0.4 installed successfully.
+  image: openatv 8.0.1 | cineview: 1.0.4 | oaweather: 1 | cvtest: 0
+  pre-start hook: 14456a41a22b owner=enigma2-plugin-skins-cineview-fhd-mla (# Installed as /usr/bin/enigma2_pre_start.sh (native OpenATV)
+  start-up hook: none | skin: CineView_FHD_MLA/skin.xml | active: generations/g000002 {"omitted": []}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=0 written 18:15:25 | enigma2 pid 2217 started Fri Oct  9 18:13:30 2026 | cvtest log lines: 0 | crash logs: 0
+  restart:
+  GUI restarted: enigma2 pid 2217 -> 7333
+  image: openatv 8.0.1 | cineview: 1.0.4 | oaweather: 1 | cvtest: 0
+  pre-start hook: 14456a41a22b owner=enigma2-plugin-skins-cineview-fhd-mla (# Installed as /usr/bin/enigma2_pre_start.sh (native OpenATV)
+  start-up hook: none | skin: CineView_FHD_MLA/skin.xml | active: generations/g000002 {"omitted": []}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=1 written 18:15:29 | enigma2 pid 7333 started Fri Oct  9 18:15:30 2026 | cvtest log lines: 0 | crash logs: 0
+### openatv801 U2 upgrade to 1.0.5 with the Smart Installer 1.3.5 (PKG_DIR)
+  [OK] Weather: OAWeather installed and built for this image's Python - its weather data is used as it is
+  [OK] Upgrade: your design, theme, profiles, settings and poster cache are kept
+  [OK] Package version 1.0.5
+  CineView MLA 1.0.5 installed successfully.
+  image: openatv 8.0.1 | cineview: 1.0.5 | oaweather: 1 | cvtest: 0
+  pre-start hook: none
+  start-up hook: /usr/lib/python3.14/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000003 {"omitted": [], "builtin": ["weather"]}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=0 written 18:16:26 | enigma2 pid 7333 started Fri Oct  9 18:15:30 2026 | cvtest log lines: 0 | crash logs: 0
+    g000003 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 0 | CineView weather components present, icons 10 | OAWeather installed: True
+    STRICT OK (no missing renderer/converter/source)
+    2026-10-09 18:15:25 commit: lkg=g000002
+    2026-10-09 18:16:26 apply: g000002 -> g000003 trial=False features={"weather": "builtin"} selection={"layouts": {"channelselection": "posterlist", "epg": "modern", "eventview": "modern", "infobar": "modern", "pvr": "modern", "secondinfobar": "modern"}, "theme": "black"}
+    2026-10-09 18:16:26 commit: lkg=g000003
+    ls: /usr/bin/enigma2_pre_start.sh: No such file or directory
+  restart:
+  GUI restarted: enigma2 pid 7333 -> 8451
+  image: openatv 8.0.1 | cineview: 1.0.5 | oaweather: 1 | cvtest: 0
+  pre-start hook: none
+  start-up hook: /usr/lib/python3.14/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000003 {"omitted": [], "builtin": ["weather"]}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=1 written 18:16:35 | enigma2 pid 8451 started Fri Oct  9 18:16:32 2026 | cvtest log lines: 0 | crash logs: 0
+    design g000003: no weather widgets
+    NO WEATHER WIDGETS
+    g000003 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 0 | CineView weather components present, icons 10 | OAWeather installed: True
+    STRICT OK (no missing renderer/converter/source)
+### DONE openatv801 U
+### openatv801 M every design with OAWeather (its data shown by CineView's weather components)
+=== openatv801 oaweather design=factory
+  rc=0
+  g000004 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 12 | CineView weather components present, icons 10 | OAWeather installed: True
+  STRICT OK (no missing renderer/converter/source)
+  source=oaweather | city='Sayhāt' | temperature_current='35 °C' | weathericon,current=/usr/lib/enigma2/python/Plugins/Extensions/OAWeather/Icons/29.png | status age 40s | CineView data: -
+  WEATHER OK
+  RESULT PASS (apply rc=0, enigma2 pid 9690 stable, crash logs 0->0)
+=== openatv801 oaweather design=classic
+  rc=0
+  g000005 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 12 | CineView weather components present, icons 10 | OAWeather installed: True
+  STRICT OK (no missing renderer/converter/source)
+  source=oaweather | city='Sayhāt' | temperature_current='35 °C' | weathericon,current=/usr/lib/enigma2/python/Plugins/Extensions/OAWeather/Icons/29.png | status age 40s | CineView data: -
+  WEATHER OK
+  RESULT PASS (apply rc=0, enigma2 pid 11354 stable, crash logs 0->0)
+=== openatv801 oaweather design=classiclines
+  rc=0
+  g000006 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 12 | CineView weather components present, icons 10 | OAWeather installed: True
+  STRICT OK (no missing renderer/converter/source)
+  source=oaweather | city='Sayhāt' | temperature_current='35 °C' | weathericon,current=/usr/lib/enigma2/python/Plugins/Extensions/OAWeather/Icons/29.png | status age 40s | CineView data: -
+  WEATHER OK
+  RESULT PASS (apply rc=0, enigma2 pid 12959 stable, crash logs 0->0)
+=== openatv801 oaweather design=details
+  rc=0
+  g000007 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 15 | CineView weather components present, icons 10 | OAWeather installed: True
+  STRICT OK (no missing renderer/converter/source)
+  source=oaweather | city='Sayhāt' | temperature_current='35 °C' | weathericon,current=/usr/lib/enigma2/python/Plugins/Extensions/OAWeather/Icons/29.png | status age 40s | CineView data: -
+  WEATHER OK
+  RESULT PASS (apply rc=0, enigma2 pid 14372 stable, crash logs 0->0)
+=== openatv801 oaweather design=cinema
+  rc=0
+  g000008 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 2 | CineView weather components present, icons 10 | OAWeather installed: True
+  STRICT OK (no missing renderer/converter/source)
+  source=oaweather | city='Sayhāt' | temperature_current='35 °C' | status age 40s | CineView data: -
+  WEATHER OK
+  RESULT PASS (apply rc=0, enigma2 pid 15978 stable, crash logs 0->0)
+=== openatv801 oaweather design=modern
+  rc=0
+  g000009 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 0 | CineView weather components present, icons 10 | OAWeather installed: True
+  STRICT OK (no missing renderer/converter/source)
+  design g000009: no weather widgets
+  NO WEATHER WIDGETS
+  RESULT PASS (apply rc=0, enigma2 pid 17558 stable, crash logs 0->0)
+=== openatv801 oaweather design=minimal
+  rc=0
+  g000010 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 0 | CineView weather components present, icons 10 | OAWeather installed: True
+  STRICT OK (no missing renderer/converter/source)
+  design g000010: no weather widgets
+  NO WEATHER WIDGETS
+  RESULT PASS (apply rc=0, enigma2 pid 19117 stable, crash logs 0->0)
+MATRIX openatv801 oaweather: 7 pass, 0 fail
+### DONE openatv801 M
+### openatv801 B1 CineView's own weather on this receiver (weather_source=builtin; OAWeather installed and untouched)
+runtime.json: {'weather_source': 'builtin'}
+2026-10-09 18:29:18 apply: g000010 -> g000011 trial=False features={"weather": "builtin"} selection={"layouts": {"channelselection": "posterlist", "epg": "graphicalplus", "eventview": "detailscard", "infobar": "details", "pvr": "cover", "secondinfobar": "details"}, "theme": "purple"}
+2026-10-09 18:29:19 commit: lkg=g000011
+g000011
+  GUI restarted: enigma2 pid 19117 -> 20657
+  image: openatv 8.0.1 | cineview: 1.0.5 | oaweather: 1 | cvtest: 0
+  pre-start hook: none
+  start-up hook: /usr/lib/python3.14/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000011 {"omitted": [], "builtin": ["weather"]}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=1 written 18:29:24 | enigma2 pid 20657 started Fri Oct  9 18:29:22 2026 | cvtest log lines: 0 | crash logs: 0
+    source=cineview | city='Sayhāt' | temperature_current='34 °C' | weathericon,current=/usr/share/enigma2/CineView_FHD_MLA/mla_assets/weather/clear_night.png | status age 48s | CineView data: Sayhāt 33.5 °C clear_night
+    WEATHER OK
+    g000011 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 15 | CineView weather components present, icons 10 | OAWeather installed: True
+    STRICT OK (no missing renderer/converter/source)
+    {"weather": {"city": "Sayhāt", "temp": 33.5, "unit": "°C", "icon": "clear_night", "code": 0, "time": 1791559789.9687467, "key": "celsius|26.4835,50.0485", "lat": 26.48345, "lon": 50.04849, "location_from": "oaweather", "observed": "2026-10-09T18:15", "source": "Open-Meteo.com (CC BY 4.0)"}}
+=== openatv801_builtin cineview design=classic
+  g000012 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 12 | CineView weather components present, icons 10 | OAWeather installed: True
+  WEATHER OK
+  RESULT PASS (apply rc=0, enigma2 pid 22110 stable, crash logs 0->0)
+=== openatv801_builtin cineview design=cinema
+  g000013 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 2 | CineView weather components present, icons 10 | OAWeather installed: True
+  WEATHER OK
+  RESULT PASS (apply rc=0, enigma2 pid 23714 stable, crash logs 0->0)
+MATRIX openatv801_builtin cineview: 2 pass, 0 fail
+### openatv801 B2 back to auto (OAWeather's data)
+runtime.json: {}
+  GUI restarted: enigma2 pid 23714 -> 25412
+    source=oaweather | city='Sayhāt' | temperature_current='35 °C' | status age 42s | CineView data: Sayhāt 33.5 °C clear_night
+    WEATHER OK
+    g000013 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 2 | CineView weather components present, icons 10 | OAWeather installed: True
+    STRICT OK (no missing renderer/converter/source)
+### DONE openatv801 B
+finished

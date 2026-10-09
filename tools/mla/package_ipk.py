@@ -14,14 +14,16 @@ Package contents (data.tar.gz, owner root:root, files 0644 / dirs+scripts 0755):
   usr/share/enigma2/CineView_FHD_MLA/...     skin, layout packs, themes, engine, guardian, factory generation g000000
   usr/lib/enigma2/python/Components/...      CineViewMLA* renderers/converters + CineViewMLAPosterMatch
   usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/   CineView Designs (control UI)
-  usr/bin/enigma2_pre_start.sh               native OpenATV pre-start hook -> MLA guardian
+  usr/lib/python<PY>/site-packages/cineview_mla_guardian.pth   Python start-up hook -> MLA guardian (1.0.5; only inside
+                                             the enigma2 process).  /usr/bin/enigma2_pre_start.sh is NOT packaged: it is
+                                             the images' single shared pre-start hook and may belong to another add-on.
 NOT packaged (runtime state, created/kept on the receiver): the 'active'/'lkg' links, generations other than the
 factory one, /etc/enigma2/cineview_mla (selection, journal, profiles).
 
 Maintainer scripts:
   preinst  : OpenATV 8.0 only (distro/imageversion from /usr/lib/enigma.info; device-verified on 8.0.1 / enigma2
-             57b7a51; 7.6 is refused until it is tested on a device - user 2026-10-08) and refuses to replace a foreign
-             /usr/bin/enigma2_pre_start.sh.  Missing/ambiguous image data -> stop (no guessing).
+             57b7a51; 7.6 is refused until it is tested on a device - user 2026-10-08) and needs the Python
+             site-packages folder of the package's Python.  Missing/ambiguous image data -> stop (no guessing).
   postinst : first install -> 'active' = factory (Classic, navy).  Upgrade -> the user's current selection is
              re-applied with the new packs (new sealed generation); if that fails, factory is activated.
   prerm    : 'remove' is refused while CineView MLA is the selected skin (select another skin first), so the
@@ -75,9 +77,10 @@ if [ -n "$PYNEED" ]; then
   PYV=$(python3 -c 'import sys; print("%d.%d" % sys.version_info[:2])' 2>/dev/null)
   if [ "$PYV" != "$PYNEED" ]; then echo "CineView MLA: this package is built for Python $PYNEED (OpenATV 8.0.x); this image has Python '$PYV'. Stopped - nothing was changed."; exit 1; fi
 fi
-H=/usr/bin/enigma2_pre_start.sh
-if [ -e "$H" ] && ! grep -q "CineView MLA guardian" "$H"; then
-  echo "CineView MLA: $H belongs to something else - not replacing it. Stopped."; exit 1
+# /usr/bin/enigma2_pre_start.sh is not used any more (1.0.5): it is the images' single shared pre-start hook and may
+# belong to another add-on.  The guardian starts from Python's start-up hook in this Python's site-packages folder.
+if [ -n "$PYNEED" ] && [ ! -d "/usr/lib/python$PYNEED/site-packages" ]; then
+  echo "CineView MLA: /usr/lib/python$PYNEED/site-packages is missing on this image - the boot guardian could not start. Stopped - nothing was changed."; exit 1
 fi
 exit 0
 """
@@ -100,6 +103,24 @@ elif [ "$(readlink $S/active)" != "generations/g000000" ]; then
     echo "CineView MLA: the previous design could not be kept - the factory design (Classic, Navy) is active."
   fi
 fi
+# 1.0.5: the guardian starts from Python's start-up hook.  A pre-start hook file left by an earlier CineView MLA is
+# removed only if it is still CineView's own text and no other package owns it; another add-on's hook is never touched.
+H=/usr/bin/enigma2_pre_start.sh
+if [ -f "$H" ] && grep -q "Only calls the CineView MLA guardian" "$H" 2>/dev/null; then
+  OWNER=""
+  for L in /var/lib/opkg/info/*.list /usr/lib/opkg/info/*.list; do
+    [ -f "$L" ] || continue
+    case "$L" in */enigma2-plugin-skins-cineview-fhd-mla.list) continue ;; esac
+    grep -q "^/usr/bin/enigma2_pre_start.sh\([[:space:]]\|$\)" "$L" 2>/dev/null && OWNER="$L"
+  done
+  if [ -z "$OWNER" ]; then
+    rm -f "$H" && echo "CineView MLA: its pre-start hook of earlier versions was removed (the guardian now starts from Python's start-up hook)."
+  fi
+fi
+# 1.0.5: the active design is built for the components installed now (CineView's own weather components) - also when
+# the factory design is active, which an upgrade does not re-apply.  Never fatal: the guardian does the same at the
+# next start.
+$E ensure >>/tmp/cineview_mla_postinst.log 2>&1 || true
 echo "CineView MLA installed. Select it in Menu > Setup > User Interface > Skin, then restart the GUI."
 exit 0
 """
@@ -185,12 +206,16 @@ def data_members(build):
 			else:
 				mode = 0o755 if f.endswith(".sh") else 0o644
 				out.append(("./" + rel, open(full, "rb").read(), mode, "file", None))
-	hook = "usr/bin/enigma2_pre_start.sh"
-	add_dirs(hook)
-	src = open(os.path.join(REPO, "mla", "guardian", "enigma2_pre_start.sh"), "rb").read()
-	assert b"CineView MLA guardian" in src, "pre-start hook must carry the ownership marker"
-	out.append(("./" + hook, src, 0o755, "file", None))
 	return out
+
+
+def guardian_hook_members(pyver):
+	"""Python start-up hook in the site-packages folder of the package's Python (1.0.5)."""
+	assert pyver, "the boot guardian hook needs the package's Python version (--pyc <dir> with PYVER)"
+	site = "usr/lib/python%s/site-packages" % pyver
+	pth = open(os.path.join(REPO, "mla", "guardian", "cineview_mla_guardian.pth"), "rb").read()
+	return [("./usr/lib/python%s/" % pyver, None, 0o755, "dir", None), ("./" + site + "/", None, 0o755, "dir", None),
+		("./" + site + "/cineview_mla_guardian.pth", pth, 0o644, "file", None)]
 
 
 PYC_DIRS = ("usr/lib/enigma2/python/Components/", "usr/lib/enigma2/python/Plugins/Extensions/CineViewMLA/")
@@ -279,6 +304,7 @@ def build_ipk(build, ver, outdir, pyc_dir=None):
 				swapped.append(rel)
 		assert swapped, "no module compiled"
 		print("pyc (Python %s): %d modules -> %s" % (pyneed, len(swapped), ", ".join(os.path.basename(x) for x in swapped)))
+	members += guardian_hook_members(pyneed or os.environ.get("MLA_PYVER", ""))
 	info = {"version": ver, "build": os.path.basename(os.path.normpath(build)), "commit": commit,
 		"date": time.strftime("%Y-%m-%d"), "python": pyneed or "source", "copyright": "Design & Development by habeb-s (c) 2026"}
 	members.append(("./" + PLUGIN_DIR + "/version.json", json.dumps(info, indent=1).encode(), 0o644, "file", None))

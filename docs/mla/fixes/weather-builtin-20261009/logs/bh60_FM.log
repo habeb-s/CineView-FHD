@@ -1,0 +1,53 @@
+
+### openbh60 F3 every design without OAWeather (GUI restart each)
+=== openbh60 cineview design=factory
+  rc=0
+  g000003 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 12 | CineView weather components present, icons 10 | OAWeather installed: False
+  STRICT OK (no missing renderer/converter/source)
+  source=cineview | city='Riyadh' | temperature_current='38 °C' | weathericon,current=/usr/share/enigma2/CineView_FHD_MLA/mla_assets/weather/clear_day.png | status age 49s | CineView data: Riyadh 38.3 °C clear_day
+  WEATHER OK
+  RESULT PASS (apply rc=0, enigma2 pid 2815 stable, crash logs 0->0)
+=== openbh60 cineview design=classic
+  rc=0
+  g000004 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 12 | CineView weather components present, icons 10 | OAWeather installed: False
+  STRICT OK (no missing renderer/converter/source)
+  source=cineview | city='Riyadh' | temperature_current='38 °C' | weathericon,current=/usr/share/enigma2/CineView_FHD_MLA/mla_assets/weather/clear_day.png | status age 48s | CineView data: Riyadh 38.3 °C clear_day
+  WEATHER OK
+  RESULT PASS (apply rc=0, enigma2 pid 3037 stable, crash logs 0->0)
+=== openbh60 cineview design=classiclines
+  rc=0
+  g000005 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 12 | CineView weather components present, icons 10 | OAWeather installed: False
+  STRICT OK (no missing renderer/converter/source)
+  source=cineview | city='Riyadh' | temperature_current='38 °C' | weathericon,current=/usr/share/enigma2/CineView_FHD_MLA/mla_assets/weather/clear_day.png | status age 49s | CineView data: Riyadh 38.3 °C clear_day
+  WEATHER OK
+  RESULT PASS (apply rc=0, enigma2 pid 3268 stable, crash logs 0->0)
+=== openbh60 cineview design=details
+  rc=0
+  g000006 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 15 | CineView weather components present, icons 10 | OAWeather installed: False
+  STRICT OK (no missing renderer/converter/source)
+  source=cineview | city='Riyadh' | temperature_current='38 °C' | weathericon,current=/usr/share/enigma2/CineView_FHD_MLA/mla_assets/weather/clear_day.png | status age 48s | CineView data: Riyadh 38.3 °C clear_day
+  WEATHER OK
+  RESULT PASS (apply rc=0, enigma2 pid 3491 stable, crash logs 0->0)
+=== openbh60 cineview design=cinema
+  rc=0
+  g000007 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 2 | CineView weather components present, icons 10 | OAWeather installed: False
+  STRICT OK (no missing renderer/converter/source)
+  source=cineview | city='Riyadh' | temperature_current='38 °C' | status age 48s | CineView data: Riyadh 38.3 °C clear_day
+  WEATHER OK
+  RESULT PASS (apply rc=0, enigma2 pid 3717 stable, crash logs 0->0)
+=== openbh60 cineview design=modern
+  rc=0
+  g000008 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 0 | CineView weather components present, icons 10 | OAWeather installed: False
+  STRICT OK (no missing renderer/converter/source)
+  design g000008: no weather widgets
+  NO WEATHER WIDGETS
+  RESULT PASS (apply rc=0, enigma2 pid 3940 stable, crash logs 0->0)
+=== openbh60 cineview design=minimal
+  rc=0
+  g000009 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 0 | CineView weather components present, icons 10 | OAWeather installed: False
+  STRICT OK (no missing renderer/converter/source)
+  design g000009: no weather widgets
+  NO WEATHER WIDGETS
+  RESULT PASS (apply rc=0, enigma2 pid 4163 stable, crash logs 0->0)
+MATRIX openbh60 cineview: 7 pass, 0 fail
+### DONE openbh60 FM

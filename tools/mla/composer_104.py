@@ -12,7 +12,7 @@ CLI (on the receiver):
   composer.py commit                         # mark current generation as last-known-good
   composer.py rollback  [--to lkg|factory]
   composer.py recover                        # used at boot / after interruption (includes ensure)
-  composer.py ensure                         # rebuild active for the installed components (weather)
+  composer.py ensure                         # rebuild active for the installed optional plugins (weather)
 Environment overrides (tests): MLA_SKIN_DIR, MLA_STATE_DIR, MLA_FAULT=<step>, MLA_COMPONENTS_ROOT
 """
 import hashlib
@@ -32,25 +32,15 @@ DEFAULT_IMAGE = "openatv"  # the image every layout pack provides a screen file 
 THEME_ASSETS = ("infobar/hd.png", "infobar/bl80.png", "extensions/transblack.png", "infobar/pbar.png",
 	"window/progress.png", "dvr/position_pointer1.png", "epg/CurrentEvent.png")  # skin paths are symlinks to active/assets
 KEEP = 3
-# Optional features: widgets the layout packs write with the components of a PLUGIN that an image may not have
-# installed, or may have in a broken or incompatible state.  OAWeather (oe-alliance plugin) provides session.OAWeather,
-# the OAWeather converter and the OAWeatherPixmap renderer; it is not part of every OpenATV/OpenViX/OpenBH install.
-# Each generation builds these widgets by a plan (feature_plan), recorded in its features.json:
-#   builtin  1.0.5+: the same widgets (position, size, fonts, colours, options) with CineView MLA's OWN components,
-#            installed with the skin - the design never needs the plugin's components to load.  They show the
-#            plugin's own data while the plugin runs, and CineView's own data otherwise (CineViewMLAWeatherData).
-#   native   CineView's own components missing, the plugin's present: the packs as they are (1.0.0-1.0.4 behaviour)
-#   omit     neither present: exactly these widgets are left out (1.0.4 behaviour); the rest of the design unchanged
-# Validation checks the generation as it will be built - the one Enigma2 really loads.  Every other missing
-# renderer/converter still blocks.
+# Optional features: widgets that need components of a PLUGIN the image may not have installed.  When any of a
+# feature's components is missing on the receiver, exactly these widgets are left out of the generation (the rest
+# of the design is unchanged) and validation checks that pruned generation - the one Enigma2 really loads.  Every
+# other missing renderer/converter still blocks.  OAWeather (oe-alliance plugin) provides session.OAWeather, the
+# OAWeather converter and the OAWeatherPixmap renderer; it is not part of every OpenATV/OpenViX/OpenBH install.
 OPTIONAL_FEATURES = {
-	"weather": {
-		"source": "session.OAWeather", "Renderer": {"OAWeatherPixmap"}, "Converter": {"OAWeather"}, "Sources": {"OAWeather"},
-		"builtin": {"source": "global.CurrentTime", "Renderer": {"OAWeatherPixmap": "CineViewMLAWeatherPixmap"},
-			"Converter": {"OAWeather": "CineViewMLAWeather"}},
-	},
+	"weather": {"source": "session.OAWeather", "Renderer": {"OAWeatherPixmap"}, "Converter": {"OAWeather"}, "Sources": {"OAWeather"}},
 }
-FEATURES_FILE = "features.json"  # inside a generation: how its optional features were built
+FEATURES_FILE = "features.json"  # inside a generation: features left out when it was built
 BUILTIN_COLORS = {"key_back", "key_blue", "key_green", "key_red", "key_text", "key_yellow", "transparent", "black", "white",
 	"red", "green", "blue", "yellow", "grey", "gray", "orange", "foreground", "background", "darkgrey", "lightgrey", "cyan", "magenta"}
 
@@ -192,66 +182,40 @@ def current_selection():
 
 
 # ---------------------------------------------------------------- optional features
-def feature_plan(components):
-	"""How each optional feature is built into a generation (see OPTIONAL_FEATURES): {feature: builtin|native|omit}.
-	CineView's own components are always preferred when installed.  components=None (not on a receiver: package
-	build, tests): native for every feature - the packs exactly as they are."""
-	plan = {}
-	for feat, spec in sorted(OPTIONAL_FEATURES.items()):
-		if components is None:
-			plan[feat] = "native"
-			continue
-		b = spec["builtin"]
-		if set(b["Renderer"].values()) <= components.get("Renderer", set()) and set(b["Converter"].values()) <= components.get("Converter", set()):
-			plan[feat] = "builtin"
-		elif all(spec[k] <= components[k] for k in ("Renderer", "Converter", "Sources") if k in components):
-			plan[feat] = "native"
-		else:
-			plan[feat] = "omit"
-	return plan
-
-
 def unavailable_features(components):
-	"""Optional features left out for these components (1.0.4 name, kept for callers)."""
-	return sorted(f for f, m in feature_plan(components).items() if m == "omit")
-
-
-def _feature_of(node):
-	"""The optional feature a widget belongs to (by its source, renderer or converter), or None."""
-	if node.tag != "widget":
-		return None
+	"""Optional features whose components are not all installed.  components=None (not on a receiver): none."""
+	if components is None:
+		return []
+	out = []
 	for feat, spec in sorted(OPTIONAL_FEATURES.items()):
+		for kind in ("Renderer", "Converter", "Sources"):
+			if kind in components and not spec[kind] <= components[kind]:
+				out.append(feat)
+				break
+	return out
+
+
+def _is_feature_widget(node, feats):
+	if node.tag != "widget":
+		return False
+	for f in feats:
+		spec = OPTIONAL_FEATURES[f]
 		if node.get("source") == spec["source"] or node.get("render") in spec["Renderer"]:
-			return feat
+			return True
 		if any(c.tag == "convert" and c.get("type") in spec["Converter"] for c in node.iter()):
-			return feat
-	return None
+			return True
+	return False
 
 
-def _apply_plan(root, plan):
-	"""Build the optional widgets of a screen file as the plan says: builtin -> the same widget with CineView's own
-	source / converter / renderer (every other attribute and the converter arguments unchanged); omit -> left out;
-	native -> unchanged.  Returns how many widgets were changed or left out."""
-	if not plan or all(m == "native" for m in plan.values()):
+def _prune(root, feats):
+	"""Remove the widgets of the given (unavailable) features; returns how many were removed."""
+	if not feats:
 		return 0
 	n = 0
 	for parent in list(root.iter()):
 		for child in list(parent):
-			feat = _feature_of(child)
-			mode = plan.get(feat, "native") if feat else "native"
-			if mode == "omit":
+			if _is_feature_widget(child, feats):
 				parent.remove(child)
-				n += 1
-			elif mode == "builtin":
-				spec = OPTIONAL_FEATURES[feat]
-				b = spec["builtin"]
-				if child.get("source") == spec["source"]:
-					child.set("source", b["source"])
-				if child.get("render") in b["Renderer"]:
-					child.set("render", b["Renderer"][child.get("render")])
-				for c in child.iter("convert"):
-					if c.get("type") in b["Converter"]:
-						c.set("type", b["Converter"][c.get("type")])
 				n += 1
 	return n
 
@@ -260,27 +224,17 @@ def _parse(path):
 	return ET.parse(path, parser=ET.XMLParser(target=ET.TreeBuilder(insert_comments=True)))
 
 
-def generation_plan(gid):
-	"""The plan a generation was built with (its features.json).  Built before 1.0.4: no features.json -> native;
-	1.0.4: only "omitted" is listed."""
-	try:
-		f = json.load(open(os.path.join(_gen_dir(gid), FEATURES_FILE)))
-	except (OSError, ValueError):
-		f = {}
-	if not isinstance(f, dict):
-		f = {}
-	omitted, builtin = f.get("omitted") or [], f.get("builtin") or []
-	return {feat: "omit" if feat in omitted else "builtin" if feat in builtin else "native" for feat in sorted(OPTIONAL_FEATURES)}
-
-
 def generation_omitted(gid):
-	return sorted(f for f, m in generation_plan(gid).items() if m == "omit")
+	try:
+		return sorted(json.load(open(os.path.join(_gen_dir(gid), FEATURES_FILE))).get("omitted", []))
+	except (OSError, ValueError, AttributeError):
+		return []  # generations built before 1.0.4: nothing was left out
 
 
 # ---------------------------------------------------------------- validation
-def _screens(path, plan=None):
+def _screens(path, feats=()):
 	root = _parse(path).getroot()
-	_apply_plan(root, plan)
+	_prune(root, feats)
 	return {s.get("name"): s for s in root.iter("screen") if s.get("name")}
 
 
@@ -290,7 +244,7 @@ def validate(selection, components=None, warnings=None):
 	the plugin) are appended to `warnings` instead of blocking."""
 	problems = []
 	section_files = set()
-	plan = feature_plan(components)  # the optional widgets are checked as the generation will build them
+	feats = unavailable_features(components)  # their widgets are not part of the generation that will be built
 	secs, lays = sections(), layouts()
 	if selection["theme"] not in themes():
 		problems.append(f"unknown theme {selection['theme']}")
@@ -314,7 +268,7 @@ def validate(selection, components=None, warnings=None):
 	all_screens = {}
 	for f in files:
 		try:
-			scr = _screens(f, plan)
+			scr = _screens(f, feats)
 		except ET.ParseError as e:
 			problems.append(f"XML error {f}: {e}")
 			continue
@@ -416,8 +370,7 @@ def _lkg():
 
 def build_generation(selection, gid, components=None):
 	d = _gen_dir(gid)
-	plan = feature_plan(components)
-	rewrite = any(m != "native" for m in plan.values())
+	feats = unavailable_features(components)
 	lays = layouts()
 	os.makedirs(d)
 	files = {"theme.xml": _p("themes", selection["theme"], "theme.xml")}
@@ -433,9 +386,9 @@ def build_generation(selection, gid, components=None):
 	for name, src in files.items():
 		dst = os.path.join(d, name)
 		os.makedirs(os.path.dirname(dst), exist_ok=True)
-		tree = _parse(src) if rewrite and name.endswith(".xml") and name != "theme.xml" else None
-		if tree is not None and _apply_plan(tree.getroot(), plan):
-			tree.write(dst, encoding="utf-8", xml_declaration=True)  # same screens; optional widgets as planned
+		tree = _parse(src) if feats and name.endswith(".xml") and name != "theme.xml" else None
+		if tree is not None and _prune(tree.getroot(), feats):
+			tree.write(dst, encoding="utf-8", xml_declaration=True)  # same screens, minus the optional widgets
 		else:
 			shutil.copyfile(src, dst)
 		_fsync_file(dst)
@@ -447,8 +400,7 @@ def build_generation(selection, gid, components=None):
 	_fsync_file(os.path.join(d, "selection.json"))
 	lines.append(f"{_sha(os.path.join(d, 'selection.json'))}  selection.json")
 	with open(os.path.join(d, FEATURES_FILE), "w") as f:
-		f.write(json.dumps({"omitted": sorted(k for k, m in plan.items() if m == "omit"),
-			"builtin": sorted(k for k, m in plan.items() if m == "builtin")}))
+		f.write(json.dumps({"omitted": feats}))
 	_fsync_file(os.path.join(d, FEATURES_FILE))
 	lines.append(f"{_sha(os.path.join(d, FEATURES_FILE))}  {FEATURES_FILE}")
 	_fault("seal")
@@ -489,7 +441,7 @@ def apply(selection, trial=False, components=None):
 	switch_to(gid)
 	_atomic_write(_s("selection.json"), json.dumps(selection, sort_keys=True))
 	_journal("TRIAL" if trial else "SWITCHED", gid=gid, prev=prev)
-	_log(f"apply: {prev} -> {gid} trial={trial} features={json.dumps(feature_plan(components), sort_keys=True)} selection={json.dumps(selection, sort_keys=True)}")
+	_log(f"apply: {prev} -> {gid} trial={trial} omitted={unavailable_features(components)} selection={json.dumps(selection, sort_keys=True)}")
 	if not trial:
 		commit()
 	return gid
@@ -552,10 +504,10 @@ def mark_trial_running():
 
 
 def ensure_components(components=None):
-	"""Keep the active generation built for the components installed NOW: rebuild it (same selection) when its
-	plan differs from feature_plan() - e.g. the factory generation (packs as they are) once CineView's own weather
-	components are installed, a generation built without a feature whose components have since been installed, or
-	one that needs components removed since.  Returns the new generation id, or None when nothing had to change."""
+	"""Keep the active generation loadable with the components installed NOW: rebuild it (same selection) when
+	it holds widgets of an optional feature whose plugin is missing - e.g. the factory generation on an image
+	without OAWeather - or when it was built without a feature whose plugin has since been installed.
+	Returns the new generation id, or None when nothing had to change."""
 	if components is None:
 		components = installed_components()
 	if components is None:
@@ -563,9 +515,8 @@ def ensure_components(components=None):
 	cur = _active_target()
 	if not cur or not verify_generation(cur):
 		return None
-	want = feature_plan(components)
-	have = generation_plan(cur)
-	if want == have:
+	want = unavailable_features(components)
+	if want == generation_omitted(cur):
 		return None
 	try:
 		sel = json.load(open(os.path.join(_gen_dir(cur), "selection.json")))
@@ -593,7 +544,7 @@ def ensure_components(components=None):
 		j["gid"] = gid
 		_journal(j.pop("state"), **{k: v for k, v in j.items() if k != "time"})
 	_cleanup(keep={gid, FACTORY, _lkg()})
-	_log(f"ensure: {cur} -> {gid} features={json.dumps(want, sort_keys=True)} (was {json.dumps(have, sort_keys=True)}) selection={json.dumps(sel, sort_keys=True)}")
+	_log(f"ensure: {cur} -> {gid} omitted={want} (was {generation_omitted(cur)}) selection={json.dumps(sel, sort_keys=True)}")
 	return gid
 
 

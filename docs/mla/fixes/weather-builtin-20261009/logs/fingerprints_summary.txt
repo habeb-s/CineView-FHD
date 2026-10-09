@@ -1,0 +1,34 @@
+== openbh56: 3489 files
+enigma2-plugin-extensions-oaweather - 2.2-git153+be626732+be62673e8c-r0.2
+enigma2-plugin-extensions-weatherplugin - V1.0-git127+d3e4ac51+d3e4ac5904-r0.25
+enigma2-plugin-skins-aglare-fhd - 8.4
+enigma2-plugin-skins-luka-fhd - 1.6
+enigma2-plugin-skins-mxslimlinenp - 3.0+git529+26cb3cf6+26cb3cf41c-r3.7
+enigma2-tools-weatherinfo - 1.0+git90+879c09b3+879c09b80c-r0.3
+Aglare-FHD BlackShadow_X2P BoHLALA_FHD Cosmos Cosmos-XP Cosmos-XPI CosmosBlack CosmosBlack-XP CosmosBlack-XPI CosmosBlue CosmosBlue-XP CosmosBlue-XPI CosmosBurgundy CosmosBurgundy-XP CosmosBurgundy-XPI CosmosGlass-XP CosmosGlass-XPI Luka-FHD MX_BlackSea MX_GrayDots_XB MX_GrayDots_XP MX_Slim-Line_NP Magic-FHD Premium-FHD-Blue black.mvi defaults display distro-logo.png emu encoding.conf freesat.t1 freesat.t2 groupedservices hardware hd-testcard.mvi iso-639-3.pck keymap.xml keytranslation.xml menu.xml menuorder.bh networkwizard.xml otv_00820000_fbff_16a8.dict otv_011a0000_0002_07d4.dict otv_06180000_1000_0011.dict otv_06400000_00a9_0003.dict piconCrypt piconProv piconSat po prev.png radio.mvi rc rc_models rcpositions.xml recovery.xml remotes.xml setup.xml skin.xml skin_default skin_default.xml skin_default_windowstyle.xml skin_fallback_1080 skin_plugins.xml skin_subtitles.xml spinner startwizard.xml unicable.xml userinterfacepositionerwizard.xml videowizard.xml vuduo4kse.png vuwizard.xml weather 
+before: 8496707bcefc4b8342d39016ab15ed3eaa50c806a697cc836adbb42f9f02c3b9
+after:  8496707bcefc4b8342d39016ab15ed3eaa50c806a697cc836adbb42f9f02c3b9
+IDENTICAL
+== openvix69: 3592 files
+enigma2-plugin-extensions-oaweather - 2.4-git157+eec00e60+eec00e6b9d-r0
+enigma2-plugin-extensions-weatherplugin - V1.0-git130+f2911e20+f2911e22a2-r0
+enigma2-plugin-skins-aglare-fhd - 8.4
+enigma2-plugin-skins-luka-fhd - 1.6
+enigma2-plugin-skins-openvix-simple-ten-eighty - 6.9+git4201+3319bc30+3319bc393b-r7
+enigma2-plugin-skins-openvix-youvix-blue - 6.9+git4201+3319bc30+3319bc393b-r7
+enigma2-plugin-skins-openvix-youvix-blue-mod - 6.9+git4201+3319bc30+3319bc393b-r7
+enigma2-plugin-skins-openvix-youvix-common - 6.9+git4201+3319bc30+3319bc393b-r7
+enigma2-tools-weatherinfo - 1.0+git92+09051ec0+09051ece75-r0
+Aglare-FHD Luka-FHD Simple_Ten_Eighty YouViX-Blue YouViX-Blue-Mod YouViX-Common black.mvi bootlogo.mvi bootlogo.txt defaults display distro-logo.png emu encoding.conf freesat.t1 freesat.t2 groupedservices hardware hd-testcard.mvi iso-639-3.pck keymap.xml menu.xml networkwizard.xml otv_00820000_fbff_16a8.dict otv_011a0000_0002_07d4.dict otv_06180000_1000_0011.dict otv_06400000_00a9_0003.dict piconCrypt piconProv piconSat po prev.png radio.mvi rc rc_models rcpositions.xml recovery.xml remotes.xml setup.xml skin.xml skin_default skin_default.xml skin_default_windowstyle.xml skin_fallback_1080 skin_subtitles.xml spinner startwizard.xml unicable.xml userinterfacepositionerwizard.xml videowizard.xml vuduo4kse.png vuwizard.xml weather 
+before: 849256ee97491262212b6fddc1f99ef84eecef98689a62059ef953108a456050
+after:  849256ee97491262212b6fddc1f99ef84eecef98689a62059ef953108a456050
+IDENTICAL
+== openatv801: 2500 files
+enigma2-plugin-extensions-oaweather - 2.4-git157+eec00e60+eec00e6b9d-r0
+enigma2-plugin-skins-metrix-atv - 8.0.1+git2974+01436950+0143695ed4-r1
+enigma2-plugin-skins-metrix-atv-weather-icons - 8.0.1+git2974+01436950+0143695ed4-r1
+enigma2-tools-weatherinfo - 1.0+git99+110adaf0+110adaf685-r0
+MetrixHD black.mvi dab.xml defaults display distro-logo.png dnsservers.xml emu encoding.conf freesat.t1 freesat.t2 groupedservices hardware hd-testcard.mvi icons keymap.ntr keymap.u80 keymap.xml menu.xml networkdaemons.xml otv_00820000_fbff_16a8.dict otv_011a0000_0002_07d4.dict otv_06180000_1000_0011.dict otv_06400000_00a9_0003.dict piconCrypt piconProv piconSat po prev.png radio.mvi rc rc_models rcpositions.xml remotes.xml setup.xml skin.xml skin_default skin_default.xml skin_subtitles.xml spinner startwizard.xml unicable.xml videowizard.xml vuduo4kse.png weather wizardlanguage.xml 
+before: fc7d7342294f2b3cf62a790503664d082ffdb9829543628158f0d7962522309c
+after:  fc7d7342294f2b3cf62a790503664d082ffdb9829543628158f0d7962522309c
+IDENTICAL

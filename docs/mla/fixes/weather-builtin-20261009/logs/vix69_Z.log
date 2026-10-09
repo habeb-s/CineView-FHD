@@ -1,0 +1,20 @@
+### openvix69 Z the test add-on removed; original design, skin and runtime settings restored
+No packages installed or removed.
+2026-10-09 17:52:35 apply: g000014 -> g000015 trial=False features={"weather": "builtin"} selection={"layouts": {"channelselection": "posterlist", "epg": "graphicalplus", "eventview": "detailscard", "infobar": "details", "pvr": "cover", "secondinfobar": "details"}, "theme": "black"}
+2026-10-09 17:52:35 commit: lkg=g000015
+g000015
+rc=0
+  image: openvix 6.9 | cineview: 1.0.5~openvix1 | oaweather: 1 | cvtest: 0
+  pre-start hook: none
+  start-up hook: /usr/lib/python3.14/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000015 {"omitted": [], "builtin": ["weather"]}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=1 written 17:52:45 | enigma2 pid 27525 started Fri Oct  9 17:52:44 2026 | cvtest log lines: 0 | crash logs: 0
+    {"layouts": {"channelselection": "posterlist", "epg": "graphicalplus", "eventview": "detailscard", "infobar": "details", "pvr": "cover", "secondinfobar": "details"}, "theme": "black"}
+    {"poster_cache": "/tmp/CINEVIEW-MLA/poster"}
+    g000015 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 15 | CineView weather components present, icons 10 | OAWeather installed: True
+    STRICT OK (no missing renderer/converter/source)
+  runtime.json before the test: {
+ "poster_cache": "/tmp/CINEVIEW-MLA/poster"
+}
+  OAWeather / Weatherinfo / other skins: IDENTICAL before and after (3592 files, same packages and versions)
+### DONE openvix69 Z

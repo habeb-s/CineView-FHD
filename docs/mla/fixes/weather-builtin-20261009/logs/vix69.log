@@ -1,0 +1,40 @@
+slot 4 requested; running: openbh 5.6 ; "isRecording": "false"
+kernel=duo4kse/linuxrootfs4/zImage root=UUID=3cfb20d7-18b5-42b9-ad97-80f41f99dc72 rootsubdir=duo4kse/linuxrootfs4 rootwait=35
+up: distro='openvix' imageversion='6.9' 1
+### openvix69 P0 start
+  image: openvix 6.9 | cineview: 1.0.5~openvix1 | oaweather: 1 | cvtest: 0
+  pre-start hook: none
+  start-up hook: /usr/lib/python3.14/site-packages/cineview_mla_guardian.pth | skin:  | active: generations/g000001 {"omitted": []}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=0 written 15:47:29 | enigma2 pid 2213 started Fri Oct  9 17:24:38 2026 | cvtest log lines: 0 | crash logs: 0
+  original selection: {"layouts": {"channelselection": "posterlist", "epg": "graphicalplus", "eventview": "detailscard", "infobar": "details", "pvr": "cover", "secondinfobar": "details"}, "theme": "black"}
+  skin: 
+  runtime.json: {
+ "poster_cache": "/tmp/CINEVIEW-MLA/poster"
+}
+    enigma2-plugin-extensions-oaweather - 2.4-git157+eec00e60+eec00e6b9d-r0
+    enigma2-plugin-skins-aglare-fhd - 8.4
+    enigma2-plugin-skins-cineview-fhd-mla - 1.0.5~openvix1
+    enigma2-plugin-skins-luka-fhd - 1.6
+    enigma2-tools-weatherinfo - 1.0+git92+09051ec0+09051ece75-r0
+    What depends on root set
+    	enigma2-plugin-skins-luka-fhd 1.6	depends on enigma2-plugin-extensions-oaweather
+    	enigma2-plugin-skins-aglare-fhd 8.4	depends on enigma2-plugin-extensions-oaweather
+    config.plugins.OAWeather.refreshInterval=120
+    config.plugins.OAWeather.weatherlocation=('Sayhāt, Eastern Province, SAUDI ARABIA', 50.04849, 26.48345)
+    lrwxrwxrwx    1 root     root            31 Oct  9 17:24 /etc/localtime -> /usr/share/zoneinfo/Asia/Riyadh
+INSTALLER_VERSION="1.3.5"
+  fingerprint of OAWeather / Weatherinfo / other skins: 3592 files; packages: enigma2-plugin-extensions-oaweather enigma2-plugin-extensions-weatherplugin enigma2-plugin-skins-aglare-fhd enigma2-plugin-skins-luka-fhd enigma2-plugin-skins-openvix-simple-ten-eighty enigma2-plugin-skins-openvix-youvix-blue enigma2-plugin-skins-openvix-youvix-blue-mod enigma2-plugin-skins-openvix-youvix-common enigma2-tools-weatherinfo 
+### DONE openvix69 P
+### openvix69 U1 ROLLBACK=1 with the Smart Installer 1.3.5 -> published 1.0.4
+  [..] Rollback requested: CineView MLA 1.0.4~openvix1 (previous release for OpenViX)
+  [OK] Weather: OAWeather installed and built for this image's Python - its weather data is used as it is
+  [!!] Return to the earlier version 1.0.4~openvix1 requested (your design, theme and profiles are kept)
+  [OK] Package version 1.0.4~openvix1
+  CineView MLA 1.0.4~openvix1 installed successfully.
+  image: openvix 6.9 | cineview: 1.0.4~openvix1 | oaweather: 1 | cvtest: 0
+  pre-start hook: 14456a41a22b owner=enigma2-plugin-skins-cineview-fhd-mla (# Installed as /usr/bin/enigma2_pre_start.sh (native OpenATV)
+  start-up hook: none | skin:  | active: generations/g000002 {"omitted": []}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=0 written 17:25:59 | enigma2 pid 2213 started Fri Oct  9 17:24:38 2026 | cvtest log lines: 0 | crash logs: 0
+  restart:

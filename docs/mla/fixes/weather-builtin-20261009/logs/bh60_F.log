@@ -1,0 +1,28 @@
+### openbh60 F1 CineView 1.0.5 (upgrade with opkg), OAWeather still NOT installed
+CineView MLA: image openbh 6.0 on vuduo4kse
+CineView MLA installed. Select it in Menu > Setup > User Interface > Skin, then restart the GUI.
+Upgrading enigma2-plugin-skins-cineview-fhd-mla (1.0.3~openbh.py314) to enigma2-plugin-skins-cineview-fhd-mla (1.0.5~openbh.py314) on root
+  image: openbh 6.0 | cineview: 1.0.5~openbh.py314 | oaweather: 0 | cvtest: 0
+  pre-start hook: none
+  start-up hook: /usr/lib/python3.14/site-packages/cineview_mla_guardian.pth | skin:  | active: generations/g000001 {"omitted": [], "builtin": ["weather"]}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=0 written 16:24:03 | enigma2 pid 2253 started Fri Oct  9 16:22:44 2026 | cvtest log lines: 0 | crash logs: 0
+      SecondInfoBar: renderer OAWeatherPixmap not installed
+      SecondInfoBarSimple: converter OAWeather not installed
+      SecondInfoBarSimple: renderer OAWeatherPixmap not installed
+    2026-10-09 16:24:32 ensure: g000000 -> g000001 features={"weather": "builtin"} (was {"weather": "native"}) selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+    g000001 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 12 | CineView weather components present, icons 10 | OAWeather installed: False
+    STRICT OK (no missing renderer/converter/source)
+  F2 CineView skin selected, GUI started
+config.skin.primary_skin=CineView_FHD_MLA/skin.xml
+  image: openbh 6.0 | cineview: 1.0.5~openbh.py314 | oaweather: 0 | cvtest: 0
+  pre-start hook: none
+  start-up hook: /usr/lib/python3.14/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000001 {"omitted": [], "builtin": ["weather"]}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=1 written 16:24:41 | enigma2 pid 2454 started Fri Oct  9 16:24:40 2026 | cvtest log lines: 0 | crash logs: 0
+    source=cineview | city='Riyadh' | temperature_current='38 °C' | weathericon,current=/usr/share/enigma2/CineView_FHD_MLA/mla_assets/weather/clear_day.png | status age 52s | CineView data: Riyadh 38.3 °C clear_day
+    WEATHER OK
+    g000001 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 12 | CineView weather components present, icons 10 | OAWeather installed: False
+    STRICT OK (no missing renderer/converter/source)
+{"geo": {"tz": "Asia/Riyadh", "name": "Riyadh", "lat": 24.68773, "lon": 46.72185}, "weather": {"city": "Riyadh", "temp": 38.3, "unit": "\u00b0C", "icon": "clear_day", "code": 0, "time": 1791552300.7882402, "key": "celsius|tz:Asia/Riyadh", "lat": 24.68773, "lon": 46.72185, "source": "Open-Meteo.com (CC BY 4.0)"}}
+### DONE openbh60 F

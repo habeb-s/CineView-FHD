@@ -1,0 +1,120 @@
+### openvix69 U1b CineView skin selected again (as before today's tests), GUI started with 1.0.4
+  image: openvix 6.9 | cineview: 1.0.4~openvix1 | oaweather: 1 | cvtest: 0
+  pre-start hook: 14456a41a22b owner=enigma2-plugin-skins-cineview-fhd-mla (# Installed as /usr/bin/enigma2_pre_start.sh (native OpenATV)
+  start-up hook: none | skin: CineView_FHD_MLA/skin.xml | active: generations/g000002 {"omitted": []}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=1 written 17:27:03 | enigma2 pid 7470 started Fri Oct  9 17:27:02 2026 | cvtest log lines: 0 | crash logs: 0
+### openvix69 U2 upgrade to 1.0.5 with the Smart Installer 1.3.5 (PKG_DIR)
+  [OK] Weather: OAWeather installed and built for this image's Python - its weather data is used as it is
+  [OK] Upgrade: your design, theme, profiles, settings and poster cache are kept
+  [OK] Package version 1.0.5~openvix1
+  CineView MLA 1.0.5~openvix1 installed successfully.
+  image: openvix 6.9 | cineview: 1.0.5~openvix1 | oaweather: 1 | cvtest: 0
+  pre-start hook: none
+  start-up hook: /usr/lib/python3.14/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000003 {"omitted": [], "builtin": ["weather"]}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=0 written 17:27:44 | enigma2 pid 7470 started Fri Oct  9 17:27:02 2026 | cvtest log lines: 0 | crash logs: 0
+    g000003 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 15 | CineView weather components present, icons 10 | OAWeather installed: True
+    STRICT OK (no missing renderer/converter/source)
+    2026-10-09 17:25:59 commit: lkg=g000002
+    2026-10-09 17:27:44 apply: g000002 -> g000003 trial=False features={"weather": "builtin"} selection={"layouts": {"channelselection": "posterlist", "epg": "graphicalplus", "eventview": "detailscard", "infobar": "details", "pvr": "cover", "secondinfobar": "details"}, "theme": "black"}
+    2026-10-09 17:27:44 commit: lkg=g000003
+    ls: /usr/bin/enigma2_pre_start.sh: No such file or directory
+  restart:
+  GUI restarted: enigma2 pid 7470 -> 8370
+  image: openvix 6.9 | cineview: 1.0.5~openvix1 | oaweather: 1 | cvtest: 0
+  pre-start hook: none
+  start-up hook: /usr/lib/python3.14/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000003 {"omitted": [], "builtin": ["weather"]}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=1 written 17:27:55 | enigma2 pid 8370 started Fri Oct  9 17:27:53 2026 | cvtest log lines: 0 | crash logs: 0
+    source=oaweather | city='Sayhāt' | temperature_current='36 °C' | weathericon,current=/usr/lib/enigma2/python/Plugins/Extensions/OAWeather/Icons/33.png | status age 44s | CineView data: -
+    WEATHER OK
+    g000003 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 15 | CineView weather components present, icons 10 | OAWeather installed: True
+    STRICT OK (no missing renderer/converter/source)
+### DONE openvix69 U2
+### openvix69 M every design with OAWeather (its data shown by CineView's weather components)
+=== openvix69 oaweather design=factory
+  rc=0
+  g000004 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 12 | CineView weather components present, icons 10 | OAWeather installed: True
+  STRICT OK (no missing renderer/converter/source)
+  source=oaweather | city='Sayhāt' | temperature_current='36 °C' | weathericon,current=/usr/lib/enigma2/python/Plugins/Extensions/OAWeather/Icons/33.png | status age 40s | CineView data: -
+  WEATHER OK
+  RESULT PASS (apply rc=0, enigma2 pid 9501 stable, crash logs 0->0)
+=== openvix69 oaweather design=classic
+  rc=0
+  g000005 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 12 | CineView weather components present, icons 10 | OAWeather installed: True
+  STRICT OK (no missing renderer/converter/source)
+  source=oaweather | city='Sayhāt' | temperature_current='36 °C' | weathericon,current=/usr/lib/enigma2/python/Plugins/Extensions/OAWeather/Icons/33.png | status age 40s | CineView data: -
+  WEATHER OK
+  RESULT PASS (apply rc=0, enigma2 pid 10812 stable, crash logs 0->0)
+=== openvix69 oaweather design=classiclines
+  rc=0
+  g000006 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 12 | CineView weather components present, icons 10 | OAWeather installed: True
+  STRICT OK (no missing renderer/converter/source)
+  source=oaweather | city='Sayhāt' | temperature_current='36 °C' | weathericon,current=/usr/lib/enigma2/python/Plugins/Extensions/OAWeather/Icons/33.png | status age 41s | CineView data: -
+  WEATHER OK
+  RESULT PASS (apply rc=0, enigma2 pid 12112 stable, crash logs 0->0)
+=== openvix69 oaweather design=details
+  rc=0
+  g000007 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 15 | CineView weather components present, icons 10 | OAWeather installed: True
+  STRICT OK (no missing renderer/converter/source)
+  source=oaweather | city='Sayhāt' | temperature_current='36 °C' | weathericon,current=/usr/lib/enigma2/python/Plugins/Extensions/OAWeather/Icons/33.png | status age 41s | CineView data: -
+  WEATHER OK
+  RESULT PASS (apply rc=0, enigma2 pid 13419 stable, crash logs 0->0)
+=== openvix69 oaweather design=cinema
+  rc=0
+  g000008 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 2 | CineView weather components present, icons 10 | OAWeather installed: True
+  STRICT OK (no missing renderer/converter/source)
+  source=oaweather | city='Sayhāt' | temperature_current='37 °C' | status age 41s | CineView data: -
+  WEATHER OK
+  RESULT PASS (apply rc=0, enigma2 pid 14713 stable, crash logs 0->0)
+=== openvix69 oaweather design=modern
+  rc=0
+  g000009 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 0 | CineView weather components present, icons 10 | OAWeather installed: True
+  STRICT OK (no missing renderer/converter/source)
+  design g000009: no weather widgets
+  NO WEATHER WIDGETS
+  RESULT PASS (apply rc=0, enigma2 pid 16027 stable, crash logs 0->0)
+=== openvix69 oaweather design=minimal
+  rc=0
+  g000010 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 0 | CineView weather components present, icons 10 | OAWeather installed: True
+  STRICT OK (no missing renderer/converter/source)
+  design g000010: no weather widgets
+  NO WEATHER WIDGETS
+  RESULT PASS (apply rc=0, enigma2 pid 17319 stable, crash logs 0->0)
+MATRIX openvix69 oaweather: 7 pass, 0 fail
+### DONE openvix69 M
+### openvix69 B1 CineView's own weather on this receiver (weather_source=builtin; OAWeather installed and untouched)
+runtime.json: {'poster_cache': '/tmp/CINEVIEW-MLA/poster', 'weather_source': 'builtin'}
+2026-10-09 17:40:51 apply: g000010 -> g000011 trial=False features={"weather": "builtin"} selection={"layouts": {"channelselection": "posterlist", "epg": "graphicalplus", "eventview": "detailscard", "infobar": "details", "pvr": "cover", "secondinfobar": "details"}, "theme": "purple"}
+2026-10-09 17:40:51 commit: lkg=g000011
+g000011
+  GUI restarted: enigma2 pid 17319 -> 18640
+  image: openvix 6.9 | cineview: 1.0.5~openvix1 | oaweather: 1 | cvtest: 0
+  pre-start hook: none
+  start-up hook: /usr/lib/python3.14/site-packages/cineview_mla_guardian.pth | skin: CineView_FHD_MLA/skin.xml | active: generations/g000011 {"omitted": [], "builtin": ["weather"]}
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count=1 written 17:40:55 | enigma2 pid 18640 started Fri Oct  9 17:40:54 2026 | cvtest log lines: 0 | crash logs: 0
+    source=cineview | city='Sayhāt' | temperature_current='35 °C' | weathericon,current=/usr/share/enigma2/CineView_FHD_MLA/mla_assets/weather/clear_night.png | status age 49s | CineView data: Sayhāt 34.6 °C clear_night
+    WEATHER OK
+    g000011 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 15 | CineView weather components present, icons 10 | OAWeather installed: True
+    STRICT OK (no missing renderer/converter/source)
+    {"weather": {"city": "Sayhāt", "temp": 34.6, "unit": "°C", "icon": "clear_night", "code": 0, "time": 1791556883.8334384, "key": "celsius|26.4835,50.0485", "lat": 26.48345, "lon": 50.04849, "location_from": "oaweather", "observed": "2026-10-09T17:30", "source": "Open-Meteo.com (CC BY 4.0)"}}
+=== openvix69_builtin cineview design=classic
+  g000012 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 12 | CineView weather components present, icons 10 | OAWeather installed: True
+  WEATHER OK
+  RESULT PASS (apply rc=0, enigma2 pid 19898 stable, crash logs 0->0)
+=== openvix69_builtin cineview design=cinema
+  g000013 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 2 | CineView weather components present, icons 10 | OAWeather installed: True
+  WEATHER OK
+  RESULT PASS (apply rc=0, enigma2 pid 21186 stable, crash logs 0->0)
+MATRIX openvix69_builtin cineview: 2 pass, 0 fail
+### openvix69 B2 back to auto (OAWeather's data)
+runtime.json: {'poster_cache': '/tmp/CINEVIEW-MLA/poster'}
+  GUI restarted: enigma2 pid 21186 -> 22477
+    source=oaweather | city='Sayhāt' | temperature_current='35 °C' | status age 44s | CineView data: Sayhāt 34.6 °C clear_night
+    WEATHER OK
+    g000013 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 2 | CineView weather components present, icons 10 | OAWeather installed: True
+    STRICT OK (no missing renderer/converter/source)
+### DONE openvix69 B
+finished

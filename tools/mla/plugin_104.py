@@ -9,7 +9,6 @@ import importlib
 import importlib.util
 import json
 import os
-import threading
 import time
 
 from enigma import eTimer
@@ -276,16 +275,6 @@ def _active_names():
 		return (_("the new"), "")
 
 
-def _weather():
-	"""CineView's weather data module (Components/CineViewMLAWeatherData, 1.0.5+): (weather object, search function)."""
-	try:
-		from Components.CineViewMLAWeatherData import search, weather
-		return weather, search
-	except Exception as err:
-		print("[CineViewMLA] weather components: %s" % err)
-		return None, None
-
-
 def status_text(sel):
 	"""What the user sees: product name, design, theme, rights.  No version on screen (user 2026-10-08): version /
 	build / commit stay in the package metadata, version.json and the log (about())."""
@@ -332,14 +321,6 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 			getConfigListEntry(_("Poster engine"), self.cfgEngine, "engine", ""),
 			getConfigListEntry(_("Server / CAM information"), self.mla.servermode, "native", "servermode"),
 		]
-		# Weather city (1.0.5): the location saved in OAWeather is used first; without one the city is chosen here (OK).
-		# The shown text is also the value: ConfigSelection caches its text until the value changes (all images).
-		wtext = self._weatherText()
-		self.cfgWeather = ConfigSelection(default=wtext, choices=[(wtext, wtext)])
-		entries.append(getConfigListEntry(_("Weather city"), self.cfgWeather, "weather", ""))
-		self._wxTimer = None
-		self._wxBox = None
-		self.onClose.append(self._weatherStop)
 		# the image's own settings (OpenATV: Second InfoBar mode + timeout; OpenBH: one combined Second InfoBar setting)
 		self.nativeRows = image_adapter.native_rows(config.usage)
 		entries += [getConfigListEntry(_(label), cfg, "native", key) for key, cfg, label, card, desc in self.nativeRows]
@@ -402,8 +383,6 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 			return cards.get(sec, (label, "", no_restart))
 		if kind == "theme":
 			return (label, _("The colours of every CineView screen."), _("The GUI restarts and asks you to keep the new design."))
-		if kind == "weather":
-			return (label, _("The city of the weather in the InfoBar, Second InfoBar and Event View. The location saved in OAWeather is used first."), _("OK chooses the city - saved at once, the weather follows within a minute."))
 		m = self.layouts.get(sec, {}).get(getattr(cfg, "value", None), {}) if kind == "layout" else {}
 		return (label, m.get("name", ""), _("The GUI restarts and asks you to keep the new design."))
 
@@ -445,14 +424,6 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 			desc = (desc + "\n\n" if desc else "") + _("Applied without a restart, from the next channel or event change.")
 		elif kind == "engine":
 			desc = _("Unified: a poster only when title, type and year are confirmed, otherwise the CineView default image.\nLegacy: the original title search (may show posters of other works).\nTakes effect after the next GUI restart.")
-		elif kind == "weather":
-			frm, text = self._weatherLocation()
-			if frm == "oaweather":
-				desc = _("Weather location saved in OAWeather: %s\nIt is used first. Change it in OAWeather's settings.") % text
-			else:
-				desc = _("OK: type the city name (English or Arabic letters, at least 3), then choose the city from the list.\nThe location saved in OAWeather, when there is one, is used first.")
-				desc += "\n\n" + (_("Weather city: %s") % text if frm else _("No city chosen yet - no weather is shown."))
-			desc += "\n" + _("Weather data by Open-Meteo.com")
 		elif kind == "native":
 			descs = {"servermode": _("Full server details, only the EMU and the subscription, or nothing.")}
 			descs.update({key: _(text) for key, c, lbl, card, text in self.nativeRows})
@@ -628,128 +599,9 @@ class CineViewMLASetup(Screen, ConfigListScreen):
 				self.session.open(MessageBox, _("The profile could not be deleted:\n%s") % err, MessageBox.TYPE_ERROR)
 
 	def keyPreview(self):
-		if self._current()[2] == "weather":  # OK on the weather row: choose the city
-			self.keyWeather()
-			return
 		p = self._preview_path()
 		if p:  # no preview: the key has no label and does nothing (no empty message window)
 			self.session.open(CineViewMLAPreview, p)
-
-	# ---------------------------------------------------------------- weather city (1.0.5)
-	def _weatherLocation(self):
-		w = _weather()[0]
-		try:
-			return w.location() if w is not None else (None, "")
-		except Exception as err:
-			print("[CineViewMLA] weather location: %s" % err)
-			return None, ""
-
-	def _weatherText(self):
-		frm, text = self._weatherLocation()
-		if frm == "oaweather":
-			return "%s (OAWeather)" % text.split(",")[0]
-		return text.split(",")[0] if frm else _("Not set")
-
-	def keyWeather(self):
-		if _weather()[0] is None:
-			self.session.open(MessageBox, _("CineView's weather components are not installed."), MessageBox.TYPE_ERROR, timeout=6)
-			return
-		frm, text = self._weatherLocation()
-		if frm == "oaweather":
-			self.session.open(MessageBox, _("The weather location saved in OAWeather is used: %s\nChange it in OAWeather's settings.") % text, MessageBox.TYPE_INFO, timeout=8)
-		elif frm == "cineview":
-			from Screens.ChoiceBox import ChoiceBox
-			choices = [(_("Choose another city"), "search"), (_("Remove the weather city"), "clear")]
-			self.session.openWithCallback(self._weatherMenu, ChoiceBox, text=_("Weather city: %s") % text, **image_adapter.choice_list(choices), windowTitle=_("CineView Designs"))
-		else:
-			self._weatherAsk()
-
-	def _weatherMenu(self, choice):
-		if choice and choice[1] == "search":
-			self._weatherAsk()
-		elif choice and choice[1] == "clear":
-			self._weatherSave(None)
-
-	def _weatherAsk(self):
-		from Screens.VirtualKeyBoard import VirtualKeyBoard
-		self.session.openWithCallback(self._weatherSearch, VirtualKeyBoard, title=_("Weather city - at least 3 letters (English or Arabic)"), text="")
-
-	def _weatherSearch(self, text):
-		text = (text or "").strip()
-		if not text:
-			return
-		if len(text) < 3:
-			self.session.open(MessageBox, _("Please type at least 3 letters of the city name."), MessageBox.TYPE_INFO, timeout=6)
-			return
-		search = _weather()[1]
-		box = {"done": False, "started": time.time()}
-
-		def work():  # network in a thread; the GUI never waits for it
-			try:
-				box["res"] = search(text)
-			except Exception as err:
-				box["err"] = str(err)
-			box["done"] = True
-		self._wxBox = box
-		threading.Thread(target=work, name="CineViewMLACitySearch", daemon=True).start()
-		if self._wxTimer is None:
-			self._wxTimer = eTimer()
-			self._wxTimer.callback.append(self._weatherPoll)
-		self._wxTimer.start(250, False)
-		self["status"].setText(_("Searching for the city '%s' ...") % text)
-
-	def _weatherStop(self):
-		if self._wxTimer is not None:
-			self._wxTimer.stop()
-			self._wxTimer.callback.remove(self._weatherPoll)
-			self._wxTimer = None
-
-	def _weatherPoll(self):
-		box = self._wxBox
-		if box is None or (not box["done"] and time.time() - box["started"] < 25):
-			return
-		self._wxTimer.stop()
-		self._wxBox = None
-		self["status"].setText(status_text(self.sel))
-		if not box["done"] or box.get("err"):
-			self.session.open(MessageBox, _("The city search did not answer - please check the internet connection and try again."), MessageBox.TYPE_ERROR, timeout=8)
-			print("[CineViewMLA] city search: %s" % box.get("err", "no answer"))
-			return
-		res = box.get("res") or []
-		if not res:
-			self.session.open(MessageBox, _("No city found with this name. Please check the spelling (English or Arabic letters)."), MessageBox.TYPE_INFO, timeout=8)
-			return
-		from Screens.ChoiceBox import ChoiceBox
-		choices = [(r["label"], r) for r in res]
-		self.session.openWithCallback(self._weatherChosen, ChoiceBox, text=_("Choose the weather city"), **image_adapter.choice_list(choices), windowTitle=_("CineView Designs"))
-
-	def _weatherChosen(self, choice):
-		if choice and isinstance(choice[1], dict):
-			self._weatherSave(choice[1])
-
-	def _weatherSave(self, entry):
-		cur = runtime()
-		if entry:
-			cur["weather_city"] = {"name": entry["name"], "label": entry["label"], "lat": entry["lat"], "lon": entry["lon"]}
-		else:
-			cur.pop("weather_city", None)
-		_write("runtime.json", json.dumps(cur, indent=1, sort_keys=True))
-		w = _weather()[0]
-		if w is not None:
-			try:
-				w.reload()  # the weather follows the new city at once (lookup in the background)
-			except Exception as err:
-				print("[CineViewMLA] weather reload: %s" % err)
-		try:
-			wtext = self._weatherText()
-			self.cfgWeather.setChoices([(wtext, wtext)], default=wtext)
-			self["config"].invalidateCurrent()
-		except Exception as err:
-			print("[CineViewMLA] weather row: %s" % err)
-		self.updatePreview()
-		print("[CineViewMLA] weather city: %s" % (entry or "removed"))
-		msg = _("Weather city saved: %s\nThe weather follows within a minute.") % entry["label"] if entry else _("The weather city was removed.")
-		self.session.open(MessageBox, msg, MessageBox.TYPE_INFO, timeout=6)
 
 	def keyFactory(self):
 		self.session.openWithCallback(self._factory, MessageBox, _("Restore Factory Design?\nRestores Classic + Navy and the default CineView layout settings."), MessageBox.TYPE_YESNO, default=False)

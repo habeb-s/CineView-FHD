@@ -1,0 +1,26 @@
+### openbh60 P0 state as delivered
+  image: openbh 6.0 | cineview:  | oaweather: 0 | cvtest: 0
+  pre-start hook: none
+  start-up hook: none | skin:  | active:  
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count= written  | enigma2 pid 1910 started Fri Oct  9 16:20:29 2026 | cvtest log lines: 0 | crash logs: 0
+  skin before the test:  (empty = image default)
+801
+  (no OAWeather / Weatherinfo / CineView / test add-on installed)
+0
+lrwxrwxrwx    1 root     root            31 Oct  9 16:20 /etc/localtime -> /usr/share/zoneinfo/Asia/Riyadh
+ls: /usr/bin/enigma2_pre_start.sh: No such file or directory
+         36471 Oct  9 16:21 /tmp/ci135.sh
+          4336 Oct  9 16:21 /tmp/cu135.sh
+
+
+            60 Oct  9 16:21 .
+           320 Oct  9 16:21 ..
+      15879276 Oct  9 16:21 enigma2-plugin-skins-cineview-fhd-mla_1.0.3~openbh.py314_all.ipk
+
+
+            60 Oct  9 16:21 .
+           320 Oct  9 16:21 ..
+      15924942 Oct  9 16:21 enigma2-plugin-skins-cineview-fhd-mla_1.0.5~openbh.py314_all.ipk
+INSTALLER_VERSION="1.3.5"
+### DONE openbh60 P

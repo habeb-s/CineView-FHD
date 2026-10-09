@@ -1,0 +1,22 @@
+### openbh60 S1 city chosen in CineView Designs
+    {
+     "weather_city": {
+      "label": "Dammam, Eastern Province, Saudi Arabia",
+      "lat": 26.43442,
+      "lon": 50.10326,
+      "name": "Dammam"
+     }
+    }
+    {"weather": {"city": "Dammam", "temp": 33.2, "unit": "°C", "icon": "clear_night", "code": 0, "time": 1791558106.8512228, "key": "celsius|26.4344,50.1033", "lat": 26.43442, "lon": 50.10326, "location_from": "cineview", "observed": "2026-10-09T18:00", "source": "Open-Meteo.com (CC BY 4.0)"}}
+    source=cineview | city='Dammam' | temperature_current='33 °C' | weathericon,current=/usr/share/enigma2/CineView_FHD_MLA/mla_assets/weather/clear_night.png | status age 92s | CineView data: Dammam 33.2 °C clear_night
+    WEATHER OK
+### openbh60 S2 GUI restart: the chosen city is kept
+  GUI restarted: enigma2 pid 2229 -> 2525
+    source=cineview | city='Dammam' | temperature_current='33 °C' | weathericon,current=/usr/share/enigma2/CineView_FHD_MLA/mla_assets/weather/clear_night.png | status age 38s | CineView data: Dammam 33.2 °C clear_night
+    WEATHER OK
+    g000001 features {"omitted": [], "builtin": ["weather"]} | weather widgets: OAWeather 0, CineView 12 | CineView weather components present, icons 10 | OAWeather installed: False
+    STRICT OK (no missing renderer/converter/source)
+### openbh60 S3 search on the receiver (CineView's own search function, Arabic and English letters)
+    جدة -> ['جدة, مِـنْـطَـقَـة مَـكَّـة الـمُـكَـرَّمَـة, المملكة العربية السعودية', 'جدة اللّتب, محافظة مسندم, عُمان', 'جدة الزّروب, محافظة مسندم, عُمان']
+    Sayhat -> ['Sayhāt, Eastern Province, Saudi Arabia']
+### DONE openbh60 S

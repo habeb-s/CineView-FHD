@@ -1,0 +1,42 @@
+### openbh60 R1 CineView 1.0.3 (published) installed with opkg - OAWeather not installed
+CineView MLA: image openbh 6.0 on vuduo4kse
+CineView MLA: factory design (Classic, Navy) active.
+CineView MLA installed. Select it in Menu > Setup > User Interface > Skin, then restart the GUI.
+Installing enigma2-plugin-skins-cineview-fhd-mla (1.0.3~openbh.py314) on root
+  image: openbh 6.0 | cineview: 1.0.3~openbh.py314 | oaweather: 0 | cvtest: 0
+  pre-start hook: 14456a41a22b owner=enigma2-plugin-skins-cineview-fhd-mla (# Installed as /usr/bin/enigma2_pre_start.sh (native OpenATV)
+  start-up hook: none | skin:  | active: generations/g000000 
+bash: line 5: /tmp/cvtest_prestart.log: No such file or directory
+  guardian: boot.count= written  | enigma2 pid 1910 started Fri Oct  9 16:20:29 2026 | cvtest log lines: 0 | crash logs: 0
+  R2 validate the factory design (Classic) - what CineView Designs runs on Apply:
+    EventView: converter OAWeather not installed
+    EventView: renderer OAWeatherPixmap not installed
+    InfoBar: converter OAWeather not installed
+    InfoBar: renderer OAWeatherPixmap not installed
+    SecondInfoBar: converter OAWeather not installed
+    SecondInfoBar: renderer OAWeatherPixmap not installed
+    SecondInfoBarSimple: converter OAWeather not installed
+    SecondInfoBarSimple: renderer OAWeatherPixmap not installed
+    warnings (core/plugin screens, non-blocking): 1
+    rc=1
+  R3 apply Details:
+2026-10-09 16:22:03 apply: ERROR validation failed:
+  InfoBar: converter OAWeather not installed
+  InfoBar: renderer OAWeatherPixmap not installed
+  SecondInfoBar: converter OAWeather not installed
+  SecondInfoBar: renderer OAWeatherPixmap not installed
+  SecondInfoBarSimple: converter OAWeather not installed
+  SecondInfoBarSimple: renderer OAWeatherPixmap not installed
+    ERROR: validation failed:
+      InfoBar: converter OAWeather not installed
+      InfoBar: renderer OAWeatherPixmap not installed
+      SecondInfoBar: converter OAWeather not installed
+      SecondInfoBar: renderer OAWeatherPixmap not installed
+      SecondInfoBarSimple: converter OAWeather not installed
+      SecondInfoBarSimple: renderer OAWeatherPixmap not installed
+    rc=1
+    generations/g000000
+      SecondInfoBar: renderer OAWeatherPixmap not installed
+      SecondInfoBarSimple: converter OAWeather not installed
+      SecondInfoBarSimple: renderer OAWeatherPixmap not installed
+### DONE openbh60 R

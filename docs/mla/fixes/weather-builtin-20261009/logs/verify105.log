@@ -1,0 +1,11 @@
+PASS enigma2-plugin-skins-cineview-fhd-mla_1.0.5_all.ipk  python 3.14  removed=['bin', 'enigma2_pre_start.sh'] added=19 changed=4 control=['./control', './postinst', './preinst']
+PASS enigma2-plugin-skins-cineview-fhd-mla_1.0.5~openatv.py313_all.ipk  python 3.13  removed=['bin', 'enigma2_pre_start.sh'] added=19 changed=4 control=['./control', './postinst', './preinst']
+PASS enigma2-plugin-skins-cineview-fhd-mla_1.0.5~openatv.py314_all.ipk  python 3.14  removed=['bin', 'enigma2_pre_start.sh'] added=19 changed=4 control=['./control', './postinst', './preinst']
+PASS enigma2-plugin-skins-cineview-fhd-mla_1.0.5~openbh.py313_all.ipk  python 3.13  removed=['bin', 'enigma2_pre_start.sh'] added=19 changed=4 control=['./control', './postinst', './preinst']
+PASS enigma2-plugin-skins-cineview-fhd-mla_1.0.5~openbh.py314_all.ipk  python 3.14  removed=['bin', 'enigma2_pre_start.sh'] added=19 changed=4 control=['./control', './postinst', './preinst']
+PASS enigma2-plugin-skins-cineview-fhd-mla_1.0.5~openbh1_all.ipk  python 3.13  removed=['bin', 'enigma2_pre_start.sh'] added=19 changed=4 control=['./control', './postinst', './preinst']
+PASS enigma2-plugin-skins-cineview-fhd-mla_1.0.5~openvix.py312_all.ipk  python 3.12  removed=['bin', 'enigma2_pre_start.sh'] added=19 changed=4 control=['./control', './postinst', './preinst']
+PASS enigma2-plugin-skins-cineview-fhd-mla_1.0.5~openvix.py313_all.ipk  python 3.13  removed=['bin', 'enigma2_pre_start.sh'] added=19 changed=4 control=['./control', './postinst', './preinst']
+PASS enigma2-plugin-skins-cineview-fhd-mla_1.0.5~openvix.py314_all.ipk  python 3.14  removed=['bin', 'enigma2_pre_start.sh'] added=19 changed=4 control=['./control', './postinst', './preinst']
+PASS enigma2-plugin-skins-cineview-fhd-mla_1.0.5~openvix1_all.ipk  python 3.14  removed=['bin', 'enigma2_pre_start.sh'] added=19 changed=4 control=['./control', './postinst', './preinst']
+RESULT: PASS
