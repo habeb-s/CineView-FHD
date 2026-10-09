@@ -1,0 +1,160 @@
+### 1.0.3 + OAWeather removed: validate Classic (reproduction)
+Removing enigma2-plugin-extensions-oaweather (2.4-git157+eec00e60+eec00e6b9d) from root...
+ls: /usr/lib/enigma2/python/Components/Converter/OAWeather*: No such file or directory
+ls: /usr/lib/enigma2/python/Components/Renderer/OAWeather*: No such file or directory
+ls: /usr/lib/enigma2/python/Components/Sources/OAWeather*: No such file or directory
+EventView: converter OAWeather not installed
+EventView: renderer OAWeatherPixmap not installed
+InfoBar: converter OAWeather not installed
+InfoBar: renderer OAWeatherPixmap not installed
+SecondInfoBar: converter OAWeather not installed
+SecondInfoBar: renderer OAWeatherPixmap not installed
+SecondInfoBarSimple: converter OAWeather not installed
+SecondInfoBarSimple: renderer OAWeatherPixmap not installed
+warnings (core/plugin screens, non-blocking): 1
+rc=1
+
+### 1.0.4 installed without OAWeather, Classic applied
+CineView MLA installed. Select it in Menu > Setup > User Interface > Skin, then restart the GUI.
+Upgrading enigma2-plugin-skins-cineview-fhd-mla (1.0.3~openatv.py314) to enigma2-plugin-skins-cineview-fhd-mla (1.0.4~openatv.py314) on root
+Configuring enigma2-plugin-skins-cineview-fhd-mla.
+2026-10-09 13:37:07 commit: lkg=g000051
+g000051
+VALID
+warnings (core/plugin screens, non-blocking): 1
+rc=0
+2026-10-09 13:37:09 apply: g000051 -> g000052 trial=False omitted=['weather'] selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-09 13:37:09 commit: lkg=g000052
+g000052
+rc=0
+generations/g000052
+{"omitted": ["weather"]}
+generations/g000052/channelselection.xml:0
+generations/g000052/epg.xml:0
+generations/g000052/eventview.xml:0
+generations/g000052/infobar.xml:0
+generations/g000052/pvr.xml:0
+generations/g000052/secondinfobar.xml:0
+generations/g000052/theme.xml:0
+
+### GUI tests (Classic)
+enigma2 pid: 32613  running for:       01:41
+2026-10-09 13:37:07 commit: lkg=g000051
+2026-10-09 13:37:09 apply: g000051 -> g000052 trial=False omitted=['weather'] selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-09 13:37:09 commit: lkg=g000052
+generations/g000052
+{"omitted": ["weather"]}
+0
+"inStandby": "false"
+ "currservice_name": "N/A",
+ "isRecording": "false",
+crash logs before/after: 0/0
+enigma2 still running after the screens: 32613
+
+### Details, Cinema, Factory without OAWeather
+before restart: "isRecording": "false"
+enigma2 pid: 3106  running for:       00:36
+2026-10-09 13:37:09 commit: lkg=g000052
+2026-10-09 13:40:35 apply: g000052 -> g000053 trial=False omitted=['weather'] selection={"layouts": {"channelselection": "posterlist", "epg": "graphicalplus", "eventview": "detailscard", "infobar": "details", "pvr": "cover", "secondinfobar": "details"}, "theme": "purple"}
+2026-10-09 13:40:35 commit: lkg=g000053
+generations/g000053
+{"omitted": ["weather"]}
+0
+"inStandby": "false"
+ "currservice_name": "N/A",
+ "isRecording": "false",
+crash logs before/after: 0/0
+enigma2 still running after the screens: 3106
+g000054
+rc=0
+before restart: "isRecording": "false"
+enigma2 pid: 4312  running for:       00:36
+2026-10-09 13:40:35 commit: lkg=g000053
+2026-10-09 13:41:47 apply: g000053 -> g000054 trial=False omitted=['weather'] selection={"layouts": {"channelselection": "videofirst", "epg": "graphicalplus", "eventview": "feature", "infobar": "cinema", "pvr": "cinema", "secondinfobar": "cinema"}, "theme": "burgundy"}
+2026-10-09 13:41:47 commit: lkg=g000054
+generations/g000054
+{"omitted": ["weather"]}
+0
+"inStandby": "false"
+ "currservice_name": "N/A",
+ "isRecording": "false",
+crash logs before/after: 0/0
+enigma2 still running after the screens: 4312
+2026-10-09 13:42:59 rollback: active -> g000000
+2026-10-09 13:43:00 ensure: g000000 -> g000055 omitted=['weather'] (was []) selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+g000055
+rc=0
+2026-10-09 13:41:47 commit: lkg=g000054
+2026-10-09 13:42:59 rollback: active -> g000000
+2026-10-09 13:43:00 ensure: g000000 -> g000055 omitted=['weather'] (was []) selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+g000055before restart: "isRecording": "false"
+enigma2 pid: 5390  running for:       00:36
+2026-10-09 13:41:47 commit: lkg=g000054
+2026-10-09 13:42:59 rollback: active -> g000000
+2026-10-09 13:43:00 ensure: g000000 -> g000055 omitted=['weather'] (was []) selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+generations/g000055
+{"omitted": ["weather"]}
+0
+"inStandby": "false"
+ "currservice_name": "N/A",
+ "isRecording": "false",
+crash logs before/after: 0/0
+enigma2 still running after the screens: 5390
+DONE
+
+### OAWeather reinstalled from the image feed, GUI restart
+Downloading https://feeds2.mynonpublic.com/8.0.1/vuduo4kse/cortexa15hf-neon-vfpv4/enigma2-plugin-extensions-oaweather_2.4-git157+eec00e60+eec00e6b9d-r0_cortexa15hf-neon-vfpv4.ipk.
+Configuring enigma2-plugin-extensions-oaweather.
+enigma2-plugin-extensions-oaweather - 2.4-git157+eec00e60+eec00e6b9d-r0
+/usr/lib/enigma2/python/Components/Converter/OAWeather.pyc
+/usr/lib/enigma2/python/Components/Renderer/OAWeatherPixmap.pyc
+/usr/lib/enigma2/python/Components/Sources/OAWeather.pyc
+before restart: "isRecording": "false"
+enigma2 pid: 6889  running for:       00:36
+2026-10-09 13:43:00 ensure: g000000 -> g000055 omitted=['weather'] (was []) selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-09 13:44:32 ensure: g000055 -> g000056 omitted=[] (was ['weather']) selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-09 13:44:32 recover: active rebuilt for the installed components -> g000056
+generations/g000056
+{"omitted": []}
+6
+"inStandby": "false"
+ "currservice_name": "N/A",
+ "isRecording": "false",
+crash logs before/after: 0/0
+enigma2 still running after the screens: 6889
+
+### restored design
+enigma2 pid: 9385  running for:       01:21
+2026-10-09 13:44:32 recover: active rebuilt for the installed components -> g000056
+2026-10-09 13:46:59 apply: g000056 -> g000057 trial=False omitted=[] selection={"layouts": {"channelselection": "classic", "epg": "classic", "eventview": "classic", "infobar": "classic", "pvr": "classic", "secondinfobar": "classic"}, "theme": "navy"}
+2026-10-09 13:46:59 commit: lkg=g000057
+generations/g000057
+{"omitted": []}
+6
+"inStandby": "false"
+ "currservice_name": "N/A",
+ "isRecording": "false",
+crash logs before/after: 0/0
+enigma2 still running after the screens: 9385
+2026-10-09 13:49:03 apply: g000057 -> g000058 trial=False omitted=[] selection={"layouts": {"channelselection": "posterlist", "epg": "modern", "eventview": "modern", "infobar": "modern", "pvr": "modern", "secondinfobar": "modern"}, "theme": "black"}
+2026-10-09 13:49:03 commit: lkg=g000058
+g000058
+rc=0
+before restart: "isRecording": "false"
+enigma2 pid: 11412  running for:       00:37
+2026-10-09 13:46:59 commit: lkg=g000057
+2026-10-09 13:49:03 apply: g000057 -> g000058 trial=False omitted=[] selection={"layouts": {"channelselection": "posterlist", "epg": "modern", "eventview": "modern", "infobar": "modern", "pvr": "modern", "secondinfobar": "modern"}, "theme": "black"}
+2026-10-09 13:49:03 commit: lkg=g000058
+generations/g000058
+{"omitted": []}
+0
+"inStandby": "false"
+ "currservice_name": "N/A",
+ "isRecording": "false",
+crash logs before/after: 0/0
+enigma2 still running after the screens: 11412
+ "inStandby": "true",
+ "isRecording": "false",
+{"layouts": {"channelselection": "posterlist", "epg": "modern", "eventview": "modern", "infobar": "modern", "pvr": "modern", "secondinfobar": "modern"}, "theme": "black"}enigma2-plugin-extensions-oaweather - 2.4-git157+eec00e60+eec00e6b9d-r0
+enigma2-plugin-skins-cineview-fhd-mla - 1.0.4
+DONE

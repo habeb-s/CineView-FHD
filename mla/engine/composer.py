@@ -11,8 +11,9 @@ CLI (on the receiver):
   composer.py apply     [--theme T] [--set section=layout ...] [--trial]
   composer.py commit                         # mark current generation as last-known-good
   composer.py rollback  [--to lkg|factory]
-  composer.py recover                        # used at boot / after interruption
-Environment overrides (tests): MLA_SKIN_DIR, MLA_STATE_DIR, MLA_FAULT=<step>
+  composer.py recover                        # used at boot / after interruption (includes ensure)
+  composer.py ensure                         # rebuild active for the installed optional plugins (weather)
+Environment overrides (tests): MLA_SKIN_DIR, MLA_STATE_DIR, MLA_FAULT=<step>, MLA_COMPONENTS_ROOT
 """
 import hashlib
 import json
@@ -31,6 +32,15 @@ DEFAULT_IMAGE = "openatv"  # the image every layout pack provides a screen file 
 THEME_ASSETS = ("infobar/hd.png", "infobar/bl80.png", "extensions/transblack.png", "infobar/pbar.png",
 	"window/progress.png", "dvr/position_pointer1.png", "epg/CurrentEvent.png")  # skin paths are symlinks to active/assets
 KEEP = 3
+# Optional features: widgets that need components of a PLUGIN the image may not have installed.  When any of a
+# feature's components is missing on the receiver, exactly these widgets are left out of the generation (the rest
+# of the design is unchanged) and validation checks that pruned generation - the one Enigma2 really loads.  Every
+# other missing renderer/converter still blocks.  OAWeather (oe-alliance plugin) provides session.OAWeather, the
+# OAWeather converter and the OAWeatherPixmap renderer; it is not part of every OpenATV/OpenViX/OpenBH install.
+OPTIONAL_FEATURES = {
+	"weather": {"source": "session.OAWeather", "Renderer": {"OAWeatherPixmap"}, "Converter": {"OAWeather"}, "Sources": {"OAWeather"}},
+}
+FEATURES_FILE = "features.json"  # inside a generation: features left out when it was built
 BUILTIN_COLORS = {"key_back", "key_blue", "key_green", "key_red", "key_text", "key_yellow", "transparent", "black", "white",
 	"red", "green", "blue", "yellow", "grey", "gray", "orange", "foreground", "background", "darkgrey", "lightgrey", "cyan", "magenta"}
 
@@ -171,9 +181,61 @@ def current_selection():
 		return {"theme": "navy", "layouts": {s: "classic" for s in sections()}}
 
 
+# ---------------------------------------------------------------- optional features
+def unavailable_features(components):
+	"""Optional features whose components are not all installed.  components=None (not on a receiver): none."""
+	if components is None:
+		return []
+	out = []
+	for feat, spec in sorted(OPTIONAL_FEATURES.items()):
+		for kind in ("Renderer", "Converter", "Sources"):
+			if kind in components and not spec[kind] <= components[kind]:
+				out.append(feat)
+				break
+	return out
+
+
+def _is_feature_widget(node, feats):
+	if node.tag != "widget":
+		return False
+	for f in feats:
+		spec = OPTIONAL_FEATURES[f]
+		if node.get("source") == spec["source"] or node.get("render") in spec["Renderer"]:
+			return True
+		if any(c.tag == "convert" and c.get("type") in spec["Converter"] for c in node.iter()):
+			return True
+	return False
+
+
+def _prune(root, feats):
+	"""Remove the widgets of the given (unavailable) features; returns how many were removed."""
+	if not feats:
+		return 0
+	n = 0
+	for parent in list(root.iter()):
+		for child in list(parent):
+			if _is_feature_widget(child, feats):
+				parent.remove(child)
+				n += 1
+	return n
+
+
+def _parse(path):
+	return ET.parse(path, parser=ET.XMLParser(target=ET.TreeBuilder(insert_comments=True)))
+
+
+def generation_omitted(gid):
+	try:
+		return sorted(json.load(open(os.path.join(_gen_dir(gid), FEATURES_FILE))).get("omitted", []))
+	except (OSError, ValueError, AttributeError):
+		return []  # generations built before 1.0.4: nothing was left out
+
+
 # ---------------------------------------------------------------- validation
-def _screens(path):
-	return {s.get("name"): s for s in ET.parse(path).getroot().iter("screen") if s.get("name")}
+def _screens(path, feats=()):
+	root = _parse(path).getroot()
+	_prune(root, feats)
+	return {s.get("name"): s for s in root.iter("screen") if s.get("name")}
 
 
 def validate(selection, components=None, warnings=None):
@@ -182,6 +244,7 @@ def validate(selection, components=None, warnings=None):
 	the plugin) are appended to `warnings` instead of blocking."""
 	problems = []
 	section_files = set()
+	feats = unavailable_features(components)  # their widgets are not part of the generation that will be built
 	secs, lays = sections(), layouts()
 	if selection["theme"] not in themes():
 		problems.append(f"unknown theme {selection['theme']}")
@@ -205,7 +268,7 @@ def validate(selection, components=None, warnings=None):
 	all_screens = {}
 	for f in files:
 		try:
-			scr = _screens(f)
+			scr = _screens(f, feats)
 		except ET.ParseError as e:
 			problems.append(f"XML error {f}: {e}")
 			continue
@@ -239,8 +302,8 @@ def installed_components(root=None):
 	root = root or os.environ.get("MLA_COMPONENTS_ROOT", "/usr/lib/enigma2/python/Components")
 	if not os.path.isdir(root):
 		return None  # not on a receiver: skip component checks
-	out = {"Renderer": {"Label", "Pixmap", "Listbox", "FixedLabel", "Progress", "Canvas", "Pig"}, "Converter": set()}
-	for kind in ("Renderer", "Converter"):
+	out = {"Renderer": {"Label", "Pixmap", "Listbox", "FixedLabel", "Progress", "Canvas", "Pig"}, "Converter": set(), "Sources": set()}
+	for kind in ("Renderer", "Converter", "Sources"):
 		d = os.path.join(root, kind)
 		if os.path.isdir(d):
 			out[kind] |= {f.split(".")[0] for f in os.listdir(d) if f.endswith((".py", ".pyc"))}
@@ -305,8 +368,9 @@ def _lkg():
 		return FACTORY
 
 
-def build_generation(selection, gid):
+def build_generation(selection, gid, components=None):
 	d = _gen_dir(gid)
+	feats = unavailable_features(components)
 	lays = layouts()
 	os.makedirs(d)
 	files = {"theme.xml": _p("themes", selection["theme"], "theme.xml")}
@@ -322,7 +386,11 @@ def build_generation(selection, gid):
 	for name, src in files.items():
 		dst = os.path.join(d, name)
 		os.makedirs(os.path.dirname(dst), exist_ok=True)
-		shutil.copyfile(src, dst)
+		tree = _parse(src) if feats and name.endswith(".xml") and name != "theme.xml" else None
+		if tree is not None and _prune(tree.getroot(), feats):
+			tree.write(dst, encoding="utf-8", xml_declaration=True)  # same screens, minus the optional widgets
+		else:
+			shutil.copyfile(src, dst)
 		_fsync_file(dst)
 		lines.append(f"{_sha(dst)}  {name}")
 		_fault("stage")
@@ -331,6 +399,10 @@ def build_generation(selection, gid):
 		f.write(sel)
 	_fsync_file(os.path.join(d, "selection.json"))
 	lines.append(f"{_sha(os.path.join(d, 'selection.json'))}  selection.json")
+	with open(os.path.join(d, FEATURES_FILE), "w") as f:
+		f.write(json.dumps({"omitted": feats}))
+	_fsync_file(os.path.join(d, FEATURES_FILE))
+	lines.append(f"{_sha(os.path.join(d, FEATURES_FILE))}  {FEATURES_FILE}")
 	_fault("seal")
 	_atomic_write(os.path.join(d, "MANIFEST.sha256"), "# CineView MLA generation " + gid + "\n" + "\n".join(lines) + "\n")
 	_fsync_dir(_p("generations"))
@@ -356,7 +428,7 @@ def apply(selection, trial=False, components=None):
 	gid = _next_gid()
 	_journal("PREPARING", gid=gid, prev=prev)
 	try:
-		build_generation(selection, gid)
+		build_generation(selection, gid, components)
 	except Exception:
 		shutil.rmtree(_gen_dir(gid), ignore_errors=True)
 		_journal("ABORTED", gid=gid, prev=prev)
@@ -369,7 +441,7 @@ def apply(selection, trial=False, components=None):
 	switch_to(gid)
 	_atomic_write(_s("selection.json"), json.dumps(selection, sort_keys=True))
 	_journal("TRIAL" if trial else "SWITCHED", gid=gid, prev=prev)
-	_log(f"apply: {prev} -> {gid} trial={trial} selection={json.dumps(selection, sort_keys=True)}")
+	_log(f"apply: {prev} -> {gid} trial={trial} omitted={unavailable_features(components)} selection={json.dumps(selection, sort_keys=True)}")
 	if not trial:
 		commit()
 	return gid
@@ -416,7 +488,7 @@ def rollback(to="lkg"):
 	_journal("ROLLED_BACK", gid=target)
 	_cleanup(keep={target, FACTORY, _lkg()})  # reverted trials must not accumulate (device: 6 generations after P6)
 	_log(f"rollback: active -> {target}")
-	return target
+	return _ensure_safe() or target
 
 
 def mark_trial_running():
@@ -429,6 +501,59 @@ def mark_trial_running():
 		_log(f"trial: session started on {j.get('gid')}, awaiting confirmation")
 		return True
 	return bool(j and j.get("state") == "TRIAL_RUNNING")
+
+
+def ensure_components(components=None):
+	"""Keep the active generation loadable with the components installed NOW: rebuild it (same selection) when
+	it holds widgets of an optional feature whose plugin is missing - e.g. the factory generation on an image
+	without OAWeather - or when it was built without a feature whose plugin has since been installed.
+	Returns the new generation id, or None when nothing had to change."""
+	if components is None:
+		components = installed_components()
+	if components is None:
+		return None
+	cur = _active_target()
+	if not cur or not verify_generation(cur):
+		return None
+	want = unavailable_features(components)
+	if want == generation_omitted(cur):
+		return None
+	try:
+		sel = json.load(open(os.path.join(_gen_dir(cur), "selection.json")))
+	except (OSError, ValueError):
+		sel = current_selection()
+	problems = validate(sel, components)
+	if problems:
+		_log("ensure: cannot rebuild %s: %s" % (cur, "; ".join(problems)))
+		return None
+	was_lkg = _lkg() == cur
+	j = _read_journal()
+	gid = _next_gid()
+	try:
+		build_generation(sel, gid, components)
+	except Exception:
+		shutil.rmtree(_gen_dir(gid), ignore_errors=True)
+		raise
+	if not verify_generation(gid):
+		shutil.rmtree(_gen_dir(gid), ignore_errors=True)
+		raise MLAError("rebuilt generation failed verification")
+	switch_to(gid)
+	if was_lkg:
+		_atomic_write(_s("lkg"), gid)
+	if j and j.get("gid") == cur:
+		j["gid"] = gid
+		_journal(j.pop("state"), **{k: v for k, v in j.items() if k != "time"})
+	_cleanup(keep={gid, FACTORY, _lkg()})
+	_log(f"ensure: {cur} -> {gid} omitted={want} (was {generation_omitted(cur)}) selection={json.dumps(sel, sort_keys=True)}")
+	return gid
+
+
+def _ensure_safe():
+	try:
+		return ensure_components()
+	except Exception as e:  # never break the boot path: the previous generation stays active
+		_log(f"ensure: ERROR {e}")
+		return None
 
 
 def recover():
@@ -456,6 +581,9 @@ def recover():
 	if not cur or not verify_generation(cur):
 		target = rollback("lkg")
 		actions.append(f"active {cur} invalid -> {target}")
+	g = _ensure_safe()
+	if g:
+		actions.append(f"active rebuilt for the installed components -> {g}")
 	if actions:
 		_log("recover: " + "; ".join(actions))
 	return actions
@@ -508,6 +636,8 @@ def main(argv):
 			return 1 if p else 0
 		elif cmd == "apply":
 			print(apply(sel, trial=trial, components=installed_components()))
+		elif cmd == "ensure":
+			print(ensure_components() or "nothing to do")
 		elif cmd == "commit":
 			print(commit())
 		elif cmd == "rollback":

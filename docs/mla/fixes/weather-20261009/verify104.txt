@@ -1,0 +1,11 @@
+PASS enigma2-plugin-skins-cineview-fhd-mla_1.0.4_all.ipk  changed=2 ctl=['Version: 1.0.4', 'Source: CineView MLA 1.0.4']
+PASS enigma2-plugin-skins-cineview-fhd-mla_1.0.4~openatv.py313_all.ipk  changed=2 ctl=['Version: 1.0.4~openatv.py313', 'Source: CineView MLA 1.0.4~openatv.py313']
+PASS enigma2-plugin-skins-cineview-fhd-mla_1.0.4~openatv.py314_all.ipk  changed=2 ctl=['Version: 1.0.4~openatv.py314', 'Source: CineView MLA 1.0.4~openatv.py314']
+PASS enigma2-plugin-skins-cineview-fhd-mla_1.0.4~openbh.py313_all.ipk  changed=2 ctl=['Version: 1.0.4~openbh.py313', 'Source: CineView MLA 1.0.4~openbh.py313']
+PASS enigma2-plugin-skins-cineview-fhd-mla_1.0.4~openbh.py314_all.ipk  changed=2 ctl=['Version: 1.0.4~openbh.py314', 'Source: CineView MLA 1.0.4~openbh.py314']
+PASS enigma2-plugin-skins-cineview-fhd-mla_1.0.4~openbh1_all.ipk  changed=2 ctl=['Version: 1.0.4~openbh1', 'Source: CineView MLA 1.0.4~openbh1']
+PASS enigma2-plugin-skins-cineview-fhd-mla_1.0.4~openvix.py312_all.ipk  changed=2 ctl=['Version: 1.0.4~openvix.py312', 'Source: CineView MLA 1.0.4~openvix.py312']
+PASS enigma2-plugin-skins-cineview-fhd-mla_1.0.4~openvix.py313_all.ipk  changed=2 ctl=['Version: 1.0.4~openvix.py313', 'Source: CineView MLA 1.0.4~openvix.py313']
+PASS enigma2-plugin-skins-cineview-fhd-mla_1.0.4~openvix.py314_all.ipk  changed=2 ctl=['Version: 1.0.4~openvix.py314', 'Source: CineView MLA 1.0.4~openvix.py314']
+PASS enigma2-plugin-skins-cineview-fhd-mla_1.0.4~openvix1_all.ipk  changed=2 ctl=['Version: 1.0.4~openvix1', 'Source: CineView MLA 1.0.4~openvix1']
+RESULT: PASS
