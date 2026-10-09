@@ -1,0 +1,16 @@
+PASS  Octagon SF8008 real pm_cpu (4 lines)     CPU: 45°C                          | atv-snap-2.3.4: CPU: --°C | bh-2.3.4: CPU: --°C | vix-ipk-2.3.4: CPU: 45°C
+PASS  HiSilicon: value updates on next poll    CPU: 48°C -> next poll: CPU: 53°C  | atv-snap-2.3.4: CPU: --°C -> next poll: CPU: --°C | bh-2.3.4: CPU: --°C -> next poll: CPU: --°C | vix-ipk-2.3.4: CPU: 48°C -> next poll: CPU: 53°C
+PASS  HiSilicon variant: pm_temp only          CPU: 51°C                          | atv-snap-2.3.4: CPU: --°C | bh-2.3.4: CPU: --°C | vix-ipk-2.3.4: CPU: N/A
+PASS  Vu+ style /proc/stb/fp/temp_sensor       CPU: 44°C                          | atv-snap-2.3.4: CPU: 44°C | bh-2.3.4: CPU: 44°C | vix-ipk-2.3.4: CPU: 44°C
+PASS  thermal_zone0 millidegrees (Vu+ 4K)      CPU: 52°C                          | atv-snap-2.3.4: CPU: 52°C | bh-2.3.4: CPU: 52°C | vix-ipk-2.3.4: CPU: 52°C
+PASS  sensors/temp0 Celsius                    CPU: 47°C                          | atv-snap-2.3.4: CPU: 47°C | bh-2.3.4: CPU: 47°C | vix-ipk-2.3.4: CPU: 47°C
+PASS  sensors/temp0 Fahrenheit -> Celsius      CPU: 50°C                          | atv-snap-2.3.4: CPU: 122°C | bh-2.3.4: CPU: 122°C | vix-ipk-2.3.4: CPU: 122°C
+PASS  only thermal_zone1 (cpu)                 CPU: 61°C                          | atv-snap-2.3.4: CPU: --°C | bh-2.3.4: CPU: 61°C | vix-ipk-2.3.4: CPU: N/A
+PASS  temp_sensor_avs only                     CPU: 39°C                          | atv-snap-2.3.4: CPU: --°C | bh-2.3.4: CPU: --°C | vix-ipk-2.3.4: CPU: 39°C
+PASS  answering source disappears              CPU: 41°C -> source gone: CPU: 46°C | atv-snap-2.3.4: CPU: 41°C -> source gone: CPU: --°C | bh-2.3.4: CPU: 41°C -> source gone: CPU: --°C | vix-ipk-2.3.4: CPU: 41°C -> source gone: CPU: 46°C
+PASS  sensor reports 0 -> not a reading        CPU: N/A                           | atv-snap-2.3.4: CPU: --°C | bh-2.3.4: CPU: --°C | vix-ipk-2.3.4: CPU: N/A
+PASS  0 on one sensor, valid on another        CPU: 46°C                          | atv-snap-2.3.4: CPU: --°C | bh-2.3.4: CPU: --°C | vix-ipk-2.3.4: CPU: 46°C
+PASS  unreadable content                       CPU: N/A                           | atv-snap-2.3.4: CPU: --°C | bh-2.3.4: CPU: --°C | vix-ipk-2.3.4: CPU: N/A
+PASS  implausible 255 -> rejected              CPU: N/A                           | atv-snap-2.3.4: CPU: --°C | bh-2.3.4: CPU: --°C | vix-ipk-2.3.4: CPU: N/A
+PASS  no sensor at all                         CPU: N/A                           | atv-snap-2.3.4: CPU: --°C | bh-2.3.4: CPU: --°C | vix-ipk-2.3.4: CPU: N/A
+RESULT pass=15 fail=0

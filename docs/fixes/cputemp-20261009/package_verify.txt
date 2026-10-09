@@ -1,0 +1,34 @@
+== enigma2-plugin-skins-cineview-openatv_2.3.5_all.ipk  sha256 8befd18388aad0d6fc0e07d553bdc90d70709eb23e5583228e545c3f60a81f7d
+  PASS  archive members debian-binary control.tar.gz data.tar.gz
+  PASS  same file list (403 entries)
+  PASS  same file modes
+  PASS  only expected files differ (5)
+  PASS  converter = components/Converter/CineViewCPUTemp.py
+  PASS  control Version 2.3.5
+  PASS  control: no 2.3.4 left
+  PASS  postinst: no 2.3.4 left
+  PASS  plugin.py: no 2.3.4 left
+  PASS  updater.py: no 2.3.4 left
+== enigma2-plugin-skins-cineview-openvix_2.3.5_all.ipk  sha256 d2b2bbe2399485d5621f996c2d77a04d78d4f25b8426145f4f38c1aef9c7fdff
+  PASS  archive members debian-binary control.tar.gz data.tar.gz
+  PASS  same file list (426 entries)
+  PASS  same file modes
+  PASS  only expected files differ (5)
+  PASS  converter = components/Converter/CineViewCPUTemp.py
+  PASS  control Version 2.3.5
+  PASS  control: no 2.3.4 left
+  PASS  postinst: no 2.3.4 left
+  PASS  plugin.py: no 2.3.4 left
+  PASS  updater.py: no 2.3.4 left
+== enigma2-plugin-skins-cineview-openbh_2.3.5_all.ipk  sha256 0954dfcb262d5010a2ca6cb602c014ff3bbd8864669a67c28d8e1d2abccb707c
+  PASS  archive members debian-binary control.tar.gz data.tar.gz
+  PASS  same file list (438 entries)
+  PASS  same file modes
+  PASS  only expected files differ (5)
+  PASS  converter = components/Converter/CineViewCPUTemp.py
+  PASS  control Version 2.3.5
+  PASS  control: no 2.3.4 left
+  PASS  postinst: no 2.3.4 left
+  PASS  plugin.py: no 2.3.4 left
+  PASS  updater.py: no 2.3.4 left
+RESULT PASS

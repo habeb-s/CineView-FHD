@@ -1,0 +1,44 @@
+== before
+skin: config.skin.primary_skin=CineView_FHD_MLA/skin.xml
+MLA converter md5: 2e5a98bbcadecd418d189e70baad1ab1
+classic in image: none
+enigma2 pid: 2270
+recording: "isRecording": "false"
+== image
+/etc/image-version:distro=openatv
+/etc/image-version:imagebuild=20261008
+/etc/image-version:imageversion=8.0.1
+/usr/lib/enigma.info:distro='openatv'
+/usr/lib/enigma.info:imagebuild='20261008'
+/usr/lib/enigma.info:imageversion='8.0.1'
+/usr/lib/enigma.info:machinebuild='vuduo4kse'
+/usr/lib/enigma.info:model='vuduo4kse'
+armv7l
+== test
+python 3.14.7 | Element /usr/lib/enigma2/python/Components/Element.pyc | Poll /usr/lib/enigma2/python/Components/Converter/Poll.pyc
+on show: poll timer active=True interval=5000 ms; first text='CPU: 52°C'
+t=  0.0s poll(what=4) label=CPU: 52°C  sensor=51 (/sys/class/thermal/thermal_zone0/temp) OK
+t=  5.0s poll(what=4) label=CPU: 51°C  sensor=51 (/sys/class/thermal/thermal_zone0/temp) OK
+t= 10.0s poll(what=4) label=CPU: 51°C  sensor=51 (/sys/class/thermal/thermal_zone0/temp) OK
+t= 15.0s poll(what=4) label=CPU: 51°C  sensor=51 (/sys/class/thermal/thermal_zone0/temp) OK
+t= 20.0s poll(what=4) label=CPU: 51°C  sensor=51 (/sys/class/thermal/thermal_zone0/temp) load OK
+t= 25.0s poll(what=4) label=CPU: 52°C  sensor=52 (/sys/class/thermal/thermal_zone0/temp) load OK
+t= 30.0s poll(what=4) label=CPU: 52°C  sensor=53 (/sys/class/thermal/thermal_zone0/temp) load OK
+t= 35.0s poll(what=4) label=CPU: 53°C  sensor=53 (/sys/class/thermal/thermal_zone0/temp) load OK
+t= 40.0s poll(what=4) label=CPU: 53°C  sensor=53 (/sys/class/thermal/thermal_zone0/temp) load OK
+t= 45.0s poll(what=4) label=CPU: 53°C  sensor=53 (/sys/class/thermal/thermal_zone0/temp) load OK
+t= 50.0s poll(what=4) label=CPU: 53°C  sensor=53 (/sys/class/thermal/thermal_zone0/temp) OK
+t= 55.0s poll(what=4) label=CPU: 52°C  sensor=51 (/sys/class/thermal/thermal_zone0/temp) OK
+t= 60.0s poll(what=4) label=CPU: 51°C  sensor=51 (/sys/class/thermal/thermal_zone0/temp) OK
+t= 65.0s poll(what=4) label=CPU: 51°C  sensor=51 (/sys/class/thermal/thermal_zone0/temp) OK
+on hide: poll timer active=False
+source used by converter: /sys/class/thermal/thermal_zone0/temp
+distinct labels: ['CPU: 51°C', 'CPU: 52°C', 'CPU: 53°C']
+RESULT samples=14 match=14 mismatch=0
+== after
+skin: config.skin.primary_skin=CineView_FHD_MLA/skin.xml
+MLA converter md5: 2e5a98bbcadecd418d189e70baad1ab1
+classic in image: none
+enigma2 pid: 2270
+recording: "isRecording": "false"
+EXIT 0

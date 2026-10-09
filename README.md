@@ -2,6 +2,23 @@
 
 Official Full HD CineView skin.
 
+## CineView FHD 2.3.5 — receiver temperature fix (2026-10-09)
+
+The `CPU: xx°C` label in the InfoBar / Second InfoBar showed `CPU: --°C` on receivers whose driver reports the
+temperature outside the three fixed paths the 2.3.4 converter read (for example Octagon SF8008 / HiSilicon, which
+reports it in `/proc/hisi/msp/pm_cpu`; the OpenBH variant listed that file but could not parse it). The converter
+`components/Converter/CineViewCPUTemp.py` now also reads other kernel thermal zones, other Enigma2 driver files and
+the HiSilicon driver — each only if present — and shows `CPU: N/A` when there is no valid reading. Receivers that
+already showed a temperature keep exactly the same reading. Nothing else changed: same skin design, sizes and
+positions.
+
+* Online update (CineView Control → BLUE) offers 2.3.5 through `update.json`.
+* The smart link installs the 2.3.5 layer (SHA256-pinned) on top of the pinned image snapshot.
+* Packages are built reproducibly from the 2.3.4 release by `tools/build_2.3.5.py` and checked by
+  `tools/verify_2.3.5.py`; details and test evidence: `docs/fixes/cputemp-20261009.md`.
+* Rollback: reinstall the 2.3.4 package from release `v2.3.4`
+  (`opkg install --force-reinstall --force-downgrade <ipk>`), or restore the backup the installer writes to `/tmp`.
+
 ## Smart installation
 
 Use the same smart link on supported images:

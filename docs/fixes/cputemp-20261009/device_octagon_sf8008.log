@@ -1,0 +1,50 @@
+== before
+skin: config.skin.primary_skin=CineView_FHD_MLA/skin.xml
+MLA converter md5: 14647936ba021e6d9f24616497aa190e
+classic in image: none
+enigma2 pid: 8436
+recording: "isRecording": "false"
+== image
+/etc/image-version:distro=openatv
+/etc/image-version:imagebuild=20260821
+/etc/image-version:imageversion=7.6.0
+/usr/lib/enigma.info:distro='openatv'
+/usr/lib/enigma.info:imagebuild='20260821'
+/usr/lib/enigma.info:imageversion='7.6.0'
+/usr/lib/enigma.info:machinebuild='sf8008'
+/usr/lib/enigma.info:model='sf8008t'
+armv7l
+== test
+python 3.13.12 | Element /usr/lib/enigma2/python/Components/Element.pyc | Poll /usr/lib/enigma2/python/Components/Converter/Poll.pyc
+on show: poll timer active=True interval=5000 ms; first text='CPU: 46°C'
+t=  0.0s poll(what=4) label=CPU: 46°C  sensor=46 (/proc/hisi/msp/pm_cpu) OK
+t=  5.0s poll(what=4) label=CPU: 45°C  sensor=45 (/proc/hisi/msp/pm_cpu) OK
+t= 10.0s poll(what=4) label=CPU: 45°C  sensor=45 (/proc/hisi/msp/pm_cpu) OK
+t= 15.0s poll(what=4) label=CPU: 45°C  sensor=45 (/proc/hisi/msp/pm_cpu) OK
+t= 20.0s poll(what=4) label=CPU: 45°C  sensor=45 (/proc/hisi/msp/pm_cpu) OK
+t= 25.0s poll(what=4) label=CPU: 45°C  sensor=45 (/proc/hisi/msp/pm_cpu) load OK
+t= 30.0s poll(what=4) label=CPU: 47°C  sensor=47 (/proc/hisi/msp/pm_cpu) load OK
+t= 35.0s poll(what=4) label=CPU: 47°C  sensor=47 (/proc/hisi/msp/pm_cpu) load OK
+t= 40.0s poll(what=4) label=CPU: 47°C  sensor=47 (/proc/hisi/msp/pm_cpu) load OK
+t= 45.0s poll(what=4) label=CPU: 47°C  sensor=47 (/proc/hisi/msp/pm_cpu) load OK
+t= 50.0s poll(what=4) label=CPU: 47°C  sensor=47 (/proc/hisi/msp/pm_cpu) load OK
+t= 55.0s poll(what=4) label=CPU: 48°C  sensor=48 (/proc/hisi/msp/pm_cpu) load OK
+t= 60.0s poll(what=4) label=CPU: 48°C  sensor=48 (/proc/hisi/msp/pm_cpu) load OK
+t= 65.0s poll(what=4) label=CPU: 48°C  sensor=48 (/proc/hisi/msp/pm_cpu) load OK
+t= 70.0s poll(what=4) label=CPU: 48°C  sensor=48 (/proc/hisi/msp/pm_cpu) OK
+t= 75.0s poll(what=4) label=CPU: 45°C  sensor=45 (/proc/hisi/msp/pm_cpu) OK
+t= 80.0s poll(what=4) label=CPU: 45°C  sensor=45 (/proc/hisi/msp/pm_cpu) OK
+t= 85.0s poll(what=4) label=CPU: 45°C  sensor=45 (/proc/hisi/msp/pm_cpu) OK
+t= 90.0s poll(what=4) label=CPU: 45°C  sensor=45 (/proc/hisi/msp/pm_cpu) OK
+t= 95.0s poll(what=4) label=CPU: 45°C  sensor=45 (/proc/hisi/msp/pm_cpu) OK
+on hide: poll timer active=False
+source used by converter: /proc/hisi/msp/pm_cpu
+distinct labels: ['CPU: 45°C', 'CPU: 46°C', 'CPU: 47°C', 'CPU: 48°C']
+RESULT samples=20 match=20 mismatch=0
+== after
+skin: config.skin.primary_skin=CineView_FHD_MLA/skin.xml
+MLA converter md5: 14647936ba021e6d9f24616497aa190e
+classic in image: none
+enigma2 pid: 8436
+recording: "isRecording": "false"
+EXIT 0
